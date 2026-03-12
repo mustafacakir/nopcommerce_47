@@ -346,35 +346,26 @@ const Navbar = ({ onPageChange, currentPage, onConsult, onRegister }) => {
           <span className="text-gradient">Pekin</span>Teknoloji
         </div>
         <div className="nav-links">
-          <a href="#services" onClick={(e) => {
+          <a href="#" onClick={(e) => {
+            e.preventDefault();
             if (currentPage !== 'home') {
-              e.preventDefault();
               onPageChange('home');
-              setTimeout(() => { document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }); }, 100);
+              setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150);
+            } else {
+              document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
             }
           }}>Hizmetler</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); onPageChange('ecommerce'); }}>E-Ticaret</a>
-          <a href="#packages" onClick={(e) => {
+          <a href="#" onClick={(e) => { e.preventDefault(); onPageChange('pricing'); }}>Fiyatlar</a>
+          <a href="#" onClick={(e) => {
             e.preventDefault();
-            if (currentPage !== 'ecommerce') {
-              onPageChange('ecommerce');
-              setTimeout(() => { document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' }); }, 150);
-              return;
+            if (currentPage !== 'home') {
+              onPageChange('home');
+              setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 150);
+            } else {
+              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
             }
-            document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
-          }}>Paketler</a>
-          <a href="#themes" onClick={(e) => {
-            e.preventDefault();
-            if (currentPage !== 'ecommerce') {
-              onPageChange('ecommerce');
-              setTimeout(() => { document.getElementById('themes')?.scrollIntoView({ behavior: 'smooth' }); }, 150);
-              return;
-            }
-            document.getElementById('themes')?.scrollIntoView({ behavior: 'smooth' });
-          }}>Temalar</a>
-          <button className="btn-nav" onClick={() => currentPage === 'home' ? onConsult() : onRegister()}>
-            {currentPage === 'home' ? 'Danışmanlık Al' : 'Ücretsiz Başlayın'}
-          </button>
+          }}>İletişim</a>
+          <button className="btn-nav" onClick={onConsult}>Danışmanlık Al</button>
         </div>
       </div>
     </nav>
@@ -436,6 +427,63 @@ const ThemeModal = ({ isOpen, theme, onClose }) => {
         </motion.div>
       </motion.div>
     </AnimatePresence>
+  );
+};
+
+const ContactInlineForm = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await fetch('http://localhost:8085/api/fastregister/consultation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, subject: 'İletişim Formu' }),
+      });
+      setSent(true);
+    } catch {
+      setSent(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const set = (field) => (e) => setFormData({ ...formData, [field]: e.target.value });
+
+  return (
+    <div className="contact-form-col">
+      {sent ? (
+        <div className="contact-form-success">
+          <CheckCircle2 size={40} className="success-icon" />
+          <h3>Mesajınız Alındı</h3>
+          <p>En geç 1 iş günü içinde size dönüş yapıyoruz.</p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="contact-inline-form">
+          <h3 className="contact-form-title">Mesaj Gönderin</h3>
+          <div className="form-group">
+            <input type="text" required placeholder="Adınız Soyadınız" value={formData.name} onChange={set('name')} />
+          </div>
+          <div className="form-group">
+            <input type="email" required placeholder="E-posta adresiniz" value={formData.email} onChange={set('email')} />
+          </div>
+          <div className="form-group">
+            <input type="tel" placeholder="Telefon (opsiyonel)" value={formData.phone} onChange={set('phone')} />
+          </div>
+          <div className="form-group">
+            <textarea required rows={4} placeholder="Mesajınız..." value={formData.message} onChange={set('message')} />
+          </div>
+          <button type="submit" className="btn-primary btn-full" disabled={loading}>
+            {loading ? 'Gönderiliyor...' : 'Gönder'} {!loading && <ArrowRight size={16} />}
+          </button>
+          <p className="contact-form-note">En geç 1 iş günü içinde dönüş yapıyoruz.</p>
+        </form>
+      )}
+    </div>
   );
 };
 
@@ -1124,40 +1172,77 @@ function App() {
   }, [currentPage]);
 
 const AgencyServices = ({ onConsult }) => (
-  <section id="services" className="services-section">
-    <div className="container">
-      <div className="section-header">
-        <h2>E-Ticaret Hizmetlerimiz</h2>
-        <p className="section-desc">Kurulumdan entegrasyona, temadan teknik desteğe kadar her şey dahil.</p>
+  <>
+    <section id="services" className="services-section">
+      <div className="container">
+        <div className="section-header">
+          <h2>Yazılım & Dijital Hizmetler</h2>
+          <p className="section-desc">İşinizi büyütmek için ihtiyacınız olan tüm dijital çözümler tek çatı altında.</p>
+        </div>
+        <div className="services-grid">
+          <div className="service-card">
+            <div className="service-icon">🌐</div>
+            <h3>Kurumsal Web Sitesi</h3>
+            <p>Markanızı en iyi şekilde yansıtan, hızlı ve SEO uyumlu kurumsal web siteleri tasarlıyor ve geliştiriyoruz.</p>
+            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+          </div>
+          <div className="service-card">
+            <div className="service-icon">📱</div>
+            <h3>Mobil Uygulama</h3>
+            <p>iOS ve Android için yerli, kullanıcı dostu mobil uygulamalar geliştiriyoruz. Fikrden mağazaya kadar her adımda yanınızdayız.</p>
+            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+          </div>
+          <div className="service-card">
+            <div className="service-icon">💻</div>
+            <h3>Özel Yazılım Geliştirme</h3>
+            <p>İşletmenize özel ERP, CRM veya iş akışı yazılımları. Hazır çözümlerin yetmediği yerde devreye giriyoruz.</p>
+            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+          </div>
+          <div className="service-card">
+            <div className="service-icon">🎯</div>
+            <h3>Teknoloji Danışmanlığı</h3>
+            <p>Doğru teknolojiyi seçmek, sisteminizi ölçeklendirmek veya dijital dönüşümü planlamak için uzman desteği alın.</p>
+            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+          </div>
+        </div>
       </div>
-      <div className="services-grid">
-        <div className="service-card">
-          <div className="service-icon">🚀</div>
-          <h3>Mağaza Kurulum & Ayarlama</h3>
-          <p>nopCommerce altyapısıyla mağazanızı hızlıca kurun. Domain, SSL, ödeme sistemi ve kargo entegrasyonları dahil.</p>
-          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+    </section>
+
+    <section id="ecommerce-services" className="services-section services-section--alt">
+      <div className="container">
+        <div className="section-header">
+          <h2>E-Ticaret Hizmetlerimiz</h2>
+          <p className="section-desc">Kurulumdan entegrasyona, temadan teknik desteğe kadar her şey dahil.</p>
         </div>
-        <div className="service-card">
-          <div className="service-icon">🎨</div>
-          <h3>Tema Kurulum & Özelleştirme</h3>
-          <p>27 premium tema arasından seçin veya markanıza özel tasarım yaptırın. Renk, font ve layout tamamen size göre.</p>
-          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-        </div>
-        <div className="service-card">
-          <div className="service-icon">🔗</div>
-          <h3>Pazaryeri Entegrasyonu</h3>
-          <p>Trendyol, Hepsiburada, n11 ve Amazon entegrasyonlarıyla tüm kanallarınızı tek panelden yönetin.</p>
-          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-        </div>
-        <div className="service-card">
-          <div className="service-icon">🛠️</div>
-          <h3>Teknik Destek & Bakım</h3>
-          <p>7/24 Türkçe destek, düzenli güncellemeler ve proaktif izleme ile mağazanız her zaman çalışır durumda.</p>
-          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+        <div className="services-grid">
+          <div className="service-card">
+            <div className="service-icon">🚀</div>
+            <h3>Mağaza Kurulum & Ayarlama</h3>
+            <p>Güçlü e-ticaret altyapısıyla mağazanızı hızlıca kurun. Domain, SSL, ödeme sistemi ve kargo entegrasyonları dahil.</p>
+            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+          </div>
+          <div className="service-card">
+            <div className="service-icon">🎨</div>
+            <h3>Tema Kurulum & Özelleştirme</h3>
+            <p>27 premium tema arasından seçin veya markanıza özel tasarım yaptırın. Renk, font ve layout tamamen size göre.</p>
+            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+          </div>
+          <div className="service-card">
+            <div className="service-icon">🔗</div>
+            <h3>Pazaryeri Entegrasyonu</h3>
+            <p>Trendyol, Hepsiburada, n11 ve Amazon entegrasyonlarıyla tüm kanallarınızı tek panelden yönetin.</p>
+            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+          </div>
+          <div className="service-card">
+            <div className="service-icon">🛠️</div>
+            <h3>Teknik Destek & Bakım</h3>
+            <p>7/24 Türkçe destek, düzenli güncellemeler ve proaktif izleme ile mağazanız her zaman çalışır durumda.</p>
+            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </>
 );
 
   const HomePage = () => (
@@ -1169,11 +1254,11 @@ const AgencyServices = ({ onConsult }) => (
           animate={{ opacity: 1, y: 0 }}
           className="hero-content"
         >
-          <span className="badge">nopCommerce Türkiye'nin En Güçlü Ortağı</span>
+          <span className="badge">Türkiye'ye Hazır E-Ticaret Altyapısı</span>
           <h1>E-Ticaret Mağazanızı <br /> <span className="text-gradient">Birlikte Kuralım</span></h1>
           <p className="hero-description">
-            Kurulumdan entegrasyona, tema seçiminden teknik desteğe kadar
-            e-ticaret yolculuğunuzun her adımında yanınızdayız.
+            Güçlü e-ticaret altyapısıyla Türkiye'ye hazır mağazanızı kurun.
+            Yerli ödeme sistemleri, pazaryeri entegrasyonları ve 7/24 Türkçe destek tek pakette.
           </p>
           <div className="hero-btns">
             <button className="btn-primary" onClick={() => setConsultModalOpen(true)}>
@@ -1187,12 +1272,6 @@ const AgencyServices = ({ onConsult }) => (
       </section>
 
       <AgencyServices onConsult={() => setConsultModalOpen(true)} />
-
-      <section id="features" className="ecommerce-section">
-        <PlatformFeatures onGoEcommerce={() => setCurrentPage('ecommerce')} />
-      </section>
-
-      <ProcessSection />
 
       {/* Contact Section */}
       <section id="contact" className="section-padding bg-soft">
@@ -1228,12 +1307,7 @@ const AgencyServices = ({ onConsult }) => (
               <MapSection />
             </div>
 
-            <div className="contact-form-col">
-              <button className="btn-primary btn-full btn-lg" onClick={() => setConsultModalOpen(true)}>
-                Ücretsiz Danışmanlık Formu <ArrowRight size={18} />
-              </button>
-              <p className="contact-form-note">En geç 1 iş günü içinde size dönüş yapıyoruz.</p>
-            </div>
+            <ContactInlineForm />
           </div>
         </div>
       </section>
