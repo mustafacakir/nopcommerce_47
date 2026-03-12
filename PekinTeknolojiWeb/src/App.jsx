@@ -28,143 +28,303 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 
-// Import theme assets
-import themeEarth from './assets/theme-earth.png';
-import themePrism from './assets/theme-prism.png';
-import themeHero from './assets/theme-hero.png';
-
 const THEMES_DATA = [
   {
-    id: 'earth',
-    name: 'Earth',
-    subtitle: 'Doğal & Minimalist',
-    tags: ['Minimalist', 'Organik', 'Sade'],
-    mainImage: themeEarth,
-    gallery: [themeEarth],
-    accentColor: '#6B7C4E',
-    overlayColor: 'rgba(107, 124, 78, 0.75)',
-    desc: 'Doğal tonlar ve temiz boşluklar. Organik ürünler ve butik markalar için.'
+    id: 'pioneer',
+    name: 'Pioneer',
+    subtitle: 'Modern & Çok Amaçlı',
+    tags: ["Modern", "Çok Amaçlı", "Dönüşüm Odaklı"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002930_nop-pioneer-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002930_nop-pioneer-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002931_nop-pioneer-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002932_nop-pioneer-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002933_nop-pioneer-responsive-theme.jpeg"],
+    accentColor: '#2C3E7A',
+    overlayColor: 'rgba(44, 62, 122, 0.78)',
+    desc: 'Modern tasarım ve güçlü özellikler. Her sektöre uygun çok amaçlı e-ticaret teması.'
   },
   {
-    id: 'prism',
-    name: 'Prism',
-    subtitle: 'Modern & Dinamik',
-    tags: ['Modern', 'Dinamik', 'Çok Kategorili'],
-    mainImage: themePrism,
-    gallery: [themePrism],
-    accentColor: '#6C2D91',
-    overlayColor: 'rgba(108, 45, 145, 0.75)',
-    desc: 'Çarpıcı renkler ve güçlü tipografi. Teknoloji ve moda markaları için.'
+    id: 'voyage',
+    name: 'Voyage',
+    subtitle: 'Şık & Premium',
+    tags: ["Premium", "Şık", "Çok Kategorili"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002898_nop-voyage-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002898_nop-voyage-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002899_nop-voyage-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002900_nop-voyage-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002901_nop-voyage-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002902_nop-voyage-responsive-theme.jpeg"],
+    accentColor: '#1A3A5C',
+    overlayColor: 'rgba(26, 58, 92, 0.78)',
+    desc: 'Zarif ve premium görünüm. Moda, aksesuar ve lifestyle markaları için.'
   },
   {
-    id: 'hero',
-    name: 'Hero',
-    subtitle: 'Premium & Şık',
-    tags: ['Premium', 'Lüks', 'Dönüşüm Odaklı'],
-    mainImage: themeHero,
-    gallery: [themeHero],
-    accentColor: '#1A2744',
-    overlayColor: 'rgba(26, 39, 68, 0.78)',
-    desc: 'Lüks his, yüksek dönüşüm. Premium ürünler ve kurumsal markalar için.'
+    id: 'pacific',
+    name: 'Pacific',
+    subtitle: 'Ferah & Dinamik',
+    tags: ["Dinamik", "Ferah", "Moda"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002849_nop-pacific-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002849_nop-pacific-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002850_nop-pacific-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002851_nop-pacific-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002852_nop-pacific-responsive-theme.jpeg"],
+    accentColor: '#0077A8',
+    overlayColor: 'rgba(0, 119, 168, 0.75)',
+    desc: 'Açık ve ferah tasarım. Giyim, spor ve outdoor markaları için.'
   },
   {
-    id: 'velvet',
-    name: 'Velvet',
-    subtitle: 'Kadifemsi & Lüks',
-    tags: ['Lüks', 'Kadın', 'Moda'],
-    mainImage: themeHero,
-    gallery: [themeHero],
-    accentColor: '#7B2D5E',
-    overlayColor: 'rgba(123, 45, 94, 0.78)',
-    desc: 'Derin mor tonları ve zarif tipografi. Moda ve aksesuar markaları için.'
+    id: 'avenue',
+    name: 'Avenue',
+    subtitle: 'Kurumsal & Güçlü',
+    tags: ["Kurumsal", "Çok Kategorili", "Güçlü"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002646_nop-avenue-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002646_nop-avenue-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002647_nop-avenue-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002648_nop-avenue-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002649_nop-avenue-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002650_nop-avenue-responsive-theme.jpeg"],
+    accentColor: '#2D3A4A',
+    overlayColor: 'rgba(45, 58, 74, 0.78)',
+    desc: 'Kurumsal görünüm, güçlü altyapı. Büyük ölçekli mağazalar için.'
   },
   {
-    id: 'nova',
-    name: 'Nova',
-    subtitle: 'Teknoloji & Fütüristik',
-    tags: ['Teknoloji', 'Koyu Tema', 'Elektronik'],
-    mainImage: themePrism,
-    gallery: [themePrism],
-    accentColor: '#0F4C9E',
-    overlayColor: 'rgba(15, 76, 158, 0.78)',
-    desc: 'Koyu zemin üzerine parlak aksanlar. Elektronik ve teknoloji markaları için.'
+    id: 'emporium',
+    name: 'Emporium',
+    subtitle: 'Büyük Mağaza & Çarpıcı',
+    tags: ["Büyük Mağaza", "Çarpıcı", "Renkli"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002503_nop-emporium-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002503_nop-emporium-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002504_nop-emporium-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002505_nop-emporium-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002506_nop-emporium-responsive-theme.jpeg"],
+    accentColor: '#C0392B',
+    overlayColor: 'rgba(192, 57, 43, 0.78)',
+    desc: 'Çarpıcı görsellik ve güçlü kategori yönetimi. Büyük çok kategorili mağazalar için.'
   },
   {
-    id: 'bloom',
-    name: 'Bloom',
-    subtitle: 'Taze & Feminen',
-    tags: ['Feminen', 'Pastel', 'Kozmetik'],
-    mainImage: themeEarth,
-    gallery: [themeEarth],
-    accentColor: '#D4607A',
-    overlayColor: 'rgba(212, 96, 122, 0.75)',
-    desc: 'Yumuşak pembe tonlar ve havadar tasarım. Kozmetik ve güzellik markaları için.'
+    id: 'venture',
+    name: 'Venture',
+    subtitle: 'Minimal & Odaklı',
+    tags: ["Minimal", "Odaklı", "Dönüşüm"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002472_nop-venture-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002472_nop-venture-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002473_nop-venture-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002474_nop-venture-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002475_nop-venture-responsive-theme.jpeg"],
+    accentColor: '#27AE60',
+    overlayColor: 'rgba(39, 174, 96, 0.75)',
+    desc: 'Temiz ve minimal yaklaşım. Yüksek dönüşüm odaklı modern mağazalar için.'
   },
   {
-    id: 'slate',
-    name: 'Slate',
-    subtitle: 'Kurumsal & Güvenilir',
-    tags: ['Kurumsal', 'B2B', 'Sade'],
-    mainImage: themeHero,
-    gallery: [themeHero],
-    accentColor: '#3D5166',
-    overlayColor: 'rgba(61, 81, 102, 0.78)',
-    desc: 'Gri-mavi kurumsal palet. B2B ve profesyonel hizmet sektörü için.'
+    id: 'pavilion',
+    name: 'Pavilion',
+    subtitle: 'Lüks & Sofistike',
+    tags: ["Lüks", "Sofistike", "Premium"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002348_nop-pavilion-responsive-theme.png',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002348_nop-pavilion-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0002349_nop-pavilion-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0002351_nop-pavilion-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0002352_nop-pavilion-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0002353_nop-pavilion-responsive-theme.png"],
+    accentColor: '#2C2C54',
+    overlayColor: 'rgba(44, 44, 84, 0.78)',
+    desc: 'Sofistike tasarım ve lüks his. Premium ürün ve koleksiyon mağazaları için.'
   },
   {
-    id: 'amber',
-    name: 'Amber',
-    subtitle: 'Sıcak & Enerjik',
-    tags: ['Enerjik', 'Renkli', 'Genç'],
-    mainImage: themePrism,
-    gallery: [themePrism],
-    accentColor: '#C47A1E',
-    overlayColor: 'rgba(196, 122, 30, 0.75)',
-    desc: 'Altın amber tonları ve bold tasarım. Genç ve dinamik markalar için.'
+    id: 'prisma',
+    name: 'Prisma',
+    subtitle: 'Renkli & Enerjik',
+    tags: ["Renkli", "Enerjik", "Genç"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002464_nop-prisma-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002464_nop-prisma-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002465_nop-prisma-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002466_nop-prisma-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002467_nop-prisma-responsive-theme.jpeg"],
+    accentColor: '#8E44AD',
+    overlayColor: 'rgba(142, 68, 173, 0.75)',
+    desc: 'Çarpıcı renkler ve dinamik düzen. Genç ve enerjik markalar için.'
   },
   {
-    id: 'jade',
-    name: 'Jade',
-    subtitle: 'Ekolojik & Sürdürülebilir',
-    tags: ['Eko', 'Yeşil', 'Sürdürülebilir'],
-    mainImage: themeEarth,
-    gallery: [themeEarth],
-    accentColor: '#2D7A5E',
-    overlayColor: 'rgba(45, 122, 94, 0.75)',
-    desc: 'Canlı yeşil renk paleti. Sürdürülebilir ve eko-dostu markalar için.'
+    id: 'element',
+    name: 'Element',
+    subtitle: 'Sade & Etkili',
+    tags: ["Sade", "Etkili", "Temiz"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002446_nop-element-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002446_nop-element-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002447_nop-element-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002448_nop-element-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0002449_nop-element-responsive-theme.jpeg"],
+    accentColor: '#E67E22',
+    overlayColor: 'rgba(230, 126, 34, 0.75)',
+    desc: 'Sade ve etkili tasarım anlayışı. Her tür ürün için uygun esnek yapı.'
   },
   {
-    id: 'ruby',
-    name: 'Ruby',
-    subtitle: 'Cesur & Dikkat Çekici',
-    tags: ['Bold', 'Yüksek Kontrastlı', 'Promosyon'],
-    mainImage: themePrism,
-    gallery: [themePrism],
-    accentColor: '#B91C1C',
-    overlayColor: 'rgba(185, 28, 28, 0.78)',
-    desc: 'Kırmızı renk gücü ve yüksek kontrast. Promosyon odaklı mağazalar için.'
-  },
-  {
-    id: 'arctic',
-    name: 'Arctic',
-    subtitle: 'Saf & Ultra Minimalist',
-    tags: ['Ultra Sade', 'Beyaz', 'Minimalist'],
-    mainImage: themeEarth,
-    gallery: [themeEarth],
-    accentColor: '#4A90B8',
-    overlayColor: 'rgba(74, 144, 184, 0.72)',
-    desc: 'Beyaz zemin ve buz mavisi aksanlar. Premium tek ürün ve koleksiyon mağazaları için.'
-  },
-  {
-    id: 'onyx',
-    name: 'Onyx',
-    subtitle: 'Karanlık & Sofistike',
-    tags: ['Karanlık', 'Sofistike', 'Sanat'],
-    mainImage: themeHero,
-    gallery: [themeHero],
+    id: 'uptown',
+    name: 'Uptown',
+    subtitle: 'Kentsel & Dinamik',
+    tags: ["Kentsel", "Dinamik", "Moda"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002359_nop-uptown-responsive-theme.png',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002359_nop-uptown-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0002360_nop-uptown-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0002361_nop-uptown-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0002362_nop-uptown-responsive-theme.png"],
     accentColor: '#1A1A2E',
-    overlayColor: 'rgba(26, 26, 46, 0.85)',
-    desc: 'Tam karanlık tema ve altın vurgular. Sanat, müzik ve yaratıcı markalar için.'
+    overlayColor: 'rgba(26, 26, 46, 0.82)',
+    desc: 'Kentsel ve şık tasarım. Moda, sokak giyimi ve yaşam tarzı markaları için.'
+  },
+  {
+    id: 'brooklyn',
+    name: 'Brooklyn',
+    subtitle: 'Hipster & Yaratıcı',
+    tags: ["Yaratıcı", "Hipster", "Butik"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0001219_nop-brooklyn-responsive-theme.png',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0001219_nop-brooklyn-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001220_nop-brooklyn-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001221_nop-brooklyn-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001222_nop-brooklyn-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001223_nop-brooklyn-responsive-theme.png"],
+    accentColor: '#4A235A',
+    overlayColor: 'rgba(74, 35, 90, 0.78)',
+    desc: 'Yaratıcı ve özgün tasarım. Butik, el yapımı ürünler ve sanatsal markalar için.'
+  },
+  {
+    id: 'poppy',
+    name: 'Poppy',
+    subtitle: 'Feminen & Taze',
+    tags: ["Feminen", "Taze", "Kozmetik"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002398_nop-poppy-responsive-theme.png',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002398_nop-poppy-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0002399_nop-poppy-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0002400_nop-poppy-responsive-theme.png"],
+    accentColor: '#C0392B',
+    overlayColor: 'rgba(192, 57, 43, 0.75)',
+    desc: 'Taze ve feminen tasarım. Kozmetik, güzellik ve kadın giyim markaları için.'
+  },
+  {
+    id: 'minimal',
+    name: 'Minimal',
+    subtitle: 'Ultra Minimal & Saf',
+    tags: ["Ultra Minimal", "Saf", "Temiz"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002376_nop-minimal-responsive-theme_430.png',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002376_nop-minimal-responsive-theme_430.png", "https://www.nop-templates.com/content/images/thumbs/0002377_nop-minimal-responsive-theme_430.png", "https://www.nop-templates.com/content/images/thumbs/0002378_nop-minimal-responsive-theme_430.png", "https://www.nop-templates.com/content/images/thumbs/0002379_nop-minimal-responsive-theme_430.png"],
+    accentColor: '#2D3436',
+    overlayColor: 'rgba(45, 52, 54, 0.78)',
+    desc: 'Ürünü ön plana çıkaran ultra minimalist yapı. Premium tek ürün mağazaları için.'
+  },
+  {
+    id: 'native',
+    name: 'Native',
+    subtitle: 'Doğal & Organik',
+    tags: ["Doğal", "Organik", "Eko"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0001186_nop-native-responsive-theme.png',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0001186_nop-native-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001190_nop-native-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001191_nop-native-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001192_nop-native-responsive-theme.png"],
+    accentColor: '#5D6D3E',
+    overlayColor: 'rgba(93, 109, 62, 0.75)',
+    desc: 'Doğal tonlar ve organik his. Gıda, bitki ve eko-dostu markalar için.'
+  },
+  {
+    id: 'urban',
+    name: 'Urban',
+    subtitle: 'Şehirli & Modern',
+    tags: ["Şehirli", "Modern", "Teknoloji"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0001181_nop-urban-responsive-theme.png',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0001181_nop-urban-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001182_nop-urban-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001183_nop-urban-responsive-theme.png", "https://www.nop-templates.com/content/images/thumbs/0001184_nop-urban-responsive-theme.png"],
+    accentColor: '#2980B9',
+    overlayColor: 'rgba(41, 128, 185, 0.78)',
+    desc: 'Şehirli ve modern estetik. Teknoloji, elektronik ve erkek giyim markaları için.'
+  },
+  {
+    id: 'alfresco',
+    name: 'Alfresco',
+    subtitle: 'Açık Hava & Ferah',
+    tags: ["Açık Hava", "Ferah", "Spor"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000942_nop-alfresco-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000942_nop-alfresco-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000943_nop-alfresco-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000944_nop-alfresco-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000945_nop-alfresco-responsive-theme.jpeg"],
+    accentColor: '#16A085',
+    overlayColor: 'rgba(22, 160, 133, 0.75)',
+    desc: 'Ferah ve enerjik tasarım. Spor, outdoor ve aktif yaşam markaları için.'
+  },
+  {
+    id: 'alicante',
+    name: 'Alicante',
+    subtitle: 'Akdeniz & Sıcak',
+    tags: ["Sıcak", "Akdeniz", "Lifestyle"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000934_nop-alicante-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000934_nop-alicante-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000935_nop-alicante-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000936_nop-alicante-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000937_nop-alicante-responsive-theme.jpeg"],
+    accentColor: '#D35400',
+    overlayColor: 'rgba(211, 84, 0, 0.75)',
+    desc: 'Akdeniz esintisi ve sıcak renkler. Yiyecek, tatil ve lifestyle markaları için.'
+  },
+  {
+    id: 'allure',
+    name: 'Allure',
+    subtitle: 'Çekici & Zarif',
+    tags: ["Zarif", "Çekici", "Lüks"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000917_nop-allure-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000917_nop-allure-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000918_nop-allure-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000919_nop-allure-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000920_nop-allure-responsive-theme.jpeg"],
+    accentColor: '#7D3C98',
+    overlayColor: 'rgba(125, 60, 152, 0.78)',
+    desc: 'Zarif ve çekici tasarım. Güzellik, kozmetik ve lüks aksesuar markaları için.'
+  },
+  {
+    id: 'artfactory',
+    name: 'ArtFactory',
+    subtitle: 'Sanatsal & Yaratıcı',
+    tags: ["Sanat", "Yaratıcı", "Galeri"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000913_nop-artfactory-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000913_nop-artfactory-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000914_nop-artfactory-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000915_nop-artfactory-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000916_nop-artfactory-responsive-theme.jpeg"],
+    accentColor: '#1C2833',
+    overlayColor: 'rgba(28, 40, 51, 0.82)',
+    desc: 'Sanatsal ve yaratıcı sunum. Sanat galerisi, el sanatları ve kreatif markalar için.'
+  },
+  {
+    id: 'lavella',
+    name: 'Lavella',
+    subtitle: 'Narin & Feminen',
+    tags: ["Narin", "Feminen", "Butik"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000909_nop-lavella-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000909_nop-lavella-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000910_nop-lavella-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000911_nop-lavella-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000912_nop-lavella-responsive-theme.jpeg"],
+    accentColor: '#A569BD',
+    overlayColor: 'rgba(165, 105, 189, 0.75)',
+    desc: 'Narin ve feminen estetik. Kadın giyim, takı ve butik mağazalar için.'
+  },
+  {
+    id: 'lighthouse',
+    name: 'Lighthouse',
+    subtitle: 'Güvenilir & Sağlam',
+    tags: ["Güvenilir", "Sağlam", "Kurumsal"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000938_nop-lighthouse-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000938_nop-lighthouse-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000939_nop-lighthouse-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000940_nop-lighthouse-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000941_nop-lighthouse-responsive-theme.jpeg"],
+    accentColor: '#1F618D',
+    overlayColor: 'rgba(31, 97, 141, 0.78)',
+    desc: 'Güvenilir ve sağlam görünüm. Kurumsal ve B2B e-ticaret mağazaları için.'
+  },
+  {
+    id: 'motion',
+    name: 'Motion',
+    subtitle: 'Dinamik & Hareketli',
+    tags: ["Dinamik", "Hareketli", "Spor"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000921_nop-motion-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000921_nop-motion-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000922_nop-motion-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000923_nop-motion-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000924_nop-motion-responsive-theme.jpeg"],
+    accentColor: '#E74C3C',
+    overlayColor: 'rgba(231, 76, 60, 0.78)',
+    desc: 'Dinamik ve enerjik tasarım. Spor ekipmanları ve aktif yaşam markaları için.'
+  },
+  {
+    id: 'nitro',
+    name: 'Nitro',
+    subtitle: 'Hızlı & Agresif',
+    tags: ["Hızlı", "Agresif", "Elektronik"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000905_nop-nitro-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000905_nop-nitro-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000906_nop-nitro-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000907_nop-nitro-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000908_nop-nitro-responsive-theme.jpeg"],
+    accentColor: '#F39C12',
+    overlayColor: 'rgba(243, 156, 18, 0.78)',
+    desc: 'Güçlü ve agresif tasarım. Elektronik, oyun ve teknoloji markaları için.'
+  },
+  {
+    id: 'smart',
+    name: 'Smart',
+    subtitle: 'Akıllı & Pratik',
+    tags: ["Akıllı", "Pratik", "Çok Amaçlı"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000926_nop-smart-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000926_nop-smart-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000927_nop-smart-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000928_nop-smart-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000929_nop-smart-responsive-theme.jpeg"],
+    accentColor: '#2ECC71',
+    overlayColor: 'rgba(46, 204, 113, 0.75)',
+    desc: 'Akıllı ve pratik çözüm. Her ölçekteki e-ticaret mağazası için.'
+  },
+  {
+    id: 'traction',
+    name: 'Traction',
+    subtitle: 'Güçlü & Etkileyici',
+    tags: ["Güçlü", "Etkileyici", "Dönüşüm"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0000900_nop-traction-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0000900_nop-traction-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000901_nop-traction-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000902_nop-traction-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0000904_nop-traction-responsive-theme.jpeg"],
+    accentColor: '#34495E',
+    overlayColor: 'rgba(52, 73, 94, 0.78)',
+    desc: 'Güçlü ve etkileyici sunum. Yüksek dönüşüm hedefleyen mağazalar için.'
+  },
+  {
+    id: 'tiffany',
+    name: 'Tiffany',
+    subtitle: 'Narin & Lüks',
+    tags: ["Lüks", "Narin", "Takı"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0001119_nop-tiffany-responsive-theme.jpeg',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0001119_nop-tiffany-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0001120_nop-tiffany-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0001121_nop-tiffany-responsive-theme.jpeg", "https://www.nop-templates.com/content/images/thumbs/0001122_nop-tiffany-responsive-theme.jpeg"],
+    accentColor: '#0ABFBF',
+    overlayColor: 'rgba(10, 191, 191, 0.75)',
+    desc: 'Zarif ve lüks his. Takı, mücevher ve premium aksesuar markaları için.'
+  },
+  {
+    id: 'universe',
+    name: 'Universe',
+    subtitle: 'Kapsamlı & Evrensel',
+    tags: ["Kapsamlı", "Evrensel", "Çok Amaçlı"],
+    mainImage: 'https://www.nop-templates.com/content/images/thumbs/0002640_nop-universe-theme_600.png',
+    gallery: ["https://www.nop-templates.com/content/images/thumbs/0002640_nop-universe-theme_600.png"],
+    accentColor: '#2C3E50',
+    overlayColor: 'rgba(44, 62, 80, 0.82)',
+    desc: 'Her sektöre uygun kapsamlı yapı. Büyük çaplı evrensel e-ticaret projeleri için.'
   },
 ];
 
@@ -250,14 +410,19 @@ const ThemeModal = ({ isOpen, theme, onClose }) => {
           </div>
 
           <div className="theme-gallery">
-            {theme.gallery.map((img, idx) => (
-              <div key={idx} className="gallery-item">
-                <div className="gallery-label">
-                  {idx === 0 ? 'Ana Sayfa' : 'Detay Görünümü'}
+            {theme.gallery.map((img, idx) => {
+              const labels4 = ['Ana Sayfa', 'Kategori', 'Ürün Detay', 'Ödeme'];
+              const labels5 = ['Ana Sayfa', 'Kategori', 'Ürün Detay', 'Ürün Detay', 'Ödeme'];
+              const labels3 = ['Ana Sayfa', 'Kategori', 'Ürün Detay'];
+              const total = theme.gallery.length;
+              const label = total >= 5 ? (labels5[idx] || 'Diğer') : total === 4 ? (labels4[idx] || 'Diğer') : (labels3[idx] || 'Diğer');
+              return (
+                <div key={idx} className="gallery-item">
+                  <div className="gallery-label">{label}</div>
+                  <img src={img} alt={`${theme.name} screenshot ${idx + 1}`} />
                 </div>
-                <img src={img} alt={`${theme.name} screenshot ${idx + 1}`} />
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="modal-footer">
@@ -265,7 +430,7 @@ const ThemeModal = ({ isOpen, theme, onClose }) => {
               onClose();
               window.dispatchEvent(new CustomEvent('open-registration'));
             }}>
-              Bu Temayı Hemen Deneyin
+              Bu Temayı Denemek İçin Talep Oluşturabilirsiniz!
             </button>
           </div>
         </motion.div>
@@ -374,6 +539,7 @@ const RegistrationModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    storeName: '',
     email: '',
     phone: '',
     password: ''
@@ -433,6 +599,10 @@ const RegistrationModal = ({ isOpen, onClose }) => {
           </div>
 
           <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Mağaza Adı</label>
+              <input type="text" required placeholder="Mağazanızın adı" value={formData.storeName} onChange={e => setFormData({...formData, storeName: e.target.value})} />
+            </div>
             <div className="form-row">
               <div className="form-group">
                 <label>Ad</label>
@@ -506,7 +676,7 @@ const EC_PACKAGES = [
       { text: 'SSL sertifikası', ok: true },
       { text: 'Özel domain bağlama', ok: true },
       { text: 'Mobil uyumlu mağaza', ok: true },
-      { text: 'Tüm 12 premium tema', ok: true },
+      { text: 'Tüm 27 premium tema', ok: true },
       { text: 'Gelişmiş SEO & blog modülü', ok: true },
       { text: 'Tüm ödeme sistemleri', ok: true },
       { text: '3 kargo entegrasyonu', ok: true },
@@ -548,7 +718,7 @@ const EC_PACKAGES = [
 const EC_FEATURES = [
   { icon: <Zap size={22}/>, title: 'Işık Hızında Sayfalar', desc: 'Google PageSpeed en iyi skorlarıyla dönüşüm oranlarınızı zirveye taşıyın.', stat: '0.8s', statLabel: 'Ort. Yüklenme' },
   { icon: <TrendingUp size={22}/>, title: 'Gelişmiş SEO Motoru', desc: 'Arama motorlarında en üst sıralarda yer almanız için her şey dahil.', stat: '%340', statLabel: 'Org. Trafik' },
-  { icon: <Cpu size={22}/>, title: 'Akıllı Entegrasyonlar', desc: 'Trendyol, Hepsiburada, n11 ve kargo firmalarıyla tek tıkla bağlanın.', stat: '6+', statLabel: 'Entegrasyon' },
+  { icon: <Cpu size={22}/>, title: 'Akıllı Entegrasyonlar', desc: 'Trendyol, Hepsiburada, n11 ve kargo firmalarıyla tek tıkla bağlanın.', stat: '8+', statLabel: 'Entegrasyon' },
   { icon: <MousePointer2 size={22}/>, title: 'Toplu İşlem Sihirbazı', desc: 'Binlerce ürünü saniyeler içinde güncelleyin, zaman kazanın.', stat: '10x', statLabel: 'Daha Hızlı' },
   { icon: <Smartphone size={22}/>, title: 'Mobil Uygulama', desc: 'Müşterileriniz için iOS ve Android uygulamasıyla satışlarınızı artırın.', stat: '%68', statLabel: 'Mobil Alışveriş' },
   { icon: <Headphones size={22}/>, title: '7/24 Yerli Destek', desc: 'Kritik anlarda Türkçe destek ekibimiz her zaman yanınızda.', stat: '<2dk', statLabel: 'Yanıt Süresi' },
@@ -582,15 +752,6 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
           <div className="ec-hero-btns">
             <button className="btn-primary" onClick={onRegister}>Ücretsiz 14 Gün Deneyin <ArrowRight size={18} /></button>
             <button className="btn-ghost" onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}>Paketleri İncele</button>
-          </div>
-          <div className="ec-hero-stats">
-            <div className="ec-stat"><strong>2.500+</strong><span>Aktif Mağaza</span></div>
-            <div className="ec-stat-sep" />
-            <div className="ec-stat"><strong>%99.9</strong><span>Uptime</span></div>
-            <div className="ec-stat-sep" />
-            <div className="ec-stat"><strong>0.8s</strong><span>Ort. Yüklenme</span></div>
-            <div className="ec-stat-sep" />
-            <div className="ec-stat"><strong>7/24</strong><span>Yerli Destek</span></div>
           </div>
         </motion.div>
       </div>
@@ -679,7 +840,7 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
       <div className="container">
         <div className="section-header">
           <span className="section-label">Temalar</span>
-          <h2>Markanıza özel 12 premium tema</h2>
+          <h2>Markanıza özel 27 premium tema</h2>
           <p className="section-desc">Her tema farklı bir iş modeli ve hedef kitleye göre tasarlandı.</p>
         </div>
         <div className="ec-themes-grid-3">
@@ -724,7 +885,7 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
         <div className="ec-themes-footer">
           {!showAllThemes && (
             <button className="btn-ghost" onClick={() => setShowAllThemes(true)}>
-              Diğer Temaları Keşfet <ChevronRight size={16} />
+              Diğer {THEMES_DATA.length - 3} Temayı Keşfet <ChevronRight size={16} />
             </button>
           )}
           {showAllThemes && (
@@ -793,10 +954,12 @@ const PlatformFeatures = ({ onGoEcommerce }) => {
 };
 
 const PricingPage = () => {
+  const [isYearly, setIsYearly] = useState(false);
+
   const plans = [
-    { name: 'Başlangıç', price: '1.490' },
-    { name: 'Profesyonel', price: '2.990', popular: true },
-    { name: 'Kurumsal', price: '7.490' }
+    { name: 'Başlangıç', monthly: '1.490', yearly: '14.900', enterprise: false },
+    { name: 'Profesyonel', monthly: '2.990', yearly: '29.900', popular: true, enterprise: false },
+    { name: 'Kurumsal', monthly: '7.490', yearly: '74.900', enterprise: true }
   ];
 
   const features = [
@@ -821,15 +984,45 @@ const PricingPage = () => {
             <span className="text-gradient">Fiyatlandırma</span>
             <h2>Size En Uygun Paketi Seçin</h2>
           </div>
+
+          {/* Billing toggle */}
+          <div className="pricing-toggle-wrap">
+            <span className={!isYearly ? 'toggle-label active' : 'toggle-label'}>Aylık</span>
+            <button
+              className={`pricing-toggle ${isYearly ? 'on' : ''}`}
+              onClick={() => setIsYearly(v => !v)}
+              aria-label="Yıllık/Aylık fiyat değiştir"
+            >
+              <span className="pricing-toggle-knob" />
+            </button>
+            <span className={isYearly ? 'toggle-label active' : 'toggle-label'}>
+              Yıllık <span className="toggle-saving">2 ay ücretsiz</span>
+            </span>
+          </div>
+
           <div className="pricing-grid mb-20">
             {plans.map(p => (
               <div key={p.name} className={`pricing-card ${p.popular ? 'popular' : ''}`}>
                 {p.popular && <div className="popular-badge">En Popüler</div>}
                 <h3>{p.name}</h3>
-                <div className="price">₺{p.price}<span>/ay</span></div>
-                <button className="btn-primary btn-full" onClick={() => window.dispatchEvent(new CustomEvent('open-registration'))}>
-                  Hemen Başla
-                </button>
+                <div className="price">
+                  ₺{isYearly ? p.yearly : p.monthly}
+                  <span>/{isYearly ? 'yıl' : 'ay'}</span>
+                </div>
+                {isYearly && (
+                  <div className="price-monthly-note">
+                    aylık ₺{p.monthly} yerine
+                  </div>
+                )}
+                {p.enterprise ? (
+                  <button className="btn-outline btn-full" onClick={() => window.dispatchEvent(new CustomEvent('open-consult'))}>
+                    Satış Ekibiyle Konuş
+                  </button>
+                ) : (
+                  <button className="btn-primary btn-full" onClick={() => window.dispatchEvent(new CustomEvent('open-registration'))}>
+                    Hemen Başla
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -920,41 +1113,46 @@ function App() {
 
   useEffect(() => {
     const handleOpen = () => setRegModalOpen(true);
+    const handleConsult = () => setConsultModalOpen(true);
     window.addEventListener('open-registration', handleOpen);
+    window.addEventListener('open-consult', handleConsult);
     window.scrollTo({ top: 0, behavior: 'instant' });
-    return () => window.removeEventListener('open-registration', handleOpen);
+    return () => {
+      window.removeEventListener('open-registration', handleOpen);
+      window.removeEventListener('open-consult', handleConsult);
+    };
   }, [currentPage]);
 
 const AgencyServices = ({ onConsult }) => (
   <section id="services" className="services-section">
     <div className="container">
       <div className="section-header">
-        <h2>Uçtan Uca Teknoloji Çözümleri</h2>
-        <p className="section-desc">Markanızı dijitalde bir adım öne taşıyacak profesyonel hizmetlerimiz.</p>
+        <h2>E-Ticaret Hizmetlerimiz</h2>
+        <p className="section-desc">Kurulumdan entegrasyona, temadan teknik desteğe kadar her şey dahil.</p>
       </div>
       <div className="services-grid">
         <div className="service-card">
-          <div className="service-icon">🌐</div>
-          <h3>Kurumsal Web Sitesi</h3>
-          <p>Modern, hızlı ve SEO uyumlu kurumsal kimliğinizi en iyi yansıtan profesyonel web çözümleri.</p>
+          <div className="service-icon">🚀</div>
+          <h3>Mağaza Kurulum & Ayarlama</h3>
+          <p>nopCommerce altyapısıyla mağazanızı hızlıca kurun. Domain, SSL, ödeme sistemi ve kargo entegrasyonları dahil.</p>
           <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
         </div>
         <div className="service-card">
-          <div className="service-icon">📱</div>
-          <h3>Mobil Uygulama</h3>
-          <p>iOS ve Android platformlarında kullanıcı dostu, yüksek performanslı yerel ve hibrit uygulamalar.</p>
+          <div className="service-icon">🎨</div>
+          <h3>Tema Kurulum & Özelleştirme</h3>
+          <p>27 premium tema arasından seçin veya markanıza özel tasarım yaptırın. Renk, font ve layout tamamen size göre.</p>
           <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
         </div>
         <div className="service-card">
-          <div className="service-icon">⚙️</div>
-          <h3>Özel Yazılım</h3>
-          <p>İş süreçlerinizi optimize eden, ihtiyaçlarınıza özel terzi usulü yazılım geliştirme hizmetleri.</p>
+          <div className="service-icon">🔗</div>
+          <h3>Pazaryeri Entegrasyonu</h3>
+          <p>Trendyol, Hepsiburada, n11 ve Amazon entegrasyonlarıyla tüm kanallarınızı tek panelden yönetin.</p>
           <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
         </div>
         <div className="service-card">
-          <div className="service-icon">📊</div>
-          <h3>Danışmanlık</h3>
-          <p>Dijital dönüşüm stratejileri, teknoloji mimarisi ve büyüme odaklı teknoloji danışmanlığı.</p>
+          <div className="service-icon">🛠️</div>
+          <h3>Teknik Destek & Bakım</h3>
+          <p>7/24 Türkçe destek, düzenli güncellemeler ve proaktif izleme ile mağazanız her zaman çalışır durumda.</p>
           <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
         </div>
       </div>
@@ -1071,7 +1269,7 @@ const AgencyServices = ({ onConsult }) => (
               <h4>Destek</h4>
               <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>İletişim</a>
               <a href="mailto:bilgi@pekinteknoloji.com">Bize Yazın</a>
-              <a href="#">KVKK</a>
+              <a href="mailto:bilgi@pekinteknoloji.com?subject=KVKK%20Bilgi%20Talebi">KVKK</a>
               <a href="#">Kullanım Şartları</a>
             </div>
           </div>
