@@ -605,7 +605,6 @@ const Navbar = ({ onPageChange, currentPage, onConsult, onRegister }) => {
               document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
             }
           }}>Hizmetler</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); onPageChange('pricing'); }}>Fiyatlar</a>
           <a href="#" onClick={(e) => {
             e.preventDefault();
             if (currentPage !== 'home') {
@@ -615,7 +614,10 @@ const Navbar = ({ onPageChange, currentPage, onConsult, onRegister }) => {
               document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
             }
           }}>İletişim</a>
-          <button className="btn-nav" onClick={onConsult}>Danışmanlık Al</button>
+          <div className="nav-cta-group">
+            <button className="btn-nav-secondary" onClick={() => onPageChange('pricing')}>Fiyatlar</button>
+            <button className="btn-nav" onClick={onConsult}>Danışmanlık Al</button>
+          </div>
         </div>
       </div>
     </nav>
