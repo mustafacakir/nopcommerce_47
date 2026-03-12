@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  ShoppingBag, 
-  Globe, 
-  Smartphone, 
-  Code, 
-  BarChart3, 
+  ShoppingBag,
+  Globe,
+  Smartphone,
+  Code,
+  BarChart3,
   ArrowRight,
   ChevronRight,
+  ChevronDown,
   ShieldCheck,
   Zap,
   Users,
@@ -327,6 +328,255 @@ const THEMES_DATA = [
     desc: 'Her sektöre uygun kapsamlı yapı. Büyük çaplı evrensel e-ticaret projeleri için.'
   },
 ];
+
+const IntegrationsStrip = () => {
+  const items = ['Trendyol', 'Hepsiburada', 'n11', 'Amazon', 'Çiçeksepeti', 'iyzico', 'PayTR', 'Garanti BBVA', 'MNG Kargo', 'Yurtiçi Kargo', 'Aras Kargo', 'Sürat Kargo'];
+  return (
+    <div className="integrations-strip">
+      <div className="container">
+        <p className="integrations-label">Türkiye'nin önde gelen platformlarıyla entegre</p>
+      </div>
+      <div className="integrations-overflow">
+        <div className="integrations-track">
+          {[...items, ...items].map((name, i) => (
+            <span key={i} className="integration-pill">{name}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FEATURE_TABS = [
+  {
+    icon: <BarChart3 size={22} />,
+    title: 'Gerçek Zamanlı Analitik',
+    desc: 'Satış, ziyaretçi ve dönüşüm verilerinizi anlık takip edin. Hangi ürün ne kadar sattı, en çok ziyaret edilen sayfaları görün.',
+    color: '#2563EB',
+    visual: (
+      <div className="feature-visual-analytics">
+        <div className="fv-stat">
+          <span className="fv-stat-val">₺24.830</span>
+          <span className="fv-stat-lbl">Bugünkü Satış <span className="fv-badge-up">↑ %18</span></span>
+        </div>
+        <div className="fv-bars">
+          {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
+            <div key={i} className="fv-bar-wrap">
+              <motion.div
+                className="fv-bar"
+                initial={{ height: 0 }}
+                animate={{ height: `${h}%` }}
+                transition={{ delay: i * 0.06, duration: 0.5 }}
+                style={{ background: i === 5 ? '#2563EB' : '#BFDBFE' }}
+              />
+              <span className="fv-bar-lbl">{['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'][i]}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  },
+  {
+    icon: <Smartphone size={22} />,
+    title: 'Mobil Önce Tasarım',
+    desc: 'Tüm temalar mobil uyumlu. Müşterileriniz telefon, tablet veya bilgisayardan sorunsuz alışveriş yapabilir.',
+    color: '#8B5CF6',
+    visual: (
+      <div className="feature-visual-mobile">
+        <div className="fv-phone">
+          <div className="fv-phone-bar" />
+          <div className="fv-phone-content">
+            <div className="fv-product-img" />
+            <div className="fv-product-name" />
+            <div className="fv-product-price" />
+            <div className="fv-add-cart">Sepete Ekle</div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    icon: <Globe size={22} />,
+    title: 'Pazaryeri Entegrasyonu',
+    desc: 'Trendyol, Hepsiburada ve n11\'e tek panelden ürün aktar. Stok ve sipariş yönetimini merkezi olarak yap.',
+    color: '#F97316',
+    visual: (
+      <div className="feature-visual-marketplace">
+        <div className="fv-mp-wrap">
+          <div className="fv-mp-hub">Mağaza</div>
+          {['Trendyol', 'Hepsiburada', 'n11', 'Amazon'].map((name, i) => (
+            <div key={name} className={`fv-mp-node fv-node-${i}`}>{name}</div>
+          ))}
+        </div>
+      </div>
+    )
+  },
+  {
+    icon: <ShieldCheck size={22} />,
+    title: 'Güvenli Ödeme',
+    desc: 'iyzico, PayTR ve tüm sanal POS\'larla entegre. 3D Secure ve taksit seçenekleriyle müşteri güveni kazanın.',
+    color: '#10B981',
+    visual: (
+      <div className="feature-visual-payment">
+        <div className="fv-card">
+          <div className="fv-card-chip" />
+          <div className="fv-card-num">•••• •••• •••• 4242</div>
+          <div className="fv-card-bottom">
+            <span>Müşteri Adı</span>
+            <span>12/27</span>
+          </div>
+        </div>
+        <div className="fv-payment-ok">
+          <CheckCircle2 size={20} />
+          <span>Ödeme Onaylandı</span>
+        </div>
+      </div>
+    )
+  }
+];
+
+const AnimatedFeaturesSection = () => {
+  const [active, setActive] = useState(0);
+  return (
+    <section className="animated-features section-padding">
+      <div className="container">
+        <div className="section-header">
+          <span className="text-gradient">Platform</span>
+          <h2>Satışı Artıran Özellikler</h2>
+          <p className="section-desc">İhtiyacınız olan her araç, tek bir panelde.</p>
+        </div>
+        <div className="af-layout">
+          <div className="af-tabs">
+            {FEATURE_TABS.map((tab, i) => (
+              <button
+                key={i}
+                className={`af-tab ${active === i ? 'active' : ''}`}
+                onClick={() => setActive(i)}
+                style={active === i ? { borderColor: tab.color } : {}}
+              >
+                <span className="af-tab-icon" style={{ color: active === i ? tab.color : '#94A3B8' }}>{tab.icon}</span>
+                <div>
+                  <div className="af-tab-title" style={{ color: active === i ? tab.color : '#0F172A' }}>{tab.title}</div>
+                  {active === i && <div className="af-tab-desc">{tab.desc}</div>}
+                </div>
+              </button>
+            ))}
+          </div>
+          <div className="af-visual-panel" style={{ background: `linear-gradient(135deg, ${FEATURE_TABS[active].color}12, ${FEATURE_TABS[active].color}04)`, borderColor: `${FEATURE_TABS[active].color}30` }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.22 }}
+                className="af-visual-inner"
+              >
+                {FEATURE_TABS[active].visual}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const EcommerceTeaser = ({ onGoEcommerce }) => (
+  <section className="ecommerce-teaser section-padding bg-soft">
+    <div className="container">
+      <div className="section-header">
+        <span className="text-gradient">Temalar</span>
+        <h2>{THEMES_DATA.length} Premium Tema</h2>
+        <p className="section-desc">Her sektöre uygun, profesyonel e-ticaret tasarımları. Hepsine sahipsiniz.</p>
+      </div>
+      <div className="teaser-themes-grid">
+        {THEMES_DATA.slice(0, 3).map(theme => (
+          <div key={theme.id} className="teaser-theme-card" onClick={onGoEcommerce}>
+            <img src={theme.mainImage} alt={theme.name} />
+            <div className="teaser-theme-info">
+              <span className="teaser-theme-name">{theme.name}</span>
+              <span className="teaser-theme-sub">{theme.subtitle}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="teaser-cta">
+        <button className="btn-primary" onClick={onGoEcommerce}>
+          Tüm Temaları ve Paketleri Gör <ArrowRight size={18} />
+        </button>
+      </div>
+    </div>
+  </section>
+);
+
+const BLOG_POSTS = [
+  { tag: 'SEO', title: 'E-Ticarette SEO: Mağazanızı Google\'da Öne Çıkarın', desc: 'Doğru URL yapısı, meta etiketler ve içerik stratejisiyle organik trafiğinizi katlayın.', readTime: '5 dk', color: '#2563EB' },
+  { tag: 'Pazaryeri', title: 'Trendyol Entegrasyonu ile Satışlarınızı Artırın', desc: 'Ürünlerinizi Trendyol ile senkronize edin, stok ve siparişleri tek panelden yönetin.', readTime: '4 dk', color: '#F97316' },
+  { tag: 'Tasarım', title: 'E-Ticaret Teması Seçerken Dikkat Edilmesi Gerekenler', desc: 'Dönüşüm oranını etkileyen tasarım kararları ve doğru tema seçim kriterleri.', readTime: '6 dk', color: '#8B5CF6' },
+];
+
+const BlogSection = () => (
+  <section className="blog-section section-padding">
+    <div className="container">
+      <div className="section-header">
+        <span className="text-gradient">Blog</span>
+        <h2>E-Ticaret Rehberi</h2>
+        <p className="section-desc">Mağazanızı büyütmek için ipuçları ve stratejiler.</p>
+      </div>
+      <div className="blog-grid">
+        {BLOG_POSTS.map((post, i) => (
+          <div key={i} className="blog-card">
+            <div className="blog-card-top" style={{ background: `linear-gradient(135deg, ${post.color}22, ${post.color}08)` }}>
+              <span className="blog-tag" style={{ background: post.color }}>{post.tag}</span>
+            </div>
+            <div className="blog-card-body">
+              <h3>{post.title}</h3>
+              <p>{post.desc}</p>
+              <span className="blog-read-time">{post.readTime} okuma</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+const FAQ_ITEMS = [
+  { q: 'Mağaza açmak için teknik bilgi gerekiyor mu?', a: 'Hayır. Kurulum ve teknik ayarları biz yapıyoruz. Siz sadece ürünlerinizi yükleyin ve satmaya başlayın.' },
+  { q: 'Hangi ödeme sistemleri destekleniyor?', a: 'iyzico, PayTR, Garanti BBVA Sanal POS, Yapı Kredi, Akbank ve tüm sanal POS sağlayıcılarıyla entegrasyon desteği sunuyoruz.' },
+  { q: 'Trendyol ve Hepsiburada entegrasyonu nasıl çalışıyor?', a: 'Ürünlerinizi tek bir panelden tüm pazaryerlerine aktarın, sipariş ve stok yönetimini merkezi olarak yapın.' },
+  { q: 'Kaç farklı tema var, özelleştirebilir miyim?', a: '27 premium tema arasından seçim yapabilirsiniz. Renk, font ve layout tamamen markanıza göre özelleştirilebilir.' },
+  { q: 'Teknik destek ne zaman ulaşılabilir?', a: '7/24 Türkçe teknik destek ekibimiz her an yanınızda. Acil durumlarda maksimum 2 saat içinde müdahale garantisi veriyoruz.' },
+  { q: 'Mevcut mağazamı taşıyabilir miyim?', a: 'Evet. Ürünlerinizi, müşteri verilerinizi ve sipariş geçmişinizi mevcut altyapınızdan aktarıyoruz.' },
+];
+
+const FAQSection = () => {
+  const [open, setOpen] = useState(null);
+  return (
+    <section className="faq-section section-padding bg-soft">
+      <div className="container">
+        <div className="section-header">
+          <span className="text-gradient">SSS</span>
+          <h2>Sıkça Sorulan Sorular</h2>
+        </div>
+        <div className="faq-list">
+          {FAQ_ITEMS.map((item, i) => (
+            <div key={i} className={`faq-item ${open === i ? 'open' : ''}`}>
+              <button className="faq-question" onClick={() => setOpen(open === i ? null : i)}>
+                <span>{item.q}</span>
+                <ChevronDown size={20} className="faq-chevron" />
+              </button>
+              <div className="faq-answer">
+                <p>{item.a}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const Navbar = ({ onPageChange, currentPage, onConsult, onRegister }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -1247,12 +1497,12 @@ const AgencyServices = ({ onConsult }) => (
 
   const HomePage = () => (
     <>
-      {/* Hero Section */}
-      <section className="hero hero-centered">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="hero-content"
+      {/* Hero Section - Split */}
+      <section className="hero hero-split">
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="hero-text"
         >
           <span className="badge">Türkiye'ye Hazır E-Ticaret Altyapısı</span>
           <h1>E-Ticaret Mağazanızı <br /> <span className="text-gradient">Birlikte Kuralım</span></h1>
@@ -1269,9 +1519,35 @@ const AgencyServices = ({ onConsult }) => (
             </button>
           </div>
         </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+          className="hero-visual"
+        >
+          <div className="browser-mockup">
+            <div className="browser-bar">
+              <span className="browser-dot red" />
+              <span className="browser-dot yellow" />
+              <span className="browser-dot green" />
+              <span className="browser-url">mağazam.pekinteknoloji.com</span>
+            </div>
+            <img src={THEMES_DATA[0].mainImage} alt="E-ticaret mağaza örneği" className="browser-screenshot" />
+          </div>
+        </motion.div>
       </section>
 
+      <IntegrationsStrip />
+
       <AgencyServices onConsult={() => setConsultModalOpen(true)} />
+
+      <AnimatedFeaturesSection />
+
+      <EcommerceTeaser onGoEcommerce={() => setCurrentPage('ecommerce')} />
+
+      <BlogSection />
+
+      <FAQSection />
 
       {/* Contact Section */}
       <section id="contact" className="section-padding bg-soft">
