@@ -946,7 +946,7 @@ const PlatformFeatures = ({ onGoEcommerce }) => {
 
       <div className="platform-features-cta">
         <button className="btn-primary" onClick={onGoEcommerce}>
-          E‑Ticaret Sayfasını İncele <ArrowRight size={18} />
+          Paketleri ve Temaları İncele <ArrowRight size={18} />
         </button>
       </div>
     </div>
@@ -1169,17 +1169,19 @@ const AgencyServices = ({ onConsult }) => (
           animate={{ opacity: 1, y: 0 }}
           className="hero-content"
         >
-          <span className="badge">Geleceği Birlikte İnşa Ediyoruz</span>
-          <h1>Teknoloji ve Yazılım <br /> <span className="text-gradient">Çözüm Ortağınız</span></h1>
+          <span className="badge">nopCommerce Türkiye'nin En Güçlü Ortağı</span>
+          <h1>E-Ticaret Mağazanızı <br /> <span className="text-gradient">Birlikte Kuralım</span></h1>
           <p className="hero-description">
-            Kurumsal web çözümlerinden mobil uygulamalara, e-ticaret altyapısından 
-            özel yazılım geliştirmeye kadar tüm dijital ihtiyaçlarınız tek bir adreste.
+            Kurulumdan entegrasyona, tema seçiminden teknik desteğe kadar
+            e-ticaret yolculuğunuzun her adımında yanınızdayız.
           </p>
           <div className="hero-btns">
             <button className="btn-primary" onClick={() => setConsultModalOpen(true)}>
               Ücretsiz Danışmanlık Al <ArrowRight size={20} />
             </button>
-            <a href="#services" className="btn-ghost">Hizmetlerimizi Keşfedin</a>
+            <button className="btn-ghost" onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
+              Hizmetlerimizi Keşfedin
+            </button>
           </div>
         </motion.div>
       </section>
@@ -1196,28 +1198,43 @@ const AgencyServices = ({ onConsult }) => (
       <section id="contact" className="section-padding bg-soft">
         <div className="container">
           <div className="section-header">
-            <h2>Bizimle Tanışın</h2>
-          </div>
-          
-          <div className="contact-grid">
-            <div className="glass-card text-center">
-              <MapPin className="mx-auto mb-6 text-primary" size={32} />
-              <h4 className="font-bold text-lg mb-3">Adres</h4>
-              <p className="text-muted">Karamustafa Paşa Mah. Selanik Pasajı No:5 Beyoğlu/İstanbul</p>
-            </div>
-            <div className="glass-card text-center">
-              <Phone className="mx-auto mb-6 text-primary" size={32} />
-              <h4 className="font-bold text-lg mb-3">Telefon</h4>
-              <p className="text-muted">0850 840 23 36</p>
-            </div>
-            <div className="glass-card text-center">
-              <Mail className="mx-auto mb-6 text-primary" size={32} />
-              <h4 className="font-bold text-lg mb-3">E-Posta</h4>
-              <p className="text-muted">bilgi@pekinteknoloji.com</p>
-            </div>
+            <h2>Bize Ulaşın</h2>
+            <p className="section-desc">Projenizi konuşalım. Ücretsiz danışmanlık için formu doldurun veya doğrudan iletişime geçin.</p>
           </div>
 
-          <MapSection />
+          <div className="contact-layout">
+            <div className="contact-info-col">
+              <a href="tel:+908508402336" className="contact-info-card">
+                <Phone size={24} />
+                <div>
+                  <span className="contact-info-label">Telefon</span>
+                  <span className="contact-info-value">0850 840 23 36</span>
+                </div>
+              </a>
+              <a href="mailto:bilgi@pekinteknoloji.com" className="contact-info-card">
+                <Mail size={24} />
+                <div>
+                  <span className="contact-info-label">E-Posta</span>
+                  <span className="contact-info-value">bilgi@pekinteknoloji.com</span>
+                </div>
+              </a>
+              <div className="contact-info-card no-link">
+                <MapPin size={24} />
+                <div>
+                  <span className="contact-info-label">Adres</span>
+                  <span className="contact-info-value">Selanik Pasajı No:5, Beyoğlu/İstanbul</span>
+                </div>
+              </div>
+              <MapSection />
+            </div>
+
+            <div className="contact-form-col">
+              <button className="btn-primary btn-full btn-lg" onClick={() => setConsultModalOpen(true)}>
+                Ücretsiz Danışmanlık Formu <ArrowRight size={18} />
+              </button>
+              <p className="contact-form-note">En geç 1 iş günü içinde size dönüş yapıyoruz.</p>
+            </div>
+          </div>
         </div>
       </section>
     </>
