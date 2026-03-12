@@ -1250,11 +1250,10 @@ const AgencyServices = ({ onConsult }) => (
             
             <div className="f-col">
               <h4>Hizmetlerimiz</h4>
-              <a href="#services">Kurumsal Web</a>
-              <a href="#services">Mobil Uygulama</a>
-              <a href="#services">Özel Yazılım</a>
-              <a href="#services">Danışmanlık</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('ecommerce'); }}>E-Ticaret</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Mağaza Kurulum</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Tema Özelleştirme</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Pazaryeri Entegrasyonu</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Teknik Destek</a>
             </div>
             
             <div className="f-col">
@@ -1270,7 +1269,6 @@ const AgencyServices = ({ onConsult }) => (
               <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>İletişim</a>
               <a href="mailto:bilgi@pekinteknoloji.com">Bize Yazın</a>
               <a href="mailto:bilgi@pekinteknoloji.com?subject=KVKK%20Bilgi%20Talebi">KVKK</a>
-              <a href="#">Kullanım Şartları</a>
             </div>
           </div>
           
