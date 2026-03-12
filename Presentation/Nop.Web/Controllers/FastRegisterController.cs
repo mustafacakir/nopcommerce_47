@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Services.Customers;
+using Nop.Core.Domain.Messages;
+using Nop.Services.Messages;
 using Nop.Web.Framework.Controllers;
+using System;
 using System.Threading.Tasks;
 
 namespace Nop.Web.Controllers
@@ -19,19 +22,25 @@ namespace Nop.Web.Controllers
         private readonly IWorkContext _workContext;
         private readonly IStoreContext _storeContext;
         private readonly CustomerSettings _customerSettings;
+        private readonly IEmailAccountService _emailAccountService;
+        private readonly IQueuedEmailService _queuedEmailService;
 
         public FastRegisterController(
             ICustomerService customerService,
             ICustomerRegistrationService customerRegistrationService,
             IWorkContext workContext,
             IStoreContext storeContext,
-            CustomerSettings customerSettings)
+            CustomerSettings customerSettings,
+            IEmailAccountService emailAccountService,
+            IQueuedEmailService queuedEmailService)
         {
             _customerService = customerService;
             _customerRegistrationService = customerRegistrationService;
             _workContext = workContext;
             _storeContext = storeContext;
             _customerSettings = customerSettings;
+            _emailAccountService = emailAccountService;
+            _queuedEmailService = queuedEmailService;
         }
 
         [HttpPost("register")]
@@ -77,6 +86,46 @@ namespace Nop.Web.Controllers
             return BadRequest(new { success = false, errors = result.Errors });
         }
 
+        [HttpPost("consultation")]
+        public async Task<IActionResult> Consultation([FromBody] ConsultationModel model)
+        {
+            if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Name))
+                return BadRequest(new { success = false, message = "Eksik bilgi." });
+
+            var accounts = await _emailAccountService.GetAllEmailAccountsAsync();
+            var emailAccount = accounts.Count > 0 ? accounts[0] : null;
+
+            if (emailAccount == null)
+                return StatusCode(500, new { success = false, message = "E-posta hesabı bulunamadı." });
+
+            var body = $@"
+                <h2>Yeni Danışmanlık Talebi</h2>
+                <table cellpadding='6' style='font-family:sans-serif;font-size:14px'>
+                    <tr><td><b>Ad Soyad:</b></td><td>{model.Name}</td></tr>
+                    <tr><td><b>E-posta:</b></td><td>{model.Email}</td></tr>
+                    <tr><td><b>Telefon:</b></td><td>{model.Phone}</td></tr>
+                    <tr><td><b>Konu:</b></td><td>{model.Subject}</td></tr>
+                    <tr><td><b>Mesaj:</b></td><td>{model.Message}</td></tr>
+                </table>";
+
+            await _queuedEmailService.InsertQueuedEmailAsync(new QueuedEmail
+            {
+                Priority = QueuedEmailPriority.High,
+                From = emailAccount.Email,
+                FromName = emailAccount.DisplayName,
+                To = "bilgi@pekinteknoloji.com",
+                ToName = "Pekin Teknoloji",
+                ReplyTo = model.Email,
+                ReplyToName = model.Name,
+                Subject = $"Danışmanlık Talebi: {model.Subject} — {model.Name}",
+                Body = body,
+                CreatedOnUtc = DateTime.UtcNow,
+                EmailAccountId = emailAccount.Id
+            });
+
+            return Ok(new { success = true });
+        }
+
         public class FastRegisterModel
         {
             public string FirstName { get; set; }
@@ -84,6 +133,15 @@ namespace Nop.Web.Controllers
             public string Email { get; set; }
             public string Phone { get; set; }
             public string Password { get; set; }
+        }
+
+        public class ConsultationModel
+        {
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public string Phone { get; set; }
+            public string Subject { get; set; }
+            public string Message { get; set; }
         }
     }
 }

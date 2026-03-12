@@ -593,6 +593,11 @@ h1 {
   opacity: 0;
   transform: translateX(-8px);
   transition: all 0.3s;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .service-card:hover .learn-more {

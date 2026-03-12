@@ -168,7 +168,7 @@ const THEMES_DATA = [
   },
 ];
 
-const Navbar = ({ onPageChange, currentPage }) => {
+const Navbar = ({ onPageChange, currentPage, onConsult, onRegister }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -212,8 +212,8 @@ const Navbar = ({ onPageChange, currentPage }) => {
             }
             document.getElementById('themes')?.scrollIntoView({ behavior: 'smooth' });
           }}>Temalar</a>
-          <button className="btn-nav" onClick={() => window.dispatchEvent(new CustomEvent('open-registration'))}>
-            Ücretsiz Danışmanlık Al
+          <button className="btn-nav" onClick={() => currentPage === 'home' ? onConsult() : onRegister()}>
+            {currentPage === 'home' ? 'Danışmanlık Al' : 'Ücretsiz Başlayın'}
           </button>
         </div>
       </div>
@@ -274,6 +274,102 @@ const ThemeModal = ({ isOpen, theme, onClose }) => {
   );
 };
 
+const ConsultationModal = ({ isOpen, onClose }) => {
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
+  const [sent, setSent] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('http://localhost:8085/api/fastregister/consultation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSent(true);
+        setTimeout(() => { setSent(false); onClose(); setFormData({ name: '', email: '', phone: '', subject: '', message: '' }); }, 2500);
+      } else {
+        setError(data.message || 'Bir hata oluştu.');
+      }
+    } catch {
+      setError('Sunucuya bağlanılamadı.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        className="modal-overlay" onClick={onClose}
+      >
+        <motion.div
+          initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }}
+          className="modal-content" onClick={e => e.stopPropagation()}
+        >
+          <button className="close-btn" onClick={onClose}><X size={20} /></button>
+          <div className="modal-header">
+            <h2>Ücretsiz Danışmanlık Alın</h2>
+            <p>Projenizi anlatın, size özel çözüm önerelim.</p>
+          </div>
+          {sent ? (
+            <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+              <CheckCircle2 size={48} style={{ color: '#16A34A', margin: '0 auto 1rem' }} />
+              <p style={{ fontWeight: 600 }}>Talebiniz alındı, en kısa sürede dönüş yapacağız!</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Ad Soyad</label>
+                  <input type="text" required placeholder="Adınız Soyadınız" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+                </div>
+                <div className="form-group">
+                  <label>Telefon</label>
+                  <input type="tel" required placeholder="05XX XXX XX XX" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+                </div>
+              </div>
+              <div className="form-group">
+                <label>E-posta</label>
+                <input type="email" required placeholder="ornek@mail.com" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+              </div>
+              <div className="form-group">
+                <label>Konu</label>
+                <select required value={formData.subject} onChange={e => setFormData({...formData, subject: e.target.value})} style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1.5px solid #E2E8F0', fontSize: '0.95rem', fontFamily: 'inherit', background: 'white', color: formData.subject ? '#0F172A' : '#94A3B8' }}>
+                  <option value="" disabled>Hizmet seçin...</option>
+                  <option value="web">Kurumsal Web Sitesi</option>
+                  <option value="mobile">Mobil Uygulama</option>
+                  <option value="ecommerce">E-Ticaret</option>
+                  <option value="software">Özel Yazılım</option>
+                  <option value="consulting">Danışmanlık</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Mesajınız</label>
+                <textarea required placeholder="Projeniz hakkında kısaca bilgi verin..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} rows={3} style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1.5px solid #E2E8F0', fontSize: '0.95rem', fontFamily: 'inherit', resize: 'vertical' }} />
+              </div>
+              {error && <p style={{ color: '#B91C1C', fontSize: '0.875rem', marginTop: '0.5rem' }}>{error}</p>}
+              <button type="submit" className="btn-primary btn-full mt-4" disabled={loading}>
+                {loading ? 'Gönderiliyor...' : <><span>Danışmanlık Talebini Gönder</span> <ArrowRight size={18} /></>}
+              </button>
+            </form>
+          )}
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 const RegistrationModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -300,7 +396,7 @@ const RegistrationModal = ({ isOpen, onClose }) => {
       const data = await response.json();
 
       if (data.success) {
-        window.location.href = "http://localhost:8085/admin";
+        window.location.href = "http://localhost:8085/admin/";
       } else {
         alert("Hata: " + (data.errors ? data.errors.join(", ") : data.message));
         setLoading(false);
@@ -698,14 +794,14 @@ const PlatformFeatures = ({ onGoEcommerce }) => {
 
 const PricingPage = () => {
   const plans = [
-    { name: 'Giriş', price: '1.490' },
+    { name: 'Başlangıç', price: '1.490' },
     { name: 'Profesyonel', price: '2.990', popular: true },
     { name: 'Kurumsal', price: '7.490' }
   ];
 
   const features = [
     { cat: 'Genel Özellikler' },
-    { name: 'Ürün Limiti', values: ['1.000', '10.000', 'Sınırsız'] },
+    { name: 'Ürün Limiti', values: ['500', '10.000', 'Sınırsız'] },
     { name: 'Depolama Alanı', values: ['5 GB', '25 GB', 'Sınırsız'] },
     { name: 'Hazır Tasarımlar', values: [true, true, true] },
     { cat: 'Pazarlama & SEO' },
@@ -818,6 +914,7 @@ const MapSection = () => (
 
 function App() {
   const [isRegModalOpen, setRegModalOpen] = useState(false);
+  const [isConsultModalOpen, setConsultModalOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [currentPage, setCurrentPage] = useState('home');
 
@@ -828,7 +925,7 @@ function App() {
     return () => window.removeEventListener('open-registration', handleOpen);
   }, [currentPage]);
 
-const AgencyServices = () => (
+const AgencyServices = ({ onConsult }) => (
   <section id="services" className="services-section">
     <div className="container">
       <div className="section-header">
@@ -840,25 +937,25 @@ const AgencyServices = () => (
           <div className="service-icon">🌐</div>
           <h3>Kurumsal Web Sitesi</h3>
           <p>Modern, hızlı ve SEO uyumlu kurumsal kimliğinizi en iyi yansıtan profesyonel web çözümleri.</p>
-          <div className="learn-more">İncele →</div>
+          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
         </div>
         <div className="service-card">
           <div className="service-icon">📱</div>
           <h3>Mobil Uygulama</h3>
           <p>iOS ve Android platformlarında kullanıcı dostu, yüksek performanslı yerel ve hibrit uygulamalar.</p>
-          <div className="learn-more">İncele →</div>
+          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
         </div>
         <div className="service-card">
           <div className="service-icon">⚙️</div>
           <h3>Özel Yazılım</h3>
           <p>İş süreçlerinizi optimize eden, ihtiyaçlarınıza özel terzi usulü yazılım geliştirme hizmetleri.</p>
-          <div className="learn-more">İncele →</div>
+          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
         </div>
         <div className="service-card">
           <div className="service-icon">📊</div>
           <h3>Danışmanlık</h3>
           <p>Dijital dönüşüm stratejileri, teknoloji mimarisi ve büyüme odaklı teknoloji danışmanlığı.</p>
-          <div className="learn-more">İncele →</div>
+          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
         </div>
       </div>
     </div>
@@ -874,14 +971,14 @@ const AgencyServices = () => (
           animate={{ opacity: 1, y: 0 }}
           className="hero-content"
         >
-          <span className="badge">Geleçeği Birlikte İnşa Ediyoruz</span>
+          <span className="badge">Geleceği Birlikte İnşa Ediyoruz</span>
           <h1>Teknoloji ve Yazılım <br /> <span className="text-gradient">Çözüm Ortağınız</span></h1>
           <p className="hero-description">
             Kurumsal web çözümlerinden mobil uygulamalara, e-ticaret altyapısından 
             özel yazılım geliştirmeye kadar tüm dijital ihtiyaçlarınız tek bir adreste.
           </p>
           <div className="hero-btns">
-            <button className="btn-primary" onClick={() => setRegModalOpen(true)}>
+            <button className="btn-primary" onClick={() => setConsultModalOpen(true)}>
               Ücretsiz Danışmanlık Al <ArrowRight size={20} />
             </button>
             <a href="#services" className="btn-ghost">Hizmetlerimizi Keşfedin</a>
@@ -889,11 +986,13 @@ const AgencyServices = () => (
         </motion.div>
       </section>
 
-      <AgencyServices />
+      <AgencyServices onConsult={() => setConsultModalOpen(true)} />
 
       <section id="features" className="ecommerce-section">
         <PlatformFeatures onGoEcommerce={() => setCurrentPage('ecommerce')} />
       </section>
+
+      <ProcessSection />
 
       {/* Contact Section */}
       <section id="contact" className="section-padding bg-soft">
@@ -928,7 +1027,7 @@ const AgencyServices = () => (
 
   return (
     <div className={`app ${currentPage}-view`}>
-      <Navbar onPageChange={setCurrentPage} currentPage={currentPage} />
+      <Navbar onPageChange={setCurrentPage} currentPage={currentPage} onConsult={() => setConsultModalOpen(true)} onRegister={() => setRegModalOpen(true)} />
       
       {currentPage === 'home'
         ? <HomePage />
@@ -963,34 +1062,39 @@ const AgencyServices = () => (
             <div className="f-col">
               <h4>Kurumsal</h4>
               <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}>Anasayfa</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('pricing'); }}>Paketler</a>
-              <a href="#themes">Temalar</a>
-              <a href="#how-it-works">Nasıl Çalışır?</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('ecommerce'); setTimeout(() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Paketler</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('ecommerce'); setTimeout(() => document.getElementById('themes')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Temalar</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Nasıl Çalışır?</a>
             </div>
 
             <div className="f-col">
               <h4>Destek</h4>
-              <a href="#contact">İletişim</a>
-              <a href="#">Bize Yazın</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>İletişim</a>
+              <a href="mailto:bilgi@pekinteknoloji.com">Bize Yazın</a>
               <a href="#">KVKK</a>
               <a href="#">Kullanım Şartları</a>
             </div>
           </div>
           
           <div className="footer-bottom">
-            <p>© 2024 Pekin Teknoloji. Tüm Hakları Saklıdır.</p>
+            <p>© 2026 Pekin Teknoloji. Tüm Hakları Saklıdır.</p>
             <div className="social-links">
-              <span>Instagram</span>
-              <span>LinkedIn</span>
-              <span>Twitter (X)</span>
+              <a href="https://instagram.com/pekinteknoloji" target="_blank" rel="noreferrer">Instagram</a>
+              <a href="https://linkedin.com/company/pekinteknoloji" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href="https://twitter.com/pekinteknoloji" target="_blank" rel="noreferrer">Twitter (X)</a>
             </div>
           </div>
         </div>
       </footer>
 
-      <RegistrationModal 
-        isOpen={isRegModalOpen} 
-        onClose={() => setRegModalOpen(false)} 
+      <ConsultationModal
+        isOpen={isConsultModalOpen}
+        onClose={() => setConsultModalOpen(false)}
+      />
+
+      <RegistrationModal
+        isOpen={isRegModalOpen}
+        onClose={() => setRegModalOpen(false)}
       />
 
       <ThemeModal
