@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  nopcommerce_web:
+    build: .
+    container_name: nopcommerce
+    restart: always
+    ports:
+      - "8085:80"
+    depends_on:
+      - nopcommerce_db
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      # ÖNEMLİ: Eklentiler WEB servisi altında olmalı
+      - ./src/Presentation/Nop.Web/Plugins:/app/Plugins
+      - ./src/Presentation/Nop.Web/App_Data:/app/App_Data
+
+  nopcommerce_db:
+    image: postgres:15-alpine
+    container_name: nop_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: nopuser
+      POSTGRES_PASSWORD: YourStrongPassword123!
+      POSTGRES_DB: nopcommerce_db
+    volumes:
+      - nop_db_data:/var/lib/postgresql/data
+      # BURADAKİ PLUGINS VE APP_DATA SATIRLARINI SİLDİK
+
+volumes:
+  nop_db_data:
