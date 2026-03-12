@@ -578,49 +578,120 @@ const FAQSection = () => {
   );
 };
 
-const Navbar = ({ onPageChange, currentPage, onConsult, onRegister }) => {
+const NAV_DROPDOWN = {
+  cols: [
+    {
+      heading: 'Yazılım & Dijital',
+      items: [
+        { icon: '🌐', label: 'Kurumsal Web Sitesi', desc: 'Hızlı, SEO uyumlu kurumsal siteler' },
+        { icon: '📱', label: 'Mobil Uygulama', desc: 'iOS & Android yerli uygulamalar' },
+        { icon: '💻', label: 'Özel Yazılım', desc: 'ERP, CRM ve iş akışı çözümleri' },
+        { icon: '🎯', label: 'Teknoloji Danışmanlığı', desc: 'Dijital dönüşüm planlaması' },
+      ]
+    },
+    {
+      heading: 'E-Ticaret',
+      items: [
+        { icon: '🚀', label: 'Mağaza Kurulum', desc: 'Domain, SSL, ödeme ve kargo dahil' },
+        { icon: '🎨', label: 'Tema Özelleştirme', desc: '27 premium tema, markanıza göre' },
+        { icon: '🔗', label: 'Pazaryeri Entegrasyonu', desc: 'Trendyol, Hepsiburada, n11, Amazon' },
+        { icon: '🛠️', label: 'Teknik Destek & Bakım', desc: '7/24 Türkçe destek ekibi' },
+      ]
+    }
+  ]
+};
+
+const Navbar = ({ onPageChange, currentPage, onConsult }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = React.useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    document.addEventListener('mousedown', handleClick);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousedown', handleClick);
+    };
   }, []);
 
+  const goHome = (id) => {
+    setDropdownOpen(false);
+    if (currentPage !== 'home') {
+      onPageChange('home');
+      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 150);
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="nav-container">
-        <div className="logo" onClick={() => onPageChange('home')}>
-          <span className="text-gradient">Pekin</span>Teknoloji
-        </div>
-        <div className="nav-links">
-          <a href="#" onClick={(e) => {
-            e.preventDefault();
-            if (currentPage !== 'home') {
-              onPageChange('home');
-              setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150);
-            } else {
-              document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}>Hizmetler</a>
-          <a href="#" onClick={(e) => {
-            e.preventDefault();
-            if (currentPage !== 'home') {
-              onPageChange('home');
-              setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 150);
-            } else {
-              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}>İletişim</a>
-          <div className="nav-cta-group">
-            <button className="btn-nav-secondary" onClick={() => onPageChange('pricing')}>Fiyatlar</button>
-            <button className="btn-nav" onClick={onConsult}>Danışmanlık Al</button>
+    <>
+      {dropdownOpen && <div className="nav-backdrop" onClick={() => setDropdownOpen(false)} />}
+      <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+        <div className="nav-container">
+          <div className="logo" onClick={() => { setDropdownOpen(false); onPageChange('home'); }}>
+            <span className="text-gradient">Pekin</span>Teknoloji
+          </div>
+
+          <div className="nav-links">
+            {/* Hizmetler with dropdown */}
+            <div className="nav-dropdown-wrap" ref={dropdownRef}>
+              <button
+                className={`nav-dropdown-trigger ${dropdownOpen ? 'active' : ''}`}
+                onClick={() => setDropdownOpen(v => !v)}
+              >
+                Hizmetler <ChevronDown size={15} className={`nav-trigger-chevron ${dropdownOpen ? 'open' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    className="nav-dropdown"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.18 }}
+                  >
+                    {NAV_DROPDOWN.cols.map(col => (
+                      <div key={col.heading} className="nav-dropdown-col">
+                        <span className="nav-dropdown-heading">{col.heading}</span>
+                        {col.items.map(item => (
+                          <button
+                            key={item.label}
+                            className="nav-dropdown-item"
+                            onClick={() => goHome('services')}
+                          >
+                            <span className="nav-item-icon">{item.icon}</span>
+                            <div>
+                              <div className="nav-item-label">{item.label}</div>
+                              <div className="nav-item-desc">{item.desc}</div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <a href="#" onClick={(e) => { e.preventDefault(); goHome('contact'); }}>İletişim</a>
+
+            <div className="nav-cta-group">
+              <button className="btn-nav-secondary" onClick={() => { setDropdownOpen(false); onPageChange('pricing'); }}>Fiyatlar</button>
+              <button className="btn-nav" onClick={() => { setDropdownOpen(false); onConsult(); }}>Danışmanlık Al</button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };
 
