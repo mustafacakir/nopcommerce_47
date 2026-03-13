@@ -6,12 +6,37 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://pekinteknoloji.com/#services</loc>
+    <loc>https://pekinteknoloji.com/eticaret</loc>
     <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://pekinteknoloji.com/fiyatlar</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://pekinteknoloji.com/blog</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pekinteknoloji.com/#contact</loc>
+    <loc>https://pekinteknoloji.com/blog/eticarette-seo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pekinteknoloji.com/blog/trendyol-entegrasyonu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pekinteknoloji.com/blog/dogru-tema-secimi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pekinteknoloji.com/sss</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

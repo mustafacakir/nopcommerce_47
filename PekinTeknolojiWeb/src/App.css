@@ -1642,12 +1642,16 @@ a.contact-info-card:hover {
 .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .blog-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #E2E8F0; transition: transform 0.2s, box-shadow 0.2s; }
 .blog-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.09); }
-.blog-card-top { height: 110px; padding: 1.5rem; display: flex; align-items: flex-start; }
-.blog-tag { color: white; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.05em; }
-.blog-card-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
-.blog-card-body h3 { font-size: 0.92rem; font-weight: 700; color: #0F172A; line-height: 1.45; margin: 0; }
+.blog-card-img { position: relative; height: 180px; overflow: hidden; }
+.blog-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+.blog-card:hover .blog-card-img img { transform: scale(1.04); }
+.blog-tag { position: absolute; top: 1rem; left: 1rem; color: white; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.05em; }
+.blog-card-body { padding: 1.25rem 1.5rem 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.blog-card-body h3 { font-size: 0.95rem; font-weight: 700; color: #0F172A; line-height: 1.45; margin: 0; }
 .blog-card-body p { font-size: 0.82rem; color: #64748B; line-height: 1.6; margin: 0; }
+.blog-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem; }
 .blog-read-time { font-size: 0.73rem; color: #94A3B8; font-weight: 500; }
+.blog-read-more { font-size: 0.78rem; font-weight: 600; }
 @media (max-width: 768px) { .blog-grid { grid-template-columns: 1fr; } }
 
 /* ── FAQ ── */

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import { 
   ShoppingBag,
   Globe,
@@ -511,12 +512,33 @@ const EcommerceTeaser = ({ onGoEcommerce }) => (
 );
 
 const BLOG_POSTS = [
-  { tag: 'SEO', title: 'E-Ticarette SEO: Mağazanızı Google\'da Öne Çıkarın', desc: 'Doğru URL yapısı, meta etiketler ve içerik stratejisiyle organik trafiğinizi katlayın.', readTime: '5 dk', color: '#2563EB' },
-  { tag: 'Pazaryeri', title: 'Trendyol Entegrasyonu ile Satışlarınızı Artırın', desc: 'Ürünlerinizi Trendyol ile senkronize edin, stok ve siparişleri tek panelden yönetin.', readTime: '4 dk', color: '#F97316' },
-  { tag: 'Tasarım', title: 'E-Ticaret Teması Seçerken Dikkat Edilmesi Gerekenler', desc: 'Dönüşüm oranını etkileyen tasarım kararları ve doğru tema seçim kriterleri.', readTime: '6 dk', color: '#8B5CF6' },
+  {
+    slug: 'eticarette-seo',
+    tag: 'SEO', color: '#2563EB',
+    title: 'E-Ticarette SEO: Mağazanızı Google\'da Öne Çıkarın',
+    desc: 'Doğru URL yapısı, meta etiketler ve içerik stratejisiyle organik trafiğinizi katlayın.',
+    readTime: '5 dk',
+    img: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=600&q=80',
+  },
+  {
+    slug: 'trendyol-entegrasyonu',
+    tag: 'Pazaryeri', color: '#F97316',
+    title: 'Trendyol Entegrasyonu ile Satışlarınızı Artırın',
+    desc: 'Ürünlerinizi Trendyol ile senkronize edin, stok ve siparişleri tek panelden yönetin.',
+    readTime: '4 dk',
+    img: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80',
+  },
+  {
+    slug: 'dogru-tema-secimi',
+    tag: 'Tasarım', color: '#8B5CF6',
+    title: 'E-Ticaret Teması Seçerken Dikkat Edilmesi Gerekenler',
+    desc: 'Dönüşüm oranını etkileyen tasarım kararları ve doğru tema seçim kriterleri.',
+    readTime: '6 dk',
+    img: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80',
+  },
 ];
 
-const BlogSection = () => (
+const BlogSection = ({ onNavigate }) => (
   <section className="blog-section section-padding">
     <div className="container">
       <div className="section-header">
@@ -526,14 +548,18 @@ const BlogSection = () => (
       </div>
       <div className="blog-grid">
         {BLOG_POSTS.map((post, i) => (
-          <div key={i} className="blog-card">
-            <div className="blog-card-top" style={{ background: `linear-gradient(135deg, ${post.color}22, ${post.color}08)` }}>
+          <div key={i} className="blog-card" onClick={() => onNavigate && onNavigate('blog', post.slug)} style={{ cursor: 'pointer' }}>
+            <div className="blog-card-img">
+              <img src={post.img} alt={post.title} />
               <span className="blog-tag" style={{ background: post.color }}>{post.tag}</span>
             </div>
             <div className="blog-card-body">
               <h3>{post.title}</h3>
               <p>{post.desc}</p>
-              <span className="blog-read-time">{post.readTime} okuma</span>
+              <div className="blog-card-footer">
+                <span className="blog-read-time">{post.readTime} okuma</span>
+                <span className="blog-read-more" style={{ color: post.color }}>Devamını Oku →</span>
+              </div>
             </div>
           </div>
         ))}
@@ -601,7 +627,9 @@ const NAV_DROPDOWN = {
   ]
 };
 
-const Navbar = ({ onPageChange, currentPage, onConsult }) => {
+const Navbar = ({ onConsult }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = React.useRef(null);
@@ -609,9 +637,7 @@ const Navbar = ({ onPageChange, currentPage, onConsult }) => {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     const handleClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setDropdownOpen(false);
     };
     window.addEventListener('scroll', handleScroll);
     document.addEventListener('mousedown', handleClick);
@@ -621,11 +647,11 @@ const Navbar = ({ onPageChange, currentPage, onConsult }) => {
     };
   }, []);
 
-  const goHome = (id) => {
+  const goSection = (id) => {
     setDropdownOpen(false);
-    if (currentPage !== 'home') {
-      onPageChange('home');
-      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 150);
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 200);
     } else {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     }
@@ -636,12 +662,11 @@ const Navbar = ({ onPageChange, currentPage, onConsult }) => {
       {dropdownOpen && <div className="nav-backdrop" onClick={() => setDropdownOpen(false)} />}
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
-          <div className="logo" onClick={() => { setDropdownOpen(false); onPageChange('home'); }}>
+          <div className="logo" onClick={() => { setDropdownOpen(false); navigate('/'); }}>
             <span className="text-gradient">Pekin</span>Teknoloji
           </div>
 
           <div className="nav-links">
-            {/* Hizmetler with dropdown */}
             <div className="nav-dropdown-wrap" ref={dropdownRef}>
               <button
                 className={`nav-dropdown-trigger ${dropdownOpen ? 'active' : ''}`}
@@ -649,7 +674,6 @@ const Navbar = ({ onPageChange, currentPage, onConsult }) => {
               >
                 Hizmetler <ChevronDown size={15} className={`nav-trigger-chevron ${dropdownOpen ? 'open' : ''}`} />
               </button>
-
               <AnimatePresence>
                 {dropdownOpen && (
                   <motion.div
@@ -663,11 +687,7 @@ const Navbar = ({ onPageChange, currentPage, onConsult }) => {
                       <div key={col.heading} className="nav-dropdown-col">
                         <span className="nav-dropdown-heading">{col.heading}</span>
                         {col.items.map(item => (
-                          <button
-                            key={item.label}
-                            className="nav-dropdown-item"
-                            onClick={() => goHome('services')}
-                          >
+                          <button key={item.label} className="nav-dropdown-item" onClick={() => goSection('services')}>
                             <span className="nav-item-icon">{item.icon}</span>
                             <div>
                               <div className="nav-item-label">{item.label}</div>
@@ -682,10 +702,11 @@ const Navbar = ({ onPageChange, currentPage, onConsult }) => {
               </AnimatePresence>
             </div>
 
-            <a href="#" onClick={(e) => { e.preventDefault(); goHome('contact'); }}>İletişim</a>
+            <Link to="/eticaret" onClick={() => setDropdownOpen(false)}>E-Ticaret</Link>
+            <a href="#" onClick={(e) => { e.preventDefault(); goSection('contact'); }}>İletişim</a>
 
             <div className="nav-cta-group">
-              <button className="btn-nav-secondary" onClick={() => { setDropdownOpen(false); onPageChange('pricing'); }}>Fiyatlar</button>
+              <Link to="/fiyatlar" className="btn-nav-secondary" onClick={() => setDropdownOpen(false)}>Fiyatlar</Link>
               <button className="btn-nav" onClick={() => { setDropdownOpen(false); onConsult(); }}>Danışmanlık Al</button>
             </div>
           </div>
@@ -1476,23 +1497,87 @@ const MapSection = () => (
   </div>
 );
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [pathname]);
+  return null;
+};
+
+const BlogDetailPage = () => {
+  const { slug } = useParams ? useParams() : {};
+  const navigate = useNavigate();
+  const post = BLOG_POSTS.find(p => p.slug === slug);
+  if (!post) { navigate('/blog'); return null; }
+  return (
+    <div className="blog-detail-page pt-32 pb-20">
+      <div className="container" style={{ maxWidth: 780 }}>
+        <button className="btn-ghost mb-8" onClick={() => navigate('/blog')} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: '2rem' }}>
+          ← Blog'a Dön
+        </button>
+        <span className="blog-tag" style={{ background: post.color, position: 'static', marginBottom: '1rem', display: 'inline-block' }}>{post.tag}</span>
+        <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.3 }}>{post.title}</h1>
+        <p style={{ color: '#64748B', marginBottom: '2rem' }}>{post.readTime} okuma</p>
+        <img src={post.img} alt={post.title} style={{ width: '100%', borderRadius: 16, marginBottom: '2rem', maxHeight: 360, objectFit: 'cover' }} />
+        <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: '#334155' }}>{post.desc} Bu konuda daha fazla bilgi almak için bizimle iletişime geçebilirsiniz.</p>
+      </div>
+    </div>
+  );
+};
+
+const BlogListPage = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="pt-32 pb-20">
+      <div className="container">
+        <div className="section-header">
+          <span className="text-gradient">Blog</span>
+          <h2>E-Ticaret Rehberi</h2>
+          <p className="section-desc">Mağazanızı büyütmek için ipuçları ve stratejiler.</p>
+        </div>
+        <div className="blog-grid">
+          {BLOG_POSTS.map((post, i) => (
+            <div key={i} className="blog-card" onClick={() => navigate(`/blog/${post.slug}`)} style={{ cursor: 'pointer' }}>
+              <div className="blog-card-img">
+                <img src={post.img} alt={post.title} />
+                <span className="blog-tag" style={{ background: post.color }}>{post.tag}</span>
+              </div>
+              <div className="blog-card-body">
+                <h3>{post.title}</h3>
+                <p>{post.desc}</p>
+                <div className="blog-card-footer">
+                  <span className="blog-read-time">{post.readTime} okuma</span>
+                  <span className="blog-read-more" style={{ color: post.color }}>Devamını Oku →</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FAQPage = () => (
+  <div className="pt-32 pb-20">
+    <FAQSection />
+  </div>
+);
+
 function App() {
   const [isRegModalOpen, setRegModalOpen] = useState(false);
   const [isConsultModalOpen, setConsultModalOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState(null);
-  const [currentPage, setCurrentPage] = useState('home');
 
   useEffect(() => {
     const handleOpen = () => setRegModalOpen(true);
     const handleConsult = () => setConsultModalOpen(true);
     window.addEventListener('open-registration', handleOpen);
     window.addEventListener('open-consult', handleConsult);
-    window.scrollTo({ top: 0, behavior: 'instant' });
     return () => {
       window.removeEventListener('open-registration', handleOpen);
       window.removeEventListener('open-consult', handleConsult);
     };
-  }, [currentPage]);
+  }, []);
 
 const AgencyServices = ({ onConsult }) => (
   <>
@@ -1568,6 +1653,8 @@ const AgencyServices = ({ onConsult }) => (
   </>
 );
 
+  const navigate = useNavigate();
+
   const HomePage = () => (
     <>
       {/* Hero Section - Split */}
@@ -1616,9 +1703,9 @@ const AgencyServices = ({ onConsult }) => (
 
       <AnimatedFeaturesSection />
 
-      <EcommerceTeaser onGoEcommerce={() => setCurrentPage('ecommerce')} />
+      <EcommerceTeaser onGoEcommerce={() => navigate('/eticaret')} />
 
-      <BlogSection />
+      <BlogSection onNavigate={(type, slug) => navigate(type === 'blog' ? `/blog/${slug}` : `/${type}`)} />
 
       <FAQSection />
 
@@ -1664,18 +1751,19 @@ const AgencyServices = ({ onConsult }) => (
   );
 
   return (
-    <div className={`app ${currentPage}-view`}>
-      <Navbar onPageChange={setCurrentPage} currentPage={currentPage} onConsult={() => setConsultModalOpen(true)} onRegister={() => setRegModalOpen(true)} />
-      
-      {currentPage === 'home'
-        ? <HomePage />
-        : currentPage === 'pricing'
-          ? <PricingPage />
-          : <EcommercePage
-            onRegister={() => setRegModalOpen(true)}
-            onThemeSelect={setSelectedTheme}
-            themesData={THEMES_DATA} 
-          />}
+    <div className="app">
+      <ScrollToTop />
+      <Navbar onConsult={() => setConsultModalOpen(true)} />
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/eticaret" element={<EcommercePage onRegister={() => setRegModalOpen(true)} onThemeSelect={setSelectedTheme} themesData={THEMES_DATA} />} />
+        <Route path="/fiyatlar" element={<PricingPage />} />
+        <Route path="/blog" element={<BlogListPage />} />
+        <Route path="/blog/:slug" element={<BlogDetailPage />} />
+        <Route path="/sss" element={<FAQPage />} />
+        <Route path="*" element={<HomePage />} />
+      </Routes>
 
       {/* Footer */}
       <footer className="footer">
@@ -1690,23 +1778,24 @@ const AgencyServices = ({ onConsult }) => (
             
             <div className="f-col">
               <h4>Hizmetlerimiz</h4>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Mağaza Kurulum</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Tema Özelleştirme</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Pazaryeri Entegrasyonu</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Teknik Destek</a>
+              <Link to="/" onClick={() => setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100)}>Mağaza Kurulum</Link>
+              <Link to="/" onClick={() => setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100)}>Tema Özelleştirme</Link>
+              <Link to="/" onClick={() => setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100)}>Pazaryeri Entegrasyonu</Link>
+              <Link to="/" onClick={() => setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100)}>Teknik Destek</Link>
             </div>
-            
+
             <div className="f-col">
               <h4>Kurumsal</h4>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}>Anasayfa</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('ecommerce'); setTimeout(() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Paketler</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('ecommerce'); setTimeout(() => document.getElementById('themes')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Temalar</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Nasıl Çalışır?</a>
+              <Link to="/">Anasayfa</Link>
+              <Link to="/eticaret">E-Ticaret Platform</Link>
+              <Link to="/fiyatlar">Fiyatlar</Link>
+              <Link to="/blog">Blog</Link>
+              <Link to="/sss">SSS</Link>
             </div>
 
             <div className="f-col">
               <h4>Destek</h4>
-              <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>İletişim</a>
+              <Link to="/" onClick={() => setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 100)}>İletişim</Link>
               <a href="mailto:bilgi@pekinteknoloji.com">Bize Yazın</a>
               <a href="mailto:bilgi@pekinteknoloji.com?subject=KVKK%20Bilgi%20Talebi">KVKK</a>
             </div>
