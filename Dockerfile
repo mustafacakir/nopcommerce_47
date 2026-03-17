@@ -31,7 +31,10 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-RUN mkdir -p logs bin && \
+RUN mkdir -p logs bin App_Data App_Data/DataProtectionKeys Plugins \
+              wwwroot/bundles wwwroot/db_backups wwwroot/files/exportimport \
+              wwwroot/icons wwwroot/images wwwroot/images/thumbs \
+              wwwroot/images/uploaded wwwroot/sitemaps && \
     chmod 775 App_Data \
               App_Data/DataProtectionKeys \
               bin \
