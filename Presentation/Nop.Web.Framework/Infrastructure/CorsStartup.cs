@@ -21,7 +21,7 @@ namespace Nop.Web.Framework.Infrastructure
             {
                 options.AddPolicy("AllowMarketingSite",
                     builder => builder
-                        .WithOrigins("http://localhost:5173")
+                        .WithOrigins("http://localhost:5173", "https://pekinteknoloji.com", "https://www.pekinteknoloji.com")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials());

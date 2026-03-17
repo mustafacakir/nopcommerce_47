@@ -815,7 +815,7 @@ const ContactInlineForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await fetch('http://localhost:8085/api/fastregister/consultation', {
+      await fetch('https://test.pekinteknoloji.com/api/fastregister/consultation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, subject: 'İletişim Formu' }),
@@ -879,7 +879,7 @@ const ConsultationModal = ({ isOpen, onClose }) => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:8085/api/fastregister/consultation', {
+      const res = await fetch('https://test.pekinteknoloji.com/api/fastregister/consultation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -980,7 +980,7 @@ const useSlugCheck = () => {
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(async () => {
       try {
-        const res = await fetch(`http://localhost:8085/api/fastregister/check-slug?slug=${encodeURIComponent(slug)}`);
+        const res = await fetch(`https://test.pekinteknoloji.com/api/fastregister/check-slug?slug=${encodeURIComponent(slug)}`);
         const data = await res.json();
         setSlugStatus(data.available ? 'available' : 'taken');
       } catch {
@@ -1017,7 +1017,7 @@ const RegistrationModal = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8085/api/fastregister/register", {
+      const response = await fetch("https://test.pekinteknoloji.com/api/fastregister/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -1583,7 +1583,7 @@ const HesabimPage = () => {
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
-    fetch('http://localhost:8085/api/fastregister/my-store', { credentials: 'include' })
+    fetch('https://test.pekinteknoloji.com/api/fastregister/my-store', { credentials: 'include' })
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false); })
       .catch(() => { setError('Sunucuya bağlanılamadı.'); setLoading(false); });
@@ -1604,7 +1604,7 @@ const HesabimPage = () => {
   if (error || !data?.success) return (
     <div style={{ padding: 60, textAlign: 'center' }}>
       <p>{error || 'Giriş yapmanız gerekiyor.'}</p>
-      <a href="http://localhost:8085/login" style={{ color: '#6366f1' }}>Giriş Yap</a>
+      <a href="https://test.pekinteknoloji.com/login" style={{ color: '#6366f1' }}>Giriş Yap</a>
     </div>
   );
 
@@ -1690,7 +1690,7 @@ const MagazaAcPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8085/api/fastregister/register", {
+      const response = await fetch("https://test.pekinteknoloji.com/api/fastregister/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
