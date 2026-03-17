@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nop.Core.Configuration;
 using Nop.Core.Domain.ScheduleTasks;
 using Nop.Core.Infrastructure;
 using Nop.Services.ScheduleTasks;
@@ -16,6 +17,9 @@ namespace Nop.Web.Infrastructure
 
         public void Configure(IApplicationBuilder application)
         {
+            if (!DataSettingsManager.IsDatabaseInstalled())
+                return;
+
             var serviceProvider = application.ApplicationServices;
             using var scope = serviceProvider.CreateScope();
             var scheduleTaskService = scope.ServiceProvider.GetService<IScheduleTaskService>();
