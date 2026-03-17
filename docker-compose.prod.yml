@@ -14,8 +14,6 @@ services:
       - 8.8.4.4
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__ConnectionString=Host=pekin_db;Database=nopcommerce_db;Username=nopuser;Password=NopPass2024
-      - ConnectionStrings__DataProvider=postgresql
     volumes:
       - ./Presentation/Nop.Web/Plugins:/app/Plugins
       - ./Presentation/Nop.Web/App_Data:/app/App_Data
