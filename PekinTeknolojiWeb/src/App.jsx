@@ -30,6 +30,18 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 
+const Logo = ({ size = 'md', light = false }) => (
+  <div className={`brand-logo brand-logo--${size}`}>
+    <div className="brand-logo-icon">
+      <span>P</span>
+    </div>
+    <div className="brand-logo-text">
+      <span className={`brand-logo-name ${light ? 'brand-logo-name--light' : ''}`}>Pekin</span>
+      <span className={`brand-logo-suffix ${light ? 'brand-logo-suffix--light' : ''}`}>Teknoloji</span>
+    </div>
+  </div>
+);
+
 const THEMES_DATA = [
   {
     id: 'pioneer',
@@ -331,7 +343,8 @@ const THEMES_DATA = [
 ];
 
 const IntegrationsStrip = () => {
-  const items = ['Trendyol', 'Hepsiburada', 'n11', 'Amazon', 'Çiçeksepeti', 'iyzico', 'PayTR', 'Garanti BBVA', 'MNG Kargo', 'Yurtiçi Kargo', 'Aras Kargo', 'Sürat Kargo'];
+  const items = ['Trendyol', 'Hepsiburada', 'n11', 'Amazon', 'Çiçeksepeti', 'iyzico', 'PayTR',
+      'MNG Kargo', 'Yurtiçi Kargo', 'Aras Kargo', 'Sürat Kargo'];
   return (
     <div className="integrations-strip">
       <div className="container">
@@ -384,13 +397,18 @@ const FEATURE_TABS = [
     color: '#8B5CF6',
     visual: (
       <div className="feature-visual-mobile">
-        <div className="fv-phone">
-          <div className="fv-phone-bar" />
-          <div className="fv-phone-content">
-            <div className="fv-product-img" />
-            <div className="fv-product-name" />
-            <div className="fv-product-price" />
-            <div className="fv-add-cart">Sepete Ekle</div>
+        <div className="fv-mobile-screen-wrap">
+          <div className="fv-mobile-screen">
+            <img
+              src="https://www.nop-templates.com/content/images/thumbs/0002930_nop-pioneer-responsive-theme.jpeg"
+              alt="Mağaza önizleme"
+            />
+          </div>
+          <div className="fv-mobile-chip fv-chip-top">
+            <Smartphone size={13} /> Mobil
+          </div>
+          <div className="fv-mobile-chip fv-chip-bottom">
+            <Check size={13} /> %100 Uyumlu
           </div>
         </div>
       </div>
@@ -403,11 +421,26 @@ const FEATURE_TABS = [
     color: '#F97316',
     visual: (
       <div className="feature-visual-marketplace">
-        <div className="fv-mp-wrap">
-          <div className="fv-mp-hub">Mağaza</div>
-          {['Trendyol', 'Hepsiburada', 'n11', 'Amazon'].map((name, i) => (
-            <div key={name} className={`fv-mp-node fv-node-${i}`}>{name}</div>
+        <div className="fv-mp-grid">
+          {[
+            { name: 'Trendyol', color: '#FF6000', emoji: '🛍️', orders: '142 sipariş' },
+            { name: 'Hepsiburada', color: '#FF6D00', emoji: '🛒', orders: '89 sipariş' },
+            { name: 'n11', color: '#7B2FF7', emoji: '🏪', orders: '56 sipariş' },
+            { name: 'Amazon TR', color: '#FF9900', emoji: '📦', orders: '34 sipariş' },
+          ].map(p => (
+            <div key={p.name} className="fv-mp-card">
+              <div className="fv-mp-card-top">
+                <span className="fv-mp-emoji">{p.emoji}</span>
+                <span className="fv-mp-name" style={{ color: p.color }}>{p.name}</span>
+              </div>
+              <div className="fv-mp-orders">{p.orders}</div>
+              <div className="fv-mp-bar"><div className="fv-mp-bar-fill" style={{ background: p.color }} /></div>
+            </div>
           ))}
+        </div>
+        <div className="fv-mp-total">
+          <span>Toplam</span>
+          <strong>321 aktif sipariş</strong>
         </div>
       </div>
     )
@@ -663,7 +696,7 @@ const Navbar = ({ onConsult }) => {
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
           <div className="logo" onClick={() => { setDropdownOpen(false); navigate('/'); }}>
-            <span className="text-gradient">Pekin</span>Teknoloji
+            <Logo size="md" />
           </div>
 
           <div className="nav-links">
@@ -706,8 +739,7 @@ const Navbar = ({ onConsult }) => {
             <a href="#" onClick={(e) => { e.preventDefault(); goSection('contact'); }}>İletişim</a>
 
             <div className="nav-cta-group">
-              <Link to="/fiyatlar" className="btn-nav-secondary" onClick={() => setDropdownOpen(false)}>Fiyatlar</Link>
-              <button className="btn-nav" onClick={() => { setDropdownOpen(false); onConsult(); }}>Danışmanlık Al</button>
+              <button className="btn-nav" onClick={() => { setDropdownOpen(false); onConsult(); }}>Ücretsiz Danışmanlık Al</button>
             </div>
           </div>
         </div>
@@ -799,32 +831,36 @@ const ContactInlineForm = () => {
   const set = (field) => (e) => setFormData({ ...formData, [field]: e.target.value });
 
   return (
-    <div className="contact-form-col">
+    <div className="contact-form-center">
       {sent ? (
         <div className="contact-form-success">
-          <CheckCircle2 size={40} className="success-icon" />
-          <h3>Mesajınız Alındı</h3>
+          <CheckCircle2 size={44} className="success-icon" />
+          <h3>Mesajınız Alındı!</h3>
           <p>En geç 1 iş günü içinde size dönüş yapıyoruz.</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="contact-inline-form">
-          <h3 className="contact-form-title">Mesaj Gönderin</h3>
-          <div className="form-group">
-            <input type="text" required placeholder="Adınız Soyadınız" value={formData.name} onChange={set('name')} />
+          <div className="cf-row">
+            <div className="cf-group">
+              <label>Ad Soyad</label>
+              <input type="text" required placeholder="Adınız Soyadınız" value={formData.name} onChange={set('name')} />
+            </div>
+            <div className="cf-group">
+              <label>Telefon</label>
+              <input type="tel" placeholder="05XX XXX XX XX" value={formData.phone} onChange={set('phone')} />
+            </div>
+            <div className="cf-group">
+              <label>E-posta</label>
+              <input type="email" required placeholder="ornek@mail.com" value={formData.email} onChange={set('email')} />
+            </div>
+            <div className="cf-group">
+              <label>Mesaj</label>
+              <textarea required rows={3} placeholder="Projeniz hakkında bilgi verin..." value={formData.message} onChange={set('message')} />
+            </div>
           </div>
-          <div className="form-group">
-            <input type="email" required placeholder="E-posta adresiniz" value={formData.email} onChange={set('email')} />
-          </div>
-          <div className="form-group">
-            <input type="tel" placeholder="Telefon (opsiyonel)" value={formData.phone} onChange={set('phone')} />
-          </div>
-          <div className="form-group">
-            <textarea required rows={4} placeholder="Mesajınız..." value={formData.message} onChange={set('message')} />
-          </div>
-          <button type="submit" className="btn-primary btn-full" disabled={loading}>
-            {loading ? 'Gönderiliyor...' : 'Gönder'} {!loading && <ArrowRight size={16} />}
+          <button type="submit" className="cf-submit" disabled={loading}>
+            {loading ? 'Gönderiliyor...' : 'Mesaj Gönder'} {!loading && <ArrowRight size={16} />}
           </button>
-          <p className="contact-form-note">En geç 1 iş günü içinde dönüş yapıyoruz.</p>
         </form>
       )}
     </div>
@@ -927,34 +963,70 @@ const ConsultationModal = ({ isOpen, onClose }) => {
   );
 };
 
+const toSlug = (text) =>
+  text.toLocaleLowerCase('tr-TR')
+    .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's')
+    .replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim().replace(/\s+/g, '-');
+
+const useSlugCheck = () => {
+  const [slugStatus, setSlugStatus] = useState(null); // null | 'checking' | 'available' | 'taken'
+  const timerRef = React.useRef(null);
+
+  const checkSlug = (slug) => {
+    if (!slug) { setSlugStatus(null); return; }
+    setSlugStatus('checking');
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`http://localhost:8085/api/fastregister/check-slug?slug=${encodeURIComponent(slug)}`);
+        const data = await res.json();
+        setSlugStatus(data.available ? 'available' : 'taken');
+      } catch {
+        setSlugStatus(null);
+      }
+    }, 500);
+  };
+
+  return { slugStatus, checkSlug };
+};
+
 const RegistrationModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     storeName: '',
+    storeSlug: '',
     email: '',
     phone: '',
     password: ''
   });
   const [loading, setLoading] = useState(false);
+  const { slugStatus, checkSlug } = useSlugCheck();
+
+  const handleStoreNameChange = (e) => {
+    const name = e.target.value;
+    const slug = toSlug(name);
+    setFormData({ ...formData, storeName: name, storeSlug: slug });
+    checkSlug(slug);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       const response = await fetch("http://localhost:8085/api/fastregister/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        window.location.href = "http://localhost:8085/admin/";
+        window.location.href = data.autoLoginUrl;
       } else {
         alert("Hata: " + (data.errors ? data.errors.join(", ") : data.message));
         setLoading(false);
@@ -993,7 +1065,15 @@ const RegistrationModal = ({ isOpen, onClose }) => {
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Mağaza Adı</label>
-              <input type="text" required placeholder="Mağazanızın adı" value={formData.storeName} onChange={e => setFormData({...formData, storeName: e.target.value})} />
+              <input type="text" required placeholder="Mağazanızın adı" value={formData.storeName} onChange={handleStoreNameChange} />
+              {formData.storeSlug && (
+                <small style={{ display: 'block', marginTop: 4, color: slugStatus === 'available' ? '#16a34a' : slugStatus === 'taken' ? '#dc2626' : '#6b7280' }}>
+                  {slugStatus === 'checking' && `🔍 ${formData.storeSlug}.lvh.me kontrol ediliyor...`}
+                  {slugStatus === 'available' && `✅ ${formData.storeSlug}.lvh.me müsait`}
+                  {slugStatus === 'taken' && `❌ ${formData.storeSlug}.lvh.me kullanılıyor`}
+                  {slugStatus === null && `🌐 ${formData.storeSlug}.lvh.me`}
+                </small>
+              )}
             </div>
             <div className="form-row">
               <div className="form-group">
@@ -1497,6 +1577,249 @@ const MapSection = () => (
   </div>
 );
 
+const HesabimPage = () => {
+  const [data, setData] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch('http://localhost:8085/api/fastregister/my-store', { credentials: 'include' })
+      .then(r => r.json())
+      .then(d => { setData(d); setLoading(false); })
+      .catch(() => { setError('Sunucuya bağlanılamadı.'); setLoading(false); });
+  }, []);
+
+  const statusLabel = {
+    trial: 'Deneme Süresi',
+    active: 'Aktif',
+    suspended: 'Askıya Alındı'
+  };
+  const statusColor = {
+    trial: '#f59e0b',
+    active: '#16a34a',
+    suspended: '#dc2626'
+  };
+
+  if (loading) return <div style={{ padding: 60, textAlign: 'center' }}>Yükleniyor...</div>;
+  if (error || !data?.success) return (
+    <div style={{ padding: 60, textAlign: 'center' }}>
+      <p>{error || 'Giriş yapmanız gerekiyor.'}</p>
+      <a href="http://localhost:8085/login" style={{ color: '#6366f1' }}>Giriş Yap</a>
+    </div>
+  );
+
+  const { store, subscription } = data;
+  const status = subscription.status;
+
+  return (
+    <div style={{ maxWidth: 720, margin: '60px auto', padding: '0 24px', fontFamily: 'sans-serif' }}>
+      <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 32 }}>Hesabım</h1>
+
+      {/* Mağaza Kartı */}
+      <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 28, marginBottom: 24, boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <h2 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 4px' }}>{store.name}</h2>
+            <a href={store.url} target="_blank" rel="noreferrer" style={{ color: '#6366f1', fontSize: 14 }}>{store.url}</a>
+          </div>
+          <span style={{ background: statusColor[status] + '20', color: statusColor[status], padding: '4px 12px', borderRadius: 20, fontSize: 13, fontWeight: 600 }}>
+            {statusLabel[status] || status}
+          </span>
+        </div>
+
+        <div style={{ marginTop: 20, display: 'flex', gap: 12 }}>
+          <a href={store.adminUrl} target="_blank" rel="noreferrer"
+            style={{ background: '#6366f1', color: '#fff', padding: '8px 20px', borderRadius: 8, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>
+            Yönetim Paneli
+          </a>
+          <a href={store.url} target="_blank" rel="noreferrer"
+            style={{ background: '#f3f4f6', color: '#374151', padding: '8px 20px', borderRadius: 8, textDecoration: 'none', fontSize: 14, fontWeight: 500 }}>
+            Mağazayı Gör
+          </a>
+        </div>
+      </div>
+
+      {/* Abonelik Kartı */}
+      <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 28, marginBottom: 24, boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+        <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 16px' }}>Abonelik</h3>
+        {status === 'trial' && (
+          <div>
+            <p style={{ margin: '0 0 8px', color: '#374151' }}>
+              Deneme süreniz <b>{subscription.trialEndDate}</b> tarihinde sona eriyor.
+            </p>
+            <p style={{ margin: '0 0 20px', fontSize: 28, fontWeight: 700, color: subscription.daysRemaining > 3 ? '#16a34a' : '#dc2626' }}>
+              {subscription.daysRemaining} gün kaldı
+            </p>
+            <button style={{ background: '#6366f1', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: 8, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}
+              onClick={() => alert('Ödeme sistemi yakında aktif olacak.')}>
+              Ücretli Plana Geç
+            </button>
+          </div>
+        )}
+        {status === 'active' && (
+          <p style={{ color: '#16a34a', fontWeight: 600 }}>✅ Aktif aboneliğiniz bulunuyor.</p>
+        )}
+        {status === 'suspended' && (
+          <div>
+            <p style={{ color: '#dc2626', marginBottom: 16 }}>❌ Deneme süreniz doldu. Mağazanıza erişmek için ücretli plana geçin.</p>
+            <button style={{ background: '#dc2626', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: 8, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}
+              onClick={() => alert('Ödeme sistemi yakında aktif olacak.')}>
+              Mağazamı Aktifleştir
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Fatura Geçmişi */}
+      <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 28, boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+        <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 16px' }}>Fatura Geçmişi</h3>
+        <p style={{ color: '#9ca3af', fontSize: 14 }}>Henüz fatura bulunmuyor.</p>
+      </div>
+    </div>
+  );
+};
+
+const MagazaAcPage = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', storeName: '', storeSlug: '', email: '', phone: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(1);
+  const { slugStatus, checkSlug } = useSlugCheck();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:8085/api/fastregister/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (data.success) {
+        window.location.href = data.autoLoginUrl;
+      } else {
+        alert("Hata: " + (data.errors ? data.errors.join(", ") : data.message));
+        setLoading(false);
+      }
+    } catch {
+      alert("Sunucuya bağlanılamadı.");
+      setLoading(false);
+    }
+  };
+
+  const set = f => e => {
+    const value = e.target.value;
+    if (f === 'storeName') {
+      const slug = toSlug(value);
+      setFormData({ ...formData, storeName: value, storeSlug: slug });
+      checkSlug(slug);
+    } else {
+      setFormData({ ...formData, [f]: value });
+    }
+  };
+
+  const PERKS = [
+    { icon: '🚀', text: 'Dakikalar içinde mağazanız hazır' },
+    { icon: '🎨', text: '27 premium temadan birini seçin' },
+    { icon: '🔗', text: 'Trendyol & Hepsiburada entegrasyonu' },
+    { icon: '🛡️', text: 'SSL sertifikası ve güvenli altyapı' },
+    { icon: '📱', text: 'Mobil uyumlu, her cihazda çalışır' },
+    { icon: '🇹🇷', text: '7/24 Türkçe teknik destek' },
+  ];
+
+  return (
+    <div className="magaza-ac-page">
+      {/* Left panel - form */}
+      <div className="map-left">
+        <div className="map-form-wrap">
+          <button className="map-back" onClick={() => navigate('/')}>
+            ← Geri Dön
+          </button>
+          <div className="map-form-header">
+            <Logo size="md" />
+            <h2>Mağazanızı Oluşturun</h2>
+            <p>Kredi kartı gerekmez. Dakikalar içinde hazır.</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="map-form">
+            <div className="map-form-group">
+              <label>Mağaza Adı</label>
+              <input type="text" required placeholder="Örn: Çiçek Butik" value={formData.storeName} onChange={set('storeName')} />
+              {formData.storeSlug && (
+                <small style={{ display: 'block', marginTop: 4, color: slugStatus === 'available' ? '#16a34a' : slugStatus === 'taken' ? '#dc2626' : '#6b7280' }}>
+                  {slugStatus === 'checking' && `🔍 ${formData.storeSlug}.lvh.me kontrol ediliyor...`}
+                  {slugStatus === 'available' && `✅ ${formData.storeSlug}.lvh.me müsait`}
+                  {slugStatus === 'taken' && `❌ ${formData.storeSlug}.lvh.me kullanılıyor`}
+                  {slugStatus === null && `🌐 ${formData.storeSlug}.lvh.me`}
+                </small>
+              )}
+            </div>
+            <div className="map-form-row">
+              <div className="map-form-group">
+                <label>Ad</label>
+                <input type="text" required placeholder="Adınız" value={formData.firstName} onChange={set('firstName')} />
+              </div>
+              <div className="map-form-group">
+                <label>Soyad</label>
+                <input type="text" required placeholder="Soyadınız" value={formData.lastName} onChange={set('lastName')} />
+              </div>
+            </div>
+            <div className="map-form-group">
+              <label>E-posta</label>
+              <input type="email" required placeholder="ornek@mail.com" value={formData.email} onChange={set('email')} />
+            </div>
+            <div className="map-form-group">
+              <label>Telefon</label>
+              <input type="tel" required placeholder="05XX XXX XX XX" value={formData.phone} onChange={set('phone')} />
+            </div>
+            <div className="map-form-group">
+              <label>Şifre</label>
+              <input type="password" required placeholder="En az 8 karakter" value={formData.password} onChange={set('password')} />
+            </div>
+
+            <button type="submit" className="map-submit-btn" disabled={loading}>
+              {loading ? 'Mağaza Oluşturuluyor...' : 'Mağazamı Oluştur'} {!loading && <ArrowRight size={18} />}
+            </button>
+
+            <p className="map-terms">
+              Devam ederek <a href="mailto:bilgi@pekinteknoloji.com?subject=KVKK%20Bilgi%20Talebi">KVKK</a> ve kullanım koşullarını kabul etmiş olursunuz.
+            </p>
+          </form>
+        </div>
+      </div>
+
+      {/* Right panel - perks */}
+      <div className="map-right">
+        <div className="map-left-inner">
+          <h1 className="map-headline">
+            Ücretsiz E-Ticaret<br />
+            <span className="text-gradient">Mağazanı Aç</span>
+          </h1>
+          <p className="map-sub">Kurulumdan entegrasyona kadar her adımda yanınızdayız. Hemen satışa başlayın.</p>
+          <div className="map-perks">
+            {PERKS.map((p, i) => (
+              <div key={i} className="map-perk">
+                <span className="map-perk-icon">{p.icon}</span>
+                <span>{p.text}</span>
+              </div>
+            ))}
+          </div>
+          <div className="map-devices">
+            <div className="map-desktop-mockup">
+              <div className="map-desktop-bar">
+                <span className="map-dot" /><span className="map-dot" /><span className="map-dot" />
+                <span className="map-url-bar">mağazam.pekinteknoloji.com</span>
+              </div>
+              <img src={THEMES_DATA[0].mainImage} alt="Masaüstü önizleme" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [pathname]);
@@ -1580,77 +1903,49 @@ function App() {
   }, []);
 
 const AgencyServices = ({ onConsult }) => (
-  <>
-    <section id="services" className="services-section">
-      <div className="container">
-        <div className="section-header">
-          <h2>Yazılım & Dijital Hizmetler</h2>
-          <p className="section-desc">İşinizi büyütmek için ihtiyacınız olan tüm dijital çözümler tek çatı altında.</p>
+  <section id="services" className="services-section">
+    <div className="container">
+      <div className="section-header">
+        <h2>Ne Yapıyoruz?</h2>
+        <p className="section-desc">E-ticaretten kurumsal yazılıma, her ölçekteki işletme için dijital çözümler üretiyoruz.</p>
+      </div>
+      <div className="services-grid services-grid--3">
+        <div className="service-card service-card--featured">
+          <div className="service-icon">🛒</div>
+          <h3>E-Ticaret Mağazası</h3>
+          <p>Kurulum, tema seçimi, ödeme & kargo entegrasyonu, Trendyol & Hepsiburada bağlantısı — her şey dahil. Dakikalar içinde satışa başlayın.</p>
+          <ul className="service-list">
+            <li>27 premium tema</li>
+            <li>Pazaryeri entegrasyonları</li>
+            <li>SSL + güvenli ödeme</li>
+          </ul>
+          <button className="learn-more" onClick={onConsult}>Ücretsiz Danışmanlık →</button>
         </div>
-        <div className="services-grid">
-          <div className="service-card">
-            <div className="service-icon">🌐</div>
-            <h3>Kurumsal Web Sitesi</h3>
-            <p>Markanızı en iyi şekilde yansıtan, hızlı ve SEO uyumlu kurumsal web siteleri tasarlıyor ve geliştiriyoruz.</p>
-            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">📱</div>
-            <h3>Mobil Uygulama</h3>
-            <p>iOS ve Android için yerli, kullanıcı dostu mobil uygulamalar geliştiriyoruz. Fikrden mağazaya kadar her adımda yanınızdayız.</p>
-            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">💻</div>
-            <h3>Özel Yazılım Geliştirme</h3>
-            <p>İşletmenize özel ERP, CRM veya iş akışı yazılımları. Hazır çözümlerin yetmediği yerde devreye giriyoruz.</p>
-            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">🎯</div>
-            <h3>Teknoloji Danışmanlığı</h3>
-            <p>Doğru teknolojiyi seçmek, sisteminizi ölçeklendirmek veya dijital dönüşümü planlamak için uzman desteği alın.</p>
-            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-          </div>
+        <div className="service-card">
+          <div className="service-icon">💻</div>
+          <h3>Kurumsal Yazılım</h3>
+          <p>Web sitesi, mobil uygulama veya işletmenize özel yazılım. Fikrinizi ürüne dönüştürüyoruz.</p>
+          <ul className="service-list">
+            <li>Kurumsal web sitesi</li>
+            <li>iOS & Android uygulama</li>
+            <li>ERP / CRM çözümleri</li>
+          </ul>
+          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
+        </div>
+        <div className="service-card">
+          <div className="service-icon">🛠️</div>
+          <h3>Destek & Danışmanlık</h3>
+          <p>7/24 Türkçe teknik destek, düzenli bakım ve dijital dönüşüm danışmanlığı ile yanınızdayız.</p>
+          <ul className="service-list">
+            <li>7/24 Türkçe destek</li>
+            <li>Proaktif izleme & bakım</li>
+            <li>Teknoloji danışmanlığı</li>
+          </ul>
+          <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
         </div>
       </div>
-    </section>
-
-    <section id="ecommerce-services" className="services-section services-section--alt">
-      <div className="container">
-        <div className="section-header">
-          <h2>E-Ticaret Hizmetlerimiz</h2>
-          <p className="section-desc">Kurulumdan entegrasyona, temadan teknik desteğe kadar her şey dahil.</p>
-        </div>
-        <div className="services-grid">
-          <div className="service-card">
-            <div className="service-icon">🚀</div>
-            <h3>Mağaza Kurulum & Ayarlama</h3>
-            <p>Güçlü e-ticaret altyapısıyla mağazanızı hızlıca kurun. Domain, SSL, ödeme sistemi ve kargo entegrasyonları dahil.</p>
-            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">🎨</div>
-            <h3>Tema Kurulum & Özelleştirme</h3>
-            <p>27 premium tema arasından seçin veya markanıza özel tasarım yaptırın. Renk, font ve layout tamamen size göre.</p>
-            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">🔗</div>
-            <h3>Pazaryeri Entegrasyonu</h3>
-            <p>Trendyol, Hepsiburada, n11 ve Amazon entegrasyonlarıyla tüm kanallarınızı tek panelden yönetin.</p>
-            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">🛠️</div>
-            <h3>Teknik Destek & Bakım</h3>
-            <p>7/24 Türkçe destek, düzenli güncellemeler ve proaktif izleme ile mağazanız her zaman çalışır durumda.</p>
-            <button className="learn-more" onClick={onConsult}>Teklif Al →</button>
-          </div>
-        </div>
-      </div>
-    </section>
-  </>
+    </div>
+  </section>
 );
 
   const navigate = useNavigate();
@@ -1671,11 +1966,8 @@ const AgencyServices = ({ onConsult }) => (
             Yerli ödeme sistemleri, pazaryeri entegrasyonları ve 7/24 Türkçe destek tek pakette.
           </p>
           <div className="hero-btns">
-            <button className="btn-primary" onClick={() => setConsultModalOpen(true)}>
-              Ücretsiz Danışmanlık Al <ArrowRight size={20} />
-            </button>
-            <button className="btn-ghost" onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
-              Hizmetlerimizi Keşfedin
+            <button className="btn-primary" onClick={() => navigate('/magaza-ac')}>
+              Ücretsiz E-Ticaret Siteni Aç <ArrowRight size={20} />
             </button>
           </div>
         </motion.div>
@@ -1699,61 +1991,47 @@ const AgencyServices = ({ onConsult }) => (
 
       <IntegrationsStrip />
 
-      <AgencyServices onConsult={() => setConsultModalOpen(true)} />
+      <EcommerceTeaser onGoEcommerce={() => navigate('/eticaret')} />
 
       <AnimatedFeaturesSection />
 
-      <EcommerceTeaser onGoEcommerce={() => navigate('/eticaret')} />
+      <AgencyServices onConsult={() => setConsultModalOpen(true)} />
 
       <BlogSection onNavigate={(type, slug) => navigate(type === 'blog' ? `/blog/${slug}` : `/${type}`)} />
 
       <FAQSection />
 
       {/* Contact Section */}
-      <section id="contact" className="section-padding bg-soft">
+      <section id="contact" className="contact-section section-padding bg-soft">
         <div className="container">
-          <div className="section-header">
+          <div className="contact-header">
             <h2>Bize Ulaşın</h2>
-            <p className="section-desc">Projenizi konuşalım. Ücretsiz danışmanlık için formu doldurun veya doğrudan iletişime geçin.</p>
+            <p>Projenizi konuşalım. En geç 1 iş günü içinde dönüş yapıyoruz.</p>
           </div>
-
-          <div className="contact-layout">
-            <div className="contact-info-col">
-              <a href="tel:+908508402336" className="contact-info-card">
-                <Phone size={24} />
-                <div>
-                  <span className="contact-info-label">Telefon</span>
-                  <span className="contact-info-value">0850 840 23 36</span>
-                </div>
-              </a>
-              <a href="mailto:bilgi@pekinteknoloji.com" className="contact-info-card">
-                <Mail size={24} />
-                <div>
-                  <span className="contact-info-label">E-Posta</span>
-                  <span className="contact-info-value">bilgi@pekinteknoloji.com</span>
-                </div>
-              </a>
-              <div className="contact-info-card no-link">
-                <MapPin size={24} />
-                <div>
-                  <span className="contact-info-label">Adres</span>
-                  <span className="contact-info-value">Selanik Pasajı No:5, Beyoğlu/İstanbul</span>
-                </div>
-              </div>
-              <MapSection />
+          <div className="contact-info-row">
+            <a href="tel:+908508402336" className="contact-info-pill">
+              <Phone size={16} /> 0850 840 23 36
+            </a>
+            <a href="mailto:bilgi@pekinteknoloji.com" className="contact-info-pill">
+              <Mail size={16} /> bilgi@pekinteknoloji.com
+            </a>
+            <div className="contact-info-pill">
+              <MapPin size={16} /> Selanik Pasajı No:5, Beyoğlu/İstanbul
             </div>
-
-            <ContactInlineForm />
           </div>
+          <ContactInlineForm />
         </div>
       </section>
     </>
   );
 
+  const location = useLocation();
+  const isFullscreen = location.pathname === '/magaza-ac';
+
   return (
     <div className="app">
       <ScrollToTop />
-      <Navbar onConsult={() => setConsultModalOpen(true)} />
+      {!isFullscreen && <Navbar onConsult={() => setConsultModalOpen(true)} />}
 
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -1762,17 +2040,17 @@ const AgencyServices = ({ onConsult }) => (
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogDetailPage />} />
         <Route path="/sss" element={<FAQPage />} />
+        <Route path="/magaza-ac" element={<MagazaAcPage />} />
+        <Route path="/hesabim" element={<HesabimPage />} />
         <Route path="*" element={<HomePage />} />
       </Routes>
 
       {/* Footer */}
-      <footer className="footer">
+      {!isFullscreen && <footer className="footer">
         <div className="footer-inner">
           <div className="footer-top">
             <div className="footer-info">
-              <div className="logo">
-                <span className="text-gradient">Pekin</span>Teknoloji
-              </div>
+              <Logo size="md" light />
               <p>Geleceğin teknolojilerini bugünden inşa ediyor, işinizi dijital dünyada zirveye taşıyoruz.</p>
             </div>
             
@@ -1810,23 +2088,23 @@ const AgencyServices = ({ onConsult }) => (
             </div>
           </div>
         </div>
-      </footer>
+      </footer>}
 
-      <ConsultationModal
+      {!isFullscreen && <ConsultationModal
         isOpen={isConsultModalOpen}
         onClose={() => setConsultModalOpen(false)}
-      />
+      />}
 
-      <RegistrationModal
+      {!isFullscreen && <RegistrationModal
         isOpen={isRegModalOpen}
         onClose={() => setRegModalOpen(false)}
-      />
+      />}
 
-      <ThemeModal
+      {!isFullscreen && <ThemeModal
         isOpen={!!selectedTheme}
         theme={selectedTheme}
         onClose={() => setSelectedTheme(null)}
-      />
+      />}
     </div>
   );
 }
