@@ -267,19 +267,9 @@ public partial class NopStartup : INopStartup
         {
             services.AddScoped(setting, serviceProvider =>
             {
-                var storeId = 0;
-                if (DataSettingsManager.IsDatabaseInstalled())
-                {
-                    try
-                    {
-                        storeId = serviceProvider.GetRequiredService<IStoreContext>().GetCurrentStore()?.Id ?? 0;
-                    }
-                    catch
-                    {
-                        // DB may be empty during initial installation
-                        storeId = 0;
-                    }
-                }
+                var storeId = DataSettingsManager.IsDatabaseInstalled()
+                    ? serviceProvider.GetRequiredService<IStoreContext>().GetCurrentStore()?.Id ?? 0
+                    : 0;
 
                 return serviceProvider.GetRequiredService<ISettingService>().LoadSettingAsync(setting, storeId).Result;
             });
