@@ -60,7 +60,7 @@ public partial class SeoSettings : ISettings
     /// <summary>
     /// Slugs (seName) reserved for some other needs
     /// </summary>
-    public List<string> ReservedUrlRecordSlugs { get; set; }
+    public List<string> ReservedUrlRecordSlugs { get; set; } = new();
 
     /// <summary>
     /// Custom tags in the <![CDATA[<head></head>]]> section
