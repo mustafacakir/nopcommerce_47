@@ -16,7 +16,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     volumes:
       - ./Presentation/Nop.Web/Plugins/Uploaded:/app/Plugins/Uploaded
-      - ./Presentation/Nop.Web/App_Data:/app/App_Data
+      - ./minikhediyen/App_Data:/app/App_Data
 
   nopcommerce_db:
     image: postgres:15-alpine
