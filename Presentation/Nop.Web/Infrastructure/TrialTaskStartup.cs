@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,9 +74,8 @@ namespace Nop.Web.Infrastructure
                 var xmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "language_pack.tr-TR.xml");
                 if (!File.Exists(xmlPath)) return;
 
-                var xmlDoc = new XmlDocument();
-                xmlDoc.Load(xmlPath);
-                localizationService.ImportResourcesFromXmlAsync(trLanguage, xmlDoc).GetAwaiter().GetResult();
+                using var reader = new StreamReader(xmlPath);
+                localizationService.ImportResourcesFromXmlAsync(trLanguage, reader).GetAwaiter().GetResult();
             }
             catch
             {
