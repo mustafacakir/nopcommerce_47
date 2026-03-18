@@ -18,6 +18,7 @@ services:
       - ./Presentation/Nop.Web/Plugins/Uploaded:/app/Plugins/Uploaded
       - ./Presentation/Nop.Web/App_Data:/app/App_Data
       - ./minikhediyen/App_Data/appsettings.json:/app/App_Data/appsettings.json
+      - ./minikhediyen/App_Data/plugins.json:/app/App_Data/plugins.json
 
   nopcommerce_db:
     image: postgres:15-alpine
