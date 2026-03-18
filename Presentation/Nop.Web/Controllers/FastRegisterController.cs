@@ -56,6 +56,7 @@ namespace Nop.Web.Controllers
             "ManageSettings",
             "ManagePaymentMethods",
             "ManageShippingSettings",
+            "ManagePlugins",
         };
 
         private readonly ICustomerService _customerService;
