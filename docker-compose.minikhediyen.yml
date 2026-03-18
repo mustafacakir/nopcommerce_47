@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  nopcommerce_web:
+    build: .
+    container_name: minikhediyen_web
+    restart: always
+    ports:
+      - "127.0.0.1:8087:80"
+    depends_on:
+      - nopcommerce_db
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    volumes:
+      - ./Presentation/Nop.Web/Plugins/Uploaded:/app/Plugins/Uploaded
+      - ./Presentation/Nop.Web/App_Data:/app/App_Data
+
+  nopcommerce_db:
+    image: postgres:15-alpine
+    container_name: minikhediyen_db
+    restart: always
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_USER: nopuser
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: minikhediyen_db
+    volumes:
+      - minikhediyen_db_data:/var/lib/postgresql/data
+
+volumes:
+  minikhediyen_db_data:
