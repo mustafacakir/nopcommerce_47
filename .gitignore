@@ -57,9 +57,7 @@ ehthumbs_vista.db
 Desktop.ini
 
 # Nopcommerce specific (Plugins output)
-Presentation/Nop.Web/Plugins/*
-!Presentation/Nop.Web/Plugins/uploaded/
-!Presentation/Nop.Web/Plugins/bin/
+!Presentation/Nop.Web/Plugins/
 
 # IDE specific files
 .idea/
