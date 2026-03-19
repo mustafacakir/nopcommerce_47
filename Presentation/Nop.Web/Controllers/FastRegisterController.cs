@@ -357,47 +357,21 @@ namespace Nop.Web.Controllers
 
             try
             {
-                // 2. AnywhereSliders kopyala
+                // 2. Template slider'ları yeni mağazaya ekle (StoreMapping)
                 var sliderIds = (await _dataProvider.QueryAsync<IdResult>(
                     "SELECT \"EntityId\" AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'AnywhereSlider' AND \"StoreId\" = " + templateStoreId
                 )).Select(x => x.Id).ToList();
 
-                foreach (var oldSliderId in sliderIds)
+                foreach (var sliderId in sliderIds)
                 {
-                    var newSliderIds = await _dataProvider.QueryAsync<IdResult>($@"
-                        INSERT INTO ""SS_AS_AnywhereSlider""
-                            (""SystemName"", ""PreLoadFirstSlide"", ""Autoplay"", ""AutoplaySpeed"", ""Speed"",
-                             ""PauseOnHover"", ""Fade"", ""Dots"", ""Arrows"", ""MobileBreakpoint"",
-                             ""CustomClass"", ""LanguageId"", ""LimitedToStores"")
-                        SELECT ""SystemName"", ""PreLoadFirstSlide"", ""Autoplay"", ""AutoplaySpeed"", ""Speed"",
-                             ""PauseOnHover"", ""Fade"", ""Dots"", ""Arrows"", ""MobileBreakpoint"",
-                             ""CustomClass"", ""LanguageId"", true
-                        FROM ""SS_AS_AnywhereSlider""
-                        WHERE ""Id"" = {oldSliderId}
-                        RETURNING ""Id""");
+                    var exists = (await _dataProvider.QueryAsync<IdResult>(
+                        $"SELECT 1 AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'AnywhereSlider' AND \"EntityId\" = {sliderId} AND \"StoreId\" = {newStoreId}"
+                    )).Any();
 
-                    var newSliderId = newSliderIds.FirstOrDefault()?.Id ?? 0;
-                    if (newSliderId == 0) continue;
-
-                    await _dataProvider.ExecuteNonQueryAsync($@"
-                        INSERT INTO ""SS_AS_Slide""
-                            (""SliderId"", ""SlideType"", ""SystemName"", ""Url"", ""Alt"",
-                             ""Visible"", ""DisplayOrder"", ""PictureId"", ""MobilePictureId"", ""Content"")
-                        SELECT {newSliderId}, ""SlideType"", ""SystemName"", ""Url"", ""Alt"",
-                             ""Visible"", ""DisplayOrder"", ""PictureId"", ""MobilePictureId"", ""Content""
-                        FROM ""SS_AS_Slide""
-                        WHERE ""SliderId"" = {oldSliderId}");
-
-                    await _dataProvider.ExecuteNonQueryAsync($@"
-                        INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
-                        VALUES ({newSliderId}, 'AnywhereSlider', {newStoreId})");
-
-                    // Widget zone mapping kopyala
-                    await _dataProvider.ExecuteNonQueryAsync($@"
-                        INSERT INTO ""SS_MAP_EntityWidgetMapping"" (""EntityType"", ""EntityId"", ""WidgetZone"", ""DisplayOrder"")
-                        SELECT ""EntityType"", {newSliderId}, ""WidgetZone"", ""DisplayOrder""
-                        FROM ""SS_MAP_EntityWidgetMapping""
-                        WHERE ""EntityId"" = {oldSliderId} AND ""EntityType"" = 15");
+                    if (!exists)
+                        await _dataProvider.ExecuteNonQueryAsync($@"
+                            INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
+                            VALUES ({sliderId}, 'AnywhereSlider', {newStoreId})");
                 }
 
                 // 3. MegaMenu kopyala
