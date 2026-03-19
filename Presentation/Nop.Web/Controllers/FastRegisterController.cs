@@ -5,6 +5,7 @@ using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Security;
 using Nop.Core.Domain.Stores;
+using Nop.Data;
 using Nop.Services.Common;
 using Nop.Services.Customers;
 using Nop.Core.Domain.Messages;
@@ -70,6 +71,7 @@ namespace Nop.Web.Controllers
         private readonly IEmailAccountService _emailAccountService;
         private readonly IQueuedEmailService _queuedEmailService;
         private readonly ISettingService _settingService;
+        private readonly INopDataProvider _dataProvider;
         private readonly string _storeDomain;
         private readonly bool _sslEnabled;
         private readonly int _trialDays;
@@ -86,6 +88,7 @@ namespace Nop.Web.Controllers
             IEmailAccountService emailAccountService,
             IQueuedEmailService queuedEmailService,
             ISettingService settingService,
+            INopDataProvider dataProvider,
             IConfiguration configuration)
         {
             _customerService = customerService;
@@ -99,6 +102,7 @@ namespace Nop.Web.Controllers
             _emailAccountService = emailAccountService;
             _queuedEmailService = queuedEmailService;
             _settingService = settingService;
+            _dataProvider = dataProvider;
             _storeDomain = configuration["ProvisioningConfig:StoreDomain"] ?? "localhost";
             _sslEnabled = bool.TryParse(configuration["ProvisioningConfig:SslEnabled"], out var ssl) && ssl;
             _trialDays = int.TryParse(configuration["ProvisioningConfig:TrialDays"], out var td) ? td : 14;
@@ -233,8 +237,8 @@ namespace Nop.Web.Controllers
             };
             await _storeService.InsertStoreAsync(newStore);
 
-            // Voyage temasını bu mağaza için varsayılan yap
-            await _settingService.SetSettingAsync("storeinformationsettings.defaultstoretheme", "Voyage", newStore.Id);
+            // Template store'dan ayarları ve içeriği klonla
+            await CloneTemplateStoreAsync(newStore.Id);
 
             // Trial bilgilerini kaydet
             var trialEndDate = DateTime.UtcNow.AddDays(_trialDays);
@@ -339,6 +343,160 @@ namespace Nop.Web.Controllers
             {
                 // Mail gönderilemese bile kayıt işlemi başarılı sayılır
             }
+        }
+
+        private async Task CloneTemplateStoreAsync(int newStoreId)
+        {
+            const int templateStoreId = 2;
+
+            // 1. Settings kopyala
+            var allSettings = await _settingService.GetAllSettingsAsync();
+            foreach (var s in allSettings.Where(x => x.StoreId == templateStoreId))
+                await _settingService.SetSettingAsync(s.Name, s.Value, newStoreId, clearCache: false);
+            await _settingService.ClearCacheAsync();
+
+            try
+            {
+                // 2. AnywhereSliders kopyala
+                var sliderIds = (await _dataProvider.QueryAsync<IdResult>(
+                    "SELECT \"EntityId\" AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'AnywhereSlider' AND \"StoreId\" = " + templateStoreId
+                )).Select(x => x.Id).ToList();
+
+                foreach (var oldSliderId in sliderIds)
+                {
+                    var newSliderIds = await _dataProvider.QueryAsync<IdResult>($@"
+                        INSERT INTO ""SS_AS_AnywhereSlider""
+                            (""SystemName"", ""PreLoadFirstSlide"", ""Autoplay"", ""AutoplaySpeed"", ""Speed"",
+                             ""PauseOnHover"", ""Fade"", ""Dots"", ""Arrows"", ""MobileBreakpoint"",
+                             ""CustomClass"", ""LanguageId"", ""LimitedToStores"")
+                        SELECT ""SystemName"", ""PreLoadFirstSlide"", ""Autoplay"", ""AutoplaySpeed"", ""Speed"",
+                             ""PauseOnHover"", ""Fade"", ""Dots"", ""Arrows"", ""MobileBreakpoint"",
+                             ""CustomClass"", ""LanguageId"", true
+                        FROM ""SS_AS_AnywhereSlider""
+                        WHERE ""Id"" = {oldSliderId}
+                        RETURNING ""Id""");
+
+                    var newSliderId = newSliderIds.FirstOrDefault()?.Id ?? 0;
+                    if (newSliderId == 0) continue;
+
+                    await _dataProvider.ExecuteNonQueryAsync($@"
+                        INSERT INTO ""SS_AS_Slide""
+                            (""SliderId"", ""SlideType"", ""SystemName"", ""Url"", ""Alt"",
+                             ""Visible"", ""DisplayOrder"", ""PictureId"", ""MobilePictureId"", ""Content"")
+                        SELECT {newSliderId}, ""SlideType"", ""SystemName"", ""Url"", ""Alt"",
+                             ""Visible"", ""DisplayOrder"", ""PictureId"", ""MobilePictureId"", ""Content""
+                        FROM ""SS_AS_Slide""
+                        WHERE ""SliderId"" = {oldSliderId}");
+
+                    await _dataProvider.ExecuteNonQueryAsync($@"
+                        INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
+                        VALUES ({newSliderId}, 'AnywhereSlider', {newStoreId})");
+                }
+
+                // 3. MegaMenu kopyala
+                var menuIds = (await _dataProvider.QueryAsync<IdResult>(
+                    "SELECT \"EntityId\" AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'MegaMenu' AND \"StoreId\" = " + templateStoreId
+                )).Select(x => x.Id).ToList();
+
+                foreach (var oldMenuId in menuIds)
+                {
+                    var newMenuIdList = await _dataProvider.QueryAsync<IdResult>($@"
+                        INSERT INTO ""SS_MM_Menu"" (""SystemName"", ""LanguageId"", ""LimitedToStores"")
+                        SELECT ""SystemName"", ""LanguageId"", true
+                        FROM ""SS_MM_Menu""
+                        WHERE ""Id"" = {oldMenuId}
+                        RETURNING ""Id""");
+
+                    var newMenuId = newMenuIdList.FirstOrDefault()?.Id ?? 0;
+                    if (newMenuId == 0) continue;
+
+                    await CloneMegaMenuItemsAsync(oldMenuId, newMenuId);
+
+                    await _dataProvider.ExecuteNonQueryAsync($@"
+                        INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
+                        VALUES ({newMenuId}, 'MegaMenu', {newStoreId})");
+                }
+            }
+            catch
+            {
+                // SS plugin tabloları henüz yoksa sessizce geç
+            }
+        }
+
+        private async Task CloneMegaMenuItemsAsync(int oldMenuId, int newMenuId)
+        {
+            var items = (await _dataProvider.QueryAsync<MenuItemRow>($@"
+                SELECT ""Id"", ""ParentMenuItemId"", ""Type"", ""CatalogTemplate"", ""Width"",
+                       ""Title"", ""Url"", ""OpenInNewWindow"", ""DisplayOrder"", ""CssClass"",
+                       ""MaximumNumberOfEntities"", ""NumberOfBoxesPerRow"", ""ImageSize"",
+                       ""EntityId"", ""WidgetZone"", ""SubjectToAcl""
+                FROM ""SS_MM_MenuItem""
+                WHERE ""MenuId"" = {oldMenuId}
+                ORDER BY ""ParentMenuItemId"", ""DisplayOrder""")).ToList();
+
+            var idMap = new Dictionary<int, int>();
+            var remaining = new List<MenuItemRow>(items);
+            var maxPasses = 20;
+
+            while (remaining.Count > 0 && maxPasses-- > 0)
+            {
+                var processed = new List<MenuItemRow>();
+                foreach (var item in remaining)
+                {
+                    if (item.ParentMenuItemId != 0 && !idMap.ContainsKey(item.ParentMenuItemId))
+                        continue;
+
+                    var newParentId = item.ParentMenuItemId == 0 ? 0 : idMap[item.ParentMenuItemId];
+                    var title = (item.Title ?? "").Replace("'", "''");
+                    var url = (item.Url ?? "").Replace("'", "''");
+                    var cssClass = (item.CssClass ?? "").Replace("'", "''");
+                    var widgetZone = (item.WidgetZone ?? "").Replace("'", "''");
+
+                    var newItemIds = await _dataProvider.QueryAsync<IdResult>($@"
+                        INSERT INTO ""SS_MM_MenuItem""
+                            (""MenuId"", ""Type"", ""CatalogTemplate"", ""Width"", ""Title"", ""Url"",
+                             ""OpenInNewWindow"", ""DisplayOrder"", ""CssClass"", ""MaximumNumberOfEntities"",
+                             ""NumberOfBoxesPerRow"", ""ImageSize"", ""EntityId"", ""WidgetZone"",
+                             ""ParentMenuItemId"", ""SubjectToAcl"")
+                        VALUES ({newMenuId}, {item.Type}, {item.CatalogTemplate}, {item.Width},
+                            '{title}', '{url}', {item.OpenInNewWindow.ToString().ToLower()},
+                            {item.DisplayOrder}, '{cssClass}', {item.MaximumNumberOfEntities},
+                            {item.NumberOfBoxesPerRow}, {item.ImageSize}, {item.EntityId},
+                            '{widgetZone}', {newParentId}, {item.SubjectToAcl.ToString().ToLower()})
+                        RETURNING ""Id""");
+
+                    var newItemId = newItemIds.FirstOrDefault()?.Id ?? 0;
+                    if (newItemId != 0)
+                        idMap[item.Id] = newItemId;
+
+                    processed.Add(item);
+                }
+
+                foreach (var p in processed) remaining.Remove(p);
+                if (processed.Count == 0) break;
+            }
+        }
+
+        private class IdResult { public int Id { get; set; } }
+
+        private class MenuItemRow
+        {
+            public int Id { get; set; }
+            public int ParentMenuItemId { get; set; }
+            public int Type { get; set; }
+            public int CatalogTemplate { get; set; }
+            public decimal Width { get; set; }
+            public string Title { get; set; }
+            public string Url { get; set; }
+            public bool OpenInNewWindow { get; set; }
+            public int DisplayOrder { get; set; }
+            public string CssClass { get; set; }
+            public int MaximumNumberOfEntities { get; set; }
+            public int NumberOfBoxesPerRow { get; set; }
+            public int ImageSize { get; set; }
+            public int EntityId { get; set; }
+            public string WidgetZone { get; set; }
+            public bool SubjectToAcl { get; set; }
         }
 
         private async Task<CustomerRole> GetOrCreateStoreOwnerRoleAsync()
