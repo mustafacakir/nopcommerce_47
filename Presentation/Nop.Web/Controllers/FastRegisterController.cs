@@ -391,6 +391,13 @@ namespace Nop.Web.Controllers
                     await _dataProvider.ExecuteNonQueryAsync($@"
                         INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
                         VALUES ({newSliderId}, 'AnywhereSlider', {newStoreId})");
+
+                    // Widget zone mapping kopyala
+                    await _dataProvider.ExecuteNonQueryAsync($@"
+                        INSERT INTO ""SS_MAP_EntityWidgetMapping"" (""EntityType"", ""EntityId"", ""WidgetZone"", ""DisplayOrder"")
+                        SELECT ""EntityType"", {newSliderId}, ""WidgetZone"", ""DisplayOrder""
+                        FROM ""SS_MAP_EntityWidgetMapping""
+                        WHERE ""EntityId"" = {oldSliderId} AND ""EntityType"" = 15");
                 }
 
                 // 3. MegaMenu kopyala
