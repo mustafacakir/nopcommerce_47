@@ -374,28 +374,21 @@ namespace Nop.Web.Controllers
                             VALUES ({sliderId}, 'AnywhereSlider', {newStoreId})");
                 }
 
-                // 3. MegaMenu kopyala
+                // 3. Template MegaMenu'ları yeni mağazaya ekle (StoreMapping)
                 var menuIds = (await _dataProvider.QueryAsync<IdResult>(
                     "SELECT \"EntityId\" AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'MegaMenu' AND \"StoreId\" = " + templateStoreId
                 )).Select(x => x.Id).ToList();
 
-                foreach (var oldMenuId in menuIds)
+                foreach (var menuId in menuIds)
                 {
-                    var newMenuIdList = await _dataProvider.QueryAsync<IdResult>($@"
-                        INSERT INTO ""SS_MM_Menu"" (""SystemName"", ""LanguageId"", ""LimitedToStores"")
-                        SELECT ""SystemName"", ""LanguageId"", true
-                        FROM ""SS_MM_Menu""
-                        WHERE ""Id"" = {oldMenuId}
-                        RETURNING ""Id""");
+                    var exists = (await _dataProvider.QueryAsync<IdResult>(
+                        $"SELECT 1 AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'MegaMenu' AND \"EntityId\" = {menuId} AND \"StoreId\" = {newStoreId}"
+                    )).Any();
 
-                    var newMenuId = newMenuIdList.FirstOrDefault()?.Id ?? 0;
-                    if (newMenuId == 0) continue;
-
-                    await CloneMegaMenuItemsAsync(oldMenuId, newMenuId);
-
-                    await _dataProvider.ExecuteNonQueryAsync($@"
-                        INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
-                        VALUES ({newMenuId}, 'MegaMenu', {newStoreId})");
+                    if (!exists)
+                        await _dataProvider.ExecuteNonQueryAsync($@"
+                            INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
+                            VALUES ({menuId}, 'MegaMenu', {newStoreId})");
                 }
             }
             catch
@@ -404,81 +397,7 @@ namespace Nop.Web.Controllers
             }
         }
 
-        private async Task CloneMegaMenuItemsAsync(int oldMenuId, int newMenuId)
-        {
-            var items = (await _dataProvider.QueryAsync<MenuItemRow>($@"
-                SELECT ""Id"", ""ParentMenuItemId"", ""Type"", ""CatalogTemplate"", ""Width"",
-                       ""Title"", ""Url"", ""OpenInNewWindow"", ""DisplayOrder"", ""CssClass"",
-                       ""MaximumNumberOfEntities"", ""NumberOfBoxesPerRow"", ""ImageSize"",
-                       ""EntityId"", ""WidgetZone"", ""SubjectToAcl""
-                FROM ""SS_MM_MenuItem""
-                WHERE ""MenuId"" = {oldMenuId}
-                ORDER BY ""ParentMenuItemId"", ""DisplayOrder""")).ToList();
-
-            var idMap = new Dictionary<int, int>();
-            var remaining = new List<MenuItemRow>(items);
-            var maxPasses = 20;
-
-            while (remaining.Count > 0 && maxPasses-- > 0)
-            {
-                var processed = new List<MenuItemRow>();
-                foreach (var item in remaining)
-                {
-                    if (item.ParentMenuItemId != 0 && !idMap.ContainsKey(item.ParentMenuItemId))
-                        continue;
-
-                    var newParentId = item.ParentMenuItemId == 0 ? 0 : idMap[item.ParentMenuItemId];
-                    var title = (item.Title ?? "").Replace("'", "''");
-                    var url = (item.Url ?? "").Replace("'", "''");
-                    var cssClass = (item.CssClass ?? "").Replace("'", "''");
-                    var widgetZone = (item.WidgetZone ?? "").Replace("'", "''");
-
-                    var newItemIds = await _dataProvider.QueryAsync<IdResult>($@"
-                        INSERT INTO ""SS_MM_MenuItem""
-                            (""MenuId"", ""Type"", ""CatalogTemplate"", ""Width"", ""Title"", ""Url"",
-                             ""OpenInNewWindow"", ""DisplayOrder"", ""CssClass"", ""MaximumNumberOfEntities"",
-                             ""NumberOfBoxesPerRow"", ""ImageSize"", ""EntityId"", ""WidgetZone"",
-                             ""ParentMenuItemId"", ""SubjectToAcl"")
-                        VALUES ({newMenuId}, {item.Type}, {item.CatalogTemplate}, {item.Width},
-                            '{title}', '{url}', {item.OpenInNewWindow.ToString().ToLower()},
-                            {item.DisplayOrder}, '{cssClass}', {item.MaximumNumberOfEntities},
-                            {item.NumberOfBoxesPerRow}, {item.ImageSize}, {item.EntityId},
-                            '{widgetZone}', {newParentId}, {item.SubjectToAcl.ToString().ToLower()})
-                        RETURNING ""Id""");
-
-                    var newItemId = newItemIds.FirstOrDefault()?.Id ?? 0;
-                    if (newItemId != 0)
-                        idMap[item.Id] = newItemId;
-
-                    processed.Add(item);
-                }
-
-                foreach (var p in processed) remaining.Remove(p);
-                if (processed.Count == 0) break;
-            }
-        }
-
         private class IdResult { public int Id { get; set; } }
-
-        private class MenuItemRow
-        {
-            public int Id { get; set; }
-            public int ParentMenuItemId { get; set; }
-            public int Type { get; set; }
-            public int CatalogTemplate { get; set; }
-            public decimal Width { get; set; }
-            public string Title { get; set; }
-            public string Url { get; set; }
-            public bool OpenInNewWindow { get; set; }
-            public int DisplayOrder { get; set; }
-            public string CssClass { get; set; }
-            public int MaximumNumberOfEntities { get; set; }
-            public int NumberOfBoxesPerRow { get; set; }
-            public int ImageSize { get; set; }
-            public int EntityId { get; set; }
-            public string WidgetZone { get; set; }
-            public bool SubjectToAcl { get; set; }
-        }
 
         private async Task<CustomerRole> GetOrCreateStoreOwnerRoleAsync()
         {

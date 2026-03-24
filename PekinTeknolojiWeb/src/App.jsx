@@ -25,7 +25,8 @@ import {
   Cpu,
   MousePointer2,
   Headphones,
-  Check
+  Check,
+  Menu
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
@@ -348,7 +349,7 @@ const IntegrationsStrip = () => {
   return (
     <div className="integrations-strip">
       <div className="container">
-        <p className="integrations-label">Türkiye'nin önde gelen platformlarıyla entegre</p>
+        <p className="integrations-label">Önde gelen platformlarla entegre</p>
       </div>
       <div className="integrations-overflow">
         <div className="integrations-track">
@@ -521,7 +522,7 @@ const EcommerceTeaser = ({ onGoEcommerce }) => (
     <div className="container">
       <div className="section-header">
         <span className="text-gradient">Temalar</span>
-        <h2>{THEMES_DATA.length} Premium Tema</h2>
+        <h2>Premium Temalar</h2>
         <p className="section-desc">Her sektöre uygun, profesyonel e-ticaret tasarımları. Hepsine sahipsiniz.</p>
       </div>
       <div className="teaser-themes-grid">
@@ -552,6 +553,20 @@ const BLOG_POSTS = [
     desc: 'Doğru URL yapısı, meta etiketler ve içerik stratejisiyle organik trafiğinizi katlayın.',
     readTime: '5 dk',
     img: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=600&q=80',
+    content: [
+      { type: 'p', text: 'E-ticaret mağazanızın Google\'da üst sıralarda yer alması, reklam bütçesi harcamadan sürdürülebilir bir müşteri kitlesi oluşturmanın en etkili yoludur. Ancak e-ticaret SEO\'su, blog veya kurumsal site optimizasyonundan farklı dinamiklere sahiptir.' },
+      { type: 'h2', text: '1. URL Yapısını Doğru Kur' },
+      { type: 'p', text: 'Ürün ve kategori URL\'leriniz hem arama motorları hem de kullanıcılar için anlaşılır olmalıdır. Örneğin "/urun?id=4521" yerine "/erkek-ayakkabi/spor-kosu-ayakkabisi" formatı hem SEO\'ya hem dönüşüm oranına olumlu katkı sağlar. Gereksiz parametre ve session ID\'lerden kaçının.' },
+      { type: 'h2', text: '2. Meta Etiketleri Optimize Edin' },
+      { type: 'p', text: 'Her ürün sayfasının benzersiz bir title ve meta description\'a sahip olması gerekir. Title etiketi 55–60 karakter arasında tutulmalı, hedef anahtar kelimeyi içermeli ve marka adıyla bitirilmelidir. Meta description ise 150–160 karakter ile kullanıcıyı tıklamaya teşvik eden bir çağrı içermelidir.' },
+      { type: 'h2', text: '3. Ürün Açıklamalarını Özgün Yazın' },
+      { type: 'p', text: 'Tedarikçiden kopyalanan ürün açıklamaları Google tarafından yinelenen içerik olarak değerlendirilebilir ve sıralamalarınızı olumsuz etkiler. Her ürün için özgün, kullanıcının sorularını yanıtlayan ve hedef anahtar kelimeleri doğal biçimde barındıran açıklamalar yazın.' },
+      { type: 'h2', text: '4. Sayfa Hızına Önem Verin' },
+      { type: 'p', text: 'Google, Core Web Vitals metriklerini sıralama faktörü olarak kullanmaktadır. Görsel boyutlarını optimize edin, gereksiz JavaScript yüklemelerini erteleyin ve bir CDN kullanın. Hedef, LCP (Largest Contentful Paint) değerinin 2,5 saniyenin altında kalmasıdır.' },
+      { type: 'h2', text: '5. İç Linkleme Stratejisi Kurun' },
+      { type: 'p', text: 'Kategori sayfalarınızdan ürün sayfalarına, blog yazılarınızdan ilgili ürünlere doğal bağlantılar ekleyin. Bu sayede tarama bütçenizi verimli kullanır, link otoritesini mağazanız genelinde dengeli dağıtır ve kullanıcıların sitede daha uzun vakit geçirmesini sağlarsınız.' },
+      { type: 'p', text: 'Pekin Teknoloji altyapısıyla açılan mağazalar, SEO dostu URL yapısı, otomatik sitemap oluşturma ve sayfa hızı optimizasyonları ile bu adımların büyük bölümünü kutudan çıkar çıkmaz karşılamaktadır.' },
+    ],
   },
   {
     slug: 'trendyol-entegrasyonu',
@@ -560,6 +575,18 @@ const BLOG_POSTS = [
     desc: 'Ürünlerinizi Trendyol ile senkronize edin, stok ve siparişleri tek panelden yönetin.',
     readTime: '4 dk',
     img: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80',
+    content: [
+      { type: 'p', text: '30 milyonu aşkın aktif alıcısıyla Trendyol, e-ticaret satıcıları için vazgeçilmez bir satış kanalıdır. Ancak mağazanız ile Trendyol\'u ayrı ayrı yönetmek ciddi zaman ve hata kaybına yol açabilir. İşte bu noktada entegrasyon devreye girer.' },
+      { type: 'h2', text: 'Entegrasyon Ne İşe Yarar?' },
+      { type: 'p', text: 'Trendyol entegrasyonu sayesinde ürün bilgileri, fiyatlar ve stok miktarları mağazanızdan otomatik olarak Trendyol\'a aktarılır. Trendyol\'dan gelen siparişler anında kendi panelinizde görünür; iki farklı ekranda takip etme derdiniz ortadan kalkar.' },
+      { type: 'h2', text: 'Stok Senkronizasyonu' },
+      { type: 'p', text: 'Aynı ürünü hem kendi mağazanızda hem Trendyol\'da satıyorsanız stok senkronizasyonu kritiktir. Entegrasyon olmadan bir kanalda satış gerçekleştiğinde diğer kanalda stok güncellenmez; bu da fazla satış (oversell) ve müşteri memnuniyetsizliğine yol açar. Gerçek zamanlı senkronizasyon bu riski tamamen ortadan kaldırır.' },
+      { type: 'h2', text: 'Sipariş Yönetimi' },
+      { type: 'p', text: 'Trendyol siparişleri kendi panelinizde konsolide edildiğinde kargo etiketleri, fatura ve müşteri bildirimleri tek yerden yönetilir. İade ve iptal süreçleri de entegrasyon üzerinden otomatik olarak Trendyol sistemine yansıtılır.' },
+      { type: 'h2', text: 'Fiyat Yönetimi' },
+      { type: 'p', text: 'Trendyol\'da farklı fiyatlandırma politikası uygulamak isteyebilirsiniz. İyi bir entegrasyon, her kanal için ayrı fiyat kuralları tanımlamanıza olanak tanır; kampanya dönemlerinde tek tıkla toplu fiyat güncellemesi yapabilirsiniz.' },
+      { type: 'p', text: 'Pekin Teknoloji mağazaları, Trendyol başta olmak üzere Hepsiburada ve N11 entegrasyonlarını desteklemektedir. Tek panelden tüm kanallarınızı yönetmeye hemen başlayabilirsiniz.' },
+    ],
   },
   {
     slug: 'dogru-tema-secimi',
@@ -568,6 +595,20 @@ const BLOG_POSTS = [
     desc: 'Dönüşüm oranını etkileyen tasarım kararları ve doğru tema seçim kriterleri.',
     readTime: '6 dk',
     img: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80',
+    content: [
+      { type: 'p', text: 'E-ticaret mağazanızın görsel kimliği, ziyaretçilerin satın alma kararı üzerinde doğrudan etkilidir. Araştırmalar, kullanıcıların bir web sitesine dair ilk yargıyı milisaniyeler içinde oluşturduğunu ortaya koymaktadır. Bu nedenle doğru temayı seçmek, dönüşüm oranınızı belirleyen en kritik kararlardan biridir.' },
+      { type: 'h2', text: '1. Mobil Uyumluluk Önce Gelir' },
+      { type: 'p', text: 'E-ticaret trafiğinin büyük bölümü mobil cihazlardan gelmektedir. Seçeceğiniz temanın tüm ekran boyutlarında kusursuz çalıştığını, mobil menünün kullanışlı olduğunu ve ödeme adımlarının parmakla rahatlıkla tamamlanabildiğini test edin.' },
+      { type: 'h2', text: '2. Sayfa Yükleme Hızı' },
+      { type: 'p', text: 'Görsel olarak etkileyici ama yavaş yüklenen temalar dönüşüm oranını ciddi biçimde düşürür. Her 1 saniyelik gecikme, dönüşümde yaklaşık %7 kayba yol açtığı bilinmektedir. Tema seçerken demo sitenin Google PageSpeed Insights skorunu mutlaka kontrol edin; mobil skoru 70\'in üzerinde olmalıdır.' },
+      { type: 'h2', text: '3. Ürün Sergisi ve Görsel Alanlar' },
+      { type: 'p', text: 'Ürün görselleri e-ticarette satışın en güçlü aracıdır. Temanın büyük ve yüksek çözünürlüklü görsel desteği sunduğundan, zoom özelliği ve çoklu görsel galeri imkânı sağladığından emin olun. Moda ve güzellik kategorileri için tam ekran görsel alanları tercih edilmelidir.' },
+      { type: 'h2', text: '4. Sepet ve Ödeme Akışı' },
+      { type: 'p', text: 'Karmaşık ya da çok adımlı bir ödeme süreci sepet terk oranını artırır. Mini sepet, tek sayfa ödeme (one-page checkout) ve misafir alışveriş desteği sunan temalar dönüşüm oranını belirgin biçimde yükseltir. Bu özelliklerin tema demo\'sunda çalışıp çalışmadığını bizzat deneyin.' },
+      { type: 'h2', text: '5. Özelleştirme Kolaylığı' },
+      { type: 'p', text: 'Marka kimliğinize uygun renk paleti, tipografi ve banner düzenlemelerini kod bilgisi gerektirmeden yapabilmelisiniz. Drag-and-drop sayfa düzenleyici desteği olan temalar, pazarlama kampanyalarınızda çok daha hızlı hareket etmenizi sağlar.' },
+      { type: 'p', text: 'Pekin Teknoloji, her sektöre uygun premium temalar sunmaktadır. Tüm temalar mobil uyumlu, hızlı yüklemeli ve kapsamlı özelleştirme seçenekleriyle donatılmıştır. Demo mağazalarımızı inceleyerek mağazanız için en uygun tasarımı seçebilirsiniz.' },
+    ],
   },
 ];
 
@@ -605,8 +646,8 @@ const FAQ_ITEMS = [
   { q: 'Mağaza açmak için teknik bilgi gerekiyor mu?', a: 'Hayır. Kurulum ve teknik ayarları biz yapıyoruz. Siz sadece ürünlerinizi yükleyin ve satmaya başlayın.' },
   { q: 'Hangi ödeme sistemleri destekleniyor?', a: 'iyzico, PayTR, Garanti BBVA Sanal POS, Yapı Kredi, Akbank ve tüm sanal POS sağlayıcılarıyla entegrasyon desteği sunuyoruz.' },
   { q: 'Trendyol ve Hepsiburada entegrasyonu nasıl çalışıyor?', a: 'Ürünlerinizi tek bir panelden tüm pazaryerlerine aktarın, sipariş ve stok yönetimini merkezi olarak yapın.' },
-  { q: 'Kaç farklı tema var, özelleştirebilir miyim?', a: '27 premium tema arasından seçim yapabilirsiniz. Renk, font ve layout tamamen markanıza göre özelleştirilebilir.' },
-  { q: 'Teknik destek ne zaman ulaşılabilir?', a: '7/24 Türkçe teknik destek ekibimiz her an yanınızda. Acil durumlarda maksimum 2 saat içinde müdahale garantisi veriyoruz.' },
+  { q: 'Kaç farklı tema var, özelleştirebilir miyim?', a: 'Premium temalar arasından seçim yapabilirsiniz. Renk, font ve layout tamamen markanıza göre özelleştirilebilir.' },
+  { q: 'Teknik destek ne zaman ulaşılabilir?', a: '7/24 teknik destek ekibimiz her an yanınızda. Acil durumlarda maksimum 2 saat içinde müdahale garantisi veriyoruz.' },
   { q: 'Mevcut mağazamı taşıyabilir miyim?', a: 'Evet. Ürünlerinizi, müşteri verilerinizi ve sipariş geçmişinizi mevcut altyapınızdan aktarıyoruz.' },
 ];
 
@@ -643,7 +684,7 @@ const NAV_DROPDOWN = {
       heading: 'Yazılım & Dijital',
       items: [
         { icon: '🌐', label: 'Kurumsal Web Sitesi', desc: 'Hızlı, SEO uyumlu kurumsal siteler' },
-        { icon: '📱', label: 'Mobil Uygulama', desc: 'iOS & Android yerli uygulamalar' },
+        { icon: '📱', label: 'Mobil Uygulama', desc: 'iOS & Android uygulamaları' },
         { icon: '💻', label: 'Özel Yazılım', desc: 'ERP, CRM ve iş akışı çözümleri' },
         { icon: '🎯', label: 'Teknoloji Danışmanlığı', desc: 'Dijital dönüşüm planlaması' },
       ]
@@ -652,9 +693,9 @@ const NAV_DROPDOWN = {
       heading: 'E-Ticaret',
       items: [
         { icon: '🚀', label: 'Mağaza Kurulum', desc: 'Domain, SSL, ödeme ve kargo dahil' },
-        { icon: '🎨', label: 'Tema Özelleştirme', desc: '27 premium tema, markanıza göre' },
+        { icon: '🎨', label: 'Tema Özelleştirme', desc: 'Premium temalar, markanıza göre' },
         { icon: '🔗', label: 'Pazaryeri Entegrasyonu', desc: 'Trendyol, Hepsiburada, n11, Amazon' },
-        { icon: '🛠️', label: 'Teknik Destek & Bakım', desc: '7/24 Türkçe destek ekibi' },
+        { icon: '🛠️', label: 'Teknik Destek & Bakım', desc: '7/24 destek ekibi' },
       ]
     }
   ]
@@ -665,6 +706,7 @@ const Navbar = ({ onConsult }) => {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = React.useRef(null);
 
   useEffect(() => {
@@ -680,8 +722,14 @@ const Navbar = ({ onConsult }) => {
     };
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
   const goSection = (id) => {
     setDropdownOpen(false);
+    setMobileOpen(false);
     if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 200);
@@ -693,12 +741,14 @@ const Navbar = ({ onConsult }) => {
   return (
     <>
       {dropdownOpen && <div className="nav-backdrop" onClick={() => setDropdownOpen(false)} />}
+      {mobileOpen && <div className="nav-mobile-backdrop" onClick={() => setMobileOpen(false)} />}
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
-          <div className="logo" onClick={() => { setDropdownOpen(false); navigate('/'); }}>
+          <div className="logo" onClick={() => { setDropdownOpen(false); setMobileOpen(false); navigate('/'); }}>
             <Logo size="md" />
           </div>
 
+          {/* Desktop menü */}
           <div className="nav-links">
             <div className="nav-dropdown-wrap" ref={dropdownRef}>
               <button
@@ -742,7 +792,30 @@ const Navbar = ({ onConsult }) => {
               <button className="btn-nav" onClick={() => { setDropdownOpen(false); onConsult(); }}>Ücretsiz Danışmanlık Al</button>
             </div>
           </div>
+
+          {/* Hamburger butonu */}
+          <button className="nav-hamburger" onClick={() => setMobileOpen(v => !v)} aria-label="Menü">
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+
+        {/* Mobile menü */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              className="nav-mobile-menu"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <button className="nav-mobile-item" onClick={() => goSection('services')}>Hizmetler</button>
+              <Link className="nav-mobile-item" to="/eticaret" onClick={() => setMobileOpen(false)}>E-Ticaret</Link>
+              <button className="nav-mobile-item" onClick={() => goSection('contact')}>İletişim</button>
+              <button className="btn-nav nav-mobile-cta" onClick={() => { setMobileOpen(false); onConsult(); }}>Ücretsiz Danışmanlık Al</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </>
   );
@@ -847,7 +920,7 @@ const ContactInlineForm = () => {
             </div>
             <div className="cf-group">
               <label>Telefon</label>
-              <input type="tel" placeholder="05XX XXX XX XX" value={formData.phone} onChange={set('phone')} />
+              <input type="tel" placeholder="05XX XXX XX XX" value={formData.phone} onChange={e => setFormData({ ...formData, phone: formatPhone(e.target.value) })} inputMode="numeric" pattern="[0-9 ]{13,14}" />
             </div>
             <div className="cf-group">
               <label>E-posta</label>
@@ -929,7 +1002,7 @@ const ConsultationModal = ({ isOpen, onClose }) => {
                 </div>
                 <div className="form-group">
                   <label>Telefon</label>
-                  <input type="tel" required placeholder="05XX XXX XX XX" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+                  <input type="tel" required placeholder="05XX XXX XX XX" value={formData.phone} onChange={e => setFormData({...formData, phone: formatPhone(e.target.value)})} inputMode="numeric" pattern="[0-9 ]{13,14}" />
                 </div>
               </div>
               <div className="form-group">
@@ -961,6 +1034,14 @@ const ConsultationModal = ({ isOpen, onClose }) => {
       </motion.div>
     </AnimatePresence>
   );
+};
+
+const formatPhone = (value) => {
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 4) return digits;
+  if (digits.length <= 7) return `${digits.slice(0, 4)} ${digits.slice(4)}`;
+  if (digits.length <= 9) return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7)}`;
+  return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7, 9)} ${digits.slice(9)}`;
 };
 
 const toSlug = (text) =>
@@ -1068,10 +1149,10 @@ const RegistrationModal = ({ isOpen, onClose }) => {
               <input type="text" required placeholder="Mağazanızın adı" value={formData.storeName} onChange={handleStoreNameChange} />
               {formData.storeSlug && (
                 <small style={{ display: 'block', marginTop: 4, color: slugStatus === 'available' ? '#16a34a' : slugStatus === 'taken' ? '#dc2626' : '#6b7280' }}>
-                  {slugStatus === 'checking' && `🔍 ${formData.storeSlug}.lvh.me kontrol ediliyor...`}
-                  {slugStatus === 'available' && `✅ ${formData.storeSlug}.lvh.me müsait`}
-                  {slugStatus === 'taken' && `❌ ${formData.storeSlug}.lvh.me kullanılıyor`}
-                  {slugStatus === null && `🌐 ${formData.storeSlug}.lvh.me`}
+                  {slugStatus === 'checking' && `🔍 ${formData.storeSlug}.pekinteknoloji.com kontrol ediliyor...`}
+                  {slugStatus === 'available' && `✅ ${formData.storeSlug}.pekinteknoloji.com müsait`}
+                  {slugStatus === 'taken' && `❌ ${formData.storeSlug}.pekinteknoloji.com kullanılıyor`}
+                  {slugStatus === null && `🌐 ${formData.storeSlug}.pekinteknoloji.com`}
                 </small>
               )}
             </div>
@@ -1093,7 +1174,7 @@ const RegistrationModal = ({ isOpen, onClose }) => {
 
             <div className="form-group">
               <label>Telefon</label>
-              <input type="tel" required placeholder="05XX XXX XX XX" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+              <input type="tel" required placeholder="05XX XXX XX XX" value={formData.phone} onChange={e => setFormData({...formData, phone: formatPhone(e.target.value)})} inputMode="numeric" pattern="[0-9 ]{13,14}" />
             </div>
 
             <div className="form-group">
@@ -1133,7 +1214,6 @@ const EC_PACKAGES = [
       { text: 'Pazaryeri entegrasyonu', ok: false },
       { text: 'Kampanya & kupon yönetimi', ok: false },
       { text: 'Toplu ürün yönetimi', ok: false },
-      { text: 'Mobil uygulama', ok: false },
     ],
   },
   {
@@ -1148,7 +1228,7 @@ const EC_PACKAGES = [
       { text: 'SSL sertifikası', ok: true },
       { text: 'Özel domain bağlama', ok: true },
       { text: 'Mobil uyumlu mağaza', ok: true },
-      { text: 'Tüm 27 premium tema', ok: true },
+      { text: 'Premium temalar', ok: true },
       { text: 'Gelişmiş SEO & blog modülü', ok: true },
       { text: 'Tüm ödeme sistemleri', ok: true },
       { text: '3 kargo entegrasyonu', ok: true },
@@ -1158,7 +1238,6 @@ const EC_PACKAGES = [
       { text: 'Trendyol & Hepsiburada entegrasyonu', ok: true },
       { text: 'Kampanya & kupon yönetimi', ok: true },
       { text: 'Toplu ürün yönetimi', ok: true },
-      { text: 'Mobil uygulama', ok: false },
     ],
   },
   {
@@ -1182,18 +1261,17 @@ const EC_PACKAGES = [
       { text: 'Tüm pazaryerleri (Trendyol, Hepsiburada, n11, Amazon)', ok: true },
       { text: 'Kampanya & kupon yönetimi', ok: true },
       { text: 'Toplu ürün yönetimi & API erişimi', ok: true },
-      { text: 'iOS & Android mobil uygulama', ok: true },
     ],
   },
 ];
 
 const EC_FEATURES = [
-  { icon: <Zap size={22}/>, title: 'Işık Hızında Sayfalar', desc: 'Google PageSpeed en iyi skorlarıyla dönüşüm oranlarınızı zirveye taşıyın.', stat: '0.8s', statLabel: 'Ort. Yüklenme' },
-  { icon: <TrendingUp size={22}/>, title: 'Gelişmiş SEO Motoru', desc: 'Arama motorlarında en üst sıralarda yer almanız için her şey dahil.', stat: '%340', statLabel: 'Org. Trafik' },
-  { icon: <Cpu size={22}/>, title: 'Akıllı Entegrasyonlar', desc: 'Trendyol, Hepsiburada, n11 ve kargo firmalarıyla tek tıkla bağlanın.', stat: '8+', statLabel: 'Entegrasyon' },
-  { icon: <MousePointer2 size={22}/>, title: 'Toplu İşlem Sihirbazı', desc: 'Binlerce ürünü saniyeler içinde güncelleyin, zaman kazanın.', stat: '10x', statLabel: 'Daha Hızlı' },
-  { icon: <Smartphone size={22}/>, title: 'Mobil Uygulama', desc: 'Müşterileriniz için iOS ve Android uygulamasıyla satışlarınızı artırın.', stat: '%68', statLabel: 'Mobil Alışveriş' },
-  { icon: <Headphones size={22}/>, title: '7/24 Yerli Destek', desc: 'Kritik anlarda Türkçe destek ekibimiz her zaman yanınızda.', stat: '<2dk', statLabel: 'Yanıt Süresi' },
+  { icon: <Zap size={22}/>, title: 'Hızlı Yükleme', desc: 'Optimize edilmiş altyapı ve CDN desteğiyle sayfalarınız hızlı açılır, kullanıcı deneyimi ve dönüşüm oranı artar.' },
+  { icon: <TrendingUp size={22}/>, title: 'Gelişmiş SEO', desc: 'SEO dostu URL yapısı, otomatik sitemap, meta etiket yönetimi ve yapısal veri desteğiyle arama motorlarında öne çıkın.' },
+  { icon: <Cpu size={22}/>, title: 'Pazaryeri Entegrasyonları', desc: 'Trendyol, Hepsiburada ve n11 ile ürün, stok ve sipariş senkronizasyonu tek panelden.' },
+  { icon: <MousePointer2 size={22}/>, title: 'Toplu Ürün Yönetimi', desc: 'Binlerce ürünü Excel ile içe aktarın, toplu fiyat ve stok güncellemelerini saniyeler içinde yapın.' },
+  { icon: <Smartphone size={22}/>, title: 'Responsive Tasarım', desc: 'Tüm temalar mobil uyumlu; telefon, tablet ve masaüstünde kusursuz görünür.' },
+  { icon: <Headphones size={22}/>, title: '7/24 Destek', desc: 'Teknik sorunlarınız için destek ekibimiz her zaman yanınızda.' },
 ];
 
 const EC_INTEGRATIONS = [
@@ -1218,7 +1296,7 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
       <div className="ec-hero-bg" />
       <div className="container">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="ec-hero-content">
-          <span className="ec-badge"><span className="ec-badge-dot" />Türkiye'nin Yerli E-Ticaret Altyapısı</span>
+          <span className="ec-badge"><span className="ec-badge-dot" />Güçlü E-Ticaret Altyapısı</span>
           <h1 className="ec-hero-title">E-ticarette<br /><span className="text-gradient">güçlü altyapı,</span><br />tam entegrasyon</h1>
           <p className="ec-hero-sub">E-ticaret sitenizi kurun, tüm pazaryerlerine bağlayın. Sipariş, stok ve kargo yönetimi tek panelden. 14 gün ücretsiz deneyin.</p>
           <div className="ec-hero-btns">
@@ -1241,8 +1319,7 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
             <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="ec-feature-card">
               <div className="ec-feature-top">
                 <div className="icon-box">{f.icon}</div>
-                <div className="ec-feature-stat"><strong>{f.stat}</strong><span>{f.statLabel}</span></div>
-              </div>
+                </div>
               <h3>{f.title}</h3>
               <p>{f.desc}</p>
             </motion.div>
@@ -1312,7 +1389,7 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
       <div className="container">
         <div className="section-header">
           <span className="section-label">Temalar</span>
-          <h2>Markanıza özel 27 premium tema</h2>
+          <h2>Markanıza özel premium temalar</h2>
           <p className="section-desc">Her tema farklı bir iş modeli ve hedef kitleye göre tasarlandı.</p>
         </div>
         <div className="ec-themes-grid-3">
@@ -1389,8 +1466,8 @@ const PlatformFeatures = ({ onGoEcommerce }) => {
     { title: 'Gelişmiş SEO Motoru', desc: 'Arama motorlarında en üst sıralarda yer almanız için her şey dahil.', icon: <TrendingUp /> },
     { title: 'Akıllı Entegrasyonlar', desc: 'Pazaryerleri, ödeme sistemleri ve kargo firmalarıyla anında bağlayın.', icon: <Cpu /> },
     { title: 'Toplu İşlem Sihirbazı', desc: 'Binlerce ürünü saniyeler içinde güncelleyin, zaman kazanın.', icon: <MousePointer2 /> },
-    { title: 'Mobil Uygulama Gücü', desc: 'Müşterileriniz için yerli iOS ve Android deneyimi sunun.', icon: <Smartphone /> },
-    { title: '7/24 Teknik Destek', desc: 'Kritik anlarda her zaman yanınızdayız, profesyonel destek ekibi.', icon: <Headphones /> }
+    { title: 'Responsive Tasarım', desc: 'Tüm temalar mobil uyumlu; telefon, tablet ve masaüstünde kusursuz çalışır.', icon: <Smartphone /> },
+    { title: '7/24 Destek', desc: 'Teknik sorunlarınız için destek ekibimiz her zaman yanınızda.', icon: <Headphones /> }
   ];
 
   return (
@@ -1442,9 +1519,8 @@ const PricingPage = () => {
     { cat: 'Pazarlama & SEO' },
     { name: 'Gelişmiş SEO', values: [true, true, true] },
     { name: 'Pazaryeri Entegrasyonları', values: [false, true, true] },
-    { name: 'Mobil Uygulama', values: [false, 'Opsiyonel', true] },
     { cat: 'Destek' },
-    { name: '7/24 Yerli Destek', values: [true, true, true] },
+    { name: '7/24 Destek', values: [true, true, true] },
     { name: 'Özel Danışmanlık', values: [false, false, true] }
   ];
 
@@ -1650,10 +1726,10 @@ const HesabimPage = () => {
             <p style={{ margin: '0 0 20px', fontSize: 28, fontWeight: 700, color: subscription.daysRemaining > 3 ? '#16a34a' : '#dc2626' }}>
               {subscription.daysRemaining} gün kaldı
             </p>
-            <button style={{ background: '#6366f1', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: 8, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}
-              onClick={() => alert('Ödeme sistemi yakında aktif olacak.')}>
+            <a href="mailto:bilgi@pekinteknoloji.com?subject=Ücretli%20Plana%20Geçiş"
+              style={{ display: 'inline-block', background: '#6366f1', color: '#fff', padding: '10px 24px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>
               Ücretli Plana Geç
-            </button>
+            </a>
           </div>
         )}
         {status === 'active' && (
@@ -1662,10 +1738,10 @@ const HesabimPage = () => {
         {status === 'suspended' && (
           <div>
             <p style={{ color: '#dc2626', marginBottom: 16 }}>❌ Deneme süreniz doldu. Mağazanıza erişmek için ücretli plana geçin.</p>
-            <button style={{ background: '#dc2626', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: 8, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}
-              onClick={() => alert('Ödeme sistemi yakında aktif olacak.')}>
+            <a href="mailto:bilgi@pekinteknoloji.com?subject=Mağaza%20Aktifleştirme"
+              style={{ display: 'inline-block', background: '#dc2626', color: '#fff', padding: '10px 24px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>
               Mağazamı Aktifleştir
-            </button>
+            </a>
           </div>
         )}
       </div>
@@ -1721,11 +1797,11 @@ const MagazaAcPage = () => {
 
   const PERKS = [
     { icon: '🚀', text: 'Dakikalar içinde mağazanız hazır' },
-    { icon: '🎨', text: '27 premium temadan birini seçin' },
+    { icon: '🎨', text: 'Premium temalardan birini seçin' },
     { icon: '🔗', text: 'Trendyol & Hepsiburada entegrasyonu' },
     { icon: '🛡️', text: 'SSL sertifikası ve güvenli altyapı' },
     { icon: '📱', text: 'Mobil uyumlu, her cihazda çalışır' },
-    { icon: '🇹🇷', text: '7/24 Türkçe teknik destek' },
+    { icon: '🎧', text: '7/24 teknik destek' },
   ];
 
   return (
@@ -1748,10 +1824,10 @@ const MagazaAcPage = () => {
               <input type="text" required placeholder="Örn: Çiçek Butik" value={formData.storeName} onChange={set('storeName')} />
               {formData.storeSlug && (
                 <small style={{ display: 'block', marginTop: 4, color: slugStatus === 'available' ? '#16a34a' : slugStatus === 'taken' ? '#dc2626' : '#6b7280' }}>
-                  {slugStatus === 'checking' && `🔍 ${formData.storeSlug}.lvh.me kontrol ediliyor...`}
-                  {slugStatus === 'available' && `✅ ${formData.storeSlug}.lvh.me müsait`}
-                  {slugStatus === 'taken' && `❌ ${formData.storeSlug}.lvh.me kullanılıyor`}
-                  {slugStatus === null && `🌐 ${formData.storeSlug}.lvh.me`}
+                  {slugStatus === 'checking' && `🔍 ${formData.storeSlug}.pekinteknoloji.com kontrol ediliyor...`}
+                  {slugStatus === 'available' && `✅ ${formData.storeSlug}.pekinteknoloji.com müsait`}
+                  {slugStatus === 'taken' && `❌ ${formData.storeSlug}.pekinteknoloji.com kullanılıyor`}
+                  {slugStatus === null && `🌐 ${formData.storeSlug}.pekinteknoloji.com`}
                 </small>
               )}
             </div>
@@ -1771,7 +1847,7 @@ const MagazaAcPage = () => {
             </div>
             <div className="map-form-group">
               <label>Telefon</label>
-              <input type="tel" required placeholder="05XX XXX XX XX" value={formData.phone} onChange={set('phone')} />
+              <input type="tel" required placeholder="05XX XXX XX XX" value={formData.phone} onChange={e => { const v = formatPhone(e.target.value); setFormData({ ...formData, phone: v }); }} inputMode="numeric" pattern="[0-9 ]{13,14}" />
             </div>
             <div className="map-form-group">
               <label>Şifre</label>
@@ -1841,7 +1917,10 @@ const BlogDetailPage = () => {
         <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.3 }}>{post.title}</h1>
         <p style={{ color: '#64748B', marginBottom: '2rem' }}>{post.readTime} okuma</p>
         <img src={post.img} alt={post.title} style={{ width: '100%', borderRadius: 16, marginBottom: '2rem', maxHeight: 360, objectFit: 'cover' }} />
-        <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: '#334155' }}>{post.desc} Bu konuda daha fazla bilgi almak için bizimle iletişime geçebilirsiniz.</p>
+        {post.content ? post.content.map((block, i) => {
+          if (block.type === 'h2') return <h2 key={i} style={{ fontSize: '1.35rem', fontWeight: 700, margin: '2rem 0 0.75rem', color: '#1E293B' }}>{block.text}</h2>;
+          return <p key={i} style={{ fontSize: '1.05rem', lineHeight: 1.8, color: '#334155', marginBottom: '1rem' }}>{block.text}</p>;
+        }) : <p style={{ fontSize: '1.05rem', lineHeight: 1.8, color: '#334155' }}>{post.desc}</p>}
       </div>
     </div>
   );
@@ -1915,7 +1994,7 @@ const AgencyServices = ({ onConsult }) => (
           <h3>E-Ticaret Mağazası</h3>
           <p>Kurulum, tema seçimi, ödeme & kargo entegrasyonu, Trendyol & Hepsiburada bağlantısı — her şey dahil. Dakikalar içinde satışa başlayın.</p>
           <ul className="service-list">
-            <li>27 premium tema</li>
+            <li>Premium temalar</li>
             <li>Pazaryeri entegrasyonları</li>
             <li>SSL + güvenli ödeme</li>
           </ul>
@@ -1935,9 +2014,9 @@ const AgencyServices = ({ onConsult }) => (
         <div className="service-card">
           <div className="service-icon">🛠️</div>
           <h3>Destek & Danışmanlık</h3>
-          <p>7/24 Türkçe teknik destek, düzenli bakım ve dijital dönüşüm danışmanlığı ile yanınızdayız.</p>
+          <p>7/24 teknik destek, düzenli bakım ve dijital dönüşüm danışmanlığı ile yanınızdayız.</p>
           <ul className="service-list">
-            <li>7/24 Türkçe destek</li>
+            <li>7/24 destek</li>
             <li>Proaktif izleme & bakım</li>
             <li>Teknoloji danışmanlığı</li>
           </ul>
@@ -1959,11 +2038,11 @@ const AgencyServices = ({ onConsult }) => (
           animate={{ opacity: 1, x: 0 }}
           className="hero-text"
         >
-          <span className="badge">Türkiye'ye Hazır E-Ticaret Altyapısı</span>
+          <span className="badge">Hazır E-Ticaret Altyapısı</span>
           <h1>E-Ticaret Mağazanızı <br /> <span className="text-gradient">Birlikte Kuralım</span></h1>
           <p className="hero-description">
-            Güçlü e-ticaret altyapısıyla Türkiye'ye hazır mağazanızı kurun.
-            Yerli ödeme sistemleri, pazaryeri entegrasyonları ve 7/24 Türkçe destek tek pakette.
+            Güçlü e-ticaret altyapısıyla mağazanızı kurun.
+            Ödeme sistemleri, pazaryeri entegrasyonları ve 7/24 destek tek pakette.
           </p>
           <div className="hero-btns">
             <button className="btn-primary" onClick={() => navigate('/magaza-ac')}>
@@ -2015,9 +2094,18 @@ const AgencyServices = ({ onConsult }) => (
             <a href="mailto:bilgi@pekinteknoloji.com" className="contact-info-pill">
               <Mail size={16} /> bilgi@pekinteknoloji.com
             </a>
-            <div className="contact-info-pill">
-              <MapPin size={16} /> Selanik Pasajı No:5, Beyoğlu/İstanbul
-            </div>
+          </div>
+          <div style={{ borderRadius: 16, overflow: 'hidden', margin: '1.5rem 0', height: 280, boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
+            <iframe
+              title="Pekin Teknoloji Konum"
+              src="https://maps.google.com/maps?q=Selanik+Pasa%C4%B1+No:5+Beyo%C4%9Flu+%C4%B0stanbul&output=embed&hl=tr"
+              width="100%"
+              height="280"
+              style={{ border: 0, display: 'block' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
           <ContactInlineForm />
         </div>
@@ -2035,7 +2123,7 @@ const AgencyServices = ({ onConsult }) => (
 
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/eticaret" element={<EcommercePage onRegister={() => setRegModalOpen(true)} onThemeSelect={setSelectedTheme} themesData={THEMES_DATA} />} />
+        <Route path="/eticaret" element={<EcommercePage onRegister={() => navigate('/magaza-ac')} onThemeSelect={setSelectedTheme} themesData={THEMES_DATA} />} />
         <Route path="/fiyatlar" element={<PricingPage />} />
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogDetailPage />} />

@@ -144,6 +144,61 @@
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
+/* Hamburger butonu — sadece mobile'da görünür */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #121926;
+  padding: 4px;
+  line-height: 1;
+}
+
+/* Mobile açılır menü */
+.nav-mobile-menu {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-top: 1px solid #E3E8EF;
+  padding: 1rem 5%;
+  gap: 0.25rem;
+}
+.nav-mobile-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #121926;
+  padding: 0.75rem 0;
+  cursor: pointer;
+  border-bottom: 1px solid #F1F5F9;
+  text-decoration: none;
+}
+.nav-mobile-item:last-of-type { border-bottom: none; }
+.nav-mobile-cta {
+  margin-top: 0.75rem;
+  width: 100%;
+  text-align: center;
+  border-radius: 10px;
+  padding: 12px;
+}
+.nav-mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-container { height: 64px; }
+}
+
 .nav-divider {
   width: 1px;
   height: 24px;
