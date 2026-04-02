@@ -245,5 +245,10 @@
 
     @NopHtml.GenerateScripts(ResourceLocation.Footer)
     @NopHtml.GenerateInlineScripts(ResourceLocation.Footer)
+    <script>
+        $(function () {
+            $('select[id$="SelectedStoreIds"], select[id$="StoreId"]').filter(function () { return !$(this).find('option').length; }).closest('.form-group').hide();
+        });
+    </script>
 </body>
 </html>
