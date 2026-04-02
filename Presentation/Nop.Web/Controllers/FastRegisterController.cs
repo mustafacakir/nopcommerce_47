@@ -237,6 +237,10 @@ namespace Nop.Web.Controllers
             };
             await _storeService.InsertStoreAsync(newStore);
 
+            // Müşteriyi yeni store'a ata
+            customer.RegisteredInStoreId = newStore.Id;
+            await _customerService.UpdateCustomerAsync(customer);
+
             // Template store'dan ayarları ve içeriği klonla
             await CloneTemplateStoreAsync(newStore.Id);
 
