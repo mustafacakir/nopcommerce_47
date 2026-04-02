@@ -114,9 +114,6 @@ public partial class NopStartup : INopStartup
 
         // Tenant izolasyonu: admin panelinde her tenant sadece kendi store'unu görür
         services.AddScoped<IStoreService, TenantStoreService>();
-
-        // Tenant tek mağazaya sahipse store seçim alanlarını tüm sayfalarda gizle
-        services.AddScoped<IStoreMappingSupportedModelFactory, TenantStoreMappingSupportedModelFactory>();
     }
 
     /// <summary>
