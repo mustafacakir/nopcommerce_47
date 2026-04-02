@@ -8,7 +8,8 @@ services:
     ports:
       - "127.0.0.1:8086:80"
     depends_on:
-      - nopcommerce_db
+      - pgbouncer
+      - redis
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -17,6 +18,28 @@ services:
     volumes:
       - ./Presentation/Nop.Web/Plugins/Uploaded:/app/Plugins/Uploaded
       - ./Presentation/Nop.Web/App_Data:/app/App_Data
+      - ./Presentation/Nop.Web/wwwroot/images:/app/wwwroot/images
+
+  redis:
+    image: redis:7-alpine
+    container_name: pekin_redis
+    restart: always
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
+    volumes:
+      - pekin_redis_data:/data
+
+  pgbouncer:
+    image: edoburu/pgbouncer
+    container_name: pekin_pgbouncer
+    restart: always
+    environment:
+      DATABASE_URL: "postgres://nopuser:${DB_PASSWORD}@nopcommerce_db/nopcommerce_db"
+      POOL_MODE: session
+      MAX_CLIENT_CONN: 1000
+      DEFAULT_POOL_SIZE: 25
+      SERVER_RESET_QUERY: DISCARD ALL
+    depends_on:
+      - nopcommerce_db
 
   nopcommerce_db:
     image: postgres:15-alpine
@@ -33,3 +56,4 @@ services:
 
 volumes:
   pekin_db_data:
+  pekin_redis_data:
