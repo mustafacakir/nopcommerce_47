@@ -113,7 +113,7 @@ services:
     container_name: pekin_grafana
     restart: always
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3001:3000"
     volumes:
       - grafana_data:/var/lib/grafana
     environment:
