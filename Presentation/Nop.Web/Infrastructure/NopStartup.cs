@@ -1,8 +1,10 @@
 ﻿using Nop.Core.Infrastructure;
+using Nop.Services.Stores;
 using Nop.Web.Areas.Admin.Factories;
 using Nop.Web.Areas.Admin.Helpers;
 using Nop.Web.Framework.Factories;
 using Nop.Web.Infrastructure.Installation;
+using Nop.Web.Infrastructure.Services;
 
 namespace Nop.Web.Infrastructure;
 
@@ -109,6 +111,9 @@ public partial class NopStartup : INopStartup
 
         //helpers classes
         services.AddScoped<ITinyMceHelper, TinyMceHelper>();
+
+        // Tenant izolasyonu: admin panelinde her tenant sadece kendi store'unu görür
+        services.AddScoped<IStoreService, TenantStoreService>();
     }
 
     /// <summary>
