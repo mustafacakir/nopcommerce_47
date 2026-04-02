@@ -22,6 +22,7 @@ using Nop.Services.Stores;
 using Nop.Services.Tax;
 using Nop.Services.Topics;
 using Nop.Services.Vendors;
+using Nop.Core;
 using Nop.Web.Areas.Admin.Infrastructure.Cache;
 using LogLevel = Nop.Core.Domain.Logging.LogLevel;
 
@@ -54,6 +55,7 @@ public partial class BaseAdminModelFactory : IBaseAdminModelFactory
     protected readonly IStateProvinceService _stateProvinceService;
     protected readonly IStaticCacheManager _staticCacheManager;
     protected readonly IStoreService _storeService;
+    protected readonly IWorkContext _workContext;
     protected readonly ITaxCategoryService _taxCategoryService;
     protected readonly ITopicTemplateService _topicTemplateService;
     protected readonly IVendorService _vendorService;
@@ -84,7 +86,8 @@ public partial class BaseAdminModelFactory : IBaseAdminModelFactory
         IStoreService storeService,
         ITaxCategoryService taxCategoryService,
         ITopicTemplateService topicTemplateService,
-        IVendorService vendorService)
+        IVendorService vendorService,
+        IWorkContext workContext)
     {
         _categoryService = categoryService;
         _categoryTemplateService = categoryTemplateService;
@@ -109,6 +112,7 @@ public partial class BaseAdminModelFactory : IBaseAdminModelFactory
         _taxCategoryService = taxCategoryService;
         _topicTemplateService = topicTemplateService;
         _vendorService = vendorService;
+        _workContext = workContext;
     }
 
     #endregion
@@ -416,8 +420,23 @@ public partial class BaseAdminModelFactory : IBaseAdminModelFactory
     {
         ArgumentNullException.ThrowIfNull(items);
 
-        //prepare available stores
-        var availableStores = await _storeService.GetAllStoresAsync();
+        //prepare available stores — super admin tüm store'ları görür, tenant admin sadece kendi store'unu
+        var currentCustomer = await _workContext.GetCurrentCustomerAsync();
+        var isAdmin = await _customerService.IsAdminAsync(currentCustomer);
+
+        IList<Nop.Core.Domain.Stores.Store> availableStores;
+        if (isAdmin)
+        {
+            availableStores = await _storeService.GetAllStoresAsync();
+        }
+        else
+        {
+            var store = await _storeService.GetStoreByIdAsync(currentCustomer.RegisteredInStoreId);
+            availableStores = store != null
+                ? new List<Nop.Core.Domain.Stores.Store> { store }
+                : new List<Nop.Core.Domain.Stores.Store>();
+        }
+
         foreach (var store in availableStores)
         {
             items.Add(new SelectListItem { Value = store.Id.ToString(), Text = store.Name });
