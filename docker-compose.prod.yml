@@ -38,6 +38,7 @@ services:
       MAX_CLIENT_CONN: 1000
       DEFAULT_POOL_SIZE: 25
       SERVER_RESET_QUERY: DISCARD ALL
+      AUTH_TYPE: scram-sha-256
     depends_on:
       - nopcommerce_db
 
