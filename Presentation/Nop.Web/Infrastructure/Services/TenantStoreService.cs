@@ -8,22 +8,20 @@ namespace Nop.Web.Infrastructure.Services;
 
 /// <summary>
 /// Admin panelinde tenant admin'lerin sadece kendi store'larını görmesini sağlar.
-/// Public store routing etkilenmez — sadece /Admin/ path'inde filtreleme yapılır.
+/// IWorkContext constructor injection yerine RequestServices ile lazy resolve edilir
+/// — böylece IStoreContext → IStoreService circular dependency engellenir.
 /// </summary>
 public class TenantStoreService : StoreService
 {
-    private readonly IWorkContext _workContext;
-    private readonly ICustomerService _customerService;
     private readonly IHttpContextAccessor _httpContextAccessor;
+
+    // Infinite recursion koruması: GetCurrentCustomerAsync içinde GetAllStoresAsync çağrılırsa
+    private static readonly AsyncLocal<bool> _isResolving = new();
 
     public TenantStoreService(
         IRepository<Store> storeRepository,
-        IWorkContext workContext,
-        ICustomerService customerService,
         IHttpContextAccessor httpContextAccessor) : base(storeRepository)
     {
-        _workContext = workContext;
-        _customerService = customerService;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -31,22 +29,44 @@ public class TenantStoreService : StoreService
     {
         var allStores = await base.GetAllStoresAsync();
 
-        // Sadece admin panelinde filtrele — public store routing etkilenmesin
+        // Recursive call koruması
+        if (_isResolving.Value)
+            return allStores;
+
+        // Sadece admin panelinde filtrele
         var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext == null || !httpContext.Request.Path.StartsWithSegments("/Admin"))
             return allStores;
 
-        var currentCustomer = await _workContext.GetCurrentCustomerAsync();
+        _isResolving.Value = true;
+        try
+        {
+            var workContext = httpContext.RequestServices.GetService<IWorkContext>();
+            var customerService = httpContext.RequestServices.GetService<ICustomerService>();
 
-        // Super admin tüm store'ları görür
-        if (await _customerService.IsAdminAsync(currentCustomer))
+            if (workContext == null || customerService == null)
+                return allStores;
+
+            var currentCustomer = await workContext.GetCurrentCustomerAsync();
+
+            // Super admin tüm store'ları görür
+            if (await customerService.IsAdminAsync(currentCustomer))
+                return allStores;
+
+            // Tenant admin sadece kendi store'unu görür
+            var registeredInStoreId = currentCustomer.RegisteredInStoreId;
+            if (registeredInStoreId == 0)
+                return allStores;
+
+            return allStores.Where(s => s.Id == registeredInStoreId).ToList();
+        }
+        catch
+        {
             return allStores;
-
-        // Tenant admin sadece kendi store'unu görür
-        var registeredInStoreId = currentCustomer.RegisteredInStoreId;
-        if (registeredInStoreId == 0)
-            return allStores;
-
-        return allStores.Where(s => s.Id == registeredInStoreId).ToList();
+        }
+        finally
+        {
+            _isResolving.Value = false;
+        }
     }
 }
