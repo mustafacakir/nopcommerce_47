@@ -1202,7 +1202,6 @@ const EC_PACKAGES = [
       { text: '5 GB medya depolama', ok: true },
       { text: 'Sınırsız trafik & bant genişliği', ok: true },
       { text: 'SSL sertifikası', ok: true },
-      { text: 'Özel domain bağlama', ok: true },
       { text: 'Mobil uyumlu mağaza', ok: true },
       { text: '3 premium tema', ok: true },
       { text: 'Temel SEO ayarları', ok: true },
@@ -1226,7 +1225,6 @@ const EC_PACKAGES = [
       { text: '25 GB medya depolama', ok: true },
       { text: 'Sınırsız trafik & bant genişliği', ok: true },
       { text: 'SSL sertifikası', ok: true },
-      { text: 'Özel domain bağlama', ok: true },
       { text: 'Mobil uyumlu mağaza', ok: true },
       { text: 'Premium temalar', ok: true },
       { text: 'Gelişmiş SEO & blog modülü', ok: true },
@@ -1249,7 +1247,6 @@ const EC_PACKAGES = [
       { text: 'Sınırsız medya depolama', ok: true },
       { text: 'Sınırsız trafik & bant genişliği', ok: true },
       { text: 'SSL sertifikası', ok: true },
-      { text: 'Özel domain bağlama', ok: true },
       { text: 'Mobil uyumlu mağaza', ok: true },
       { text: 'Özel tema tasarımı', ok: true },
       { text: 'Tam SEO + içerik yönetimi', ok: true },
@@ -1260,7 +1257,7 @@ const EC_PACKAGES = [
       { text: 'Terk edilmiş sepet otomasyonu', ok: true },
       { text: 'Tüm pazaryerleri (Trendyol, Hepsiburada, n11, Amazon)', ok: true },
       { text: 'Kampanya & kupon yönetimi', ok: true },
-      { text: 'Toplu ürün yönetimi & API erişimi', ok: true },
+      { text: 'Toplu ürün yönetimi', ok: true },
     ],
   },
 ];
@@ -1434,7 +1431,7 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
         <div className="ec-themes-footer">
           {!showAllThemes && (
             <button className="btn-ghost" onClick={() => setShowAllThemes(true)}>
-              Diğer {THEMES_DATA.length - 3} Temayı Keşfet <ChevronRight size={16} />
+              Diğer Temalarımızı Keşfet <ChevronRight size={16} />
             </button>
           )}
           {showAllThemes && (
