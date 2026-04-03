@@ -6,7 +6,7 @@
 set -e
 
 EMAIL="admin@pekinteknoloji.com"
-NGINX_CONF_DIR="/etc/nginx/conf.d"
+NGINX_CONF_DIR="/etc/nginx/sites-enabled"
 PROXY_PASS="http://127.0.0.1:8086"
 
 echo "[$(date)] SSL kontrolü başlıyor..."
