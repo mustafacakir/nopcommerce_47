@@ -1,3 +1,4 @@
+// PEKIN_CUSTOM: StoreService override - admin panelinde tenant sadece kendi store'unu görür
 using Nop.Core;
 using Nop.Core.Domain.Stores;
 using Nop.Data;
