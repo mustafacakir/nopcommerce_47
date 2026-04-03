@@ -326,8 +326,11 @@ public static class ServiceCollectionExtensions
         mvcBuilder.AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
         //set some options
+        services.AddScoped<Nop.Web.Framework.Mvc.Filters.TenantStoreMappingFilter>();
+
         mvcBuilder.AddMvcOptions(options =>
         {
+            options.Filters.AddService<Nop.Web.Framework.Mvc.Filters.TenantStoreMappingFilter>();
             options.ModelBinderProviders.Insert(1, new NopModelBinderProvider());
             //add custom display metadata provider 
             options.ModelMetadataDetailsProviders.Add(new NopMetadataProvider());
