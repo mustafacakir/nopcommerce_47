@@ -1,0 +1,188 @@
+{
+  "title": "nopCommerce",
+  "uid": "nopcommerce-main",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "30s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Toplam İstek",
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 4 },
+      "targets": [{ "expr": "sum(http_server_request_duration_seconds_count{job=\"nopcommerce\"})", "refId": "A" }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "blue", "value": null }] } } }
+    },
+    {
+      "id": 2, "type": "stat", "title": "İstek/Saniye",
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 4 },
+      "targets": [{ "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m]))", "refId": "A" }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "fieldConfig": { "defaults": { "decimals": 2, "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }] } } }
+    },
+    {
+      "id": 3, "type": "stat", "title": "Hata Oranı %",
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 4 },
+      "targets": [{
+        "expr": "100 * sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"[45]..\"}[5m])) / sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m]))",
+        "refId": "A"
+      }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "fieldConfig": { "defaults": { "unit": "percent", "decimals": 2, "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 5 }] } } }
+    },
+    {
+      "id": 4, "type": "stat", "title": "Ort. Yanıt Süresi",
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 4 },
+      "targets": [{
+        "expr": "sum(rate(http_server_request_duration_seconds_sum{job=\"nopcommerce\"}[5m])) / sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m]))",
+        "refId": "A"
+      }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "fieldConfig": { "defaults": { "unit": "s", "decimals": 3, "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 0.5 }, { "color": "red", "value": 2 }] } } }
+    },
+    {
+      "id": 5, "type": "timeseries", "title": "İstek Hızı (req/s)",
+      "gridPos": { "x": 0, "y": 4, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m]))", "legendFormat": "Toplam", "refId": "A" },
+        { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"2..\"}[5m]))", "legendFormat": "2xx", "refId": "B" },
+        { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"4..\"}[5m]))", "legendFormat": "4xx", "refId": "C" },
+        { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"5..\"}[5m]))", "legendFormat": "5xx", "refId": "D" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "lineWidth": 2 } },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "4xx" }, "properties": [{ "id": "color", "value": { "fixedColor": "orange", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "5xx" }, "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }] }
+        ]
+      }
+    },
+    {
+      "id": 6, "type": "timeseries", "title": "Yanıt Süresi",
+      "gridPos": { "x": 12, "y": 4, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum(rate(http_server_request_duration_seconds_bucket{job=\"nopcommerce\"}[5m])) by (le))", "legendFormat": "p50", "refId": "A" },
+        { "expr": "histogram_quantile(0.95, sum(rate(http_server_request_duration_seconds_bucket{job=\"nopcommerce\"}[5m])) by (le))", "legendFormat": "p95", "refId": "B" },
+        { "expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket{job=\"nopcommerce\"}[5m])) by (le))", "legendFormat": "p99", "refId": "C" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 7, "type": "timeseries", "title": "Hata Oranı (4xx / 5xx)",
+      "gridPos": { "x": 0, "y": 12, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"4..\"}[5m]))", "legendFormat": "4xx", "refId": "A" },
+        { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"5..\"}[5m]))", "legendFormat": "5xx", "refId": "B" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "lineWidth": 2 } },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "4xx" }, "properties": [{ "id": "color", "value": { "fixedColor": "orange", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "5xx" }, "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }] }
+        ]
+      }
+    },
+    {
+      "id": 8, "type": "timeseries", "title": "Route Bazında İstek Hızı (Top 10)",
+      "gridPos": { "x": 12, "y": 12, "w": 12, "h": 8 },
+      "targets": [{
+        "expr": "topk(10, sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m])) by (http_route))",
+        "legendFormat": "{{http_route}}", "refId": "A"
+      }],
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 9, "type": "timeseries", "title": ".NET GC Heap Belleği",
+      "gridPos": { "x": 0, "y": 20, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "dotnet_gc_heap_size_bytes{job=\"nopcommerce\", generation=\"gen0\"}", "legendFormat": "Gen 0", "refId": "A" },
+        { "expr": "dotnet_gc_heap_size_bytes{job=\"nopcommerce\", generation=\"gen1\"}", "legendFormat": "Gen 1", "refId": "B" },
+        { "expr": "dotnet_gc_heap_size_bytes{job=\"nopcommerce\", generation=\"gen2\"}", "legendFormat": "Gen 2", "refId": "C" },
+        { "expr": "dotnet_gc_heap_size_bytes{job=\"nopcommerce\", generation=\"loh\"}", "legendFormat": "LOH", "refId": "D" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 10, "type": "timeseries", "title": "GC Koleksiyon Hızı",
+      "gridPos": { "x": 12, "y": 20, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "rate(dotnet_gc_collections_total{job=\"nopcommerce\", generation=\"gen0\"}[5m])", "legendFormat": "Gen 0", "refId": "A" },
+        { "expr": "rate(dotnet_gc_collections_total{job=\"nopcommerce\", generation=\"gen1\"}[5m])", "legendFormat": "Gen 1", "refId": "B" },
+        { "expr": "rate(dotnet_gc_collections_total{job=\"nopcommerce\", generation=\"gen2\"}[5m])", "legendFormat": "Gen 2", "refId": "C" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "ops", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 11, "type": "timeseries", "title": "Thread Pool",
+      "gridPos": { "x": 0, "y": 28, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "dotnet_thread_pool_thread_count{job=\"nopcommerce\"}", "legendFormat": "Thread Sayısı", "refId": "A" },
+        { "expr": "dotnet_thread_pool_queue_length{job=\"nopcommerce\"}", "legendFormat": "Kuyruk Uzunluğu", "refId": "B" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 12, "type": "timeseries", "title": "Aktif HTTP İstekleri",
+      "gridPos": { "x": 12, "y": 28, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "http_server_active_requests{job=\"nopcommerce\"}", "legendFormat": "Gelen (server)", "refId": "A" },
+        { "expr": "http_client_active_requests{job=\"nopcommerce\"}", "legendFormat": "Giden (client)", "refId": "B" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 13, "type": "timeseries", "title": "Sunucu CPU Kullanımı",
+      "gridPos": { "x": 0, "y": 36, "w": 12, "h": 8 },
+      "targets": [{
+        "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+        "legendFormat": "CPU %", "refId": "A"
+      }],
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "custom": { "lineWidth": 2 } },
+        "overrides": [{ "matcher": { "id": "byName", "options": "CPU %" }, "properties": [{ "id": "color", "value": { "fixedColor": "orange", "mode": "fixed" } }] }]
+      }
+    },
+    {
+      "id": 14, "type": "timeseries", "title": "Sunucu RAM Kullanımı",
+      "gridPos": { "x": 12, "y": 36, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "node_memory_MemTotal_bytes", "legendFormat": "Toplam", "refId": "A" },
+        { "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes", "legendFormat": "Kullanılan", "refId": "B" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 15, "type": "timeseries", "title": "Disk Kullanımı",
+      "gridPos": { "x": 0, "y": 44, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "node_filesystem_size_bytes{fstype!~\"tmpfs|overlay\"}", "legendFormat": "Toplam - {{mountpoint}}", "refId": "A" },
+        { "expr": "node_filesystem_size_bytes{fstype!~\"tmpfs|overlay\"} - node_filesystem_free_bytes{fstype!~\"tmpfs|overlay\"}", "legendFormat": "Kullanılan - {{mountpoint}}", "refId": "B" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 16, "type": "timeseries", "title": "Ağ Trafiği",
+      "gridPos": { "x": 12, "y": 44, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "rate(node_network_receive_bytes_total{device!=\"lo\"}[5m])", "legendFormat": "Gelen - {{device}}", "refId": "A" },
+        { "expr": "rate(node_network_transmit_bytes_total{device!=\"lo\"}[5m])", "legendFormat": "Giden - {{device}}", "refId": "B" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "Bps", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 17, "type": "timeseries", "title": "DNS Lookup Süresi",
+      "gridPos": { "x": 0, "y": 52, "w": 12, "h": 8 },
+      "targets": [{
+        "expr": "histogram_quantile(0.95, rate(dns_lookup_duration_seconds_bucket{job=\"nopcommerce\"}[5m]))",
+        "legendFormat": "p95 - {{dns_question_name}}", "refId": "A"
+      }],
+      "fieldConfig": { "defaults": { "unit": "s", "custom": { "lineWidth": 2 } } }
+    },
+    {
+      "id": 18, "type": "table", "title": "Route Bazında İstek Özeti",
+      "gridPos": { "x": 12, "y": 52, "w": 12, "h": 8 },
+      "targets": [
+        { "expr": "sort_desc(sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m])) by (http_route, http_request_method))", "legendFormat": "", "refId": "A", "instant": true, "format": "table" }
+      ],
+      "options": { "sortBy": [{ "displayName": "Value", "desc": true }] },
+      "fieldConfig": { "defaults": { "unit": "reqps" } }
+    }
+  ]
+}
