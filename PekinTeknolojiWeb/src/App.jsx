@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Routes, Route, useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import { 
   ShoppingBag,
@@ -1758,15 +1759,18 @@ const MagazaAcPage = () => {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const { slugStatus, checkSlug } = useSlugCheck();
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
+    if (!executeRecaptcha) return;
     setLoading(true);
     try {
+      const recaptchaToken = await executeRecaptcha('register');
       const response = await fetch("https://test.pekinteknoloji.com/api/fastregister/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, recaptchaToken }),
       });
       const data = await response.json();
       if (data.success) {
@@ -1779,7 +1783,7 @@ const MagazaAcPage = () => {
       alert("Sunucuya bağlanılamadı.");
       setLoading(false);
     }
-  };
+  }, [executeRecaptcha, formData]);
 
   const set = f => e => {
     const value = e.target.value;
