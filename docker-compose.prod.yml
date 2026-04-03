@@ -20,6 +20,15 @@ services:
       - ./Presentation/Nop.Web/App_Data:/app/App_Data
       - ./Presentation/Nop.Web/wwwroot/images:/app/wwwroot/images
 
+  pekin_web:
+    build:
+      context: ./PekinTeknolojiWeb
+    image: pekin_web_img
+    container_name: pekin_web
+    restart: always
+    ports:
+      - "127.0.0.1:5102:80"
+
   redis:
     image: redis:7-alpine
     container_name: pekin_redis
