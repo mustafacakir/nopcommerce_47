@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Routes, Route, useNavigate, useLocation, useParams, Link } from 'react-router-dom';
 import { 
   ShoppingBag,
@@ -1897,6 +1897,12 @@ const MagazaAcPage = () => {
   );
 };
 
+const MagazaAcPageWithCaptcha = () => (
+  <GoogleReCaptchaProvider reCaptchaKey="6LchcqQsAAAAALhdUbdWh0ysr00aCZvnruHnXk6S">
+    <MagazaAcPage />
+  </GoogleReCaptchaProvider>
+);
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [pathname]);
@@ -2129,7 +2135,7 @@ const AgencyServices = ({ onConsult }) => (
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogDetailPage />} />
         <Route path="/sss" element={<FAQPage />} />
-        <Route path="/magaza-ac" element={<MagazaAcPage />} />
+        <Route path="/magaza-ac" element={<MagazaAcPageWithCaptcha />} />
         <Route path="/hesabim" element={<HesabimPage />} />
         <Route path="*" element={<HomePage />} />
       </Routes>
