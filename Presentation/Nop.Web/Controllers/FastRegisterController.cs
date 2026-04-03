@@ -17,6 +17,8 @@ using Nop.Web.Framework.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -75,6 +77,7 @@ namespace Nop.Web.Controllers
         private readonly string _storeDomain;
         private readonly bool _sslEnabled;
         private readonly int _trialDays;
+        private readonly string _recaptchaSecret;
 
         public FastRegisterController(
             ICustomerService customerService,
@@ -106,6 +109,7 @@ namespace Nop.Web.Controllers
             _storeDomain = configuration["ProvisioningConfig:StoreDomain"] ?? "localhost";
             _sslEnabled = bool.TryParse(configuration["ProvisioningConfig:SslEnabled"], out var ssl) && ssl;
             _trialDays = int.TryParse(configuration["ProvisioningConfig:TrialDays"], out var td) ? td : 14;
+            _recaptchaSecret = configuration["ProvisioningConfig:RecaptchaSecret"] ?? "";
         }
 
         [HttpGet("check-slug")]
@@ -168,11 +172,30 @@ namespace Nop.Web.Controllers
             });
         }
 
+        private async Task<bool> VerifyRecaptchaAsync(string token)
+        {
+            if (string.IsNullOrEmpty(_recaptchaSecret) || string.IsNullOrEmpty(token))
+                return false;
+
+            using var http = new HttpClient();
+            var response = await http.PostAsync(
+                $"https://www.google.com/recaptcha/api/siteverify?secret={_recaptchaSecret}&response={token}",
+                null);
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+            var success = doc.RootElement.GetProperty("success").GetBoolean();
+            var score = doc.RootElement.TryGetProperty("score", out var s) ? s.GetDouble() : 0;
+            return success && score >= 0.5;
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] FastRegisterModel model)
         {
             if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
                 return BadRequest(new { success = false, message = "Eksik bilgi." });
+
+            if (!await VerifyRecaptchaAsync(model.RecaptchaToken))
+                return BadRequest(new { success = false, message = "Güvenlik doğrulaması başarısız. Lütfen tekrar deneyin." });
 
             if (string.IsNullOrEmpty(model.StoreName) || string.IsNullOrEmpty(model.StoreSlug))
                 return BadRequest(new { success = false, message = "Mağaza adı ve slug gereklidir." });
@@ -483,6 +506,7 @@ namespace Nop.Web.Controllers
             public string Password { get; set; }
             public string StoreName { get; set; }
             public string StoreSlug { get; set; }
+            public string RecaptchaToken { get; set; }
         }
 
         public class ConsultationModel
