@@ -78,6 +78,7 @@
                     </li>
                     @await Component.InvokeAsync(typeof(AdminWidgetViewComponent), new { widgetZone = AdminWidgetZones.HeaderToggleAfter })
                 </ul>
+                @* PEKIN_CUSTOM: nopCommerce logosu Pekin Teknoloji yazısı ile değiştirildi *@
                 <a href="@Url.Content("~/Admin")" class="brand-link navbar-dark">
                     <span style="color:#fff;font-weight:700;font-size:16px;padding-left:10px;">Pekin Teknoloji</span>
                 </a>
@@ -155,6 +156,7 @@
         {
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <!-- Brand Logo -->
+            @* PEKIN_CUSTOM: nopCommerce logosu Pekin Teknoloji yazısı ile değiştirildi *@
             <a href="@Url.Content("~/Admin")" class="brand-link navbar-dark logo-switch">
                     <span class="logo-xl" style="color:#fff;font-weight:700;font-size:16px;padding-left:10px;">Pekin Teknoloji</span>
                     <span class="logo-xs" style="color:#fff;font-weight:700;font-size:13px;padding-left:5px;">PT</span>
@@ -193,6 +195,7 @@
                             <div class="col-md-4 col-xs-12 text-md-left text-center">
                                 @*Would you like to remove the "Powered by nopCommerce" link in the bottom of the footer?
                                     Please find more info at https://www.nopcommerce.com/nopcommerce-copyright-removal-key*@
+                                @* PEKIN_CUSTOM: footer'da nopCommerce gizlendi, Pekin Teknoloji yazısı eklendi *@
                                 Powered by <a href="@(OfficialSite.Main + Utm.OnAdminFooter)" target="_blank" style="display:none">nopCommerce</a> Pekin Teknoloji
                             </div>
                         }

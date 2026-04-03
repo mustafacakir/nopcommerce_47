@@ -42,6 +42,7 @@ public partial class Program
         //add services to the application and configure service provider
         builder.Services.ConfigureApplicationServices(builder);
 
+        // PEKIN_CUSTOM: OpenTelemetry metrikleri Prometheus için eklendi
         //add OpenTelemetry
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(r => r.AddService("nopcommerce"))
@@ -60,6 +61,7 @@ public partial class Program
         app.ConfigureRequestPipeline();
         await app.StartEngineAsync();
 
+        // PEKIN_CUSTOM: /metrics endpoint Prometheus scraping için açıldı
         //expose Prometheus metrics endpoint
         app.MapPrometheusScrapingEndpoint("/metrics");
 

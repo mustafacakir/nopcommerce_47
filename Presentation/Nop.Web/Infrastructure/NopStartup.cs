@@ -112,7 +112,7 @@ public partial class NopStartup : INopStartup
         //helpers classes
         services.AddScoped<ITinyMceHelper, TinyMceHelper>();
 
-        // Tenant izolasyonu: admin panelinde her tenant sadece kendi store'unu görür
+        // PEKIN_CUSTOM: Tenant izolasyonu - admin panelinde her tenant sadece kendi store'unu görür
         services.AddScoped<IStoreService, TenantStoreService>();
     }
 

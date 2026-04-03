@@ -22,6 +22,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+// PEKIN_CUSTOM: Yeni tenant kaydı için özel controller (mağaza oluşturma, trial, auto-login, reCAPTCHA doğrulama)
 namespace Nop.Web.Controllers
 {
     [Route("api/[controller]")]
