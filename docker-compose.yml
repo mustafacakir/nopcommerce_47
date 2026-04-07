@@ -19,7 +19,6 @@ services:
       - ./src/Presentation/Nop.Web/App_Data/appsettings.json:/app/App_Data/appsettings.json
       - ./src/Presentation/Nop.Web/App_Data/appsettings.Development.json:/app/App_Data/appsettings.Development.json
       - ./src/Presentation/Nop.Web/App_Data/appsettings.Production.json:/app/App_Data/appsettings.Production.json
-      - ./src/Presentation/Nop.Web/App_Data/dataSettings.json:/app/App_Data/dataSettings.json
 
   nopcommerce_db:
     image: postgres:15-alpine
