@@ -15,9 +15,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:
-      # ÖNEMLİ: Eklentiler WEB servisi altında olmalı
       - ./src/Presentation/Nop.Web/Plugins:/app/Plugins
-      - ./src/Presentation/Nop.Web/App_Data:/app/App_Data
+      - ./src/Presentation/Nop.Web/App_Data/appsettings.json:/app/App_Data/appsettings.json
+      - ./src/Presentation/Nop.Web/App_Data/appsettings.Development.json:/app/App_Data/appsettings.Development.json
+      - ./src/Presentation/Nop.Web/App_Data/appsettings.Production.json:/app/App_Data/appsettings.Production.json
 
   nopcommerce_db:
     image: postgres:15-alpine
