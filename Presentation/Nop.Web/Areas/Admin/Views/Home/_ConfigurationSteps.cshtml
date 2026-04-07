@@ -1,11 +1,15 @@
-﻿@using Nop.Core.Domain.Customers
+@using Nop.Core.Domain.Customers
 @using Nop.Services.Stores
+@using Nop.Services.Security
 
 @inject IStoreService storeService
+@inject IPermissionService permissionService
 
 @{
     const string cardId = "configuration-steps-card";
     var customer = await workContext.GetCurrentCustomerAsync();
+    // PEKIN_CUSTOM: StoreOwner için bazı adımlar gizlendi
+    var isAdmin = await permissionService.AuthorizeAsync(StandardPermissionProvider.ManageAcl);
 
     //hide value
     var hideCard = await genericAttributeService.GetAttributeAsync<bool>(customer, NopCustomerDefaults.HideConfigurationStepsAttribute);
@@ -65,6 +69,8 @@
             </p>
         </div>
 
+        @if (isAdmin)
+        {
         <div class="row">
             <div class="col-12">
                 <div class="row mb-2">
@@ -253,6 +259,77 @@
                 </div>
             </div>
         </div>
+        }
+        else
+        {
+        @* PEKIN_CUSTOM: StoreOwner için sadeleştirilmiş adımlar *@
+        <div class="row">
+            <div class="col-12">
+                <div class="row mb-2">
+                    <div class="col-4">
+                        <a class="configuration-step-link theme-step" asp-action="GeneralCommon" asp-controller="Setting" asp-route-showtour="@true">
+                            <div class="row">
+                                <div class="col-12 col-xl-3">
+                                    <div class="configuration-step-icon">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-9">
+                                    <h5>
+                                        1. &nbsp; @T("Admin.ConfigurationSteps.PersonalizeStore.Title")
+                                        <small class="text-muted">
+                                            @T("Admin.ConfigurationSteps.PersonalizeStore.Description")
+                                        </small>
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-4">
+                        <a class="configuration-step-link products-step" asp-action="Create" asp-controller="Product" asp-route-showtour="@true">
+                            <div class="row">
+                                <div class="col-12 col-xl-3">
+                                    <div class="configuration-step-icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-9">
+                                    <h5>
+                                        2. &nbsp; @T("Admin.ConfigurationSteps.CreateProducts.Title")
+                                        <small class="text-muted">
+                                            @T("Admin.ConfigurationSteps.CreateProducts.Description")
+                                        </small>
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-4">
+                        <a class="configuration-step-link service-step" asp-action="List" asp-controller="Topic" asp-route-showtour="@true">
+                            <div class="row">
+                                <div class="col-12 col-xl-3">
+                                    <div class="configuration-step-icon">
+                                        <i class="fas fa-info"></i>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-9">
+                                    <h5>
+                                        3. &nbsp; @T("Admin.ConfigurationSteps.EditServicesInfo.Title")
+                                        <small class="text-muted">
+                                            @T("Admin.ConfigurationSteps.EditServicesInfo.Description")
+                                        </small>
+                                    </h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
     </div>
 </div>
 }

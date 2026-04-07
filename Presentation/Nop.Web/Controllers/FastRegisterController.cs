@@ -175,7 +175,11 @@ namespace Nop.Web.Controllers
 
         private async Task<bool> VerifyRecaptchaAsync(string token)
         {
-            if (string.IsNullOrEmpty(_recaptchaSecret) || string.IsNullOrEmpty(token))
+            // PEKIN_CUSTOM: Secret yoksa local geliştirme ortamı kabul et
+            if (string.IsNullOrEmpty(_recaptchaSecret))
+                return true;
+
+            if (string.IsNullOrEmpty(token))
                 return false;
 
             using var http = new HttpClient();

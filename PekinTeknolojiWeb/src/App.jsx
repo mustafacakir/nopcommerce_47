@@ -32,6 +32,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://test.pekinteknoloji.com';
+
 const Logo = ({ size = 'md', light = false }) => (
   <div className={`brand-logo brand-logo--${size}`}>
     <div className="brand-logo-icon">
@@ -889,7 +891,7 @@ const ContactInlineForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await fetch('https://test.pekinteknoloji.com/api/fastregister/consultation', {
+      await fetch(`${API_BASE}/api/fastregister/consultation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, subject: 'İletişim Formu' }),
@@ -953,7 +955,7 @@ const ConsultationModal = ({ isOpen, onClose }) => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('https://test.pekinteknoloji.com/api/fastregister/consultation', {
+      const res = await fetch(`${API_BASE}/api/fastregister/consultation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -1062,7 +1064,7 @@ const useSlugCheck = () => {
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(async () => {
       try {
-        const res = await fetch(`https://test.pekinteknoloji.com/api/fastregister/check-slug?slug=${encodeURIComponent(slug)}`);
+        const res = await fetch(`${API_BASE}/api/fastregister/check-slug?slug=${encodeURIComponent(slug)}`);
         const data = await res.json();
         setSlugStatus(data.available ? 'available' : 'taken');
       } catch {
@@ -1099,7 +1101,7 @@ const RegistrationModal = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://test.pekinteknoloji.com/api/fastregister/register", {
+      const response = await fetch(`${API_BASE}/api/fastregister/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -1657,7 +1659,7 @@ const HesabimPage = () => {
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
-    fetch('https://test.pekinteknoloji.com/api/fastregister/my-store', { credentials: 'include' })
+    fetch(`${API_BASE}/api/fastregister/my-store`, { credentials: 'include' })
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false); })
       .catch(() => { setError('Sunucuya bağlanılamadı.'); setLoading(false); });
@@ -1678,7 +1680,7 @@ const HesabimPage = () => {
   if (error || !data?.success) return (
     <div style={{ padding: 60, textAlign: 'center' }}>
       <p>{error || 'Giriş yapmanız gerekiyor.'}</p>
-      <a href="https://test.pekinteknoloji.com/login" style={{ color: '#6366f1' }}>Giriş Yap</a>
+      <a href={`${API_BASE}/login`} style={{ color: '#6366f1' }}>Giriş Yap</a>
     </div>
   );
 
@@ -1767,7 +1769,7 @@ const MagazaAcPage = () => {
     setLoading(true);
     try {
       const recaptchaToken = await executeRecaptcha('register');
-      const response = await fetch("https://test.pekinteknoloji.com/api/fastregister/register", {
+      const response = await fetch(`${API_BASE}/api/fastregister/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, recaptchaToken }),

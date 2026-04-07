@@ -48,7 +48,7 @@
         @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.OrderDetailsPageTop, additionalData = Model })
         <div class="section order-overview">
             <div class="order-number">
-                <strong>@T("Order.Order#")@Model.CustomOrderNumber</strong>
+                <strong>@T("Order.Order#"): @Model.CustomOrderNumber</strong>
             </div>
             <ul class="order-overview-content">
                 <li class="order-date">

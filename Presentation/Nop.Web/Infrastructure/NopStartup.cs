@@ -114,6 +114,24 @@ public partial class NopStartup : INopStartup
 
         // PEKIN_CUSTOM: Tenant izolasyonu - admin panelinde her tenant sadece kendi store'unu görür
         services.AddScoped<IStoreService, TenantStoreService>();
+
+        // PEKIN_CUSTOM: CORS - PekinTeknolojiWeb (React) sitesinden gelen isteklere izin ver
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowMarketingSite", policy =>
+            {
+                policy.WithOrigins(
+                        "https://pekinteknoloji.com",
+                        "https://www.pekinteknoloji.com",
+                        "https://test.pekinteknoloji.com",
+                        "http://localhost:5173",
+                        "http://localhost:5174"
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
     }
 
     /// <summary>
@@ -122,6 +140,8 @@ public partial class NopStartup : INopStartup
     /// <param name="application">Builder for configuring an application's request pipeline</param>
     public void Configure(IApplicationBuilder application)
     {
+        // PEKIN_CUSTOM: CORS middleware
+        application.UseCors("AllowMarketingSite");
     }
 
     /// <summary>

@@ -2,6 +2,10 @@
 @inject IPermissionService permissionService
 @using Nop.Services.Security
 @{
+    // PEKIN_CUSTOM: StoreOwner için bazı dashboard bileşenleri gizlendi
+    var isAdmin = await permissionService.AuthorizeAsync(StandardPermissionProvider.ManageAcl);
+}
+@{
     //page title
     ViewBag.PageTitle = T("Admin.Dashboard").Text;
 
@@ -31,7 +35,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    @if (!closeConfigurationStepsCard)
+                    @if (!closeConfigurationStepsCard && isAdmin)
                     {
                         <div class="row">
                             <div class="col-md-12">
@@ -41,7 +45,7 @@
                     }
 
                     @await Component.InvokeAsync(typeof(AdminWidgetViewComponent), new { widgetZone = AdminWidgetZones.DashboardTop, additionalData = Model })
-                    @if (!Model.IsLoggedInAsVendor)
+                    @if (!Model.IsLoggedInAsVendor && isAdmin)
                     {
                         <div class="row">
                             <div class="col-md-12">
@@ -59,51 +63,52 @@
                             </div>
                         </div>
                     }
+                    @* PEKIN_CUSTOM: Tüm dashboard widget'ları alt alta (col-md-12) *@
                     @await Component.InvokeAsync(typeof(AdminWidgetViewComponent), new { widgetZone = AdminWidgetZones.DashboardCommonstatisticsAfter, additionalData = Model })
-                    @if (!Model.IsLoggedInAsVendor && (canManageOrders || canManageCustomers))
+                    @if (!Model.IsLoggedInAsVendor && canManageOrders)
                     {
                         <div class="row">
-                            @if (!Model.IsLoggedInAsVendor && canManageOrders)
-                            {
-                                <div class="col-md-6">
-                                    @await Html.PartialAsync("_OrderStatistics")
-                                </div>
-                            }
-                            @if (!Model.IsLoggedInAsVendor && canManageCustomers)
-                            {
-                                <div class="col-md-6">
-                                    @await Html.PartialAsync("_CustomerStatistics")
-                                </div>
-                            }
+                            <div class="col-md-12">
+                                @await Html.PartialAsync("_OrderStatistics")
+                            </div>
+                        </div>
+                    }
+                    @if (!Model.IsLoggedInAsVendor && canManageCustomers)
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                @await Html.PartialAsync("_CustomerStatistics")
+                            </div>
                         </div>
                     }
                     @await Component.InvokeAsync(typeof(AdminWidgetViewComponent), new { widgetZone = AdminWidgetZones.DashboardCustomerorderchartsAfter, additionalData = Model })
                     @if (!Model.IsLoggedInAsVendor && canManageOrders)
                     {
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 @await Html.PartialAsync("_OrderAverageReport")
                             </div>
-                            <div class="col-md-4">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
                                 @await Html.PartialAsync("_OrderIncompleteReport")
                             </div>
                         </div>
                     }
                     @await Component.InvokeAsync(typeof(AdminWidgetViewComponent), new { widgetZone = AdminWidgetZones.DashboardOrderreportsAfter, additionalData = Model })
-                    @if (!Model.IsLoggedInAsVendor && (canManageOrders || canManageProducts))
+                    @if (!Model.IsLoggedInAsVendor && canManageOrders)
                     {
                         <div class="row">
-                            @if (canManageOrders)
-                            {
-                                <div class="col-md-8">
-                                    @await Html.PartialAsync("_LatestOrders")
-                                </div>
-                            }
-                            <div class="col-md-4">
-                                @if (canManageProducts)
-                                {
-                                    @await Html.PartialAsync("_PopularSearchTermsReport")
-                                }
+                            <div class="col-md-12">
+                                @await Html.PartialAsync("_LatestOrders")
+                            </div>
+                        </div>
+                    }
+                    @if (!Model.IsLoggedInAsVendor && canManageProducts)
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                @await Html.PartialAsync("_PopularSearchTermsReport")
                             </div>
                         </div>
                     }
@@ -111,10 +116,12 @@
                     @if (canManageOrders)
                     {
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 @await Html.PartialAsync("_BestsellersBriefReportByQuantity")
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
                                 @await Html.PartialAsync("_BestsellersBriefReportByAmount")
                             </div>
                         </div>
