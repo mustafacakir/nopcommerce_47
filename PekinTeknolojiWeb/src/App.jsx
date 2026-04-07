@@ -1726,22 +1726,22 @@ const HesabimPage = () => {
             <p style={{ margin: '0 0 20px', fontSize: 28, fontWeight: 700, color: subscription.daysRemaining > 3 ? '#16a34a' : '#dc2626' }}>
               {subscription.daysRemaining} gün kaldı
             </p>
-            <a href="mailto:bilgi@pekinteknoloji.com?subject=Ücretli%20Plana%20Geçiş"
+            <Link to="/odeme"
               style={{ display: 'inline-block', background: '#6366f1', color: '#fff', padding: '10px 24px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>
               Ücretli Plana Geç
-            </a>
+            </Link>
           </div>
         )}
         {status === 'active' && (
-          <p style={{ color: '#16a34a', fontWeight: 600 }}>✅ Aktif aboneliğiniz bulunuyor.</p>
+          <p style={{ color: '#16a34a', fontWeight: 600 }}>Aktif aboneliğiniz bulunuyor.</p>
         )}
         {status === 'suspended' && (
           <div>
-            <p style={{ color: '#dc2626', marginBottom: 16 }}>❌ Deneme süreniz doldu. Mağazanıza erişmek için ücretli plana geçin.</p>
-            <a href="mailto:bilgi@pekinteknoloji.com?subject=Mağaza%20Aktifleştirme"
+            <p style={{ color: '#dc2626', marginBottom: 16 }}>Deneme süreniz doldu. Mağazanıza erişmek için ücretli plana geçin.</p>
+            <Link to="/odeme"
               style={{ display: 'inline-block', background: '#dc2626', color: '#fff', padding: '10px 24px', borderRadius: 8, fontSize: 15, fontWeight: 600, textDecoration: 'none' }}>
               Mağazamı Aktifleştir
-            </a>
+            </Link>
           </div>
         )}
       </div>
@@ -1751,6 +1751,69 @@ const HesabimPage = () => {
         <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 16px' }}>Fatura Geçmişi</h3>
         <p style={{ color: '#9ca3af', fontSize: 14 }}>Henüz fatura bulunmuyor.</p>
       </div>
+    </div>
+  );
+};
+
+const OdemePage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+  const iframeRef = React.useRef(null);
+
+  const result = new URLSearchParams(location.search).get('result');
+
+  React.useEffect(() => {
+    if (result === 'success') { setLoading(false); return; }
+
+    fetch(`${API_BASE}/api/subscription/checkout`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (!data.success) { setError(data.message || 'Ödeme formu yüklenemedi.'); setLoading(false); return; }
+        // iyzico'nun döndürdüğü HTML'i DOM'a enjekte et ve script'leri çalıştır
+        const container = document.getElementById('iyzico-checkout-container');
+        if (container) {
+          container.innerHTML = data.checkoutFormContent;
+          container.querySelectorAll('script').forEach(oldScript => {
+            const newScript = document.createElement('script');
+            if (oldScript.src) newScript.src = oldScript.src;
+            else newScript.textContent = oldScript.textContent;
+            document.body.appendChild(newScript);
+          });
+        }
+        setLoading(false);
+      })
+      .catch(() => { setError('Sunucuya bağlanılamadı.'); setLoading(false); });
+  }, [result]);
+
+  if (result === 'success') return (
+    <div style={{ maxWidth: 480, margin: '80px auto', padding: '0 24px', textAlign: 'center', fontFamily: 'sans-serif' }}>
+      <div style={{ fontSize: 56, marginBottom: 16 }}>🎉</div>
+      <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 12 }}>Aboneliğiniz Aktifleştirildi!</h1>
+      <p style={{ color: '#6b7280', marginBottom: 32 }}>Ödemeniz başarıyla alındı. Mağazanız artık aktif.</p>
+      <button onClick={() => navigate('/hesabim')}
+        style={{ background: '#6366f1', color: '#fff', border: 'none', padding: '12px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>
+        Hesabıma Git
+      </button>
+    </div>
+  );
+
+  return (
+    <div style={{ maxWidth: 720, margin: '60px auto', padding: '0 24px', fontFamily: 'sans-serif' }}>
+      <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 8 }}>Abonelik Ödemesi</h1>
+      <p style={{ color: '#6b7280', marginBottom: 32 }}>Aylık aboneliğinizi başlatmak için kart bilgilerinizi girin.</p>
+
+      {loading && <div style={{ textAlign: 'center', padding: 60, color: '#6b7280' }}>Ödeme formu yükleniyor...</div>}
+      {error && (
+        <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, padding: 20, color: '#dc2626' }}>
+          {error}
+        </div>
+      )}
+      <div id="iyzico-checkout-container" ref={iframeRef} />
     </div>
   );
 };
@@ -2139,6 +2202,7 @@ const AgencyServices = ({ onConsult }) => (
         <Route path="/sss" element={<FAQPage />} />
         <Route path="/magaza-ac" element={<MagazaAcPageWithCaptcha />} />
         <Route path="/hesabim" element={<HesabimPage />} />
+        <Route path="/odeme" element={<OdemePage />} />
         <Route path="*" element={<HomePage />} />
       </Routes>
 
