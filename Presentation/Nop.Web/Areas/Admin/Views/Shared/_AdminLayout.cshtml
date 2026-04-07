@@ -6,6 +6,8 @@
 @inject LocalizationSettings localizationSettings
 @inject StoreInformationSettings storeInformationSettings
 @inject Nop.Services.Localization.ILanguageService languageService
+@inject Nop.Core.IWorkContext workContext
+@inject Nop.Services.Common.IGenericAttributeService genericAttributeService
 @using Nop.Core.Domain
 @using Nop.Core.Domain.Localization
 @using Nop.Services.Customers
@@ -184,6 +186,30 @@
         <div class="content-wrapper">
             @await Html.PartialAsync("Notifications")
             <nop-antiforgery-token />
+            @{
+                // PEKIN_CUSTOM: Trial banner — StoreOwner için deneme süresi uyarısı
+                var layoutCustomer = await workContext.GetCurrentCustomerAsync();
+                if (await customerService.IsInCustomerRoleAsync(layoutCustomer, "StoreOwner"))
+                {
+                    var layoutSubStatus = await genericAttributeService.GetAttributeAsync<string>(layoutCustomer, "SubscriptionStatus") ?? "trial";
+                    if (layoutSubStatus != "active")
+                    {
+                        var layoutTrialEnd = await genericAttributeService.GetAttributeAsync<DateTime?>(layoutCustomer, "TrialEndDate");
+                        int layoutDays = layoutTrialEnd.HasValue ? Math.Max(0, (int)(layoutTrialEnd.Value - DateTime.UtcNow).TotalDays) : 0;
+                        var bannerClass = layoutDays <= 3 ? "danger" : "warning";
+                        var bannerText  = layoutDays == 0
+                            ? "Deneme süreniz doldu. Mağazanıza erişmeye devam etmek için abonelik satın alın."
+                            : $"Deneme süreniz <strong>{layoutDays} gün</strong> sonra sona eriyor.";
+                        <div class="alert alert-@bannerClass mb-0" style="border-radius:0;margin-bottom:0!important">
+                            <i class="fas fa-clock"></i>
+                            @Html.Raw(bannerText)
+                            <a href="/Admin/Subscription" class="btn btn-sm btn-@(layoutDays == 0 ? "danger" : "warning") ml-2" style="color:#fff">
+                                Abonelik Satın Al
+                            </a>
+                        </div>
+                    }
+                }
+            }
             @RenderBody()
         </div>
         <div class="main-footer">

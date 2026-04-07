@@ -65,3 +65,14 @@ Desktop.ini
 *.iml
 *.ipr
 .claude/
+
+# Generated image thumbnails
+Presentation/Nop.Web/wwwroot/images/thumbs/
+
+# Generated assets
+Presentation/Nop.Web/wwwroot/css/Slick/
+
+# Plugin binaries (untracked)
+Presentation/Nop.Web/Plugins/ExternalAuth.Facebook/
+Presentation/Nop.Web/Plugins/MultiFactorAuth.GoogleAuthenticator/
+Presentation/Nop.Web/Plugins/Shipping.UPS/*.deps.json

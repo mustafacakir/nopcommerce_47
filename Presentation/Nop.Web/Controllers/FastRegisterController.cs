@@ -75,6 +75,7 @@ namespace Nop.Web.Controllers
         private readonly IQueuedEmailService _queuedEmailService;
         private readonly ISettingService _settingService;
         private readonly INopDataProvider _dataProvider;
+        private readonly SubscriptionController _subscriptionController;
         private readonly string _storeDomain;
         private readonly bool _sslEnabled;
         private readonly int _trialDays;
@@ -93,6 +94,7 @@ namespace Nop.Web.Controllers
             IQueuedEmailService queuedEmailService,
             ISettingService settingService,
             INopDataProvider dataProvider,
+            SubscriptionController subscriptionController,
             IConfiguration configuration)
         {
             _customerService = customerService;
@@ -107,6 +109,7 @@ namespace Nop.Web.Controllers
             _queuedEmailService = queuedEmailService;
             _settingService = settingService;
             _dataProvider = dataProvider;
+            _subscriptionController = subscriptionController;
             _storeDomain = configuration["ProvisioningConfig:StoreDomain"] ?? "localhost";
             _sslEnabled = bool.TryParse(configuration["ProvisioningConfig:SslEnabled"], out var ssl) && ssl;
             _trialDays = int.TryParse(configuration["ProvisioningConfig:TrialDays"], out var td) ? td : 14;
@@ -153,6 +156,22 @@ namespace Nop.Web.Controllers
             if (trialEndDate.HasValue)
                 daysRemaining = Math.Max(0, (int)(trialEndDate.Value - DateTime.UtcNow).TotalDays);
 
+            // Trial bittiyse ve henüz ödeme maili gönderilmediyse otomatik gönder
+            var isExpired = daysRemaining == 0 && subscriptionStatus == "trial";
+            if (isExpired)
+            {
+                var paymentEmailSent = await _genericAttributeService.GetAttributeAsync<bool>(customer, "PaymentEmailSent");
+                if (!paymentEmailSent)
+                {
+                    try
+                    {
+                        await _subscriptionController.SendPaymentEmailAsync(customer, store.Name);
+                        await _genericAttributeService.SaveAttributeAsync(customer, "PaymentEmailSent", true);
+                    }
+                    catch { /* mail gönderilemese de devam et */ }
+                }
+            }
+
             return Ok(new
             {
                 success = true,
@@ -168,7 +187,7 @@ namespace Nop.Web.Controllers
                     status = subscriptionStatus,
                     trialEndDate = trialEndDate?.ToString("dd.MM.yyyy"),
                     daysRemaining,
-                    isExpired = daysRemaining == 0 && subscriptionStatus != "active"
+                    isExpired
                 }
             });
         }

@@ -1755,46 +1755,66 @@ const HesabimPage = () => {
   );
 };
 
+const PLANS = [
+  { key: '1y', label: '1 Yıllık', price: '₺1.990', months: 12, badge: null },
+  { key: '2y', label: '2 Yıllık', price: '₺3.490', months: 24, badge: 'Popüler' },
+  { key: '3y', label: '3 Yıllık', price: '₺4.990', months: 36, badge: 'En Avantajlı' },
+];
+
 const OdemePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [loading, setLoading] = React.useState(true);
+  const [selectedPlan, setSelectedPlan] = React.useState(null);
+  const [checkoutLoading, setCheckoutLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
-  const iframeRef = React.useRef(null);
 
   const result = new URLSearchParams(location.search).get('result');
 
-  React.useEffect(() => {
-    if (result === 'success') { setLoading(false); return; }
+  const urlToken = new URLSearchParams(location.search).get('token');
 
-    fetch(`${API_BASE}/api/subscription/checkout`, {
-      method: 'POST',
-      credentials: 'include',
-    })
-      .then(r => r.json())
-      .then(data => {
-        if (!data.success) { setError(data.message || 'Ödeme formu yüklenemedi.'); setLoading(false); return; }
-        // iyzico'nun döndürdüğü HTML'i DOM'a enjekte et ve script'leri çalıştır
-        const container = document.getElementById('iyzico-checkout-container');
-        if (container) {
-          container.innerHTML = data.checkoutFormContent;
-          container.querySelectorAll('script').forEach(oldScript => {
-            const newScript = document.createElement('script');
-            if (oldScript.src) newScript.src = oldScript.src;
-            else newScript.textContent = oldScript.textContent;
-            document.body.appendChild(newScript);
-          });
-        }
-        setLoading(false);
-      })
-      .catch(() => { setError('Sunucuya bağlanılamadı.'); setLoading(false); });
-  }, [result]);
+  const startCheckout = async (planKey) => {
+    setSelectedPlan(planKey);
+    setCheckoutLoading(true);
+    setError(null);
+
+    const url = urlToken
+      ? `${API_BASE}/api/subscription/checkout?plan=${planKey}&paymentToken=${urlToken}`
+      : `${API_BASE}/api/subscription/checkout?plan=${planKey}`;
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      const data = await res.json();
+
+      if (!data.success) {
+        setError(data.message || 'Ödeme formu yüklenemedi.');
+        setCheckoutLoading(false);
+        return;
+      }
+
+      // iyzico HTML'ini DOM'a enjekte et ve script'leri çalıştır
+      const container = document.getElementById('iyzico-checkout-container');
+      if (container) {
+        container.innerHTML = data.checkoutFormContent;
+        container.querySelectorAll('script').forEach(old => {
+          const s = document.createElement('script');
+          if (old.src) s.src = old.src; else s.textContent = old.textContent;
+          document.body.appendChild(s);
+        });
+      }
+    } catch {
+      setError('Sunucuya bağlanılamadı.');
+    }
+    setCheckoutLoading(false);
+  };
 
   if (result === 'success') return (
     <div style={{ maxWidth: 480, margin: '80px auto', padding: '0 24px', textAlign: 'center', fontFamily: 'sans-serif' }}>
-      <div style={{ fontSize: 56, marginBottom: 16 }}>🎉</div>
-      <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 12 }}>Aboneliğiniz Aktifleştirildi!</h1>
-      <p style={{ color: '#6b7280', marginBottom: 32 }}>Ödemeniz başarıyla alındı. Mağazanız artık aktif.</p>
+      <div style={{ fontSize: 64, marginBottom: 16 }}>🎉</div>
+      <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 12 }}>Ödeme Alındı!</h1>
+      <p style={{ color: '#6b7280', marginBottom: 32 }}>Aboneliğiniz aktifleştirildi. Mağazanız kullanıma hazır.</p>
       <button onClick={() => navigate('/hesabim')}
         style={{ background: '#6366f1', color: '#fff', border: 'none', padding: '12px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>
         Hesabıma Git
@@ -1802,18 +1822,57 @@ const OdemePage = () => {
     </div>
   );
 
-  return (
-    <div style={{ maxWidth: 720, margin: '60px auto', padding: '0 24px', fontFamily: 'sans-serif' }}>
-      <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 8 }}>Abonelik Ödemesi</h1>
-      <p style={{ color: '#6b7280', marginBottom: 32 }}>Aylık aboneliğinizi başlatmak için kart bilgilerinizi girin.</p>
+  if (result === 'fail') return (
+    <div style={{ maxWidth: 480, margin: '80px auto', padding: '0 24px', textAlign: 'center', fontFamily: 'sans-serif' }}>
+      <div style={{ fontSize: 64, marginBottom: 16 }}>❌</div>
+      <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 12 }}>Ödeme Başarısız</h1>
+      <p style={{ color: '#6b7280', marginBottom: 32 }}>Bir sorun oluştu. Tekrar denemek ister misiniz?</p>
+      <button onClick={() => navigate('/odeme')}
+        style={{ background: '#6366f1', color: '#fff', border: 'none', padding: '12px 32px', borderRadius: 8, fontSize: 15, fontWeight: 600, cursor: 'pointer' }}>
+        Tekrar Dene
+      </button>
+    </div>
+  );
 
-      {loading && <div style={{ textAlign: 'center', padding: 60, color: '#6b7280' }}>Ödeme formu yükleniyor...</div>}
+  return (
+    <div style={{ maxWidth: 760, margin: '60px auto', padding: '0 24px', fontFamily: 'sans-serif' }}>
+      <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 8 }}>Plan Seçin</h1>
+      <p style={{ color: '#6b7280', marginBottom: 36 }}>İhtiyacınıza uygun planı seçin ve ödemenizi tamamlayın.</p>
+
+      {/* Plan kartları */}
+      {!selectedPlan && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 32 }}>
+          {PLANS.map(plan => (
+            <div key={plan.key}
+              style={{ border: '2px solid #e5e7eb', borderRadius: 12, padding: 24, textAlign: 'center', position: 'relative', background: '#fff' }}>
+              {plan.badge && (
+                <span style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: '#6366f1', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 12px', borderRadius: 20, whiteSpace: 'nowrap' }}>
+                  {plan.badge}
+                </span>
+              )}
+              <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{plan.label}</div>
+              <div style={{ fontSize: 28, fontWeight: 800, color: '#6366f1', marginBottom: 16 }}>{plan.price}</div>
+              <div style={{ fontSize: 13, color: '#9ca3af', marginBottom: 20 }}>{plan.months} ay erişim</div>
+              <button onClick={() => startCheckout(plan.key)}
+                style={{ width: '100%', background: '#6366f1', color: '#fff', border: 'none', padding: '10px 0', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+                Seç ve Öde
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       {error && (
-        <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, padding: 20, color: '#dc2626' }}>
+        <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 8, padding: 16, color: '#dc2626', marginBottom: 24 }}>
           {error}
         </div>
       )}
-      <div id="iyzico-checkout-container" ref={iframeRef} />
+
+      {checkoutLoading && (
+        <div style={{ textAlign: 'center', padding: 40, color: '#6b7280' }}>Ödeme formu yükleniyor...</div>
+      )}
+
+      <div id="iyzico-checkout-container" />
     </div>
   );
 };
