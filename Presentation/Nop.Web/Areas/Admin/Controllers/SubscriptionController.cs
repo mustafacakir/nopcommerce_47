@@ -164,7 +164,7 @@ namespace Nop.Web.Areas.Admin.Controllers
         [HttpPost]
         [HttpGet]
         [IgnoreAntiforgeryToken]
-        [AllowAnonymous]
+        [AuthorizeAdmin(true)]
         public async Task<IActionResult> Callback(string token)
         {
             if (string.IsNullOrEmpty(token))
