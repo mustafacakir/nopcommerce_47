@@ -145,6 +145,9 @@ public partial class NopStartup : INopStartup
     {
         // PEKIN_CUSTOM: CORS middleware
         application.UseCors("AllowMarketingSite");
+
+        // PEKIN_CUSTOM: Per-store log context ve metrics (Loki + Prometheus)
+        application.UseMiddleware<StoreMetricsMiddleware>();
     }
 
     /// <summary>

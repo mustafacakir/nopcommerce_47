@@ -42,6 +42,13 @@ public partial class Program
         //add services to the application and configure service provider
         builder.Services.ConfigureApplicationServices(builder);
 
+        // PEKIN_CUSTOM: JSON console logging — Promtail store_id label'ını parse edebilsin
+        builder.Logging.AddJsonConsole(opts =>
+        {
+            opts.IncludeScopes   = true;
+            opts.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
+        });
+
         // PEKIN_CUSTOM: OpenTelemetry metrikleri Prometheus için eklendi
         //add OpenTelemetry
         builder.Services.AddOpenTelemetry()
@@ -50,6 +57,7 @@ public partial class Program
                 .AddAspNetCoreInstrumentation()
                 .AddHttpClientInstrumentation()
                 .AddRuntimeInstrumentation()
+                .AddMeter("nopcommerce.stores")   // per-store custom metrics
                 .AddPrometheusExporter())
             .WithTracing(tracing => tracing
                 .AddAspNetCoreInstrumentation()
