@@ -181,20 +181,32 @@ namespace Nop.Web.Controllers
             });
         }
 
+        // Admin panelinden yapılan ödemelerin callback'i (public URL — auth gerektirmez)
+        [HttpPost("admin-callback")]
+        [HttpGet("admin-callback")]
+        public Task<IActionResult> AdminCallback([FromForm] string token, [FromForm] string status)
+            => CallbackCore(token, isAdmin: true);
+
         // iyzico callback — token ile müşteriyi ve planı bul
         [HttpPost("callback")]
         [HttpGet("callback")]
-        public async Task<IActionResult> Callback([FromForm] string token, [FromForm] string status)
+        public Task<IActionResult> Callback([FromForm] string token, [FromForm] string status)
+            => CallbackCore(token, isAdmin: false);
+
+        private async Task<IActionResult> CallbackCore(string token, bool isAdmin)
         {
+            var failUrl    = isAdmin ? "/Admin/Subscription?result=fail"    : $"{_frontendUrl}/odeme?result=fail";
+            var successUrl = isAdmin ? "/Admin/Subscription?result=success" : $"{_frontendUrl}/hesabim?result=success";
+
             if (string.IsNullOrEmpty(token))
-                return Redirect($"{_frontendUrl}/odeme?result=fail&reason=missing_token");
+                return Redirect(failUrl);
 
             var paymentResult = await CheckoutForm.Retrieve(
                 new RetrieveCheckoutFormRequest { Token = token },
                 _iyzicoOptions);
 
             if (paymentResult.Status != "success" || paymentResult.PaymentStatus != "SUCCESS")
-                return Redirect($"{_frontendUrl}/odeme?result=fail&reason=payment_failed");
+                return Redirect(failUrl);
 
             // DB'den token → customerId_plan eşleşmesini bul
             var rows = await _dataProvider.QueryAsync<CheckoutLookup>(
@@ -203,19 +215,19 @@ namespace Nop.Web.Controllers
 
             var mapping = rows.FirstOrDefault()?.Mapping;
             if (string.IsNullOrEmpty(mapping))
-                return Redirect($"{_frontendUrl}/odeme?result=fail&reason=token_not_found");
+                return Redirect(failUrl);
 
             var parts = mapping.Split('_');
             if (parts.Length < 2 || !int.TryParse(parts[0], out var customerId))
-                return Redirect($"{_frontendUrl}/odeme?result=fail&reason=invalid_mapping");
+                return Redirect(failUrl);
 
             var plan = parts[1];
             if (!Plans.TryGetValue(plan, out var selectedPlan))
-                return Redirect($"{_frontendUrl}/odeme?result=fail&reason=invalid_plan");
+                return Redirect(failUrl);
 
             var customer = await _customerService.GetCustomerByIdAsync(customerId);
             if (customer == null)
-                return Redirect($"{_frontendUrl}/odeme?result=fail&reason=customer_not_found");
+                return Redirect(failUrl);
 
             // Aboneliği aktif et
             var endDate = DateTime.UtcNow.AddMonths(selectedPlan.Months);
@@ -228,7 +240,7 @@ namespace Nop.Web.Controllers
             await _dataProvider.ExecuteNonQueryAsync(
                 $"DELETE FROM \"GenericAttribute\" WHERE \"KeyGroup\" = 'IyzicoCheckout' AND \"Key\" = 'token_{token.Replace("'", "''")}'");
 
-            return Redirect($"{_frontendUrl}/hesabim?result=success");
+            return Redirect(successUrl);
         }
 
         // Payment link maili gönder (FastRegisterController tarafından çağrılır)

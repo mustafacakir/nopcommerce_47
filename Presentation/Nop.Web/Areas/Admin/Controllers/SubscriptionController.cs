@@ -97,7 +97,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
             var ip      = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "85.34.78.112";
             var price   = selectedPlan.Price.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
-            var callbackUrl = $"{_callbackBaseUrl}/Admin/Subscription/Callback";
+            var callbackUrl = $"{_callbackBaseUrl}/subscription/admin-callback";
 
             var request = new CreateCheckoutFormInitializeRequest
             {
@@ -154,89 +154,17 @@ namespace Nop.Web.Areas.Admin.Controllers
             if (result.Status != "success")
                 return Json(new { success = false, message = result.ErrorMessage ?? "Ödeme formu oluşturulamadı." });
 
-            // iyzico token → customerId_plan kaydı (callback'te kullanılır)
-            await _genericAttributeService.SaveAttributeAsync(customer, $"IyzToken_{result.Token}", $"{customer.Id}_{plan}");
+            // iyzico token → customerId_plan kaydı (public callback'te okunur)
+            await Nop.Core.Infrastructure.EngineContext.Current
+                .Resolve<Nop.Data.INopDataProvider>()
+                .ExecuteNonQueryAsync(
+                    $"INSERT INTO \"GenericAttribute\" (\"EntityId\", \"KeyGroup\", \"Key\", \"Value\", \"StoreId\", \"CreatedOrUpdatedDateUTC\") " +
+                    $"VALUES (0, 'IyzicoCheckout', 'token_{result.Token.Replace("'", "''")}', '{customer.Id}_{plan}', 0, NOW()) " +
+                    $"ON CONFLICT DO NOTHING");
 
             return Json(new { success = true, checkoutFormContent = result.CheckoutFormContent });
         }
 
-        // POST /Admin/Subscription/Callback  (iyzico bu URL'e POST atar)
-        [HttpPost]
-        [HttpGet]
-        [IgnoreAntiforgeryToken]
-        [AuthorizeAdmin(true)]
-        public async Task<IActionResult> Callback(string token)
-        {
-            if (string.IsNullOrEmpty(token))
-                return Redirect("/Admin/Subscription?result=fail");
-
-            var paymentResult = await CheckoutForm.Retrieve(
-                new RetrieveCheckoutFormRequest { Token = token },
-                _iyzicoOptions);
-
-            if (paymentResult.Status != "success" || paymentResult.PaymentStatus != "SUCCESS")
-                return Redirect("/Admin/Subscription?result=fail");
-
-            // Token'dan customerId ve planı bul
-            // ConversationId: sub_{customerId}_{plan}
-            var convId = paymentResult.ConversationId ?? "";
-            var parts  = convId.Split('_');
-
-            int customerId = 0;
-            string plan    = "";
-
-            if (parts.Length >= 3 && int.TryParse(parts[1], out customerId))
-            {
-                plan = parts[2];
-            }
-            else
-            {
-                // ConversationId gelmezse token attribute'dan bul
-                var allCustomers = await FindCustomerByIyzTokenAsync(token);
-                if (allCustomers == null)
-                    return Redirect("/Admin/Subscription?result=fail");
-                (customerId, plan) = allCustomers.Value;
-            }
-
-            if (!Plans.TryGetValue(plan, out var selectedPlan))
-                return Redirect("/Admin/Subscription?result=fail");
-
-            var customer = await _customerService.GetCustomerByIdAsync(customerId);
-            if (customer == null)
-                return Redirect("/Admin/Subscription?result=fail");
-
-            // Aboneliği aktif et
-            await _genericAttributeService.SaveAttributeAsync(customer, "SubscriptionStatus",  "active");
-            await _genericAttributeService.SaveAttributeAsync(customer, "SubscriptionEndDate", DateTime.UtcNow.AddMonths(selectedPlan.Months));
-            await _genericAttributeService.SaveAttributeAsync(customer, "SubscriptionPlan",    plan);
-            await _genericAttributeService.SaveAttributeAsync(customer, "IyzicoPaymentId",     paymentResult.PaymentId);
-
-            return Redirect("/Admin/Subscription?result=success");
-        }
-
-        private async Task<(int customerId, string plan)?> FindCustomerByIyzTokenAsync(string token)
-        {
-            // IyzToken_{token} attribute'unu tüm müşterilerde ara (son çare)
-            // Normalde ConversationId ile bulunur
-            try
-            {
-                var key    = $"IyzToken_{token}";
-                var rows   = await Nop.Core.Infrastructure.EngineContext.Current
-                    .Resolve<Nop.Data.INopDataProvider>()
-                    .QueryAsync<dynamic>(
-                        $"SELECT \"EntityId\", \"Value\" FROM \"GenericAttribute\" " +
-                        $"WHERE \"KeyGroup\"='Customer' AND \"Key\"='{key.Replace("'","''")}' LIMIT 1");
-
-                foreach (var row in rows)
-                {
-                    var val   = (string)row.Value;
-                    var parts = val.Split('_');
-                    if (parts.Length >= 2 && int.TryParse(parts[0], out var cid))
-                        return (cid, parts[1]);
-                }
-            }
-            catch { }
-            return null;
-        }
+        // Callback artık public SubscriptionController'da: /subscription/admin-callback
     }
 }
