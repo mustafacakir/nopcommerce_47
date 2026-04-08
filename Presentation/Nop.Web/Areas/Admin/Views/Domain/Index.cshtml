@@ -1,0 +1,164 @@
+@using Nop.Web.Areas.Admin.Controllers
+@{
+    Layout = "_AdminLayout";
+    ViewBag.PageTitle = "Domain Yönetimi";
+
+    var stores  = (List<DomainController.StoredomainInfo>)ViewBag.Stores;
+    var isAdmin = (bool)ViewBag.IsAdmin;
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">Domain Yönetimi</h1>
+</div>
+
+<div class="content">
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        Domain ekledikten sonra sunucuda <code>provision.sh</code> scriptini çalıştırmanız gerekir.
+        Script SSL sertifikasını alır ve nginx'i yeniden başlatır.
+    </div>
+
+    @foreach (var store in stores)
+    {
+        var customHosts = (store.Hosts ?? "").Split(',')
+            .Select(h => h.Trim())
+            .Where(h => !string.IsNullOrEmpty(h) && !h.Contains(".pekinteknoloji.com") && !h.Contains(".localhost"))
+            .ToList();
+
+        <div class="card card-default mb-3">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-store"></i> @store.StoreName
+                    @if (store.Status == "aktif")
+                    {
+                        <span class="badge badge-success ml-2">Aktif</span>
+                    }
+                    else if (store.Status == "bekliyor")
+                    {
+                        <span class="badge badge-warning ml-2">Provision Bekliyor</span>
+                    }
+                </h5>
+            </div>
+            <div class="card-body">
+                @if (customHosts.Any())
+                {
+                    <table class="table table-sm table-bordered mb-3">
+                        <thead>
+                            <tr>
+                                <th>Domain</th>
+                                <th style="width:120px">Durum</th>
+                                <th style="width:80px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var host in customHosts.Where(h => !h.StartsWith("www.")))
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="https://@host" target="_blank">@host</a>
+                                        <small class="text-muted ml-1">(www.@host)</small>
+                                    </td>
+                                    <td>
+                                        @if (store.Status == "aktif")
+                                        {
+                                            <span class="badge badge-success">SSL Aktif</span>
+                                        }
+                                        else if (store.Status == "bekliyor")
+                                        {
+                                            <span class="badge badge-warning">Bekliyor</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">Manuel</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger remove-domain-btn"
+                                                data-store-id="@store.StoreId"
+                                                data-domain="@host">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-muted mb-3"><i class="fas fa-globe"></i> Henüz custom domain eklenmemiş.</p>
+                }
+
+                <div class="input-group" style="max-width:500px">
+                    <input type="text"
+                           class="form-control domain-input"
+                           placeholder="minikhediyen.com"
+                           data-store-id="@store.StoreId" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary add-domain-btn" data-store-id="@store.StoreId">
+                            <i class="fas fa-plus"></i> Ekle
+                        </button>
+                    </div>
+                </div>
+                <small class="text-muted">DNS'te A kaydını sunucu IP'sine yönlendirdikten sonra ekleyin.</small>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+document.querySelectorAll('.add-domain-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        var storeId = this.getAttribute('data-store-id');
+        var input   = document.querySelector('.domain-input[data-store-id="' + storeId + '"]');
+        var domain  = input.value.trim();
+
+        if (!domain) { alert('Domain girin.'); return; }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+        fetch('@Url.Action("Add", "Domain", new { area = "Admin" })', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ storeId: parseInt(storeId), domain: domain })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                alert((data.warning || data.message || 'Domain eklendi.') + '\n\nSunucuda provision.sh çalıştırmayı unutmayın!');
+                location.reload();
+            } else {
+                alert('Hata: ' + (data.message || 'Bilinmeyen hata'));
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-plus"></i> Ekle';
+            }
+        })
+        .catch(() => {
+            alert('Sunucuya bağlanılamadı.');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-plus"></i> Ekle';
+        });
+    });
+});
+
+document.querySelectorAll('.remove-domain-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        var storeId = this.getAttribute('data-store-id');
+        var domain  = this.getAttribute('data-domain');
+
+        if (!confirm(domain + ' domainini kaldırmak istediğinize emin misiniz?')) return;
+
+        fetch('@Url.Action("Remove", "Domain", new { area = "Admin" })', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ storeId: parseInt(storeId), domain: domain })
+        })
+        .then(r => r.json())
+        .then(data => {
+            alert(data.message || (data.success ? 'Kaldırıldı.' : 'Hata oluştu.'));
+            if (data.success) location.reload();
+        });
+    });
+});
+</script>
