@@ -16,9 +16,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:
       - ./src/Presentation/Nop.Web/Plugins:/app/Plugins
-      - ./src/Presentation/Nop.Web/App_Data/appsettings.json:/app/App_Data/appsettings.json
-      - ./src/Presentation/Nop.Web/App_Data/appsettings.Development.json:/app/App_Data/appsettings.Development.json
-      - ./src/Presentation/Nop.Web/App_Data/appsettings.Production.json:/app/App_Data/appsettings.Production.json
+      - nop_app_data:/app/App_Data
 
   nopcommerce_db:
     image: postgres:15-alpine
@@ -36,3 +34,4 @@ services:
 
 volumes:
   nop_db_data:
+  nop_app_data:

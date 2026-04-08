@@ -75,11 +75,11 @@ namespace Nop.Web.Controllers
         private readonly IQueuedEmailService _queuedEmailService;
         private readonly ISettingService _settingService;
         private readonly INopDataProvider _dataProvider;
-        private readonly SubscriptionController _subscriptionController;
         private readonly string _storeDomain;
         private readonly bool _sslEnabled;
         private readonly int _trialDays;
         private readonly string _recaptchaSecret;
+        private readonly string _frontendUrl;
 
         public FastRegisterController(
             ICustomerService customerService,
@@ -94,7 +94,6 @@ namespace Nop.Web.Controllers
             IQueuedEmailService queuedEmailService,
             ISettingService settingService,
             INopDataProvider dataProvider,
-            SubscriptionController subscriptionController,
             IConfiguration configuration)
         {
             _customerService = customerService;
@@ -109,11 +108,11 @@ namespace Nop.Web.Controllers
             _queuedEmailService = queuedEmailService;
             _settingService = settingService;
             _dataProvider = dataProvider;
-            _subscriptionController = subscriptionController;
             _storeDomain = configuration["ProvisioningConfig:StoreDomain"] ?? "localhost";
             _sslEnabled = bool.TryParse(configuration["ProvisioningConfig:SslEnabled"], out var ssl) && ssl;
             _trialDays = int.TryParse(configuration["ProvisioningConfig:TrialDays"], out var td) ? td : 14;
             _recaptchaSecret = configuration["ProvisioningConfig:RecaptchaSecret"] ?? "";
+            _frontendUrl = configuration["IyzicoConfig:FrontendUrl"] ?? "https://pekinteknoloji.com";
         }
 
         [HttpGet("check-slug")]
@@ -165,7 +164,7 @@ namespace Nop.Web.Controllers
                 {
                     try
                     {
-                        await _subscriptionController.SendPaymentEmailAsync(customer, store.Name);
+                        await SendPaymentEmailAsync(customer, store.Name);
                         await _genericAttributeService.SaveAttributeAsync(customer, "PaymentEmailSent", true);
                     }
                     catch { /* mail gönderilemese de devam et */ }
@@ -449,6 +448,46 @@ namespace Nop.Web.Controllers
         }
 
         private class IdResult { public int Id { get; set; } }
+
+        private async Task SendPaymentEmailAsync(Customer customer, string storeName)
+        {
+            var accounts = await _emailAccountService.GetAllEmailAccountsAsync();
+            var emailAccount = accounts.Count > 0 ? accounts[0] : null;
+            if (emailAccount == null) return;
+
+            var paymentToken = Guid.NewGuid().ToString("N");
+            var expiry = DateTime.UtcNow.AddDays(30);
+            await _genericAttributeService.SaveAttributeAsync(customer, "PaymentLinkToken",       paymentToken);
+            await _genericAttributeService.SaveAttributeAsync(customer, "PaymentLinkTokenExpiry", expiry);
+
+            var paymentUrl = $"{_frontendUrl}/odeme?token={paymentToken}";
+
+            var body = $@"
+                <p>Merhaba {customer.FirstName},</p>
+                <p>Mağazanız <b>{storeName}</b> için deneme süreniz sona erdi.</p>
+                <p>Mağazanıza erişmeye devam etmek için aşağıdaki butona tıklayarak abonelik planınızı seçebilirsiniz.</p>
+                <br>
+                <a href='{paymentUrl}' style='display:inline-block;background:#6366f1;color:#fff;padding:12px 32px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;'>
+                  Abonelik Planı Seç
+                </a>
+                <br><br>
+                <p style='color:#6b7280;font-size:13px'>Bu link 30 gün geçerlidir.</p>
+                <p>Sorularınız için <a href='mailto:bilgi@pekinteknoloji.com'>bilgi@pekinteknoloji.com</a></p>
+                <p>İyi satışlar!<br><b>Pekin Teknoloji</b></p>";
+
+            await _queuedEmailService.InsertQueuedEmailAsync(new QueuedEmail
+            {
+                Priority       = QueuedEmailPriority.High,
+                From           = emailAccount.Email,
+                FromName       = emailAccount.DisplayName,
+                To             = customer.Email,
+                ToName         = $"{customer.FirstName} {customer.LastName}",
+                Subject        = $"Mağazanız için abonelik planı seçin — {storeName}",
+                Body           = body,
+                CreatedOnUtc   = DateTime.UtcNow,
+                EmailAccountId = emailAccount.Id
+            });
+        }
 
         private async Task<CustomerRole> GetOrCreateStoreOwnerRoleAsync()
         {

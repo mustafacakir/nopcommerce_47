@@ -31,6 +31,9 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
+RUN echo '{"DataProvider":"postgresql","ConnectionString":"Host=pekin_pgbouncer;Database=nopcommerce_db;Username=nopuser;Password=NopPass2024","RawDataSettings":{}}' \
+    > /app/App_Data/dataSettings.json
+
 RUN mkdir -p logs bin App_Data App_Data/DataProtectionKeys Plugins \
               wwwroot/bundles wwwroot/db_backups wwwroot/files/exportimport \
               wwwroot/icons wwwroot/images wwwroot/images/thumbs \
