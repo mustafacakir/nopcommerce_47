@@ -97,7 +97,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
             var ip      = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "85.34.78.112";
             var price   = selectedPlan.Price.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
-            var callbackUrl = $"{_callbackBaseUrl}/subscription/admin-callback";
+            var callbackUrl = $"{_callbackBaseUrl}/api/subscription/admin-callback";
 
             var request = new CreateCheckoutFormInitializeRequest
             {
