@@ -50,6 +50,7 @@ public partial class Program
         });
 
         // PEKIN_CUSTOM: OpenTelemetry metrikleri Prometheus için eklendi
+        builder.Services.AddMetrics(); // IMeterFactory'yi DI'a kayıt et
         //add OpenTelemetry
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(r => r.AddService("nopcommerce"))
