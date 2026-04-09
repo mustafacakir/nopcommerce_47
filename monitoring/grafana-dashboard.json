@@ -11,7 +11,7 @@
         "name": "store",
         "type": "query",
         "label": "Mağaza",
-        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "datasource": { "type": "prometheus", "uid": "afhxt0ru7zqiof" },
         "query": "label_values(store_requests_total, store_name)",
         "includeAll": true,
         "allValue": ".*",
