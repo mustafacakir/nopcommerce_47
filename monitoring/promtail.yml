@@ -19,3 +19,14 @@ scrape_configs:
         target_label: 'container'
       - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
         target_label: 'service'
+    pipeline_stages:
+      # nopCommerce loglarından store_id ve store_name çıkar
+      # ASP.NET Core BeginScope çıktısı: => store_id:23, store_name:sontest =>
+      - match:
+          selector: '{container="pekin_nopcommerce"}'
+          stages:
+            - regex:
+                expression: '.*store_id:(?P<store_id>\d+).*store_name:(?P<store_name>[^,\s\]]+).*'
+            - labels:
+                store_id:
+                store_name:
