@@ -26,7 +26,7 @@ scrape_configs:
           selector: '{container="pekin_nopcommerce"}'
           stages:
             - regex:
-                expression: '.*store_id:(?P<store_id>\d+).*store_name:(?P<store_name>[^,\s\]]+).*'
+                expression: '"store_id":"(?P<store_id>[^"]+)","store_name":"(?P<store_name>[^"]+)"'
             - labels:
                 store_id:
                 store_name:
