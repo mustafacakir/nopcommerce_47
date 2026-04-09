@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Diagnostics.Metrics;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nop.Core;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -15,32 +14,33 @@ namespace Nop.Web.Infrastructure
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<StoreMetricsMiddleware> _logger;
-        private readonly Counter<long> _requestCounter;
-        private readonly Counter<long> _errorCounter;
-        private readonly Histogram<double> _requestDuration;
 
-        public StoreMetricsMiddleware(
-            RequestDelegate next,
-            ILogger<StoreMetricsMiddleware> logger,
-            IMeterFactory meterFactory)
+        // İlk request'te OTel MeterProvider hazır olduktan sonra init edilir
+        private static Counter<long>    _requestCounter;
+        private static Counter<long>    _errorCounter;
+        private static Histogram<double> _requestDuration;
+        private static bool _initialized = false;
+        private static readonly object _lock = new();
+
+        public StoreMetricsMiddleware(RequestDelegate next, ILogger<StoreMetricsMiddleware> logger)
         {
             _next   = next;
             _logger = logger;
+        }
 
-            var meter = meterFactory.Create("nopcommerce.stores", "1.0");
-
-            _requestCounter = meter.CreateCounter<long>(
-                "store_requests_total",
-                description: "Total HTTP requests per store");
-
-            _errorCounter = meter.CreateCounter<long>(
-                "store_errors_total",
-                description: "Total HTTP 5xx errors per store");
-
-            _requestDuration = meter.CreateHistogram<double>(
-                "store_request_duration_ms",
-                unit: "ms",
-                description: "HTTP request duration per store");
+        private static void EnsureInitialized(System.IServiceProvider services)
+        {
+            if (_initialized) return;
+            lock (_lock)
+            {
+                if (_initialized) return;
+                var factory = services.GetRequiredService<IMeterFactory>();
+                var meter   = factory.Create("nopcommerce.stores", "1.0");
+                _requestCounter  = meter.CreateCounter<long>("store_requests_total",   description: "Total HTTP requests per store");
+                _errorCounter    = meter.CreateCounter<long>("store_errors_total",     description: "Total HTTP 5xx errors per store");
+                _requestDuration = meter.CreateHistogram<double>("store_request_duration_ms", unit: "ms", description: "HTTP request duration per store");
+                _initialized = true;
+            }
         }
 
         public async Task InvokeAsync(HttpContext context, IStoreContext storeContext)
@@ -50,6 +50,8 @@ namespace Nop.Web.Infrastructure
                 await _next(context);
                 return;
             }
+
+            EnsureInitialized(context.RequestServices);
 
             var store     = await storeContext.GetCurrentStoreAsync();
             var storeId   = store?.Id.ToString() ?? "0";
@@ -82,7 +84,6 @@ namespace Nop.Web.Infrastructure
                 {
                     sw.Stop();
                     _requestDuration.Record(sw.Elapsed.TotalMilliseconds, tags);
-
                     if (context.Response.StatusCode >= 500)
                         _errorCounter.Add(1, tags);
                 }
