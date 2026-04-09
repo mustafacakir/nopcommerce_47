@@ -153,5 +153,5 @@ public partial class NopStartup : INopStartup
     /// <summary>
     /// Gets order of this startup configuration implementation
     /// </summary>
-    public int Order => 2002;
+    public int Order => 200; // routing (400) ve endpoint (900)'dan önce çalışsın
 }
