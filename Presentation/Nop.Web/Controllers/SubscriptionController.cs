@@ -195,8 +195,10 @@ namespace Nop.Web.Controllers
 
         private async Task<IActionResult> CallbackCore(string token, bool isAdmin)
         {
-            var failUrl    = isAdmin ? "/Admin/Subscription?result=fail"    : $"{_frontendUrl}/odeme?result=fail";
-            var successUrl = isAdmin ? "/Admin/Subscription?result=success" : $"{_frontendUrl}/hesabim?result=success";
+            var returnBase = HttpContext.Request.Query["returnBase"].ToString();
+            if (string.IsNullOrEmpty(returnBase)) returnBase = _callbackUrl?.Replace("/api/subscription/admin-callback", "") ?? "";
+            var failUrl    = isAdmin ? $"{returnBase}/Admin/Subscription?result=fail"    : $"{_frontendUrl}/odeme?result=fail";
+            var successUrl = isAdmin ? $"{returnBase}/Admin/Subscription?result=success" : $"{_frontendUrl}/hesabim?result=success";
 
             if (string.IsNullOrEmpty(token))
                 return Redirect(failUrl);
