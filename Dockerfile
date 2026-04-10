@@ -52,11 +52,10 @@ RUN mkdir -p logs bin App_Data App_Data/DataProtectionKeys Plugins \
               wwwroot/images/uploaded \
               wwwroot/sitemaps
 
-# Backup config files so entrypoint can restore them on every startup
-# This prevents volume corruption from breaking the app
-RUN mkdir -p /app_config && \
-    cp App_Data/appsettings.json /app_config/ && \
-    cp App_Data/appsettings.Production.json /app_config/
+# Backup config files from source tree so entrypoint can restore them on every startup
+RUN mkdir -p /app_config
+COPY --from=build /src/Presentation/Nop.Web/App_Data/appsettings.json /app_config/
+COPY --from=build /src/Presentation/Nop.Web/App_Data/appsettings.Production.json /app_config/
 
 ENV ASPNETCORE_URLS=http://+:80
 EXPOSE 80
