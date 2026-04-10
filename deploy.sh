@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 cd /opt/pekinteknoloji
+chmod +x deploy.sh rollback.sh
 
 echo "[1/4] Git pull..."
 git pull
