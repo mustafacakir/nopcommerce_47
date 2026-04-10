@@ -9,6 +9,6 @@ fi
 
 echo "Önceki versiyona dönülüyor..."
 docker tag pekin/nopcommerce:rollback pekin/nopcommerce:latest
-docker compose up -d --no-build nopcommerce_web
+docker compose -f docker-compose.prod.yml up -d --no-build nopcommerce_web
 
 echo "Rollback tamamlandı."
