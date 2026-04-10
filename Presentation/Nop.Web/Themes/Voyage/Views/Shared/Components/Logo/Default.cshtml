@@ -9,7 +9,7 @@
 @inject ILocalizationService localizationService
 
 @{
-    var logoPath = $"~/Themes/{await themeContext.GetWorkingThemeNameAsync()}/Content/img/logo.png";
+    var logoPath = $"~/Themes/{await themeContext.GetWorkingThemeNameAsync()}/Content/img/logo.svg";
     var themeLogo = await Component.InvokeAsync("Widget", new { widgetZone = "voyage_theme_logo" });
 }
 

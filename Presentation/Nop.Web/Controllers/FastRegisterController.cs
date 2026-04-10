@@ -427,6 +427,9 @@ namespace Nop.Web.Controllers
             foreach (var s in settingsToCopy)
                 await _settingService.SetSettingAsync(s.Name, s.Value, newStoreId, clearCache: false);
 
+            // Yeni mağaza için Voyage temasını default yap
+            await _settingService.SetSettingAsync("storeinformationsettings.defaultstoretheme", "Voyage", newStoreId, clearCache: false);
+
             await _settingService.ClearCacheAsync();
         }
 

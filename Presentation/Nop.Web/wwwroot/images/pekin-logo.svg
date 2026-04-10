@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" width="220" height="48">
+  <!-- Icon -->
+  <rect x="0" y="4" width="40" height="40" rx="8" fill="#6366f1"/>
+  <text x="20" y="30" font-family="Arial,sans-serif" font-weight="900" font-size="18" fill="white" text-anchor="middle">PT</text>
+  <!-- Text -->
+  <text x="52" y="22" font-family="Arial,sans-serif" font-weight="700" font-size="15" fill="#1f2937">Pekin</text>
+  <text x="52" y="40" font-family="Arial,sans-serif" font-weight="700" font-size="15" fill="#6366f1">Teknoloji</text>
+</svg>
