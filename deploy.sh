@@ -11,14 +11,17 @@ fi
 echo "[1/5] Git pull..."
 git pull
 
-echo "[2/5] DB yedeği alınıyor..."
-BACKUP_DIR="/opt/pekinteknoloji/backups"
-mkdir -p "$BACKUP_DIR"
-BACKUP_FILE="$BACKUP_DIR/db_$(date +%Y%m%d_%H%M%S).sql.gz"
-docker exec nop_db pg_dump -U nopuser nopcommerce_db | gzip > "$BACKUP_FILE"
-echo "  Yedek: $BACKUP_FILE"
-# 7 günden eski yedekleri sil
-find "$BACKUP_DIR" -name "db_*.sql.gz" -mtime +7 -delete
+if [ "$SKIP_ROLLBACK" = "0" ]; then
+  echo "[2/5] DB yedeği alınıyor..."
+  BACKUP_DIR="/opt/pekinteknoloji/backups"
+  mkdir -p "$BACKUP_DIR"
+  BACKUP_FILE="$BACKUP_DIR/db_$(date +%Y%m%d_%H%M%S).sql.gz"
+  docker exec nop_db pg_dump -U nopuser nopcommerce_db | gzip > "$BACKUP_FILE"
+  echo "  Yedek: $BACKUP_FILE"
+  find "$BACKUP_DIR" -name "db_*.sql.gz" -mtime +7 -delete
+else
+  echo "[2/5] DB yedeği atlandı (-n flag)."
+fi
 
 if [ "$SKIP_ROLLBACK" = "0" ]; then
   echo "[3/5] Mevcut image rollback olarak etiketleniyor..."
