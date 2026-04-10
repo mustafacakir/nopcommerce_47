@@ -12,12 +12,6 @@
 </div>
 
 <div class="content">
-    <div class="alert alert-info">
-        <i class="fas fa-info-circle"></i>
-        Domain ekledikten sonra sunucuda <code>provision.sh</code> scriptini çalıştırmanız gerekir.
-        Script SSL sertifikasını alır ve nginx'i yeniden başlatır.
-    </div>
-
     @foreach (var store in stores)
     {
         var customHosts = (store.Hosts ?? "").Split(',')
@@ -92,7 +86,7 @@
                 <div class="input-group" style="max-width:500px">
                     <input type="text"
                            class="form-control domain-input"
-                           placeholder="minikhediyen.com"
+                           placeholder="example:domain.com"
                            data-store-id="@store.StoreId" />
                     <div class="input-group-append">
                         <button class="btn btn-primary add-domain-btn" data-store-id="@store.StoreId">

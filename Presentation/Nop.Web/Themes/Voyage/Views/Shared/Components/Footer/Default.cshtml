@@ -12,8 +12,8 @@
 
 @{
     var storeId = (await storeContext.GetCurrentStoreAsync()).Id;
-    var removeCopyright = await settingService.GetSettingByKeyAsync("voyagethemesettings.removecopyright", false, storeId, true);
-    var removeDesignedBy = await settingService.GetSettingByKeyAsync("voyagethemesettings.removedesignedby", false, storeId, true);
+    var removeCopyright = true; @* PEKIN_CUSTOM: nopCommerce footer yazısı gizlendi *@
+    var removeDesignedBy = true; @* PEKIN_CUSTOM: "Designed by" yazısı gizlendi *@
 }
 
 <div class="footer">
