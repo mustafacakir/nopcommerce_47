@@ -395,56 +395,39 @@ namespace Nop.Web.Controllers
             }
         }
 
+        // Plugin/tema ayarları kopyalanmaz — mağaza sahibi admin panelinden kendi tercihine göre aktif eder
+        private static readonly string[] _skipSettingPrefixes =
+        [
+            "voyagethemesettings.",
+            "sevenspikes.",
+            "nop.plugins.",
+            "widgets.",
+            "tax.fixedbycountrystatezipprovider.",
+            "shipping.",
+            "googlecheckout.",
+            "paypal.",
+            "iyzipay.",
+            "squarepayments.",
+            "amazonpay.",
+            "brevo.",
+            "omnisend.",
+        ];
+
         private async Task CloneTemplateStoreAsync(int newStoreId)
         {
             const int templateStoreId = 2;
 
-            // 1. Settings kopyala
+            // Temel mağaza ayarlarını kopyala (tema/plugin ayarları hariç)
             var allSettings = await _settingService.GetAllSettingsAsync();
-            foreach (var s in allSettings.Where(x => x.StoreId == templateStoreId))
+            var settingsToCopy = allSettings.Where(s =>
+                s.StoreId == templateStoreId &&
+                !_skipSettingPrefixes.Any(prefix => s.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+            );
+
+            foreach (var s in settingsToCopy)
                 await _settingService.SetSettingAsync(s.Name, s.Value, newStoreId, clearCache: false);
+
             await _settingService.ClearCacheAsync();
-
-            try
-            {
-                // 2. Template slider'ları yeni mağazaya ekle (StoreMapping)
-                var sliderIds = (await _dataProvider.QueryAsync<IdResult>(
-                    "SELECT \"EntityId\" AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'AnywhereSlider' AND \"StoreId\" = " + templateStoreId
-                )).Select(x => x.Id).ToList();
-
-                foreach (var sliderId in sliderIds)
-                {
-                    var exists = (await _dataProvider.QueryAsync<IdResult>(
-                        $"SELECT 1 AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'AnywhereSlider' AND \"EntityId\" = {sliderId} AND \"StoreId\" = {newStoreId}"
-                    )).Any();
-
-                    if (!exists)
-                        await _dataProvider.ExecuteNonQueryAsync($@"
-                            INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
-                            VALUES ({sliderId}, 'AnywhereSlider', {newStoreId})");
-                }
-
-                // 3. Template MegaMenu'ları yeni mağazaya ekle (StoreMapping)
-                var menuIds = (await _dataProvider.QueryAsync<IdResult>(
-                    "SELECT \"EntityId\" AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'MegaMenu' AND \"StoreId\" = " + templateStoreId
-                )).Select(x => x.Id).ToList();
-
-                foreach (var menuId in menuIds)
-                {
-                    var exists = (await _dataProvider.QueryAsync<IdResult>(
-                        $"SELECT 1 AS \"Id\" FROM \"StoreMapping\" WHERE \"EntityName\" = 'MegaMenu' AND \"EntityId\" = {menuId} AND \"StoreId\" = {newStoreId}"
-                    )).Any();
-
-                    if (!exists)
-                        await _dataProvider.ExecuteNonQueryAsync($@"
-                            INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
-                            VALUES ({menuId}, 'MegaMenu', {newStoreId})");
-                }
-            }
-            catch
-            {
-                // SS plugin tabloları henüz yoksa sessizce geç
-            }
         }
 
         private class IdResult { public int Id { get; set; } }
