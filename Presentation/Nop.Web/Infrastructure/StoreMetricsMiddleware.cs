@@ -15,12 +15,15 @@ namespace Nop.Web.Infrastructure
         private readonly RequestDelegate _next;
         private readonly ILogger<StoreMetricsMiddleware> _logger;
 
-        // İlk request'te OTel MeterProvider hazır olduktan sonra init edilir
-        private static Counter<long>    _requestCounter;
-        private static Counter<long>    _errorCounter;
+        private static Counter<long>     _requestCounter;
+        private static Counter<long>     _errorCounter;
         private static Histogram<double> _requestDuration;
         private static bool _initialized = false;
         private static readonly object _lock = new();
+
+        // Statik dosyaları metriklere dahil etme (yüksek kardinalite önleme)
+        private static readonly string[] _staticPrefixes = ["/css", "/js", "/images", "/fonts", "/lib", "/content", "/bundles"];
+        private static readonly string[] _staticExtensions = [".ico", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".woff", ".woff2", ".ttf", ".eot", ".map", ".webp"];
 
         public StoreMetricsMiddleware(RequestDelegate next, ILogger<StoreMetricsMiddleware> logger)
         {
@@ -36,8 +39,8 @@ namespace Nop.Web.Infrastructure
                 if (_initialized) return;
                 var factory = services.GetRequiredService<IMeterFactory>();
                 var meter   = factory.Create("nopcommerce.stores", "1.0");
-                _requestCounter  = meter.CreateCounter<long>("store_requests_total",   description: "Total HTTP requests per store");
-                _errorCounter    = meter.CreateCounter<long>("store_errors_total",     description: "Total HTTP 5xx errors per store");
+                _requestCounter  = meter.CreateCounter<long>("store_requests_total",        description: "Total HTTP requests per store");
+                _errorCounter    = meter.CreateCounter<long>("store_errors_total",          description: "Total HTTP 4xx/5xx errors per store");
                 _requestDuration = meter.CreateHistogram<double>("store_request_duration_ms", unit: "ms", description: "HTTP request duration per store");
                 _initialized = true;
             }
@@ -51,22 +54,40 @@ namespace Nop.Web.Infrastructure
                 return;
             }
 
+            var path = context.Request.Path.Value ?? "/";
+
+            // Statik dosyalar için metrics kaydı yapma
+            if (IsStaticFile(path))
+            {
+                await _next(context);
+                return;
+            }
+
             EnsureInitialized(context.RequestServices);
 
             var store     = await storeContext.GetCurrentStoreAsync();
             var storeId   = store?.Id.ToString() ?? "0";
             var storeName = store?.Name ?? "unknown";
+            var method    = context.Request.Method;
+
+            // Path normalizasyonu: query string olmadan, küçük harf
+            var normalizedPath = path.ToLowerInvariant().TrimEnd('/');
+            if (string.IsNullOrEmpty(normalizedPath)) normalizedPath = "/";
 
             var tags = new TagList
             {
-                { "store_id",   storeId   },
-                { "store_name", storeName }
+                { "store_id",   storeId        },
+                { "store_name", storeName      },
+                { "method",     method         },
+                { "path",       normalizedPath }
             };
 
             using (_logger.BeginScope(new Dictionary<string, object>
             {
                 ["store_id"]   = storeId,
-                ["store_name"] = storeName
+                ["store_name"] = storeName,
+                ["path"]       = normalizedPath,
+                ["method"]     = method
             }))
             {
                 _requestCounter.Add(1, tags);
@@ -84,10 +105,25 @@ namespace Nop.Web.Infrastructure
                 {
                     sw.Stop();
                     _requestDuration.Record(sw.Elapsed.TotalMilliseconds, tags);
-                    if (context.Response.StatusCode >= 500)
+
+                    var status = context.Response.StatusCode;
+                    if (status >= 400)
                         _errorCounter.Add(1, tags);
                 }
             }
+        }
+
+        private static bool IsStaticFile(string path)
+        {
+            foreach (var prefix in _staticPrefixes)
+                if (path.StartsWith(prefix, System.StringComparison.OrdinalIgnoreCase))
+                    return true;
+
+            foreach (var ext in _staticExtensions)
+                if (path.EndsWith(ext, System.StringComparison.OrdinalIgnoreCase))
+                    return true;
+
+            return false;
         }
     }
 }

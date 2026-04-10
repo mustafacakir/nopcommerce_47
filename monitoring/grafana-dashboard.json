@@ -2,7 +2,7 @@
   "title": "nopCommerce",
   "uid": "nopcommerce-main",
   "schemaVersion": 38,
-  "version": 2,
+  "version": 3,
   "refresh": "30s",
   "time": { "from": "now-1h", "to": "now" },
   "templating": {
@@ -31,21 +31,21 @@
     {
       "id": 101, "type": "stat", "title": "Toplam İstek",
       "gridPos": { "x": 0, "y": 1, "w": 6, "h": 4 },
-      "targets": [{ "expr": "sum(store_requests_total{store_name=~\"$store\"})", "refId": "A" }],
+      "targets": [{ "expr": "sum(store_requests_total{store_name=~\"$store\"}) or vector(0)", "refId": "A" }],
       "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
       "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "blue", "value": null }] } } }
     },
     {
       "id": 102, "type": "stat", "title": "İstek/Saniye",
       "gridPos": { "x": 6, "y": 1, "w": 6, "h": 4 },
-      "targets": [{ "expr": "sum(rate(store_requests_total{store_name=~\"$store\"}[5m]))", "refId": "A" }],
+      "targets": [{ "expr": "sum(rate(store_requests_total{store_name=~\"$store\"}[5m])) or vector(0)", "refId": "A" }],
       "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
       "fieldConfig": { "defaults": { "decimals": 2, "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }] } } }
     },
     {
-      "id": 103, "type": "stat", "title": "Hata Sayısı",
+      "id": 103, "type": "stat", "title": "Hata Sayısı (4xx+5xx)",
       "gridPos": { "x": 12, "y": 1, "w": 6, "h": 4 },
-      "targets": [{ "expr": "sum(store_errors_total{store_name=~\"$store\"})", "refId": "A" }],
+      "targets": [{ "expr": "sum(store_errors_total{store_name=~\"$store\"}) or vector(0)", "refId": "A" }],
       "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
       "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 10 }, { "color": "red", "value": 50 }] } } }
     },
@@ -56,7 +56,7 @@
         "expr": "sum(rate(store_request_duration_ms_sum{store_name=~\"$store\"}[5m])) / sum(rate(store_request_duration_ms_count{store_name=~\"$store\"}[5m]))",
         "refId": "A"
       }],
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area", "noValue": "Bekleniyor..." },
       "fieldConfig": { "defaults": { "unit": "ms", "decimals": 1, "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 500 }, { "color": "red", "value": 2000 }] } } }
     },
     {
@@ -115,29 +115,98 @@
       }
     },
     {
+      "id": 108, "type": "table", "title": "En Çok İstenen URL'ler (Top 20)",
+      "gridPos": { "x": 0, "y": 19, "w": 14, "h": 10 },
+      "targets": [
+        {
+          "expr": "sort_desc(topk(20, sum(rate(store_requests_total{store_name=~\"$store\"}[10m])) by (method, path)))",
+          "legendFormat": "", "refId": "A", "instant": true, "format": "table"
+        },
+        {
+          "expr": "topk(20, sum(rate(store_request_duration_ms_sum{store_name=~\"$store\"}[10m])) by (method, path) / sum(rate(store_request_duration_ms_count{store_name=~\"$store\"}[10m])) by (method, path))",
+          "legendFormat": "", "refId": "B", "instant": true, "format": "table"
+        },
+        {
+          "expr": "topk(20, sum(rate(store_errors_total{store_name=~\"$store\"}[10m])) by (method, path))",
+          "legendFormat": "", "refId": "C", "instant": true, "format": "table"
+        }
+      ],
+      "transformations": [
+        { "id": "merge", "options": {} },
+        { "id": "organize", "options": {
+          "renameByName": {
+            "method": "Method",
+            "path": "URL",
+            "Value #A": "İstek/s",
+            "Value #B": "Ort. ms",
+            "Value #C": "Hata/s"
+          },
+          "excludeByName": { "Time": true }
+        }}
+      ],
+      "options": { "sortBy": [{ "displayName": "İstek/s", "desc": true }] },
+      "fieldConfig": {
+        "defaults": { "decimals": 3 },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Ort. ms" }, "properties": [{ "id": "unit", "value": "ms" }] },
+          { "matcher": { "id": "byName", "options": "Hata/s" }, "properties": [
+            { "id": "custom.displayMode", "value": "color-text" },
+            { "id": "thresholds", "value": { "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 0.01 }] } },
+            { "id": "color", "value": { "mode": "thresholds" } }
+          ]}
+        ]
+      }
+    },
+    {
+      "id": 109, "type": "table", "title": "En Yavaş URL'ler (Top 10)",
+      "gridPos": { "x": 14, "y": 19, "w": 10, "h": 10 },
+      "targets": [{
+        "expr": "sort_desc(topk(10, sum(rate(store_request_duration_ms_sum{store_name=~\"$store\"}[10m])) by (method, path) / sum(rate(store_request_duration_ms_count{store_name=~\"$store\"}[10m])) by (method, path)))",
+        "legendFormat": "", "refId": "A", "instant": true, "format": "table"
+      }],
+      "transformations": [
+        { "id": "organize", "options": {
+          "renameByName": { "method": "Method", "path": "URL", "Value": "Ort. ms" },
+          "excludeByName": { "Time": true }
+        }}
+      ],
+      "options": { "sortBy": [{ "displayName": "Ort. ms", "desc": true }] },
+      "fieldConfig": {
+        "defaults": { "decimals": 1 },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Ort. ms" }, "properties": [
+            { "id": "unit", "value": "ms" },
+            { "id": "custom.displayMode", "value": "color-background" },
+            { "id": "thresholds", "value": { "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 500 }, { "color": "red", "value": 2000 }] } },
+            { "id": "color", "value": { "mode": "thresholds" } }
+          ]}
+        ]
+      }
+    },
+    {
       "id": 200, "type": "row", "title": "Sistem Metrikleri",
-      "gridPos": { "x": 0, "y": 19, "w": 24, "h": 1 },
+      "gridPos": { "x": 0, "y": 29, "w": 24, "h": 1 },
       "collapsed": false
     },
     {
       "id": 1, "type": "stat", "title": "Toplam İstek (ASP.NET)",
-      "gridPos": { "x": 0, "y": 20, "w": 6, "h": 4 },
-      "targets": [{ "expr": "sum(http_server_request_duration_seconds_count{job=\"nopcommerce\"})", "refId": "A" }],
+      "gridPos": { "x": 0, "y": 30, "w": 6, "h": 4 },
+      "targets": [{ "expr": "sum(http_server_request_duration_seconds_count{job=\"nopcommerce\"}) or vector(0)", "refId": "A" }],
       "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
       "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "blue", "value": null }] } } }
     },
     {
       "id": 2, "type": "stat", "title": "İstek/Saniye (ASP.NET)",
-      "gridPos": { "x": 6, "y": 20, "w": 6, "h": 4 },
-      "targets": [{ "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m]))", "refId": "A" }],
+      "gridPos": { "x": 6, "y": 30, "w": 6, "h": 4 },
+      "targets": [{ "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m])) or vector(0)", "refId": "A" }],
       "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
       "fieldConfig": { "defaults": { "decimals": 2, "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }] } } }
     },
     {
       "id": 3, "type": "stat", "title": "Hata Oranı %",
-      "gridPos": { "x": 12, "y": 20, "w": 6, "h": 4 },
+      "gridPos": { "x": 12, "y": 30, "w": 6, "h": 4 },
       "targets": [{
-        "expr": "100 * sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"[45]..\"}[5m])) / sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m]))",
+        "expr": "100 * sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"[45]..\"}[5m])) / sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m])) or vector(0)",
         "refId": "A"
       }],
       "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
@@ -145,17 +214,17 @@
     },
     {
       "id": 4, "type": "stat", "title": "Ort. Yanıt Süresi (ASP.NET)",
-      "gridPos": { "x": 18, "y": 20, "w": 6, "h": 4 },
+      "gridPos": { "x": 18, "y": 30, "w": 6, "h": 4 },
       "targets": [{
         "expr": "sum(rate(http_server_request_duration_seconds_sum{job=\"nopcommerce\"}[5m])) / sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m]))",
         "refId": "A"
       }],
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area", "noValue": "Bekleniyor..." },
       "fieldConfig": { "defaults": { "unit": "s", "decimals": 3, "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 0.5 }, { "color": "red", "value": 2 }] } } }
     },
     {
       "id": 5, "type": "timeseries", "title": "İstek Hızı (req/s)",
-      "gridPos": { "x": 0, "y": 24, "w": 12, "h": 8 },
+      "gridPos": { "x": 0, "y": 34, "w": 12, "h": 8 },
       "targets": [
         { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m]))", "legendFormat": "Toplam", "refId": "A" },
         { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"2..\"}[5m]))", "legendFormat": "2xx", "refId": "B" },
@@ -170,8 +239,8 @@
       }
     },
     {
-      "id": 6, "type": "timeseries", "title": "Yanıt Süresi",
-      "gridPos": { "x": 12, "y": 24, "w": 12, "h": 8 },
+      "id": 6, "type": "timeseries", "title": "Yanıt Süresi (p50 / p95 / p99)",
+      "gridPos": { "x": 12, "y": 34, "w": 12, "h": 8 },
       "targets": [
         { "expr": "histogram_quantile(0.50, sum(rate(http_server_request_duration_seconds_bucket{job=\"nopcommerce\"}[5m])) by (le))", "legendFormat": "p50", "refId": "A" },
         { "expr": "histogram_quantile(0.95, sum(rate(http_server_request_duration_seconds_bucket{job=\"nopcommerce\"}[5m])) by (le))", "legendFormat": "p95", "refId": "B" },
@@ -181,7 +250,7 @@
     },
     {
       "id": 7, "type": "timeseries", "title": "Hata Oranı (4xx / 5xx)",
-      "gridPos": { "x": 0, "y": 32, "w": 12, "h": 8 },
+      "gridPos": { "x": 0, "y": 42, "w": 12, "h": 8 },
       "targets": [
         { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"4..\"}[5m]))", "legendFormat": "4xx", "refId": "A" },
         { "expr": "sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\", http_response_status_code=~\"5..\"}[5m]))", "legendFormat": "5xx", "refId": "B" }
@@ -194,22 +263,22 @@
       }
     },
     {
-      "id": 8, "type": "timeseries", "title": "Route Bazında İstek Hızı (Top 10)",
-      "gridPos": { "x": 12, "y": 32, "w": 12, "h": 8 },
+      "id": 8, "type": "timeseries", "title": "URL Bazında İstek Hızı (Top 10)",
+      "gridPos": { "x": 12, "y": 42, "w": 12, "h": 8 },
       "targets": [{
-        "expr": "topk(10, sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m])) by (http_route))",
-        "legendFormat": "{{http_route}}", "refId": "A"
+        "expr": "topk(10, sum(rate(store_requests_total{store_name=~\"$store\"}[5m])) by (path))",
+        "legendFormat": "{{path}}", "refId": "A"
       }],
       "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "lineWidth": 2 } } }
     },
     {
       "id": 300, "type": "row", "title": ".NET Runtime",
-      "gridPos": { "x": 0, "y": 40, "w": 24, "h": 1 },
+      "gridPos": { "x": 0, "y": 50, "w": 24, "h": 1 },
       "collapsed": false
     },
     {
       "id": 9, "type": "timeseries", "title": ".NET GC Heap Belleği",
-      "gridPos": { "x": 0, "y": 41, "w": 12, "h": 8 },
+      "gridPos": { "x": 0, "y": 51, "w": 12, "h": 8 },
       "targets": [
         { "expr": "dotnet_gc_heap_size_bytes{job=\"nopcommerce\", generation=\"gen0\"}", "legendFormat": "Gen 0", "refId": "A" },
         { "expr": "dotnet_gc_heap_size_bytes{job=\"nopcommerce\", generation=\"gen1\"}", "legendFormat": "Gen 1", "refId": "B" },
@@ -220,7 +289,7 @@
     },
     {
       "id": 10, "type": "timeseries", "title": "GC Koleksiyon Hızı",
-      "gridPos": { "x": 12, "y": 41, "w": 12, "h": 8 },
+      "gridPos": { "x": 12, "y": 51, "w": 12, "h": 8 },
       "targets": [
         { "expr": "rate(dotnet_gc_collections_total{job=\"nopcommerce\", generation=\"gen0\"}[5m])", "legendFormat": "Gen 0", "refId": "A" },
         { "expr": "rate(dotnet_gc_collections_total{job=\"nopcommerce\", generation=\"gen1\"}[5m])", "legendFormat": "Gen 1", "refId": "B" },
@@ -230,7 +299,7 @@
     },
     {
       "id": 11, "type": "timeseries", "title": "Thread Pool",
-      "gridPos": { "x": 0, "y": 49, "w": 12, "h": 8 },
+      "gridPos": { "x": 0, "y": 59, "w": 12, "h": 8 },
       "targets": [
         { "expr": "dotnet_thread_pool_thread_count{job=\"nopcommerce\"}", "legendFormat": "Thread Sayısı", "refId": "A" },
         { "expr": "dotnet_thread_pool_queue_length{job=\"nopcommerce\"}", "legendFormat": "Kuyruk Uzunluğu", "refId": "B" }
@@ -239,7 +308,7 @@
     },
     {
       "id": 12, "type": "timeseries", "title": "Aktif HTTP İstekleri",
-      "gridPos": { "x": 12, "y": 49, "w": 12, "h": 8 },
+      "gridPos": { "x": 12, "y": 59, "w": 12, "h": 8 },
       "targets": [
         { "expr": "http_server_active_requests{job=\"nopcommerce\"}", "legendFormat": "Gelen (server)", "refId": "A" },
         { "expr": "http_client_active_requests{job=\"nopcommerce\"}", "legendFormat": "Giden (client)", "refId": "B" }
@@ -248,12 +317,12 @@
     },
     {
       "id": 400, "type": "row", "title": "Sunucu",
-      "gridPos": { "x": 0, "y": 57, "w": 24, "h": 1 },
+      "gridPos": { "x": 0, "y": 67, "w": 24, "h": 1 },
       "collapsed": false
     },
     {
       "id": 13, "type": "timeseries", "title": "CPU Kullanımı",
-      "gridPos": { "x": 0, "y": 58, "w": 12, "h": 8 },
+      "gridPos": { "x": 0, "y": 68, "w": 12, "h": 8 },
       "targets": [{
         "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
         "legendFormat": "CPU %", "refId": "A"
@@ -264,7 +333,7 @@
     },
     {
       "id": 14, "type": "timeseries", "title": "RAM Kullanımı",
-      "gridPos": { "x": 12, "y": 58, "w": 12, "h": 8 },
+      "gridPos": { "x": 12, "y": 68, "w": 12, "h": 8 },
       "targets": [
         { "expr": "node_memory_MemTotal_bytes", "legendFormat": "Toplam", "refId": "A" },
         { "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes", "legendFormat": "Kullanılan", "refId": "B" }
@@ -273,7 +342,7 @@
     },
     {
       "id": 15, "type": "timeseries", "title": "Disk Kullanımı",
-      "gridPos": { "x": 0, "y": 66, "w": 12, "h": 8 },
+      "gridPos": { "x": 0, "y": 76, "w": 12, "h": 8 },
       "targets": [
         { "expr": "node_filesystem_size_bytes{fstype!~\"tmpfs|overlay\"}", "legendFormat": "Toplam - {{mountpoint}}", "refId": "A" },
         { "expr": "node_filesystem_size_bytes{fstype!~\"tmpfs|overlay\"} - node_filesystem_free_bytes{fstype!~\"tmpfs|overlay\"}", "legendFormat": "Kullanılan - {{mountpoint}}", "refId": "B" }
@@ -282,30 +351,12 @@
     },
     {
       "id": 16, "type": "timeseries", "title": "Ağ Trafiği",
-      "gridPos": { "x": 12, "y": 66, "w": 12, "h": 8 },
+      "gridPos": { "x": 12, "y": 76, "w": 12, "h": 8 },
       "targets": [
         { "expr": "rate(node_network_receive_bytes_total{device!=\"lo\"}[5m])", "legendFormat": "Gelen - {{device}}", "refId": "A" },
         { "expr": "rate(node_network_transmit_bytes_total{device!=\"lo\"}[5m])", "legendFormat": "Giden - {{device}}", "refId": "B" }
       ],
       "fieldConfig": { "defaults": { "unit": "Bps", "custom": { "lineWidth": 2 } } }
-    },
-    {
-      "id": 17, "type": "timeseries", "title": "DNS Lookup Süresi",
-      "gridPos": { "x": 0, "y": 74, "w": 12, "h": 8 },
-      "targets": [{
-        "expr": "histogram_quantile(0.95, rate(dns_lookup_duration_seconds_bucket{job=\"nopcommerce\"}[5m]))",
-        "legendFormat": "p95 - {{dns_question_name}}", "refId": "A"
-      }],
-      "fieldConfig": { "defaults": { "unit": "s", "custom": { "lineWidth": 2 } } }
-    },
-    {
-      "id": 18, "type": "table", "title": "Route Bazında İstek Özeti",
-      "gridPos": { "x": 12, "y": 74, "w": 12, "h": 8 },
-      "targets": [
-        { "expr": "sort_desc(sum(rate(http_server_request_duration_seconds_count{job=\"nopcommerce\"}[5m])) by (http_route, http_request_method))", "legendFormat": "", "refId": "A", "instant": true, "format": "table" }
-      ],
-      "options": { "sortBy": [{ "displayName": "Value", "desc": true }] },
-      "fieldConfig": { "defaults": { "unit": "reqps" } }
     }
   ]
 }
