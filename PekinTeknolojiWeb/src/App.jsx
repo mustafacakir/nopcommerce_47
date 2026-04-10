@@ -347,7 +347,7 @@ const THEMES_DATA = [
 ];
 
 const IntegrationsStrip = () => {
-  const items = ['Trendyol', 'Hepsiburada', 'n11', 'Amazon', 'Çiçeksepeti', 'iyzico', 'PayTR',
+  const items = ['Trendyol', 'Hepsiburada', 'n11', 'iyzico', 'PayTR',
       'MNG Kargo', 'Yurtiçi Kargo', 'Aras Kargo', 'Sürat Kargo'];
   return (
     <div className="integrations-strip">
@@ -430,7 +430,6 @@ const FEATURE_TABS = [
             { name: 'Trendyol', color: '#FF6000', emoji: '🛍️', orders: '142 sipariş' },
             { name: 'Hepsiburada', color: '#FF6D00', emoji: '🛒', orders: '89 sipariş' },
             { name: 'n11', color: '#7B2FF7', emoji: '🏪', orders: '56 sipariş' },
-            { name: 'Amazon TR', color: '#FF9900', emoji: '📦', orders: '34 sipariş' },
           ].map(p => (
             <div key={p.name} className="fv-mp-card">
               <div className="fv-mp-card-top">
@@ -697,7 +696,7 @@ const NAV_DROPDOWN = {
       items: [
         { icon: '🚀', label: 'Mağaza Kurulum', desc: 'Domain, SSL, ödeme ve kargo dahil' },
         { icon: '🎨', label: 'Tema Özelleştirme', desc: 'Premium temalar, markanıza göre' },
-        { icon: '🔗', label: 'Pazaryeri Entegrasyonu', desc: 'Trendyol, Hepsiburada, n11, Amazon' },
+        { icon: '🔗', label: 'Pazaryeri Entegrasyonu', desc: 'Trendyol, Hepsiburada, n11' },
         { icon: '🛠️', label: 'Teknik Destek & Bakım', desc: '7/24 destek ekibi' },
       ]
     }
@@ -1201,20 +1200,17 @@ const EC_PACKAGES = [
     price: '1.490',
     desc: 'E-ticarete ilk adımını atmak isteyen küçük işletmeler için.',
     features: [
-      { text: '500 ürün', ok: true },
-      { text: '5 GB medya depolama', ok: true },
-      { text: 'Sınırsız trafik & bant genişliği', ok: true },
+      { text: '1 Yıllık Alan Adı', ok: true },
       { text: 'SSL sertifikası', ok: true },
       { text: 'Mobil uyumlu mağaza', ok: true },
       { text: '3 premium tema', ok: true },
       { text: 'Temel SEO ayarları', ok: true },
       { text: 'Sanal POS (iyzico)', ok: true },
       { text: '1 kargo entegrasyonu', ok: true },
-      { text: 'Manuel sipariş oluşturma', ok: true },
-      { text: 'E-posta desteği', ok: true },
+      { text: 'Manuel sipariş oluşturma', ok: true }, 
+      { text: 'Kampanya & kupon yönetimi', ok: true },
       { text: 'Terk edilmiş sepet otomasyonu', ok: false },
       { text: 'Pazaryeri entegrasyonu', ok: false },
-      { text: 'Kampanya & kupon yönetimi', ok: false },
       { text: 'Toplu ürün yönetimi', ok: false },
     ],
   },
@@ -1224,17 +1220,14 @@ const EC_PACKAGES = [
     popular: true,
     desc: 'Büyüyen markalar için pazaryeri entegrasyonu ve otomasyon gücü.',
     features: [
-      { text: '10.000 ürün', ok: true },
-      { text: '25 GB medya depolama', ok: true },
-      { text: 'Sınırsız trafik & bant genişliği', ok: true },
+      { text: '1 Yıllık Alan Adı', ok: true },
       { text: 'SSL sertifikası', ok: true },
       { text: 'Mobil uyumlu mağaza', ok: true },
       { text: 'Premium temalar', ok: true },
       { text: 'Gelişmiş SEO & blog modülü', ok: true },
-      { text: 'Tüm ödeme sistemleri', ok: true },
-      { text: '3 kargo entegrasyonu', ok: true },
+      { text: 'Sanal POS (iyzico, paytr)', ok: true },
+      { text: '1 kargo entegrasyonu', ok: true },
       { text: 'Manuel sipariş oluşturma', ok: true },
-      { text: '7/24 telefon & e-posta desteği', ok: true },
       { text: 'Terk edilmiş sepet otomasyonu', ok: true },
       { text: 'Trendyol & Hepsiburada entegrasyonu', ok: true },
       { text: 'Kampanya & kupon yönetimi', ok: true },
@@ -1243,22 +1236,19 @@ const EC_PACKAGES = [
   },
   {
     name: 'Kurumsal',
-    price: '7.490',
+    price: '4.990',
     desc: 'Sınırsız ölçek, özel geliştirme ve maksimum performans.',
     features: [
-      { text: 'Sınırsız ürün', ok: true },
-      { text: 'Sınırsız medya depolama', ok: true },
-      { text: 'Sınırsız trafik & bant genişliği', ok: true },
+      { text: '1 Yıllık Alan Adı', ok: true },
       { text: 'SSL sertifikası', ok: true },
       { text: 'Mobil uyumlu mağaza', ok: true },
       { text: 'Özel tema tasarımı', ok: true },
       { text: 'Tam SEO + içerik yönetimi', ok: true },
-      { text: 'Tüm ödeme sistemleri', ok: true },
-      { text: 'Tüm kargo firmaları', ok: true },
+      { text: 'Sanal POS (iyzico, paytr)', ok: true },
+      { text: '2 kargo entegrasyonu', ok: true },
       { text: 'Manuel sipariş oluşturma', ok: true },
-      { text: 'Öncelikli 7/24 destek', ok: true },
       { text: 'Terk edilmiş sepet otomasyonu', ok: true },
-      { text: 'Tüm pazaryerleri (Trendyol, Hepsiburada, n11, Amazon)', ok: true },
+      { text: '3 Pazaryeri Entegrasyonu(Trendyol, Hepsiburada, n11)', ok: true },
       { text: 'Kampanya & kupon yönetimi', ok: true },
       { text: 'Toplu ürün yönetimi', ok: true },
     ],
@@ -1278,7 +1268,6 @@ const EC_INTEGRATIONS = [
   { name: 'Trendyol', emoji: '🛍️' },
   { name: 'Hepsiburada', emoji: '🛒' },
   { name: 'n11', emoji: '🏪' },
-  { name: 'Amazon TR', emoji: '📦' },
   { name: 'iyzico', emoji: '💳' },
   { name: 'Yurtiçi Kargo', emoji: '🚚' },
   { name: 'Aras Kargo', emoji: '📬' },
@@ -1513,8 +1502,6 @@ const PricingPage = () => {
 
   const features = [
     { cat: 'Genel Özellikler' },
-    { name: 'Ürün Limiti', values: ['500', '10.000', 'Sınırsız'] },
-    { name: 'Depolama Alanı', values: ['5 GB', '25 GB', 'Sınırsız'] },
     { name: 'Hazır Tasarımlar', values: [true, true, true] },
     { cat: 'Pazarlama & SEO' },
     { name: 'Gelişmiş SEO', values: [true, true, true] },
@@ -2010,7 +1997,7 @@ const MagazaAcPage = () => {
             <div className="map-desktop-mockup">
               <div className="map-desktop-bar">
                 <span className="map-dot" /><span className="map-dot" /><span className="map-dot" />
-                <span className="map-url-bar">mağazam.pekinteknoloji.com</span>
+                <span className="map-url-bar">magazam.pekinteknoloji.com</span>
               </div>
               <img src={THEMES_DATA[0].mainImage} alt="Masaüstü önizleme" />
             </div>
@@ -2173,7 +2160,7 @@ const AgencyServices = ({ onConsult }) => (
           <h1>E-Ticaret Mağazanızı <br /> <span className="text-gradient">Birlikte Kuralım</span></h1>
           <p className="hero-description">
             Güçlü e-ticaret altyapısıyla mağazanızı kurun.
-            Ödeme sistemleri, pazaryeri entegrasyonları ve 7/24 destek tek pakette.
+            Ödeme sistemleri, pazaryeri ve kargo entegrasyonları tek pakette.
           </p>
           <div className="hero-btns">
             <button className="btn-primary" onClick={() => navigate('/magaza-ac')}>
@@ -2192,7 +2179,7 @@ const AgencyServices = ({ onConsult }) => (
               <span className="browser-dot red" />
               <span className="browser-dot yellow" />
               <span className="browser-dot green" />
-              <span className="browser-url">mağazam.pekinteknoloji.com</span>
+              <span className="browser-url">magazam.pekinteknoloji.com</span>
             </div>
             <img src={THEMES_DATA[0].mainImage} alt="E-ticaret mağaza örneği" className="browser-screenshot" />
           </div>
@@ -2255,7 +2242,6 @@ const AgencyServices = ({ onConsult }) => (
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/eticaret" element={<EcommercePage onRegister={() => navigate('/magaza-ac')} onThemeSelect={setSelectedTheme} themesData={THEMES_DATA} />} />
-        <Route path="/fiyatlar" element={<PricingPage />} />
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogDetailPage />} />
         <Route path="/sss" element={<FAQPage />} />
@@ -2286,7 +2272,6 @@ const AgencyServices = ({ onConsult }) => (
               <h4>Kurumsal</h4>
               <Link to="/">Anasayfa</Link>
               <Link to="/eticaret">E-Ticaret Platform</Link>
-              <Link to="/fiyatlar">Fiyatlar</Link>
               <Link to="/blog">Blog</Link>
               <Link to="/sss">SSS</Link>
             </div>
@@ -2302,9 +2287,8 @@ const AgencyServices = ({ onConsult }) => (
           <div className="footer-bottom">
             <p>© 2026 Pekin Teknoloji. Tüm Hakları Saklıdır.</p>
             <div className="social-links">
-              <a href="https://instagram.com/pekinteknoloji" target="_blank" rel="noreferrer">Instagram</a>
-              <a href="https://linkedin.com/company/pekinteknoloji" target="_blank" rel="noreferrer">LinkedIn</a>
-              <a href="https://twitter.com/pekinteknoloji" target="_blank" rel="noreferrer">Twitter (X)</a>
+              <a href="https://www.instagram.com/pekin_teknoloji" target="_blank" rel="noreferrer">Instagram</a>
+              <a href="https://www.linkedin.com/company/pekin-teknoloji" target="_blank" rel="noreferrer">LinkedIn</a>
             </div>
           </div>
         </div>
