@@ -274,5 +274,19 @@
 
     @NopHtml.GenerateScripts(ResourceLocation.Footer)
     @NopHtml.GenerateInlineScripts(ResourceLocation.Footer)
+
+    @* PEKIN_CUSTOM: StoreOwner için store seçici UI'ı gizle *@
+    @if (ViewBag.OwnerStoreId != null)
+    {
+        <script>
+            $(function () {
+                // "Mağazalarla sınırlı" kartını gizle
+                $('[data-card-name="store-mapping"]').closest('.card').hide();
+
+                // Store arama filtresi dropdown'ını gizle
+                $('#SearchStoreId').closest('.form-group').hide();
+            });
+        </script>
+    }
 </body>
 </html>

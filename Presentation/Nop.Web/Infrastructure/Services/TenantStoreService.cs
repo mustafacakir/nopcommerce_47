@@ -34,7 +34,6 @@ public class TenantStoreService : StoreService
         if (_isResolving.Value)
             return allStores;
 
-        // Sadece admin panelinde filtrele
         var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext == null || !httpContext.Request.Path.StartsWithSegments("/Admin"))
             return allStores;
