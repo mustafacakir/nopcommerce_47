@@ -15,6 +15,7 @@ using Nop.Services.Configuration;
 using Nop.Services.Security;
 using Nop.Services.Stores;
 using Nop.Web.Framework.Controllers;
+using Nop.Core.Caching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,7 @@ namespace Nop.Web.Controllers
         private readonly IQueuedEmailService _queuedEmailService;
         private readonly ISettingService _settingService;
         private readonly INopDataProvider _dataProvider;
+        private readonly IStaticCacheManager _staticCacheManager;
         private readonly string _storeDomain;
         private readonly bool _sslEnabled;
         private readonly int _trialDays;
@@ -95,6 +97,7 @@ namespace Nop.Web.Controllers
             IQueuedEmailService queuedEmailService,
             ISettingService settingService,
             INopDataProvider dataProvider,
+            IStaticCacheManager staticCacheManager,
             IConfiguration configuration)
         {
             _customerService = customerService;
@@ -109,6 +112,7 @@ namespace Nop.Web.Controllers
             _queuedEmailService = queuedEmailService;
             _settingService = settingService;
             _dataProvider = dataProvider;
+            _staticCacheManager = staticCacheManager;
             _storeDomain = configuration["ProvisioningConfig:StoreDomain"] ?? "localhost";
             _sslEnabled = bool.TryParse(configuration["ProvisioningConfig:SslEnabled"], out var ssl) && ssl;
             _trialDays = int.TryParse(configuration["ProvisioningConfig:TrialDays"], out var td) ? td : 14;
@@ -437,6 +441,8 @@ namespace Nop.Web.Controllers
             await CopyStoreMappingsAsync(templateStoreId, newStoreId, "Product");
             await CopyStoreMappingsAsync(templateStoreId, newStoreId, "Category");
             await CopyStoreMappingsAsync(templateStoreId, newStoreId, "Slider");
+
+            await _staticCacheManager.ClearAsync();
         }
 
         private async Task CopyStoreMappingsAsync(int templateStoreId, int newStoreId, string entityName)
