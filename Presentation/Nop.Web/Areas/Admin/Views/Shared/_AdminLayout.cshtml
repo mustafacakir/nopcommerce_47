@@ -280,10 +280,10 @@
     {
         <script>
             $(function () {
-                // "Mağazalarla sınırlı" kartını gizle
-                $('[data-card-name="store-mapping"]').closest('.card').hide();
+                // "Mağazalarla sınırlı" dropdown'ını gizle (create/edit ekranları)
+                $('#SelectedStoreIds').closest('.form-group').hide();
 
-                // Store arama filtresi dropdown'ını gizle
+                // Store arama filtresi dropdown'ını gizle (listing ekranları)
                 $('#SearchStoreId').closest('.form-group').hide();
             });
         </script>
