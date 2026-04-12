@@ -279,18 +279,9 @@
     @if (await customerService.IsInCustomerRoleAsync(layoutCustomer, "StoreOwner"))
     {
         <style>
-            [data-card-name="store-mapping"] { display: none !important; }
+            .form-group:has(#SelectedStoreIds) { display: none !important; }
+            .form-group:has(#SearchStoreId) { display: none !important; }
         </style>
-        <script>
-            $(function () {
-                // "Mağazalarla sınırlı" dropdown'ını gizle (create/edit ekranları)
-                $('[data-card-name="store-mapping"]').hide();
-                $('#SelectedStoreIds').closest('.form-group').hide();
-
-                // Store arama filtresi dropdown'ını gizle (listing ekranları)
-                $('#SearchStoreId').closest('.form-group').hide();
-            });
-        </script>
     }
 </body>
 </html>
