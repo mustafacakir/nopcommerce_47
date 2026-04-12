@@ -436,7 +436,7 @@ namespace Nop.Web.Controllers
             // Template store'daki ürün, kategori ve slider mapping'lerini yeni mağazaya kopyala
             await CopyStoreMappingsAsync(templateStoreId, newStoreId, "Product");
             await CopyStoreMappingsAsync(templateStoreId, newStoreId, "Category");
-            await CopyStoreMappingsAsync(templateStoreId, newStoreId, "AnywhereSlider");
+            await CopyStoreMappingsAsync(templateStoreId, newStoreId, "Slider");
         }
 
         private async Task CopyStoreMappingsAsync(int templateStoreId, int newStoreId, string entityName)
