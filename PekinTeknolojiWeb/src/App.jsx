@@ -2206,8 +2206,8 @@ const AgencyServices = ({ onConsult }) => (
             <p>Projenizi konuşalım. En geç 1 iş günü içinde dönüş yapıyoruz.</p>
           </div>
           <div className="contact-info-row">
-            <a href="tel:+908508402336" className="contact-info-pill">
-              <Phone size={16} /> 0850 840 23 36
+            <a href="tel:+905415740545" className="contact-info-pill">
+              <Phone size={16} /> 0541 574 05 45
             </a>
             <a href="mailto:bilgi@pekinteknoloji.com" className="contact-info-pill">
               <Mail size={16} /> bilgi@pekinteknoloji.com

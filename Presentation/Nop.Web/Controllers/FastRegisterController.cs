@@ -5,6 +5,7 @@ using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Security;
 using Nop.Core.Domain.Stores;
+using LinqToDB.Data;
 using Nop.Data;
 using Nop.Services.Common;
 using Nop.Services.Customers;
@@ -431,6 +432,23 @@ namespace Nop.Web.Controllers
             await _settingService.SetSettingAsync("storeinformationsettings.defaultstoretheme", "Voyage", newStoreId, clearCache: false);
 
             await _settingService.ClearCacheAsync();
+
+            // Template store'daki ürün, kategori ve slider mapping'lerini yeni mağazaya kopyala
+            await CopyStoreMappingsAsync(templateStoreId, newStoreId, "Product");
+            await CopyStoreMappingsAsync(templateStoreId, newStoreId, "Category");
+            await CopyStoreMappingsAsync(templateStoreId, newStoreId, "AnywhereSlider");
+        }
+
+        private async Task CopyStoreMappingsAsync(int templateStoreId, int newStoreId, string entityName)
+        {
+            await _dataProvider.ExecuteNonQueryAsync(@"
+                INSERT INTO ""StoreMapping"" (""EntityId"", ""EntityName"", ""StoreId"")
+                SELECT ""EntityId"", @entityName, @newStoreId
+                FROM ""StoreMapping""
+                WHERE ""EntityName"" = @entityName AND ""StoreId"" = @templateStoreId",
+                new DataParameter("entityName", entityName),
+                new DataParameter("newStoreId", newStoreId),
+                new DataParameter("templateStoreId", templateStoreId));
         }
 
         private class IdResult { public int Id { get; set; } }
