@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Nop.Core.Infrastructure;
+﻿using Nop.Core.Infrastructure;
 using Nop.Services.Stores;
 using Nop.Web.Areas.Admin.Factories;
 using Nop.Web.Areas.Admin.Filters;
@@ -119,10 +118,6 @@ public partial class NopStartup : INopStartup
 
         // PEKIN_CUSTOM: StoreOwner filter - listing'lerde DB seviyesinde filtreleme, create/edit'te otomatik store ataması
         services.AddScoped<StoreOwnerFilter>();
-        services.Configure<MvcOptions>(options =>
-        {
-            options.Filters.AddService<StoreOwnerFilter>();
-        });
 
         // PEKIN_CUSTOM: CORS - PekinTeknolojiWeb (React) sitesinden gelen isteklere izin ver
         services.AddCors(options =>

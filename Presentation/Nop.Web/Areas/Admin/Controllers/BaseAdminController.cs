@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Nop.Core.Domain.Common;
 using Nop.Core.Infrastructure;
+using Nop.Web.Areas.Admin.Filters;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Mvc.Filters;
@@ -16,6 +17,7 @@ namespace Nop.Web.Areas.Admin.Controllers;
 [ValidateVendor]
 [SaveSelectedTab]
 [NotNullValidationMessage]
+[ServiceFilter(typeof(StoreOwnerFilter))]
 public abstract partial class BaseAdminController : BaseController
 {
     /// <summary>
