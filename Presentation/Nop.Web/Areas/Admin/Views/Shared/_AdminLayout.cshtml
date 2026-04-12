@@ -278,9 +278,13 @@
     @* PEKIN_CUSTOM: StoreOwner için store seçici UI'ı gizle *@
     @if (await customerService.IsInCustomerRoleAsync(layoutCustomer, "StoreOwner"))
     {
+        <style>
+            [data-card-name="store-mapping"] { display: none !important; }
+        </style>
         <script>
             $(function () {
                 // "Mağazalarla sınırlı" dropdown'ını gizle (create/edit ekranları)
+                $('[data-card-name="store-mapping"]').hide();
                 $('#SelectedStoreIds').closest('.form-group').hide();
 
                 // Store arama filtresi dropdown'ını gizle (listing ekranları)
