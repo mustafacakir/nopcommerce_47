@@ -31,7 +31,7 @@ public partial class NopStartup : INopStartup
         services.AddScoped<IStoreMappingSupportedModelFactory, StoreMappingSupportedModelFactory>();
 
         //admin factories
-        services.AddScoped<IBaseAdminModelFactory, TenantBaseAdminModelFactory>();
+        services.AddScoped<IBaseAdminModelFactory, BaseAdminModelFactory>();
         services.AddScoped<IActivityLogModelFactory, ActivityLogModelFactory>();
         services.AddScoped<IAddressModelFactory, AddressModelFactory>();
         services.AddScoped<IAddressAttributeModelFactory, AddressAttributeModelFactory>();
