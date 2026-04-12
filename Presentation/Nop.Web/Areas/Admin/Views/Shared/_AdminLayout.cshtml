@@ -276,7 +276,7 @@
     @NopHtml.GenerateInlineScripts(ResourceLocation.Footer)
 
     @* PEKIN_CUSTOM: StoreOwner için store seçici UI'ı gizle *@
-    @if (ViewBag.OwnerStoreId != null)
+    @if (await customerService.IsInCustomerRoleAsync(layoutCustomer, "StoreOwner"))
     {
         <script>
             $(function () {
