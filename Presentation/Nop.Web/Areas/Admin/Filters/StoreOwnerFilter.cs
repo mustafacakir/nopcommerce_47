@@ -65,10 +65,13 @@ public class StoreOwnerFilter : IAsyncActionFilter
             if (arg == null) continue;
             var type = arg.GetType();
 
-            // Listing: SearchStoreId — DB seviyesinde filtreleme
-            var searchStoreProp = type.GetProperty("SearchStoreId");
-            if (searchStoreProp != null && searchStoreProp.CanWrite)
-                searchStoreProp.SetValue(arg, storeId);
+            // Listing: SearchStoreId veya StoreId — DB seviyesinde filtreleme
+            foreach (var propName in new[] { "SearchStoreId", "StoreId" })
+            {
+                var searchStoreProp = type.GetProperty(propName);
+                if (searchStoreProp != null && searchStoreProp.CanWrite && searchStoreProp.PropertyType == typeof(int))
+                    searchStoreProp.SetValue(arg, storeId);
+            }
 
             // Create/Edit: SelectedStoreIds + LimitedToStores
             var selectedStoresProp = type.GetProperty("SelectedStoreIds");

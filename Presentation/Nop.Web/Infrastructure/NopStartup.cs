@@ -31,7 +31,7 @@ public partial class NopStartup : INopStartup
         services.AddScoped<IStoreMappingSupportedModelFactory, StoreMappingSupportedModelFactory>();
 
         //admin factories
-        services.AddScoped<IBaseAdminModelFactory, BaseAdminModelFactory>();
+        services.AddScoped<IBaseAdminModelFactory, TenantBaseAdminModelFactory>();
         services.AddScoped<IActivityLogModelFactory, ActivityLogModelFactory>();
         services.AddScoped<IAddressModelFactory, AddressModelFactory>();
         services.AddScoped<IAddressAttributeModelFactory, AddressAttributeModelFactory>();
@@ -65,9 +65,9 @@ public partial class NopStartup : INopStartup
         services.AddScoped<IPluginModelFactory, PluginModelFactory>();
         services.AddScoped<IPollModelFactory, PollModelFactory>();
         services.AddScoped<IProductModelFactory, ProductModelFactory>();
-        services.AddScoped<IProductAttributeModelFactory, ProductAttributeModelFactory>();
+        services.AddScoped<IProductAttributeModelFactory, TenantProductAttributeModelFactory>();
         services.AddScoped<IProductReviewModelFactory, ProductReviewModelFactory>();
-        services.AddScoped<IReportModelFactory, ReportModelFactory>();
+        services.AddScoped<IReportModelFactory, TenantReportModelFactory>();
         services.AddScoped<IQueuedEmailModelFactory, QueuedEmailModelFactory>();
         services.AddScoped<IRecurringPaymentModelFactory, RecurringPaymentModelFactory>();
         services.AddScoped<IReturnRequestModelFactory, ReturnRequestModelFactory>();
