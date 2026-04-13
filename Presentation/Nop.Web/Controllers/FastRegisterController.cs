@@ -83,6 +83,7 @@ namespace Nop.Web.Controllers
         private readonly int _trialDays;
         private readonly string _recaptchaSecret;
         private readonly string _frontendUrl;
+        private readonly IConfiguration _configuration;
 
         public FastRegisterController(
             ICustomerService customerService,
@@ -118,6 +119,7 @@ namespace Nop.Web.Controllers
             _trialDays = int.TryParse(configuration["ProvisioningConfig:TrialDays"], out var td) ? td : 14;
             _recaptchaSecret = configuration["ProvisioningConfig:RecaptchaSecret"] ?? "";
             _frontendUrl = configuration["IyzicoConfig:FrontendUrl"] ?? "https://pekinteknoloji.com";
+            _configuration = configuration;
         }
 
         [HttpGet("check-slug")]
@@ -420,7 +422,7 @@ namespace Nop.Web.Controllers
 
         private async Task CloneTemplateStoreAsync(int newStoreId)
         {
-            const int templateStoreId = 2;
+            var templateStoreId = int.TryParse(_configuration["ProvisioningConfig:TemplateStoreId"], out var tid) ? tid : 2;
 
             // Temel mağaza ayarlarını kopyala (tema/plugin ayarları hariç)
             var allSettings = await _settingService.GetAllSettingsAsync();

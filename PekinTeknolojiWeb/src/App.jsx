@@ -1640,6 +1640,7 @@ const MapSection = () => (
   </div>
 );
 
+
 const HesabimPage = () => {
   const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
