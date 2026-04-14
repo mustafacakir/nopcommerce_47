@@ -4,6 +4,10 @@ set -e
 DOMAIN=$1
 EMAIL=${2:-admin@pekinteknoloji.com}
 UPSTREAM=http://127.0.0.1:8086
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_NGINX="$SCRIPT_DIR/../nginx/sites-available/$DOMAIN"
+NGINX_AVAILABLE="/etc/nginx/sites-available/$DOMAIN"
+NGINX_ENABLED="/etc/nginx/sites-enabled/$DOMAIN"
 
 if [ -z "$DOMAIN" ]; then
     echo "Kullanım: $0 <domain> [email]"
@@ -11,8 +15,10 @@ if [ -z "$DOMAIN" ]; then
     exit 1
 fi
 
-echo "→ [$DOMAIN] Nginx HTTP config oluşturuluyor..."
-cat > /etc/nginx/sites-available/$DOMAIN << NGINX
+# 1. Certbot için geçici HTTP config (henüz repo'da yoksa)
+if [ ! -f "$NGINX_AVAILABLE" ]; then
+    echo "→ [$DOMAIN] Geçici HTTP config oluşturuluyor (certbot için)..."
+    cat > $NGINX_AVAILABLE << NGINX
 server {
     listen 80;
     server_name $DOMAIN www.$DOMAIN;
@@ -21,22 +27,26 @@ server {
     location / { return 301 https://\$host\$request_uri; }
 }
 NGINX
+    ln -sf $NGINX_AVAILABLE $NGINX_ENABLED
+    mkdir -p /var/www/certbot
+    nginx -t && nginx -s reload
+fi
 
-ln -sf /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/$DOMAIN
-mkdir -p /var/www/certbot
-nginx -t && nginx -s reload
-
+# 2. SSL sertifikası al
 echo "→ [$DOMAIN] SSL sertifikası alınıyor..."
-certbot certonly --webroot -w /var/www/certbot \
-    -d $DOMAIN -d www.$DOMAIN \
-    --non-interactive --agree-tos --email $EMAIL
+certbot certonly --webroot -w /var/www/certbot -d $DOMAIN --agree-tos --email $EMAIL -n || true
 
-echo "→ [$DOMAIN] HTTPS config yazılıyor..."
-cat > /etc/nginx/sites-available/$DOMAIN << NGINX
+# 3. Config'i repo'dan kopyala (varsa), yoksa template'den oluştur
+if [ -f "$REPO_NGINX" ]; then
+    echo "→ [$DOMAIN] Config repo'dan kopyalanıyor..."
+    cp "$REPO_NGINX" $NGINX_AVAILABLE
+else
+    echo "→ [$DOMAIN] HTTPS config oluşturuluyor..."
+    cat > $NGINX_AVAILABLE << NGINX
 server {
     listen 80;
     server_name $DOMAIN www.$DOMAIN;
-    return 301 https://\$host\$request_uri;
+    return 301 https://$DOMAIN\$request_uri;
 }
 
 server {
@@ -60,6 +70,8 @@ server {
     }
 }
 NGINX
+fi
 
+ln -sf $NGINX_AVAILABLE $NGINX_ENABLED
 nginx -t && nginx -s reload
 echo "✓ [$DOMAIN] Tamamlandı"
