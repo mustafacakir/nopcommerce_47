@@ -15,6 +15,11 @@ server {
 
     client_max_body_size 64m;
     proxy_read_timeout 300s;
+    proxy_http_version 1.1;
+    proxy_buffering on;
+    proxy_buffer_size 128k;
+    proxy_buffers 8 256k;
+    proxy_busy_buffers_size 512k;
 
     location / {
         proxy_pass http://127.0.0.1:8086;
