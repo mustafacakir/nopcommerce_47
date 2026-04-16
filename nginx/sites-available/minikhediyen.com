@@ -14,13 +14,10 @@ server {
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     client_max_body_size 64m;
-    proxy_read_timeout 300s;
     proxy_http_version 1.1;
-    proxy_buffering on;
-    proxy_buffer_size 128k;
-    proxy_buffers 16 512k;
-    proxy_busy_buffers_size 1m;
+    proxy_buffering off;
     proxy_ignore_client_abort on;
+    proxy_read_timeout 300s;
     proxy_connect_timeout 300s;
     proxy_send_timeout 300s;
 
