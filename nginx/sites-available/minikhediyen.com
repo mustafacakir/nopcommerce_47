@@ -18,8 +18,11 @@ server {
     proxy_http_version 1.1;
     proxy_buffering on;
     proxy_buffer_size 128k;
-    proxy_buffers 8 256k;
-    proxy_busy_buffers_size 512k;
+    proxy_buffers 16 512k;
+    proxy_busy_buffers_size 1m;
+    proxy_ignore_client_abort on;
+    proxy_connect_timeout 300s;
+    proxy_send_timeout 300s;
 
     location / {
         proxy_pass http://127.0.0.1:8086;
