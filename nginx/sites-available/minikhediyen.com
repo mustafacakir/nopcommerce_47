@@ -6,6 +6,7 @@ server {
 
 server {
     listen 443 ssl;
+    http2 off;
     server_name minikhediyen.com www.minikhediyen.com;
 
     ssl_certificate /etc/letsencrypt/live/minikhediyen.com/fullchain.pem;

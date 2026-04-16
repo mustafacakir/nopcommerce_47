@@ -6,12 +6,20 @@ server {
 
 server {
     listen 443 ssl;
+    http2 off;
     server_name *.pekinteknoloji.com;
 
     ssl_certificate /etc/letsencrypt/live/pekinteknoloji.com-0001/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/pekinteknoloji.com-0001/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_min_length 256;
+    gzip_types text/plain text/css text/xml text/javascript application/javascript application/x-javascript application/json application/xml image/svg+xml;
 
     client_max_body_size 64m;
     proxy_http_version 1.1;
