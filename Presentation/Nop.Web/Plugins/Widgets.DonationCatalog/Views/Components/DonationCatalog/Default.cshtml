@@ -52,6 +52,7 @@
         border-radius: 12px; overflow: hidden;
         background: #fff; border: 1px solid #eee;
         transition: box-shadow 0.2s, transform 0.2s;
+        display: flex; flex-direction: column;
     }
     .don-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.12); transform: translateY(-2px); }
     .don-card__img { position: relative; overflow: hidden; }
@@ -64,17 +65,19 @@
         padding: 3px 10px; border-radius: 20px;
         letter-spacing: 0.5px; text-transform: uppercase;
     }
-    .don-card__body { padding: 10px 12px 0; }
+    .don-card__body { padding: 10px 12px 0; flex: 1; }
     .don-card__title { font-size: 13px; font-weight: 700; color: #1a1a1a; line-height: 1.3; margin-bottom: 4px; }
     .don-card__desc {
         font-size: 12px; color: #999; line-height: 1.45;
+        height: 34px; overflow: hidden;
         display: -webkit-box; -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical; overflow: hidden;
+        -webkit-box-orient: vertical;
     }
     .don-card__footer {
         display: flex; align-items: center;
         padding: 8px 12px 12px; gap: 8px;
         border-top: 1px solid #f2f2f2; margin-top: 8px;
+        flex-shrink: 0;
     }
     .don-card__price { font-size: 15px; font-weight: 800; color: #e43d51; white-space: nowrap; flex-shrink: 0; }
     .don-card__qty {
@@ -88,13 +91,13 @@
         color: #555; transition: background 0.15s; line-height: 1;
     }
     .don-card__qty button:hover { background: #e43d51; color: #fff; }
-    .don-card__qty input {
-        width: 30px; height: 28px; border: none;
+    .don-card__qty-val {
+        width: 30px; height: 28px;
         border-left: 1.5px solid #e0e0e0; border-right: 1.5px solid #e0e0e0;
-        text-align: center; font-size: 13px; font-weight: 700;
-        -moz-appearance: textfield; color: #222;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 13px; font-weight: 700; color: #222; background: #fff;
+        user-select: none;
     }
-    .don-card__qty input::-webkit-inner-spin-button { display: none; }
     .don-card__btn {
         flex: 1; padding: 7px 8px;
         background: #e43d51; color: #fff; border: none;
@@ -156,17 +159,14 @@
         <div class="don-grid @(i == 0 ? "active" : "")" id="cat-@cat.Id">
             @foreach (var product in cat.Products)
             {
-                <div class="don-card">
-                    <a href="@Url.RouteUrl("Product", new { SeName = product.SeName })">
-                        <div class="don-card__img">
-                            @{ var pic = product.PictureModels.FirstOrDefault(); }
-                            <img src="@(pic?.ImageUrl)"
-                                 alt="@(pic?.AlternateText ?? product.Name)"
-                                 title="@(pic?.Title ?? product.Name)"
-                                 loading="lazy" />
-                            <span class="don-card__badge">Bağış</span>
-                        </div>
-                    </a>
+                <div class="don-card" onclick="if(!event.target.closest('.don-card__footer'))window.location.href='/@product.SeName'">
+                    <div class="don-card__img">
+                        @{ var pic = product.PictureModels.FirstOrDefault(); }
+                        <img src="@(pic?.ImageUrl)"
+                             alt="@(pic?.AlternateText ?? product.Name)"
+                             title="@(pic?.Title ?? product.Name)"
+                             loading="lazy" />
+                    </div>
                     <div class="don-card__body">
                         <div class="don-card__title">@product.Name</div>
                         @if (!string.IsNullOrEmpty(product.ShortDescription))
@@ -178,11 +178,12 @@
                         <span class="don-card__price">@product.ProductPrice.Price</span>
                         <div class="don-card__qty">
                             <button type="button" class="qty-minus" aria-label="Azalt">−</button>
-                            <input type="number" value="1" min="1" max="99" class="qty-input" aria-label="Adet" />
+                            <span class="don-card__qty-val">1</span>
+                            <input type="hidden" class="qty-input" value="1" />
                             <button type="button" class="qty-plus" aria-label="Artır">+</button>
                         </div>
                         <button type="button" class="don-card__btn" data-product-id="@product.Id">
-                            Sepete Ekle
+                            Bağış Yap
                         </button>
                     </div>
                 </div>
@@ -205,15 +206,16 @@
     });
 
     document.querySelectorAll('.don-card').forEach(function (card) {
+        card.style.cursor = 'pointer';
+        var input = card.querySelector('.qty-input');
+        var display = card.querySelector('.don-card__qty-val');
         card.querySelector('.qty-minus').addEventListener('click', function () {
-            var input = card.querySelector('.qty-input');
             var val = parseInt(input.value) || 1;
-            if (val > 1) input.value = val - 1;
+            if (val > 1) { input.value = val - 1; display.textContent = val - 1; }
         });
         card.querySelector('.qty-plus').addEventListener('click', function () {
-            var input = card.querySelector('.qty-input');
             var val = parseInt(input.value) || 1;
-            input.value = val + 1;
+            input.value = val + 1; display.textContent = val + 1;
         });
     });
 
