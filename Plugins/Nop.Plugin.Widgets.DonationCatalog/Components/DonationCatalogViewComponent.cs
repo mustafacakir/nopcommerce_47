@@ -33,7 +33,9 @@ public class DonationCatalogViewComponent : NopViewComponent
     public async Task<IViewComponentResult> InvokeAsync(string widgetZone, object additionalData)
     {
         var currentStore = await _storeContext.GetCurrentStoreAsync();
-        var allCategories = await _categoryService.GetAllCategoriesAsync(storeId: currentStore.Id, showOnHomePage: true);
+        var allCategories = (await _categoryService.GetAllCategoriesAsync(storeId: currentStore.Id))
+            .Where(c => c.ShowOnHomepage)
+            .ToList();
         var categoryMap = allCategories.ToDictionary(c => c.Id);
 
         var model = new DonationPageModel();
