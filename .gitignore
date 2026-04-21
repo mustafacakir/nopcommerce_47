@@ -77,6 +77,9 @@ Presentation/Nop.Web/Plugins/ExternalAuth.Facebook/
 Presentation/Nop.Web/Plugins/MultiFactorAuth.GoogleAuthenticator/
 Presentation/Nop.Web/Plugins/Shipping.UPS/*.deps.json
 
+# Plugin output: compiled binaries (built from source during Docker publish, no need to track)
+Presentation/Nop.Web/Plugins/**/*.dll
+
 # Plugin output: debug symbols, miscopied web host files, transitive native runtimes
 Presentation/Nop.Web/Plugins/**/*.pdb
 Presentation/Nop.Web/Plugins/**/Nop.Web.deps.json
