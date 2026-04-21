@@ -1,0 +1,54 @@
+@model Nop.Plugin.Widgets.DonorStories.Models.ConfigurationModel
+@{ Layout = "_ConfigurePlugin"; }
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<form asp-controller="WidgetsDonorStories" asp-action="Configure" method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">Genel</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Bölüm Başlığı</label></div>
+                    <div class="col-md-9"><input type="text" name="SectionTitle" value="@Model.SectionTitle" class="form-control" /></div>
+                </div>
+            </div>
+        </div>
+        @foreach (var i in new[] { 1, 2, 3, 4 })
+        {
+            var name = i == 1 ? Model.Story1Name : i == 2 ? Model.Story2Name : i == 3 ? Model.Story3Name : Model.Story4Name;
+            var location = i == 1 ? Model.Story1Location : i == 2 ? Model.Story2Location : i == 3 ? Model.Story3Location : Model.Story4Location;
+            var quote = i == 1 ? Model.Story1Quote : i == 2 ? Model.Story2Quote : i == 3 ? Model.Story3Quote : Model.Story4Quote;
+            var avatar = i == 1 ? Model.Story1Avatar : i == 2 ? Model.Story2Avatar : i == 3 ? Model.Story3Avatar : Model.Story4Avatar;
+            <div class="panel panel-default">
+                <div class="panel-heading">Hikaye @i</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Ad Soyad</label></div>
+                        <div class="col-md-9"><input type="text" name="Story@(i)Name" value="@name" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Şehir</label></div>
+                        <div class="col-md-9"><input type="text" name="Story@(i)Location" value="@location" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Alıntı</label></div>
+                        <div class="col-md-9"><textarea name="Story@(i)Quote" class="form-control" rows="3">@quote</textarea></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Avatar URL (opsiyonel)</label></div>
+                        <div class="col-md-9"><input type="text" name="Story@(i)Avatar" value="@avatar" class="form-control" /></div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

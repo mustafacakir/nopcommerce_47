@@ -1,0 +1,93 @@
+@model Nop.Plugin.Widgets.RecentDonations.Models.PublicInfoModel
+@{ Layout = ""; }
+
+@if (!Model.Items.Any())
+{
+    if (!string.IsNullOrEmpty(Model.FallbackText))
+    {
+        <div class="rd-bar"><span class="rd-fallback">❤️ @Model.FallbackText</span></div>
+    }
+}
+else
+{
+    <div class="rd-bar" aria-label="Son bağışlar">
+        <span class="rd-label">🤲 Son Bağışlar:</span>
+        <div class="rd-track-wrap">
+            <div class="rd-track" id="rdTrack">
+                @foreach (var item in Model.Items)
+                {
+                    <span class="rd-item">
+                        <strong>@item.DonorName</strong>
+                        @if (!string.IsNullOrEmpty(item.ProductName))
+                        {
+                            <span> · @item.ProductName</span>
+                        }
+                        @if (!string.IsNullOrEmpty(item.Amount))
+                        {
+                            <span class="rd-amount"> @item.Amount</span>
+                        }
+                        <span class="rd-time"> · @item.TimeAgo</span>
+                        <span class="rd-sep">•</span>
+                    </span>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .rd-bar {
+        background: #fff8f8;
+        border-bottom: 1px solid #fde0e4;
+        padding: 10px 24px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        overflow: hidden;
+    }
+    .rd-label {
+        font-size: 12px;
+        font-weight: 800;
+        color: #e43d51;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .rd-fallback {
+        font-size: 13px;
+        color: #e43d51;
+        font-weight: 600;
+    }
+    .rd-track-wrap {
+        overflow: hidden;
+        flex: 1;
+    }
+    .rd-track {
+        display: inline-flex;
+        gap: 0;
+        white-space: nowrap;
+        animation: rd-scroll 40s linear infinite;
+    }
+    .rd-track:hover { animation-play-state: paused; }
+    .rd-item {
+        font-size: 13px;
+        color: #444;
+        padding: 0 8px;
+    }
+    .rd-amount { color: #e43d51; font-weight: 700; }
+    .rd-time { color: #aaa; font-size: 11px; }
+    .rd-sep { color: #ddd; margin: 0 8px; }
+
+    @@keyframes rd-scroll {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+</style>
+
+<script>
+(function () {
+    var track = document.getElementById('rdTrack');
+    if (!track) return;
+    var clone = track.innerHTML;
+    track.innerHTML += clone;
+})();
+</script>

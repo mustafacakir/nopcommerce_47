@@ -1,0 +1,11 @@
+{
+  "Group": "Widgets",
+  "FriendlyName": "Donor Stories",
+  "SystemName": "Widgets.DonorStories",
+  "Version": "1.0",
+  "SupportedVersions": [ "4.70" ],
+  "Author": "Pekin Teknoloji",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.DonorStories.dll",
+  "Description": "Bağışçı hikayeleri ve tanıklıklar carousel"
+}

@@ -1,0 +1,160 @@
+@model Nop.Plugin.Widgets.VolunteerCta.Models.PublicInfoModel
+@{ Layout = ""; }
+
+<section class="vc-section">
+    <div class="vc-inner">
+        <div class="vc-left">
+            <div class="vc-badge">🙋 Gönüllülük</div>
+            <h2 class="vc-title">@Model.Title</h2>
+            <p class="vc-subtitle">@Model.Subtitle</p>
+            @if (!string.IsNullOrEmpty(Model.ButtonUrl) && !string.IsNullOrEmpty(Model.ButtonText))
+            {
+                <a href="@Model.ButtonUrl" class="vc-btn">@Model.ButtonText →</a>
+            }
+        </div>
+        <div class="vc-right">
+            <div class="vc-stats">
+                @if (!string.IsNullOrEmpty(Model.Stat1Value))
+                {
+                    <div class="vc-stat">
+                        <span class="vc-stat-value">@Model.Stat1Value</span>
+                        <span class="vc-stat-label">@Model.Stat1Label</span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.Stat2Value))
+                {
+                    <div class="vc-stat">
+                        <span class="vc-stat-value">@Model.Stat2Value</span>
+                        <span class="vc-stat-label">@Model.Stat2Label</span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.Stat3Value))
+                {
+                    <div class="vc-stat">
+                        <span class="vc-stat-value">@Model.Stat3Value</span>
+                        <span class="vc-stat-label">@Model.Stat3Label</span>
+                    </div>
+                }
+            </div>
+            <div class="vc-steps">
+                <div class="vc-step"><span class="vc-step-num">1</span><span>Formu doldur</span></div>
+                <div class="vc-step"><span class="vc-step-num">2</span><span>Ekibimizle tanış</span></div>
+                <div class="vc-step"><span class="vc-step-num">3</span><span>Fark yaratmaya başla</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .vc-section {
+        background: linear-gradient(135deg, #e43d51 0%, #c0392b 100%);
+        padding: 56px 0;
+    }
+    .vc-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        gap: 56px;
+        align-items: center;
+    }
+    .vc-left { flex: 1; }
+    .vc-right { flex: 1; }
+
+    .vc-badge {
+        display: inline-block;
+        background: rgba(255,255,255,0.2);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .vc-title {
+        font-size: 28px;
+        font-weight: 900;
+        color: #fff;
+        margin: 0 0 14px;
+        line-height: 1.2;
+    }
+    .vc-subtitle {
+        font-size: 15px;
+        color: rgba(255,255,255,0.85);
+        line-height: 1.65;
+        margin: 0 0 24px;
+    }
+    .vc-btn {
+        display: inline-block;
+        background: #fff;
+        color: #e43d51;
+        font-size: 15px;
+        font-weight: 800;
+        padding: 14px 28px;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .vc-btn:hover {
+        background: #fff;
+        color: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    .vc-stats {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 28px;
+    }
+    .vc-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .vc-stat-value {
+        font-size: 28px;
+        font-weight: 900;
+        color: #fff;
+        line-height: 1;
+    }
+    .vc-stat-label {
+        font-size: 11px;
+        color: rgba(255,255,255,0.7);
+        margin-top: 4px;
+        text-align: center;
+    }
+
+    .vc-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .vc-step {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: rgba(255,255,255,0.9);
+        font-size: 14px;
+    }
+    .vc-step-num {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.25);
+        color: #fff;
+        font-weight: 800;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    @@media (max-width: 767px) {
+        .vc-inner { flex-direction: column; gap: 32px; }
+        .vc-stats { justify-content: space-around; }
+    }
+</style>

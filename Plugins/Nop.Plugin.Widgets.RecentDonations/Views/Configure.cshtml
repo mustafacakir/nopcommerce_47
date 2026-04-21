@@ -1,0 +1,38 @@
+@model Nop.Plugin.Widgets.RecentDonations.Models.ConfigurationModel
+@{ Layout = "_ConfigurePlugin"; }
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<form asp-controller="WidgetsRecentDonations" asp-action="Configure" method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">Son Bağışlar Ayarları</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Gösterilecek Kayıt Sayısı</label></div>
+                    <div class="col-md-9"><input type="number" name="ItemCount" value="@Model.ItemCount" class="form-control" min="1" max="50" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Tutar Göster</label></div>
+                    <div class="col-md-9"><input type="checkbox" name="ShowAmount" value="true" @(Model.ShowAmount ? "checked" : "") /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Ürün Adı Göster</label></div>
+                    <div class="col-md-9"><input type="checkbox" name="ShowProductName" value="true" @(Model.ShowProductName ? "checked" : "") /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Bağış Yoksa Gösterilecek Metin</label></div>
+                    <div class="col-md-9"><input type="text" name="FallbackText" value="@Model.FallbackText" class="form-control" /></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

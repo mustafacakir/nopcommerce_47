@@ -1,0 +1,54 @@
+@model Nop.Plugin.Widgets.VolunteerCta.Models.ConfigurationModel
+@{ Layout = "_ConfigurePlugin"; }
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<form asp-controller="WidgetsVolunteerCta" asp-action="Configure" method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">Metin & Buton</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Başlık</label></div>
+                    <div class="col-md-9"><input type="text" name="Title" value="@Model.Title" class="form-control" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Alt Metin</label></div>
+                    <div class="col-md-9"><textarea name="Subtitle" class="form-control" rows="3">@Model.Subtitle</textarea></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Buton Metni</label></div>
+                    <div class="col-md-9"><input type="text" name="ButtonText" value="@Model.ButtonText" class="form-control" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Buton URL</label></div>
+                    <div class="col-md-9"><input type="text" name="ButtonUrl" value="@Model.ButtonUrl" class="form-control" /></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">İstatistikler</div>
+            <div class="panel-body">
+                @foreach (var i in new[] { 1, 2, 3 })
+                {
+                    var val = i == 1 ? Model.Stat1Value : i == 2 ? Model.Stat2Value : Model.Stat3Value;
+                    var lbl = i == 1 ? Model.Stat1Label : i == 2 ? Model.Stat2Label : Model.Stat3Label;
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>İstatistik @i Değer</label></div>
+                        <div class="col-md-4"><input type="text" name="Stat@(i)Value" value="@val" class="form-control" /></div>
+                        <div class="col-md-2"><label>Etiket</label></div>
+                        <div class="col-md-3"><input type="text" name="Stat@(i)Label" value="@lbl" class="form-control" /></div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
