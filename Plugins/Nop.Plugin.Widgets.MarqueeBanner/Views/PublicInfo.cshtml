@@ -1,0 +1,38 @@
+@model Nop.Plugin.Widgets.MarqueeBanner.Models.PublicInfoModel
+@{
+    Layout = "";
+    var duration = Model.Speed + "s";
+}
+
+<div class="marquee-banner" style="background:@Model.BackgroundColor; color:@Model.TextColor;">
+    <div class="marquee-track" style="animation-duration:@duration;">
+        <span>@Model.Text</span>
+        <span>@Model.Text</span>
+    </div>
+</div>
+
+<style>
+    .marquee-banner {
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 8px 0;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        position: relative;
+        z-index: 1000;
+    }
+    .marquee-track {
+        display: inline-block;
+        white-space: nowrap;
+        animation: marquee-scroll linear infinite;
+    }
+    .marquee-track span {
+        padding: 0 60px;
+    }
+    @@keyframes marquee-scroll {
+        0%   { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+</style>

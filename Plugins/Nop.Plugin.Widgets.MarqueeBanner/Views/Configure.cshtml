@@ -1,0 +1,64 @@
+@model Nop.Plugin.Widgets.MarqueeBanner.Models.ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<form asp-controller="WidgetsMarqueeBanner" asp-action="Configure" method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">Kayan Bant Ayarları</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="Text_OverrideForStore" asp-input="Text" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="Text" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="Text" />
+                        <span asp-validation-for="Text"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="BackgroundColor_OverrideForStore" asp-input="BackgroundColor" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="BackgroundColor" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="BackgroundColor" />
+                        <span asp-validation-for="BackgroundColor"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="TextColor_OverrideForStore" asp-input="TextColor" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="TextColor" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="TextColor" />
+                        <span asp-validation-for="TextColor"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="Speed_OverrideForStore" asp-input="Speed" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="Speed" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="Speed" />
+                        <span asp-validation-for="Speed"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
