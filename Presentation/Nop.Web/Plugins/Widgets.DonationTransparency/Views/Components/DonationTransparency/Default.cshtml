@@ -1,0 +1,186 @@
+@model Nop.Plugin.Widgets.DonationTransparency.Models.PublicInfoModel
+@{ Layout = ""; }
+
+@if (Model.Items.Any())
+{
+    <section class="dt-section">
+        <div class="dt-inner">
+            <div class="dt-header">
+                <h2 class="dt-title">@Model.SectionTitle</h2>
+                @if (!string.IsNullOrEmpty(Model.SectionSubtitle))
+                {
+                    <p class="dt-subtitle">@Model.SectionSubtitle</p>
+                }
+                @if (!string.IsNullOrEmpty(Model.ReportLinkUrl))
+                {
+                    <a href="@Model.ReportLinkUrl" class="dt-report-btn" target="_blank">
+                        📄 @Model.ReportLinkText
+                    </a>
+                }
+            </div>
+
+            <div class="dt-content">
+                <div class="dt-donut-wrap">
+                    <svg class="dt-donut" viewBox="0 0 120 120" id="dtDonut">
+                        @{
+                            double offset = 0;
+                            double circumference = 2 * Math.PI * 46;
+                        }
+                        <circle cx="60" cy="60" r="46" fill="none" stroke="#f0f0f0" stroke-width="16" />
+                        @foreach (var item in Model.Items)
+                        {
+                            double dash = circumference * item.Percent / 100.0;
+                            double gap = circumference - dash;
+                            <circle cx="60" cy="60" r="46" fill="none"
+                                    stroke="@item.Color"
+                                    stroke-width="16"
+                                    stroke-dasharray="@dash.ToString("F2", System.Globalization.CultureInfo.InvariantCulture) @gap.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)"
+                                    stroke-dashoffset="@(-(offset * circumference / 100.0)).ToString("F2", System.Globalization.CultureInfo.InvariantCulture)"
+                                    transform="rotate(-90 60 60)" />
+                            offset += item.Percent;
+                        }
+                        <text x="60" y="55" text-anchor="middle" font-size="14" font-weight="900" fill="#1a1a1a">%100</text>
+                        <text x="60" y="70" text-anchor="middle" font-size="7" fill="#888">Şeffaf</text>
+                    </svg>
+                </div>
+
+                <div class="dt-bars">
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="dt-item">
+                            <div class="dt-item-header">
+                                <span class="dt-item-icon">@item.Icon</span>
+                                <span class="dt-item-label">@item.Label</span>
+                                <span class="dt-item-pct" style="color:@item.Color">%@item.Percent</span>
+                            </div>
+                            <div class="dt-bar-track">
+                                <div class="dt-bar-fill" style="width:@(item.Percent)%;background:@item.Color;" data-width="@item.Percent"></div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(item.Description))
+                            {
+                                <p class="dt-item-desc">@item.Description</p>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<style>
+    .dt-section {
+        background: #fff;
+        padding: 56px 0;
+        border-top: 1px solid #f0f0f0;
+    }
+    .dt-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+    .dt-header {
+        text-align: center;
+        margin-bottom: 44px;
+    }
+    .dt-title {
+        font-size: 30px;
+        font-weight: 900;
+        color: #1a1a1a;
+        margin: 0 0 10px;
+    }
+    .dt-subtitle {
+        font-size: 14px;
+        color: #666;
+        margin: 0 0 20px;
+        max-width: 560px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .dt-report-btn {
+        display: inline-block;
+        background: #f5f5f5;
+        color: #333;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+    .dt-report-btn:hover { background: #e8e8e8; color: #111; }
+
+    .dt-content {
+        display: flex;
+        gap: 56px;
+        align-items: center;
+    }
+    .dt-donut-wrap {
+        flex-shrink: 0;
+        width: 180px;
+    }
+    .dt-donut { width: 100%; height: auto; }
+    .dt-bars { flex: 1; display: flex; flex-direction: column; gap: 18px; }
+
+    .dt-item-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+    .dt-item-icon { font-size: 18px; flex-shrink: 0; }
+    .dt-item-label {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a1a;
+        flex: 1;
+    }
+    .dt-item-pct {
+        font-size: 18px;
+        font-weight: 900;
+    }
+    .dt-bar-track {
+        height: 8px;
+        background: #f0f0f0;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .dt-bar-fill {
+        height: 100%;
+        border-radius: 4px;
+        width: 0;
+        transition: width 1.2s ease;
+    }
+    .dt-item-desc {
+        font-size: 11px;
+        color: #999;
+        margin: 4px 0 0;
+    }
+
+    @@media (max-width: 767px) {
+        .dt-content { flex-direction: column; gap: 32px; }
+        .dt-donut-wrap { width: 140px; }
+    }
+</style>
+
+<script>
+(function () {
+    function animateBars() {
+        document.querySelectorAll('.dt-bar-fill').forEach(function (bar) {
+            var w = bar.dataset.width;
+            bar.style.width = w + '%';
+        });
+    }
+    if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) { animateBars(); obs.disconnect(); }
+            });
+        }, { threshold: 0.2 });
+        var section = document.querySelector('.dt-section');
+        if (section) obs.observe(section);
+    } else {
+        animateBars();
+    }
+})();
+</script>

@@ -1,0 +1,173 @@
+@model Nop.Plugin.Widgets.ProjectStories.Models.PublicInfoModel
+@{ Layout = ""; }
+
+@if (Model.Stories.Any())
+{
+    <section class="ps-section">
+        <div class="ps-inner">
+            <div class="ps-header">
+                <h2 class="ps-title">@Model.SectionTitle</h2>
+                @if (!string.IsNullOrEmpty(Model.SectionSubtitle))
+                {
+                    <p class="ps-subtitle">@Model.SectionSubtitle</p>
+                }
+            </div>
+            <div class="ps-grid ps-grid-@Model.Stories.Count">
+                @foreach (var story in Model.Stories)
+                {
+                    var href = string.IsNullOrEmpty(story.LinkUrl) ? "#" : story.LinkUrl;
+                    <div class="ps-card">
+                        <div class="ps-media">
+                            @if (story.HasVideo)
+                            {
+                                <div class="ps-video-wrap">
+                                    <iframe src="@story.VideoUrl" frameborder="0" allowfullscreen
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                </div>
+                            }
+                            else if (story.HasImage)
+                            {
+                                <img src="@story.ImageUrl" alt="@story.Title" class="ps-img" loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="ps-img-placeholder">📷</div>
+                            }
+                            @if (!string.IsNullOrEmpty(story.Tag))
+                            {
+                                <span class="ps-tag">@story.Tag</span>
+                            }
+                        </div>
+                        <div class="ps-body">
+                            <h3 class="ps-card-title">@story.Title</h3>
+                            @if (!string.IsNullOrEmpty(story.Description))
+                            {
+                                <p class="ps-card-desc">@story.Description</p>
+                            }
+                            @if (!string.IsNullOrEmpty(story.LinkUrl))
+                            {
+                                <a href="@href" class="ps-read-more">Detaylı İncele →</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<style>
+    .ps-section {
+        background: #fafafa;
+        padding: 56px 0;
+        border-top: 1px solid #f0f0f0;
+    }
+    .ps-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+    .ps-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .ps-title {
+        font-size: 30px;
+        font-weight: 900;
+        color: #1a1a1a;
+        margin: 0 0 10px;
+    }
+    .ps-subtitle {
+        font-size: 15px;
+        color: #666;
+        margin: 0;
+    }
+
+    .ps-grid {
+        display: grid;
+        gap: 24px;
+    }
+    .ps-grid-1 { grid-template-columns: 1fr; max-width: 600px; margin: 0 auto; }
+    .ps-grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .ps-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .ps-grid-4 { grid-template-columns: repeat(2, 1fr); }
+
+    .ps-card {
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .ps-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+
+    .ps-media { position: relative; }
+    .ps-img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+    }
+    .ps-img-placeholder {
+        width: 100%;
+        height: 220px;
+        background: linear-gradient(135deg, #f8f9ff, #fff5f6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+    }
+    .ps-video-wrap {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%;
+    }
+    .ps-video-wrap iframe {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+    }
+    .ps-tag {
+        position: absolute;
+        top: 12px; left: 12px;
+        background: #e43d51;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .ps-body { padding: 20px; }
+    .ps-card-title {
+        font-size: 17px;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin: 0 0 8px;
+        line-height: 1.3;
+    }
+    .ps-card-desc {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.6;
+        margin: 0 0 14px;
+    }
+    .ps-read-more {
+        font-size: 13px;
+        font-weight: 700;
+        color: #e43d51;
+        text-decoration: none;
+    }
+    .ps-read-more:hover { text-decoration: underline; }
+
+    @@media (max-width: 767px) {
+        .ps-grid-2,
+        .ps-grid-3,
+        .ps-grid-4 { grid-template-columns: 1fr; }
+    }
+</style>

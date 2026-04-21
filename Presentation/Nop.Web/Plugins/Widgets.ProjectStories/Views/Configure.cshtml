@@ -1,0 +1,68 @@
+@model Nop.Plugin.Widgets.ProjectStories.Models.ConfigurationModel
+@{ Layout = "_ConfigurePlugin"; }
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<form asp-controller="WidgetsProjectStories" asp-action="Configure" method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">Bölüm Başlığı</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Başlık</label></div>
+                    <div class="col-md-9"><input type="text" name="SectionTitle" value="@Model.SectionTitle" class="form-control" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Alt Başlık</label></div>
+                    <div class="col-md-9"><input type="text" name="SectionSubtitle" value="@Model.SectionSubtitle" class="form-control" /></div>
+                </div>
+            </div>
+        </div>
+        @foreach (var i in new[] { 1, 2, 3, 4 })
+        {
+            var title = i == 1 ? Model.Story1Title : i == 2 ? Model.Story2Title : i == 3 ? Model.Story3Title : Model.Story4Title;
+            var tag = i == 1 ? Model.Story1Tag : i == 2 ? Model.Story2Tag : i == 3 ? Model.Story3Tag : Model.Story4Tag;
+            var desc = i == 1 ? Model.Story1Description : i == 2 ? Model.Story2Description : i == 3 ? Model.Story3Description : Model.Story4Description;
+            var img = i == 1 ? Model.Story1ImageUrl : i == 2 ? Model.Story2ImageUrl : i == 3 ? Model.Story3ImageUrl : Model.Story4ImageUrl;
+            var vid = i == 1 ? Model.Story1VideoUrl : i == 2 ? Model.Story2VideoUrl : i == 3 ? Model.Story3VideoUrl : Model.Story4VideoUrl;
+            var lnk = i == 1 ? Model.Story1LinkUrl : i == 2 ? Model.Story2LinkUrl : i == 3 ? Model.Story3LinkUrl : Model.Story4LinkUrl;
+            <div class="panel panel-default">
+                <div class="panel-heading">Hikaye @i</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Başlık</label></div>
+                        <div class="col-md-9"><input type="text" name="Story@(i)Title" value="@title" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Etiket (örn: Yurtiçi)</label></div>
+                        <div class="col-md-9"><input type="text" name="Story@(i)Tag" value="@tag" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Açıklama</label></div>
+                        <div class="col-md-9"><textarea name="Story@(i)Description" class="form-control" rows="2">@desc</textarea></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Fotoğraf URL</label></div>
+                        <div class="col-md-9"><input type="text" name="Story@(i)ImageUrl" value="@img" class="form-control" placeholder="https://..." /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Video URL (YouTube embed)</label></div>
+                        <div class="col-md-9"><input type="text" name="Story@(i)VideoUrl" value="@vid" class="form-control" placeholder="https://www.youtube.com/embed/..." /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Detay Sayfası URL</label></div>
+                        <div class="col-md-9"><input type="text" name="Story@(i)LinkUrl" value="@lnk" class="form-control" /></div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
