@@ -33,7 +33,8 @@ public class DonationCatalogViewComponent : NopViewComponent
     public async Task<IViewComponentResult> InvokeAsync(string widgetZone, object additionalData)
     {
         var currentStore = await _storeContext.GetCurrentStoreAsync();
-        var allCategories = await _categoryService.GetAllCategoriesAsync(storeId: currentStore.Id);
+        var allCategories = await _categoryService.GetAllCategoriesAsync(storeId: currentStore.Id, showOnHomePage: true);
+        var categoryMap = allCategories.ToDictionary(c => c.Id);
 
         var model = new DonationPageModel();
 
@@ -51,7 +52,10 @@ public class DonationCatalogViewComponent : NopViewComponent
             var catModel = new DonationCategoryViewModel
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                ParentCategoryName = category.ParentCategoryId > 0 && categoryMap.TryGetValue(category.ParentCategoryId, out var parent)
+                    ? parent.Name
+                    : string.Empty
             };
 
             if (category.PictureId > 0)

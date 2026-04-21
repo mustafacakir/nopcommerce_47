@@ -122,6 +122,10 @@
     {
       "SystemName": "Widgets.DonationCatalog",
       "Version": "1.0.0"
+    },
+    {
+      "SystemName": "Widgets.Whatsapp",
+      "Version": "1.00"
     }
   ],
   "PluginNamesToUninstall": [],

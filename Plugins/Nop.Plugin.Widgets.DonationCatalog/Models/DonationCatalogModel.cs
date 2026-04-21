@@ -12,5 +12,6 @@ public class DonationCategoryViewModel
     public int Id { get; set; }
     public string Name { get; set; }
     public string IconUrl { get; set; }
+    public string ParentCategoryName { get; set; }
     public List<ProductOverviewModel> Products { get; set; } = new();
 }

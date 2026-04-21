@@ -1,49 +1,70 @@
 @model Nop.Plugin.Widgets.DonationCatalog.Models.DonationPageModel
 
+@{
+    var icons = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Zekat-Sadaka"]  = "🤲",
+        ["Aşevi"]         = "🍲",
+        ["Kurban"]        = "🐑",
+        ["Su Kuyusu"]     = "💧",
+        ["Kuran-ı Kerim"] = "📖",
+        ["Yemek İkramı"]  = "🍽️",
+    };
+
+    var groupIcons = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Yurtiçi Faaliyetleri"]  = "🇹🇷",
+        ["Yurtdışı Faaliyetleri"] = "🌍",
+    };
+
+    var groups = Model.Categories
+        .GroupBy(c => string.IsNullOrEmpty(c.ParentCategoryName) ? c.Name : c.ParentCategoryName)
+        .ToList();
+
+}
+
 <style>
     .don-section { padding: 30px 0; }
 
-    .don-cats-wrap {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-        padding: 24px 20px 20px;
-        margin-bottom: 28px;
-    }
-    .don-cats-title {
-        font-size: 11px; font-weight: 700; color: #aaa;
-        text-transform: uppercase; letter-spacing: 1.5px;
+    .don-group { margin-bottom: 36px; }
+    .don-group-header {
+        display: flex; align-items: center; gap: 10px;
         margin-bottom: 16px;
     }
-    .don-cats { display: flex; gap: 12px; flex-wrap: wrap; }
-    .don-cat-btn {
-        display: flex; flex-direction: column; align-items: center; gap: 10px;
-        padding: 16px 18px 14px;
-        border: 2px solid #eee; border-radius: 12px;
-        background: #fafafa; cursor: pointer;
-        transition: all 0.2s; min-width: 90px;
+    .don-group-icon { font-size: 24px; line-height: 1; }
+    .don-group-title { font-size: 18px; font-weight: 800; color: #1a1a1a; }
+
+    .don-cats-wrap {
+        background: #fff; border-radius: 12px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        padding: 20px 20px 16px; margin-bottom: 20px;
     }
-    .don-cat-btn:hover { border-color: #e43d51; background: #fff5f6; }
+    .don-cats { display: flex; gap: 12px; }
+    .don-cat-btn {
+        flex: 1;
+        display: flex; flex-direction: column; align-items: center; gap: 10px;
+        padding: 16px 12px 14px;
+        border: 2px solid #eee; border-radius: 12px;
+        background: #fafafa; cursor: pointer; transition: all 0.2s;
+    }
+    .don-cat-btn:hover { border-color: #bbb; background: #f0f0f0; }
     .don-cat-btn.active {
-        border-color: #e43d51; background: #fff0f2;
-        box-shadow: 0 4px 14px rgba(228,61,81,0.15);
+        border-color: #333; background: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.10);
     }
     .don-cat-icon-wrap {
-        width: 64px; height: 64px; border-radius: 10px;
-        overflow: hidden; background: #f0f0f0;
+        width: 56px; height: 56px; border-radius: 10px;
+        background: #f0f0f0;
         display: flex; align-items: center; justify-content: center;
-        transition: box-shadow 0.2s;
     }
-    .don-cat-btn.active .don-cat-icon-wrap,
-    .don-cat-btn:hover .don-cat-icon-wrap { box-shadow: 0 4px 14px rgba(228,61,81,0.25); }
-    .don-cat-icon-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .don-cat-icon-wrap span { font-size: 26px; line-height: 1; }
+    .don-cat-icon-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+    .don-cat-icon-wrap span { font-size: 28px; line-height: 1; }
     .don-cat-label {
         font-size: 12px; font-weight: 700; color: #555;
         text-align: center; line-height: 1.3;
-        text-transform: uppercase; letter-spacing: 0.4px; max-width: 80px;
+        text-transform: uppercase; letter-spacing: 0.4px;
     }
-    .don-cat-btn.active .don-cat-label { color: #e43d51; }
+    .don-cat-btn.active .don-cat-label { color: #1a1a1a; }
 
     .don-grid { display: none; grid-template-columns: repeat(4, 1fr); gap: 16px; }
     .don-grid.active { display: grid; }
@@ -58,32 +79,22 @@
     .don-card__img { position: relative; overflow: hidden; }
     .don-card__img img { width: 100%; height: 160px; object-fit: cover; display: block; transition: transform 0.35s; }
     .don-card:hover .don-card__img img { transform: scale(1.06); }
-    .don-card__badge {
-        position: absolute; top: 10px; left: 10px;
-        background: #e43d51; color: #fff;
-        font-size: 11px; font-weight: 700;
-        padding: 3px 10px; border-radius: 20px;
-        letter-spacing: 0.5px; text-transform: uppercase;
-    }
     .don-card__body { padding: 10px 12px 0; flex: 1; }
     .don-card__title { font-size: 13px; font-weight: 700; color: #1a1a1a; line-height: 1.3; margin-bottom: 4px; }
     .don-card__desc {
         font-size: 12px; color: #999; line-height: 1.45;
         height: 34px; overflow: hidden;
-        display: -webkit-box; -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
     }
     .don-card__footer {
         display: flex; align-items: center;
         padding: 8px 12px 12px; gap: 8px;
-        border-top: 1px solid #f2f2f2; margin-top: 8px;
-        flex-shrink: 0;
+        border-top: 1px solid #f2f2f2; margin-top: 8px; flex-shrink: 0;
     }
     .don-card__price { font-size: 15px; font-weight: 800; color: #e43d51; white-space: nowrap; flex-shrink: 0; }
     .don-card__qty {
         display: flex; align-items: center;
-        border: 1.5px solid #e0e0e0; border-radius: 6px;
-        overflow: hidden; flex-shrink: 0;
+        border: 1.5px solid #e0e0e0; border-radius: 6px; overflow: hidden; flex-shrink: 0;
     }
     .don-card__qty button {
         width: 26px; height: 28px; border: none;
@@ -95,8 +106,7 @@
         width: 30px; height: 28px;
         border-left: 1.5px solid #e0e0e0; border-right: 1.5px solid #e0e0e0;
         display: flex; align-items: center; justify-content: center;
-        font-size: 13px; font-weight: 700; color: #222; background: #fff;
-        user-select: none;
+        font-size: 13px; font-weight: 700; color: #222; background: #fff; user-select: none;
     }
     .don-card__btn {
         flex: 1; padding: 7px 8px;
@@ -118,74 +128,85 @@
 
     @@media (max-width: 1199px) { .don-grid { grid-template-columns: repeat(3, 1fr); } }
     @@media (max-width: 991px)  { .don-grid { grid-template-columns: repeat(2, 1fr); } }
-    @@media (max-width: 767px)  {
-        .don-cat-btn { min-width: 72px; padding: 12px 10px 10px; }
-        .don-cat-icon-wrap { width: 52px; height: 52px; }
-        .don-cat-label { font-size: 11px; }
+    @@media (max-width: 767px) {
+        .don-cat-btn { padding: 12px 8px 10px; }
+        .don-cat-icon-wrap { width: 46px; height: 46px; }
+        .don-cat-icon-wrap span { font-size: 22px; }
+        .don-cat-label { font-size: 10px; }
     }
     @@media (max-width: 575px) {
         .don-grid { grid-template-columns: repeat(2, 1fr); }
-        .don-cats { gap: 8px; }
+        .don-cats { gap: 6px; }
     }
 </style>
 
 <div class="don-section">
-    <div class="don-cats-wrap">
-        <div class="don-cats-title">Bağış Kategorileri</div>
-        <div class="don-cats">
-            @for (var i = 0; i < Model.Categories.Count; i++)
-            {
-                var cat = Model.Categories[i];
-                <button class="don-cat-btn @(i == 0 ? "active" : "")" data-cat="@cat.Id">
-                    <div class="don-cat-icon-wrap">
-                        @if (!string.IsNullOrEmpty(cat.IconUrl))
-                        {
-                            <img src="@cat.IconUrl" alt="@cat.Name" />
-                        }
-                        else
-                        {
-                            <span>🎁</span>
-                        }
-                    </div>
-                    <span class="don-cat-label">@cat.Name</span>
-                </button>
-            }
-        </div>
-    </div>
-
-    @for (var i = 0; i < Model.Categories.Count; i++)
+    @foreach (var group in groups)
     {
-        var cat = Model.Categories[i];
-        <div class="don-grid @(i == 0 ? "active" : "")" id="cat-@cat.Id">
-            @foreach (var product in cat.Products)
-            {
-                <div class="don-card" onclick="if(!event.target.closest('.don-card__footer'))window.location.href='/@product.SeName'">
-                    <div class="don-card__img">
-                        @{ var pic = product.PictureModels.FirstOrDefault(); }
-                        <img src="@(pic?.ImageUrl)"
-                             alt="@(pic?.AlternateText ?? product.Name)"
-                             title="@(pic?.Title ?? product.Name)"
-                             loading="lazy" />
-                    </div>
-                    <div class="don-card__body">
-                        <div class="don-card__title">@product.Name</div>
-                        @if (!string.IsNullOrEmpty(product.ShortDescription))
-                        {
-                            <div class="don-card__desc">@product.ShortDescription</div>
-                        }
-                    </div>
-                    <div class="don-card__footer">
-                        <span class="don-card__price">@product.ProductPrice.Price</span>
-                        <div class="don-card__qty">
-                            <button type="button" class="qty-minus" aria-label="Azalt">−</button>
-                            <span class="don-card__qty-val">1</span>
-                            <input type="hidden" class="qty-input" value="1" />
-                            <button type="button" class="qty-plus" aria-label="Artır">+</button>
-                        </div>
-                        <button type="button" class="don-card__btn" data-product-id="@product.Id">
-                            Bağış Yap
+        var groupName = group.Key;
+        groupIcons.TryGetValue(groupName, out var groupIcon);
+        var firstInGroup = group.First().Id;
+
+        <div class="don-group">
+            <div class="don-group-header">
+                @if (!string.IsNullOrEmpty(groupIcon))
+                {
+                    <span class="don-group-icon">@groupIcon</span>
+                }
+                <span class="don-group-title">@groupName</span>
+            </div>
+
+            <div class="don-cats-wrap">
+                <div class="don-cats">
+                    @foreach (var cat in group)
+                    {
+                        icons.TryGetValue(cat.Name, out var icon);
+                        <button class="don-cat-btn @(cat.Id == firstInGroup ? "active" : "")" data-cat="@cat.Id">
+                            <div class="don-cat-icon-wrap">
+                                @if (!string.IsNullOrEmpty(cat.IconUrl))
+                                {
+                                    <img src="@cat.IconUrl" alt="@cat.Name" />
+                                }
+                                else
+                                {
+                                    <span>@(string.IsNullOrEmpty(icon) ? "🎁" : icon)</span>
+                                }
+                            </div>
+                            <span class="don-cat-label">@cat.Name</span>
                         </button>
-                    </div>
+                    }
+                </div>
+            </div>
+
+            @foreach (var cat in group)
+            {
+                <div class="don-grid @(cat.Id == firstInGroup ? "active" : "")" id="cat-@cat.Id">
+                    @foreach (var product in cat.Products)
+                    {
+                        <div class="don-card" onclick="if(!event.target.closest('.don-card__footer'))window.location.href='/@product.SeName'">
+                            <div class="don-card__img">
+                                @{ var pic = product.PictureModels.FirstOrDefault(); }
+                                <img src="@(pic?.ImageUrl)" alt="@(pic?.AlternateText ?? product.Name)" loading="lazy" />
+                            </div>
+                            <div class="don-card__body">
+                                <div class="don-card__title">@product.Name</div>
+                                @if (!string.IsNullOrEmpty(product.ShortDescription))
+                                {
+                                    <div class="don-card__desc">@product.ShortDescription</div>
+                                }
+                            </div>
+                            <div class="don-card__footer">
+                                <span class="don-card__price">@product.ProductPrice.Price</span>
+                                <div class="don-card__qty">
+                                    <button type="button" class="qty-minus">−</button>
+                                    <span class="don-card__qty-val">1</span>
+                                    <input type="hidden" class="qty-input" value="1" />
+                                    <button type="button" class="qty-plus">+</button>
+                                </div>
+                                <button type="button" class="don-card__btn" data-product-id="@product.Id">Bağış Yap</button>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
         </div>
@@ -222,10 +243,9 @@
     document.querySelectorAll('.don-card__btn').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var card = btn.closest('.don-card');
-            var productId = btn.dataset.productId;
             var qty = parseInt(card.querySelector('.qty-input').value) || 1;
             btn.disabled = true;
-            AjaxCart.addproducttocart_catalog('/addproducttocart/catalog/' + productId + '/1/' + qty);
+            AjaxCart.addproducttocart_catalog('/addproducttocart/catalog/' + btn.dataset.productId + '/1/' + qty);
             setTimeout(function () { btn.disabled = false; }, 1500);
         });
     });

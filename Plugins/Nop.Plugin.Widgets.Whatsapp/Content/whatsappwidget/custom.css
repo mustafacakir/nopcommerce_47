@@ -1,0 +1,17 @@
+.float-right {
+    position: fixed;
+    bottom:800px;
+    right: 20px;
+    z-index: 100;
+}
+
+.float-left {
+    position: fixed;
+    bottom: 40px;
+    left: 40px;
+    z-index: 100;
+}
+
+.my-float {
+    margin-top: 16px;
+}
