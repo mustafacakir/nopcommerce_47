@@ -5,10 +5,20 @@
 }
 
 <div class="marquee-banner" style="background:@Model.BackgroundColor; color:@Model.TextColor;">
-    <div class="marquee-track" style="animation-duration:@duration;">
-        <span>@Model.Text</span>
-        <span>@Model.Text</span>
-    </div>
+    @if (!string.IsNullOrEmpty(Model.Link))
+    {
+        <a href="@Model.Link" class="marquee-track" style="animation-duration:@duration; color:@Model.TextColor; text-decoration:none;" target="_blank">
+            <span>@Model.Text</span>
+            <span>@Model.Text</span>
+        </a>
+    }
+    else
+    {
+        <div class="marquee-track" style="animation-duration:@duration;">
+            <span>@Model.Text</span>
+            <span>@Model.Text</span>
+        </div>
+    }
 </div>
 
 <style>

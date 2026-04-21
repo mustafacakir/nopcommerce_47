@@ -21,6 +21,16 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="Link_OverrideForStore" asp-input="Link" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="Link" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="Link" />
+                        <span asp-validation-for="Link"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
                         <nop-override-store-checkbox asp-for="BackgroundColor_OverrideForStore" asp-input="BackgroundColor" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
                         <nop-label asp-for="BackgroundColor" />
                     </div>

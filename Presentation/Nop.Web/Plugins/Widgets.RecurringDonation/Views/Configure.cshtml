@@ -1,0 +1,57 @@
+@model Nop.Plugin.Widgets.RecurringDonation.Models.ConfigurationModel
+@{ Layout = "_ConfigurePlugin"; }
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<form asp-controller="WidgetsRecurringDonation" asp-action="Configure" method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">Genel</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Başlık</label></div>
+                    <div class="col-md-9"><input type="text" name="Title" value="@Model.Title" class="form-control" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Alt Başlık</label></div>
+                    <div class="col-md-9"><textarea name="Subtitle" class="form-control" rows="3">@Model.Subtitle</textarea></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Özel Tutar Linki</label></div>
+                    <div class="col-md-9"><input type="text" name="CustomAmountUrl" value="@Model.CustomAmountUrl" class="form-control" /></div>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var item in new[] {
+            ("1", Model.Amount1Label, Model.Amount1Url),
+            ("2", Model.Amount2Label, Model.Amount2Url),
+            ("3", Model.Amount3Label, Model.Amount3Url),
+            ("4", Model.Amount4Label, Model.Amount4Url),
+        })
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">Tutar Seçeneği @item.Item1</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Etiket (örn: 100₺ / ay)</label></div>
+                        <div class="col-md-9"><input type="text" name="Amount@(item.Item1)Label" value="@item.Item2" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Ürün Linki</label></div>
+                        <div class="col-md-9"><input type="text" name="Amount@(item.Item1)Url" value="@item.Item3" class="form-control" /></div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

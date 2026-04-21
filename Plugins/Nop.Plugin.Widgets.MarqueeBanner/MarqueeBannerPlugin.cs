@@ -49,6 +49,8 @@ public class MarqueeBannerPlugin : BasePlugin, IWidgetPlugin
         {
             ["Plugins.Widgets.MarqueeBanner.Text"] = "Metin",
             ["Plugins.Widgets.MarqueeBanner.Text.Hint"] = "Kayan bantta gösterilecek metin.",
+            ["Plugins.Widgets.MarqueeBanner.Link"] = "Link",
+            ["Plugins.Widgets.MarqueeBanner.Link.Hint"] = "Tıklandığında gidilecek URL (boş bırakılabilir).",
             ["Plugins.Widgets.MarqueeBanner.BackgroundColor"] = "Arka Plan Rengi",
             ["Plugins.Widgets.MarqueeBanner.BackgroundColor.Hint"] = "Hex renk kodu (örn: #e43d51)",
             ["Plugins.Widgets.MarqueeBanner.TextColor"] = "Metin Rengi",

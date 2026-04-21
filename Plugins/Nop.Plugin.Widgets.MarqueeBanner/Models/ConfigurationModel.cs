@@ -9,6 +9,10 @@ public record ConfigurationModel : BaseNopModel
     public string Text { get; set; }
     public bool Text_OverrideForStore { get; set; }
 
+    [NopResourceDisplayName("Plugins.Widgets.MarqueeBanner.Link")]
+    public string Link { get; set; }
+    public bool Link_OverrideForStore { get; set; }
+
     [NopResourceDisplayName("Plugins.Widgets.MarqueeBanner.BackgroundColor")]
     public string BackgroundColor { get; set; }
     public bool BackgroundColor_OverrideForStore { get; set; }

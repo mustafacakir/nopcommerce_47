@@ -1,0 +1,16 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Campaign Progress",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "pekinteknoloji",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.CampaignProgress.dll",
+  "Description": "Homepage campaign goal progress bar",
+  "LimitedToStores": [],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.CampaignProgress",
+  "Version": "1.00"
+}

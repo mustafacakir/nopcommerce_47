@@ -45,6 +45,7 @@ public class WidgetsMarqueeBannerController : BasePluginController
         var model = new ConfigurationModel
         {
             Text = settings.Text,
+            Link = settings.Link,
             BackgroundColor = settings.BackgroundColor,
             TextColor = settings.TextColor,
             Speed = settings.Speed,
@@ -54,6 +55,7 @@ public class WidgetsMarqueeBannerController : BasePluginController
         if (storeScope > 0)
         {
             model.Text_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.Text, storeScope);
+            model.Link_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.Link, storeScope);
             model.BackgroundColor_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.BackgroundColor, storeScope);
             model.TextColor_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.TextColor, storeScope);
             model.Speed_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.Speed, storeScope);
@@ -72,11 +74,13 @@ public class WidgetsMarqueeBannerController : BasePluginController
         var settings = await _settingService.LoadSettingAsync<MarqueeBannerSettings>(storeScope);
 
         settings.Text = model.Text;
+        settings.Link = model.Link;
         settings.BackgroundColor = model.BackgroundColor;
         settings.TextColor = model.TextColor;
         settings.Speed = model.Speed;
 
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.Text, model.Text_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.Link, model.Link_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.BackgroundColor, model.BackgroundColor_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.TextColor, model.TextColor_OverrideForStore, storeScope, false);
         await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.Speed, model.Speed_OverrideForStore, storeScope, false);

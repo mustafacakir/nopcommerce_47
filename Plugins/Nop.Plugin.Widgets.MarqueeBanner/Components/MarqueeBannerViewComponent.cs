@@ -28,6 +28,7 @@ public class MarqueeBannerViewComponent : NopViewComponent
         var model = new PublicInfoModel
         {
             Text = settings.Text,
+            Link = settings.Link,
             BackgroundColor = settings.BackgroundColor,
             TextColor = settings.TextColor,
             Speed = settings.Speed > 0 ? settings.Speed : 40

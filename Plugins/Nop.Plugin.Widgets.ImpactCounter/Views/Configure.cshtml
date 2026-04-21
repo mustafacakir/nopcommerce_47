@@ -1,0 +1,46 @@
+@model Nop.Plugin.Widgets.ImpactCounter.Models.ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+    var stats = new[]
+    {
+        ("1", Model.Stat1Icon, Model.Stat1Value, Model.Stat1Label),
+        ("2", Model.Stat2Icon, Model.Stat2Value, Model.Stat2Label),
+        ("3", Model.Stat3Icon, Model.Stat3Value, Model.Stat3Label),
+        ("4", Model.Stat4Icon, Model.Stat4Value, Model.Stat4Label),
+    };
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<form asp-controller="WidgetsImpactCounter" asp-action="Configure" method="post">
+    <div class="panel-group">
+        @foreach (var (n, icon, value, label) in stats)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">İstatistik @n</div>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>İkon (emoji)</label></div>
+                        <div class="col-md-9"><input type="text" name="Stat@(n)Icon" value="@icon" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Değer</label></div>
+                        <div class="col-md-9"><input type="text" name="Stat@(n)Value" value="@value" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Etiket</label></div>
+                        <div class="col-md-9"><input type="text" name="Stat@(n)Label" value="@label" class="form-control" /></div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

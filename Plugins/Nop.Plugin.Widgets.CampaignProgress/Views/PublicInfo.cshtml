@@ -1,0 +1,127 @@
+@model Nop.Plugin.Widgets.CampaignProgress.Models.PublicInfoModel
+@{ Layout = ""; }
+
+<section class="campaign-section">
+    <div class="campaign-card">
+        <div class="campaign-left">
+            <div class="campaign-badge">🎯 Aktif Kampanya</div>
+            <h2 class="campaign-title">@Model.Title</h2>
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <p class="campaign-desc">@Model.Description</p>
+            }
+            @if (!string.IsNullOrEmpty(Model.ButtonText))
+            {
+                <a href="@(string.IsNullOrEmpty(Model.ButtonUrl) ? "#" : Model.ButtonUrl)" class="campaign-btn">
+                    @Model.ButtonText
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            }
+        </div>
+        <div class="campaign-right">
+            <div class="campaign-amounts">
+                <div class="campaign-current">
+                    <span class="campaign-amount-val">@Model.Currency@Model.CurrentAmount.ToString("N0")</span>
+                    <span class="campaign-amount-lbl">Toplanan</span>
+                </div>
+                <div class="campaign-divider"></div>
+                <div class="campaign-goal">
+                    <span class="campaign-amount-val">@Model.Currency@Model.GoalAmount.ToString("N0")</span>
+                    <span class="campaign-amount-lbl">Hedef</span>
+                </div>
+            </div>
+            <div class="campaign-bar-wrap">
+                <div class="campaign-bar">
+                    <div class="campaign-bar-fill" style="width:@Model.ProgressPercent%;"></div>
+                </div>
+                <div class="campaign-bar-info">
+                    <span class="campaign-percent">%@Model.ProgressPercent tamamlandı</span>
+                    @if (!string.IsNullOrEmpty(Model.EndDate))
+                    {
+                        <span class="campaign-end">⏳ @Model.EndDate</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .campaign-section { padding: 32px 0; }
+    .campaign-card {
+        display: flex; gap: 48px; align-items: center;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 16px; padding: 36px 40px;
+        color: #fff;
+    }
+    .campaign-left { flex: 1; }
+    .campaign-right { flex: 1; }
+
+    .campaign-badge {
+        display: inline-block;
+        background: rgba(228,61,81,0.2);
+        border: 1px solid rgba(228,61,81,0.4);
+        color: #ff6b7a;
+        border-radius: 20px; padding: 5px 14px;
+        font-size: 12px; font-weight: 700;
+        letter-spacing: 0.5px; margin-bottom: 14px;
+    }
+    .campaign-title {
+        font-size: 24px; font-weight: 900;
+        line-height: 1.2; margin: 0 0 12px; color: #fff;
+    }
+    .campaign-desc {
+        font-size: 14px; line-height: 1.6;
+        color: rgba(255,255,255,0.7); margin: 0 0 24px;
+    }
+    .campaign-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: #e43d51; color: #fff;
+        padding: 11px 24px; border-radius: 50px;
+        font-size: 14px; font-weight: 700; text-decoration: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .campaign-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(228,61,81,0.4); color: #fff; }
+
+    .campaign-amounts {
+        display: flex; align-items: center; gap: 24px;
+        margin-bottom: 20px;
+    }
+    .campaign-current, .campaign-goal {
+        display: flex; flex-direction: column; gap: 4px;
+    }
+    .campaign-amount-val {
+        font-size: 28px; font-weight: 900; color: #fff; line-height: 1;
+    }
+    .campaign-current .campaign-amount-val { color: #e43d51; }
+    .campaign-amount-lbl {
+        font-size: 12px; color: rgba(255,255,255,0.5);
+        text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .campaign-divider {
+        width: 1px; height: 48px;
+        background: rgba(255,255,255,0.15);
+    }
+
+    .campaign-bar-wrap { }
+    .campaign-bar {
+        height: 10px; background: rgba(255,255,255,0.1);
+        border-radius: 10px; overflow: hidden; margin-bottom: 10px;
+    }
+    .campaign-bar-fill {
+        height: 100%; background: linear-gradient(90deg, #e43d51, #ff6b7a);
+        border-radius: 10px;
+        transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
+    .campaign-bar-info {
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .campaign-percent { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.8); }
+    .campaign-end { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+    @@media (max-width: 767px) {
+        .campaign-card { flex-direction: column; gap: 28px; padding: 28px 24px; }
+        .campaign-title { font-size: 20px; }
+        .campaign-amount-val { font-size: 22px; }
+    }
+</style>

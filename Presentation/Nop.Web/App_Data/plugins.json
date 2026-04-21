@@ -126,6 +126,30 @@
     {
       "SystemName": "Widgets.Whatsapp",
       "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.MarqueeBanner",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.CampaignProgress",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.HeroBanner",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.ImpactCounter",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.RecurringDonation",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.SocialShare",
+      "Version": "1.0"
     }
   ],
   "PluginNamesToUninstall": [],
