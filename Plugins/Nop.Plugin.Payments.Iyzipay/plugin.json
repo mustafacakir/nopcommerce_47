@@ -5,7 +5,7 @@
   "Version": "1.0.0",
   "SupportedVersions": [ "4.70" ],
   "Author": "Iyzico",
-  "DisplayOrder": 1,
+  "DisplayOrder": 15,
   "FileName": "Nop.Plugin.Payments.Iyzipay.dll",
   "Description": "Iyzipay payment gateway integration for nopCommerce v4.90",
   "LimitedToStores": [ 31 ]

@@ -5,7 +5,7 @@
   "Version": "1.00",
   "SupportedVersions": [ "4.70" ],
   "Author": "pekinteknoloji",
-  "DisplayOrder": 1,
+  "DisplayOrder": 4,
   "FileName": "Nop.Plugin.Widgets.ImpactCounter.dll",
   "Description": "Homepage impact statistics counter",
   "LimitedToStores": [ 31 ]

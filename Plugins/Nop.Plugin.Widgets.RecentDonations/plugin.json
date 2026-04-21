@@ -5,7 +5,7 @@
   "Version": "1.0",
   "SupportedVersions": [ "4.70" ],
   "Author": "Pekin Teknoloji",
-  "DisplayOrder": 2,
+  "DisplayOrder": 7,
   "FileName": "Nop.Plugin.Widgets.RecentDonations.dll",
   "Description": "Son bağışları kayan bant olarak ana sayfada gösterir",
   "LimitedToStores": [ 31 ]

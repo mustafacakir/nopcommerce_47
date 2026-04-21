@@ -5,7 +5,7 @@
   "Version": "1.0",
   "SupportedVersions": [ "4.70" ],
   "Author": "Pekin Teknoloji",
-  "DisplayOrder": 3,
+  "DisplayOrder": 12,
   "FileName": "Nop.Plugin.Widgets.VolunteerCta.dll",
   "Description": "Gönüllü ol çağrısı alanı",
   "LimitedToStores": [ 31 ]

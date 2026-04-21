@@ -5,7 +5,7 @@
   "Version": "1.00",
   "SupportedVersions": [ "4.70" ],
   "Author": "pekinteknoloji",
-  "DisplayOrder": 1,
+  "DisplayOrder": 6,
   "FileName": "Nop.Plugin.Widgets.RecurringDonation.dll",
   "Description": "Monthly recurring donation section",
   "LimitedToStores": [ 31 ]

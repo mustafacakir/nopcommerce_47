@@ -5,7 +5,7 @@
   "Version": "1.0",
   "SupportedVersions": [ "4.70" ],
   "Author": "Pekin Teknoloji",
-  "DisplayOrder": 1,
+  "DisplayOrder": 11,
   "FileName": "Nop.Plugin.Widgets.TrustBadges.dll",
   "Description": "Güven rozetleri bandı (sertifika, vergi muafiyeti, SSL vb.)",
   "LimitedToStores": [ 31 ]

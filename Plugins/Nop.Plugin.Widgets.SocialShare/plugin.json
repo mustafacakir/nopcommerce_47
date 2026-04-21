@@ -5,7 +5,7 @@
   "Version": "1.0",
   "SupportedVersions": [ "4.70" ],
   "Author": "Pekin Teknoloji",
-  "DisplayOrder": 1,
+  "DisplayOrder": 13,
   "FileName": "Nop.Plugin.Widgets.SocialShare.dll",
   "Description": "Ürün sayfalarına sosyal medya paylaşım butonları ekler",
   "LimitedToStores": [ 31 ]
