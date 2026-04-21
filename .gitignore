@@ -76,3 +76,9 @@ Presentation/Nop.Web/wwwroot/css/Slick/
 Presentation/Nop.Web/Plugins/ExternalAuth.Facebook/
 Presentation/Nop.Web/Plugins/MultiFactorAuth.GoogleAuthenticator/
 Presentation/Nop.Web/Plugins/Shipping.UPS/*.deps.json
+
+# Custom plugin build output (source is in Plugins/ folder, rebuilt on deploy)
+Presentation/Nop.Web/Plugins/Widgets.DonationCatalog/
+
+# Store-specific generated theme CSS (nopCommerce theme customizer output)
+Presentation/Nop.Web/Themes/Voyage/Content/css/theme.custom-*.css

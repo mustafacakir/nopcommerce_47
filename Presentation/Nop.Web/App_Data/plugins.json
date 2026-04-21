@@ -118,6 +118,10 @@
     {
       "SystemName": "Payments.IyzipayCheckoutForm",
       "Version": "1.0.0"
+    },
+    {
+      "SystemName": "Widgets.DonationCatalog",
+      "Version": "1.0.0"
     }
   ],
   "PluginNamesToUninstall": [],

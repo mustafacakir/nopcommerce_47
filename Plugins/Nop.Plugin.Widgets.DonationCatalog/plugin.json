@@ -1,0 +1,11 @@
+{
+  "Group": "Widgets",
+  "FriendlyName": "Donation Catalog",
+  "SystemName": "Widgets.DonationCatalog",
+  "Version": "1.0.0",
+  "SupportedVersions": [ "4.70" ],
+  "Author": "Pekin Teknoloji",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.DonationCatalog.dll",
+  "Description": "Displays a category-tabbed donation product catalog on the homepage"
+}

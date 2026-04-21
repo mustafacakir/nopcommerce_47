@@ -1934,7 +1934,6 @@ table:not(.breakpoint) .footable-toggle {
 	font-size: 0;
 }
 .item-box .add-to-wishlist-button:before {
-	content: "\e906";
 	font-size: 18px;
 }
 .item-box .add-to-compare-list-button:before {

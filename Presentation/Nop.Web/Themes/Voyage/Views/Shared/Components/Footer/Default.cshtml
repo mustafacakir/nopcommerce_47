@@ -11,9 +11,13 @@
 @inject IThemeContext themeContext
 
 @{
-    var storeId = (await storeContext.GetCurrentStoreAsync()).Id;
+    var currentStore = await storeContext.GetCurrentStoreAsync();
+    var storeId = currentStore.Id;
     var removeCopyright = true; @* PEKIN_CUSTOM: nopCommerce footer yazısı gizlendi *@
     var removeDesignedBy = true; @* PEKIN_CUSTOM: "Designed by" yazısı gizlendi *@
+    var hasContactInfo = !string.IsNullOrEmpty(currentStore.CompanyName) ||
+                         !string.IsNullOrEmpty(currentStore.CompanyAddress) ||
+                         !string.IsNullOrEmpty(currentStore.CompanyPhoneNumber);
 }
 
 <div class="footer">
@@ -125,6 +129,70 @@
         </div>
         @await Component.InvokeAsync(typeof(SocialButtonsViewComponent))
     </div>
+    @if (hasContactInfo)
+    {
+        <div class="footer-contact-band">
+            <div class="footer-contact-inner">
+                @if (!string.IsNullOrEmpty(currentStore.CompanyName))
+                {
+                    <div class="footer-contact-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+                        <span>@currentStore.CompanyName@(!string.IsNullOrEmpty(currentStore.CompanyAddress) ? ", " + currentStore.CompanyAddress : "")</span>
+                    </div>
+                }
+                else if (!string.IsNullOrEmpty(currentStore.CompanyAddress))
+                {
+                    <div class="footer-contact-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+                        <span>@currentStore.CompanyAddress</span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(currentStore.CompanyPhoneNumber))
+                {
+                    <div class="footer-contact-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C9.61 21 3 14.39 3 6a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+                        <a href="tel:@currentStore.CompanyPhoneNumber">@currentStore.CompanyPhoneNumber</a>
+                    </div>
+                }
+            </div>
+        </div>
+        <style>
+            .footer-contact-band {
+                background-color: #2a2a2a;
+                padding: 18px 20px;
+                border-top: 3px solid #e43d51;
+            }
+            .footer-contact-inner {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                flex-wrap: wrap;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            .footer-contact-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: #ccc;
+                font-size: 14px;
+            }
+            .footer-contact-item svg {
+                width: 18px;
+                height: 18px;
+                fill: #e43d51;
+                flex-shrink: 0;
+            }
+            .footer-contact-item a {
+                color: #ccc;
+                text-decoration: none;
+            }
+            .footer-contact-item a:hover {
+                color: #e43d51;
+            }
+        </style>
+    }
     <div class="footer-lower">
         <div class="footer-texts">
             @if(!removeCopyright || !removeDesignedBy)
@@ -146,16 +214,16 @@
                     }
                 </div>
             }
-            <div class="footer-text payment">
-                <img class="img footer-accepted-pay" src="@Url.Content($"~/Themes/{await themeContext.GetWorkingThemeNameAsync()}/Content/img/payment-sprite.png")" alt="" title="">
-                @if (Model.DisplayTaxShippingInfoFooter)
-                {
-                    var inclTax = await workContext.GetTaxDisplayTypeAsync() == TaxDisplayType.IncludingTax;
-                    <div class="txt footer-tax-shipping">
-                        @T(inclTax ? "Footer.TaxShipping.InclTax" : "Footer.TaxShipping.ExclTax", Url.RouteTopicUrl("shippinginfo"))
-                    </div>
-                }
-            </div>
+            @* <div class="footer-text payment"> *@
+            @*     <img class="img footer-accepted-pay" src="@Url.Content($"~/Themes/{await themeContext.GetWorkingThemeNameAsync()}/Content/img/payment-sprite.png")" alt="" title=""> *@
+            @*     @if (Model.DisplayTaxShippingInfoFooter) *@
+            @*     { *@
+            @*         var inclTax = await workContext.GetTaxDisplayTypeAsync() == TaxDisplayType.IncludingTax; *@
+            @*         <div class="txt footer-tax-shipping"> *@
+            @*             @T(inclTax ? "Footer.TaxShipping.InclTax" : "Footer.TaxShipping.ExclTax", Url.RouteTopicUrl("shippinginfo")) *@
+            @*         </div> *@
+            @*     } *@
+            @* </div> *@
             <div class="footer-text copyright">
                 <span class="txt footer-disclaimer">@T("Content.CopyrightNotice", DateTime.Now.Year, Model.StoreName)</span>
             </div>
