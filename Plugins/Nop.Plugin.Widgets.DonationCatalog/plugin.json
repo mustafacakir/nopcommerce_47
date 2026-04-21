@@ -7,5 +7,6 @@
   "Author": "Pekin Teknoloji",
   "DisplayOrder": 1,
   "FileName": "Nop.Plugin.Widgets.DonationCatalog.dll",
-  "Description": "Displays a category-tabbed donation product catalog on the homepage"
+  "Description": "Displays a category-tabbed donation product catalog on the homepage",
+  "LimitedToStores": [ 31 ]
 }

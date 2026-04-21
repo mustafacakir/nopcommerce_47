@@ -7,5 +7,6 @@
   "Author": "Pekin Teknoloji",
   "DisplayOrder": 1,
   "FileName": "Nop.Plugin.Widgets.TrustBadges.dll",
-  "Description": "Güven rozetleri bandı (sertifika, vergi muafiyeti, SSL vb.)"
+  "Description": "Güven rozetleri bandı (sertifika, vergi muafiyeti, SSL vb.)",
+  "LimitedToStores": [ 31 ]
 }

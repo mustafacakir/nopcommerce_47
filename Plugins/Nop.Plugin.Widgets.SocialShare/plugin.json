@@ -7,5 +7,6 @@
   "Author": "Pekin Teknoloji",
   "DisplayOrder": 1,
   "FileName": "Nop.Plugin.Widgets.SocialShare.dll",
-  "Description": "Ürün sayfalarına sosyal medya paylaşım butonları ekler"
+  "Description": "Ürün sayfalarına sosyal medya paylaşım butonları ekler",
+  "LimitedToStores": [ 31 ]
 }

@@ -7,5 +7,6 @@
   "Author": "Pekin Teknoloji",
   "DisplayOrder": 3,
   "FileName": "Nop.Plugin.Widgets.VolunteerCta.dll",
-  "Description": "Gönüllü ol çağrısı alanı"
+  "Description": "Gönüllü ol çağrısı alanı",
+  "LimitedToStores": [ 31 ]
 }

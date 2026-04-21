@@ -7,5 +7,6 @@
   "Author": "Iyzico",
   "DisplayOrder": 1,
   "FileName": "Nop.Plugin.Payments.Iyzipay.dll",
-  "Description": "Iyzipay payment gateway integration for nopCommerce v4.90"
+  "Description": "Iyzipay payment gateway integration for nopCommerce v4.90",
+  "LimitedToStores": [ 31 ]
 }

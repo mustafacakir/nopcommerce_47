@@ -14,7 +14,7 @@ public class ImpactCounterSettings : ISettings
 
     public string Stat3Icon { get; set; } = "👨‍👩‍👧‍👦";
     public string Stat3Value { get; set; } = "5.200+";
-    public string Stat3Label { get; set; } = "Faydalanan Kişi";
+    public string Stat3Label { get; set; } = "İhtiyaç Sahibi";
 
     public string Stat4Icon { get; set; } = "🕌";
     public string Stat4Value { get; set; } = "12";

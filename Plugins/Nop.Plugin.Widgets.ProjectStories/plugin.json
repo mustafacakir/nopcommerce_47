@@ -7,5 +7,6 @@
   "Author": "Pekin Teknoloji",
   "DisplayOrder": 1,
   "FileName": "Nop.Plugin.Widgets.ProjectStories.dll",
-  "Description": "Fotoğraf/video ile proje hikayeleri bölümü"
+  "Description": "Fotoğraf/video ile proje hikayeleri bölümü",
+  "LimitedToStores": [ 31 ]
 }

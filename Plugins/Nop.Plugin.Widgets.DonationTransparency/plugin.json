@@ -7,5 +7,6 @@
   "Author": "Pekin Teknoloji",
   "DisplayOrder": 2,
   "FileName": "Nop.Plugin.Widgets.DonationTransparency.dll",
-  "Description": "Bağışların nereye gittiğini gösteren şeffaflık bölümü"
+  "Description": "Bağışların nereye gittiğini gösteren şeffaflık bölümü",
+  "LimitedToStores": [ 31 ]
 }
