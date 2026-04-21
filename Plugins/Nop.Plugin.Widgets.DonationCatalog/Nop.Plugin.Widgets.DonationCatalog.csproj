@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <OutputPath>..\..\Presentation\Nop.Web\Plugins\Widgets.DonationCatalog</OutputPath>
     <OutDir>$(OutputPath)</OutDir>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
