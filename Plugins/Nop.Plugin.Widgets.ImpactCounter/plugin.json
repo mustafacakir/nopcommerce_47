@@ -1,12 +1,16 @@
-{
-  "Group": "Widgets",
-  "FriendlyName": "Impact Counter",
-  "SystemName": "Widgets.ImpactCounter",
-  "Version": "1.00",
-  "SupportedVersions": [ "4.70" ],
-  "Author": "pekinteknoloji",
-  "DisplayOrder": 4,
-  "FileName": "Nop.Plugin.Widgets.ImpactCounter.dll",
-  "Description": "Homepage impact statistics counter",
-  "LimitedToStores": [ 31 ]
+﻿{
+    "Group":  "Widgets",
+    "FriendlyName":  "Impact Counter",
+    "SystemName":  "Widgets.ImpactCounter",
+    "Version":  "1.00",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "pekinteknoloji",
+    "DisplayOrder":  3,
+    "FileName":  "Nop.Plugin.Widgets.ImpactCounter.dll",
+    "Description":  "Homepage impact statistics counter",
+    "LimitedToStores":  [
+                            31
+                        ]
 }

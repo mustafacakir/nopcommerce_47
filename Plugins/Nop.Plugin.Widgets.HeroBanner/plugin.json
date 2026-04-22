@@ -1,12 +1,16 @@
-{
-  "Group": "Widgets",
-  "FriendlyName": "Hero Banner",
-  "SystemName": "Widgets.HeroBanner",
-  "Version": "1.00",
-  "SupportedVersions": [ "4.70" ],
-  "Author": "pekinteknoloji",
-  "DisplayOrder": 2,
-  "FileName": "Nop.Plugin.Widgets.HeroBanner.dll",
-  "Description": "Configurable hero banner for the homepage",
-  "LimitedToStores": [ 31 ]
+﻿{
+    "Group":  "Widgets",
+    "FriendlyName":  "Hero Banner",
+    "SystemName":  "Widgets.HeroBanner",
+    "Version":  "1.00",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "pekinteknoloji",
+    "DisplayOrder":  1,
+    "FileName":  "Nop.Plugin.Widgets.HeroBanner.dll",
+    "Description":  "Configurable hero banner for the homepage",
+    "LimitedToStores":  [
+                            31
+                        ]
 }

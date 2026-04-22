@@ -1,12 +1,16 @@
-{
-  "Group": "Widgets",
-  "FriendlyName": "Recent Donations Feed",
-  "SystemName": "Widgets.RecentDonations",
-  "Version": "1.0",
-  "SupportedVersions": [ "4.70" ],
-  "Author": "Pekin Teknoloji",
-  "DisplayOrder": 7,
-  "FileName": "Nop.Plugin.Widgets.RecentDonations.dll",
-  "Description": "Son bağışları kayan bant olarak ana sayfada gösterir",
-  "LimitedToStores": [ 31 ]
+﻿{
+    "Group":  "Widgets",
+    "FriendlyName":  "Recent Donations Feed",
+    "SystemName":  "Widgets.RecentDonations",
+    "Version":  "1.0",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "Pekin Teknoloji",
+    "DisplayOrder":  8,
+    "FileName":  "Nop.Plugin.Widgets.RecentDonations.dll",
+    "Description":  "Son bağışları kayan bant olarak ana sayfada gösterir",
+    "LimitedToStores":  [
+                            31
+                        ]
 }

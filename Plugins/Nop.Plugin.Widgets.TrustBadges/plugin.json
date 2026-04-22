@@ -1,12 +1,16 @@
-{
-  "Group": "Widgets",
-  "FriendlyName": "Trust Badges",
-  "SystemName": "Widgets.TrustBadges",
-  "Version": "1.0",
-  "SupportedVersions": [ "4.70" ],
-  "Author": "Pekin Teknoloji",
-  "DisplayOrder": 11,
-  "FileName": "Nop.Plugin.Widgets.TrustBadges.dll",
-  "Description": "Güven rozetleri bandı (sertifika, vergi muafiyeti, SSL vb.)",
-  "LimitedToStores": [ 31 ]
+﻿{
+    "Group":  "Widgets",
+    "FriendlyName":  "Trust Badges",
+    "SystemName":  "Widgets.TrustBadges",
+    "Version":  "1.0",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "Pekin Teknoloji",
+    "DisplayOrder":  2,
+    "FileName":  "Nop.Plugin.Widgets.TrustBadges.dll",
+    "Description":  "Güven rozetleri bandı (sertifika, vergi muafiyeti, SSL vb.)",
+    "LimitedToStores":  [
+                            31
+                        ]
 }

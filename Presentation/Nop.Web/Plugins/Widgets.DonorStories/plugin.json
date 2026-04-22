@@ -7,7 +7,7 @@
                               "4.70"
                           ],
     "Author":  "Pekin Teknoloji",
-    "DisplayOrder":  1,
+    "DisplayOrder":  10,
     "FileName":  "Nop.Plugin.Widgets.DonorStories.dll",
     "Description":  "Bağışçı hikayeleri ve tanıklıklar carousel",
     "LimitedToStores":  [

@@ -5,11 +5,12 @@
                               "4.70"
                           ],
     "Author":  "Pekin Teknoloji",
-    "DisplayOrder":  3,
+    "DisplayOrder":  4,
     "FileName":  "Nop.Plugin.Widgets.DonationCatalog.dll",
     "Description":  "Displays a category-tabbed donation product catalog on the homepage",
     "LimitedToStores":  [
-                            31,1
+                            31,
+                            1
                         ],
     "LimitedToCustomerRoles":  [
 

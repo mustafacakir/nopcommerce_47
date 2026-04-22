@@ -1,12 +1,16 @@
-{
-  "Group": "Widgets",
-  "FriendlyName": "Donor Stories",
-  "SystemName": "Widgets.DonorStories",
-  "Version": "1.0",
-  "SupportedVersions": [ "4.70" ],
-  "Author": "Pekin Teknoloji",
-  "DisplayOrder": 8,
-  "FileName": "Nop.Plugin.Widgets.DonorStories.dll",
-  "Description": "Bağışçı hikayeleri ve tanıklıklar carousel",
-  "LimitedToStores": [ 31 ]
+﻿{
+    "Group":  "Widgets",
+    "FriendlyName":  "Donor Stories",
+    "SystemName":  "Widgets.DonorStories",
+    "Version":  "1.0",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "Pekin Teknoloji",
+    "DisplayOrder":  10,
+    "FileName":  "Nop.Plugin.Widgets.DonorStories.dll",
+    "Description":  "Bağışçı hikayeleri ve tanıklıklar carousel",
+    "LimitedToStores":  [
+                            31
+                        ]
 }

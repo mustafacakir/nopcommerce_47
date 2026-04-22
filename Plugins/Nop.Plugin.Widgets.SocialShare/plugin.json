@@ -1,12 +1,16 @@
-{
-  "Group": "Widgets",
-  "FriendlyName": "Social Share Buttons",
-  "SystemName": "Widgets.SocialShare",
-  "Version": "1.0",
-  "SupportedVersions": [ "4.70" ],
-  "Author": "Pekin Teknoloji",
-  "DisplayOrder": 13,
-  "FileName": "Nop.Plugin.Widgets.SocialShare.dll",
-  "Description": "Ürün sayfalarına sosyal medya paylaşım butonları ekler",
-  "LimitedToStores": [ 31 ]
+﻿{
+    "Group":  "Widgets",
+    "FriendlyName":  "Social Share Buttons",
+    "SystemName":  "Widgets.SocialShare",
+    "Version":  "1.0",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "Pekin Teknoloji",
+    "DisplayOrder":  51,
+    "FileName":  "Nop.Plugin.Widgets.SocialShare.dll",
+    "Description":  "Ürün sayfalarına sosyal medya paylaşım butonları ekler",
+    "LimitedToStores":  [
+                            31
+                        ]
 }

@@ -1,12 +1,16 @@
-{
-  "Group": "Widgets",
-  "FriendlyName": "Marquee Banner",
-  "SystemName": "Widgets.MarqueeBanner",
-  "Version": "1.00",
-  "SupportedVersions": [ "4.70" ],
-  "Author": "pekinteknoloji",
-  "DisplayOrder": 1,
-  "FileName": "Nop.Plugin.Widgets.MarqueeBanner.dll",
-  "Description": "Scrolling marquee banner at the top of the page",
-  "LimitedToStores": [ 31 ]
+﻿{
+    "Group":  "Widgets",
+    "FriendlyName":  "Marquee Banner",
+    "SystemName":  "Widgets.MarqueeBanner",
+    "Version":  "1.00",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "pekinteknoloji",
+    "DisplayOrder":  12,
+    "FileName":  "Nop.Plugin.Widgets.MarqueeBanner.dll",
+    "Description":  "Scrolling marquee banner at the top of the page",
+    "LimitedToStores":  [
+                            31
+                        ]
 }
