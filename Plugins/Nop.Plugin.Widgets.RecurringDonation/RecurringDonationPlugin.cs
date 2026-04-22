@@ -1,4 +1,4 @@
-using Nop.Core;
+﻿using Nop.Core;
 using Nop.Plugin.Widgets.RecurringDonation.Components;
 using Nop.Services.Cms;
 using Nop.Services.Configuration;
@@ -26,7 +26,7 @@ public class RecurringDonationPlugin : BasePlugin, IWidgetPlugin
 
     public Task<IList<string>> GetWidgetZonesAsync()
     {
-        return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageBottom });
+        return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageTop });
     }
 
     public override string GetConfigurationPageUrl() =>
@@ -59,3 +59,4 @@ public class RecurringDonationPlugin : BasePlugin, IWidgetPlugin
         await base.UninstallAsync();
     }
 }
+

@@ -1,4 +1,4 @@
-using Nop.Core;
+﻿using Nop.Core;
 using Nop.Plugin.Widgets.ImpactCounter.Components;
 using Nop.Services.Cms;
 using Nop.Services.Configuration;
@@ -26,7 +26,7 @@ public class ImpactCounterPlugin : BasePlugin, IWidgetPlugin
 
     public Task<IList<string>> GetWidgetZonesAsync()
     {
-        return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageBeforeCategories });
+        return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageTop });
     }
 
     public override string GetConfigurationPageUrl() =>
@@ -60,3 +60,4 @@ public class ImpactCounterPlugin : BasePlugin, IWidgetPlugin
         await base.UninstallAsync();
     }
 }
+
