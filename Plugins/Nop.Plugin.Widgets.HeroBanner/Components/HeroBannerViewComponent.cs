@@ -30,7 +30,13 @@ public class HeroBannerViewComponent : NopViewComponent
             ButtonUrl = settings.ButtonUrl,
             BackgroundColor = settings.BackgroundColor,
             AccentColor = settings.AccentColor,
-            BackgroundImageUrl = settings.BackgroundImageUrl
+            BackgroundImageUrl = settings.BackgroundImageUrl,
+            Stat1Value = settings.Stat1Value,
+            Stat1Label = settings.Stat1Label,
+            Stat1Icon = settings.Stat1Icon,
+            Stat2Value = settings.Stat2Value,
+            Stat2Label = settings.Stat2Label,
+            Stat2Icon = settings.Stat2Icon
         };
 
         return View("~/Plugins/Widgets.HeroBanner/Views/PublicInfo.cshtml", model);

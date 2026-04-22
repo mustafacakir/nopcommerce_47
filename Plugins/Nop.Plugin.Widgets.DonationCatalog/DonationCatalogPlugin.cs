@@ -13,7 +13,7 @@ public class DonationCatalogPlugin : BasePlugin, IWidgetPlugin
     {
         return Task.FromResult<IList<string>>(new List<string>
         {
-            PublicWidgetZones.HomepageBeforeProducts
+            PublicWidgetZones.HomepageTop
         });
     }
 

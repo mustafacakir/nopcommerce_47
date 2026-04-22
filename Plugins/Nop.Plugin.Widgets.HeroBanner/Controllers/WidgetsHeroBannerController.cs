@@ -51,6 +51,12 @@ public class WidgetsHeroBannerController : BasePluginController
             BackgroundColor = settings.BackgroundColor,
             AccentColor = settings.AccentColor,
             BackgroundImageUrl = settings.BackgroundImageUrl,
+            Stat1Value = settings.Stat1Value,
+            Stat1Label = settings.Stat1Label,
+            Stat1Icon = settings.Stat1Icon,
+            Stat2Value = settings.Stat2Value,
+            Stat2Label = settings.Stat2Label,
+            Stat2Icon = settings.Stat2Icon,
             ActiveStoreScopeConfiguration = storeScope
         };
 
@@ -63,6 +69,12 @@ public class WidgetsHeroBannerController : BasePluginController
             model.BackgroundColor_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.BackgroundColor, storeScope);
             model.AccentColor_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.AccentColor, storeScope);
             model.BackgroundImageUrl_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.BackgroundImageUrl, storeScope);
+            model.Stat1Value_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.Stat1Value, storeScope);
+            model.Stat1Label_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.Stat1Label, storeScope);
+            model.Stat1Icon_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.Stat1Icon, storeScope);
+            model.Stat2Value_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.Stat2Value, storeScope);
+            model.Stat2Label_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.Stat2Label, storeScope);
+            model.Stat2Icon_OverrideForStore = await _settingService.SettingExistsAsync(settings, x => x.Stat2Icon, storeScope);
         }
 
         return View("~/Plugins/Widgets.HeroBanner/Views/Configure.cshtml", model);
@@ -84,14 +96,14 @@ public class WidgetsHeroBannerController : BasePluginController
         settings.BackgroundColor = model.BackgroundColor;
         settings.AccentColor = model.AccentColor;
         settings.BackgroundImageUrl = model.BackgroundImageUrl;
+        settings.Stat1Value = model.Stat1Value;
+        settings.Stat1Label = model.Stat1Label;
+        settings.Stat1Icon = model.Stat1Icon;
+        settings.Stat2Value = model.Stat2Value;
+        settings.Stat2Label = model.Stat2Label;
+        settings.Stat2Icon = model.Stat2Icon;
 
-        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.Title, model.Title_OverrideForStore, storeScope, false);
-        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.Subtitle, model.Subtitle_OverrideForStore, storeScope, false);
-        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.ButtonText, model.ButtonText_OverrideForStore, storeScope, false);
-        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.ButtonUrl, model.ButtonUrl_OverrideForStore, storeScope, false);
-        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.BackgroundColor, model.BackgroundColor_OverrideForStore, storeScope, false);
-        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.AccentColor, model.AccentColor_OverrideForStore, storeScope, false);
-        await _settingService.SaveSettingOverridablePerStoreAsync(settings, x => x.BackgroundImageUrl, model.BackgroundImageUrl_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingAsync(settings, storeScope);
 
         await _settingService.ClearCacheAsync();
         _notificationService.SuccessNotification(await _localizationService.GetResourceAsync("Admin.Plugins.Saved"));

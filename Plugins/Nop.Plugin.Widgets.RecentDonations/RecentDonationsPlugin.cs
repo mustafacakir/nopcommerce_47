@@ -26,7 +26,7 @@ public class RecentDonationsPlugin : BasePlugin, IWidgetPlugin
 
     public Task<IList<string>> GetWidgetZonesAsync()
     {
-        return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageTop });
+        return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageBottom });
     }
 
     public override string GetConfigurationPageUrl() =>

@@ -33,5 +33,29 @@ public record ConfigurationModel : BaseNopModel
     public string BackgroundImageUrl { get; set; }
     public bool BackgroundImageUrl_OverrideForStore { get; set; }
 
+    [NopResourceDisplayName("Plugins.Widgets.HeroBanner.Stat1Value")]
+    public string Stat1Value { get; set; }
+    public bool Stat1Value_OverrideForStore { get; set; }
+
+    [NopResourceDisplayName("Plugins.Widgets.HeroBanner.Stat1Label")]
+    public string Stat1Label { get; set; }
+    public bool Stat1Label_OverrideForStore { get; set; }
+
+    [NopResourceDisplayName("Plugins.Widgets.HeroBanner.Stat1Icon")]
+    public string Stat1Icon { get; set; }
+    public bool Stat1Icon_OverrideForStore { get; set; }
+
+    [NopResourceDisplayName("Plugins.Widgets.HeroBanner.Stat2Value")]
+    public string Stat2Value { get; set; }
+    public bool Stat2Value_OverrideForStore { get; set; }
+
+    [NopResourceDisplayName("Plugins.Widgets.HeroBanner.Stat2Label")]
+    public string Stat2Label { get; set; }
+    public bool Stat2Label_OverrideForStore { get; set; }
+
+    [NopResourceDisplayName("Plugins.Widgets.HeroBanner.Stat2Icon")]
+    public string Stat2Icon { get; set; }
+    public bool Stat2Icon_OverrideForStore { get; set; }
+
     public int ActiveStoreScopeConfiguration { get; set; }
 }

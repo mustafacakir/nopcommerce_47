@@ -26,7 +26,7 @@ public class DonationTransparencyPlugin : BasePlugin, IWidgetPlugin
 
     public Task<IList<string>> GetWidgetZonesAsync()
     {
-        return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageBottom });
+        return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageBeforeProducts });
     }
 
     public override string GetConfigurationPageUrl() =>
