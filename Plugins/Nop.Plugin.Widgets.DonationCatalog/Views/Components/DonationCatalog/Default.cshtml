@@ -35,15 +35,20 @@
         </header>
 
         <div class="dc-tabs" role="tablist">
+            <button class="dc-tab active" data-cat="all" type="button" role="tab" aria-selected="true">
+                <span class="dc-tab__icon">🌟</span>
+                <span class="dc-tab__label">Tümü</span>
+                <span class="dc-tab__count">@subCategories.Sum(c => c.Products.Count)</span>
+            </button>
             @for (var i = 0; i < subCategories.Count; i++)
             {
                 var cat = subCategories[i];
                 icons.TryGetValue(cat.Name, out var icon);
-                <button class="dc-tab @(i == 0 ? "active" : "")"
+                <button class="dc-tab"
                         data-cat="@cat.Id"
                         type="button"
                         role="tab"
-                        aria-selected="@(i == 0 ? "true" : "false")">
+                        aria-selected="false">
                     <span class="dc-tab__icon">
                         @if (!string.IsNullOrEmpty(cat.IconUrl))
                         {
@@ -60,10 +65,53 @@
             }
         </div>
 
-        @for (var i = 0; i < subCategories.Count; i++)
+        @{
+            var allProducts = subCategories.SelectMany(c => c.Products).ToList();
+        }
+
+        <div class="dc-grid active" id="cat-all" role="tabpanel">
+            @foreach (var product in allProducts)
+            {
+                var pic = product.PictureModels.FirstOrDefault();
+                <article class="dc-card" data-href="/@product.SeName">
+                    <div class="dc-card__media">
+                        @if (!string.IsNullOrEmpty(pic?.ImageUrl))
+                        {
+                            <img src="@pic.ImageUrl" alt="@(pic.AlternateText ?? product.Name)" loading="lazy" />
+                        }
+                        else
+                        {
+                            <div class="dc-card__placeholder">🎁</div>
+                        }
+                        <div class="dc-card__overlay"></div>
+                        <div class="dc-card__price-badge">@product.ProductPrice.Price</div>
+                    </div>
+                    <div class="dc-card__body">
+                        <h3 class="dc-card__title">@product.Name</h3>
+                        @if (!string.IsNullOrEmpty(product.ShortDescription))
+                        {
+                            <p class="dc-card__desc">@product.ShortDescription</p>
+                        }
+                    </div>
+                    <div class="dc-card__footer">
+                        <div class="dc-card__qty">
+                            <button type="button" class="qty-minus" aria-label="Azalt">−</button>
+                            <span class="dc-card__qty-val">1</span>
+                            <input type="hidden" class="qty-input" value="1" />
+                            <button type="button" class="qty-plus" aria-label="Artır">+</button>
+                        </div>
+                        <button type="button" class="dc-card__btn" data-product-id="@product.Id">
+                            <span class="dc-card__btn-icon">🤲</span>
+                            Bağış Yap
+                        </button>
+                    </div>
+                </article>
+            }
+        </div>
+
+        @foreach (var cat in subCategories)
         {
-            var cat = subCategories[i];
-            <div class="dc-grid @(i == 0 ? "active" : "")" id="cat-@cat.Id" role="tabpanel">
+            <div class="dc-grid" id="cat-@cat.Id" role="tabpanel">
                 @foreach (var product in cat.Products)
                 {
                     var pic = product.PictureModels.FirstOrDefault();
@@ -479,9 +527,10 @@
                 b.classList.remove('active');
                 b.setAttribute('aria-selected', 'false');
             });
-            document.querySelectorAll('.dc-grid').forEach(function (g) { g.classList.remove('active'); });
             btn.classList.add('active');
             btn.setAttribute('aria-selected', 'true');
+
+            document.querySelectorAll('.dc-grid').forEach(function (g) { g.classList.remove('active'); });
             var grid = document.getElementById('cat-' + btn.dataset.cat);
             if (grid) grid.classList.add('active');
         });
