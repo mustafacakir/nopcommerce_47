@@ -1,64 +1,73 @@
 @model Nop.Plugin.Widgets.ImpactCounter.Models.PublicInfoModel
 @{ Layout = ""; }
 
-<section class="impact-section">
-    <div class="impact-grid">
-        @foreach (var stat in Model.Stats)
-        {
-            <div class="impact-card">
-                <div class="impact-icon">@stat.Icon</div>
-                <div class="impact-value" data-target="@stat.Value">@stat.Value</div>
-                <div class="impact-label">@stat.Label</div>
-            </div>
-        }
+<section class="ic-section">
+    <div class="ic-container">
+        <div class="ic-grid">
+            @foreach (var stat in Model.Stats)
+            {
+                <div class="ic-card">
+                    <div class="ic-icon">@stat.Icon</div>
+                    <div class="ic-value" data-target="@stat.Value">@stat.Value</div>
+                    <div class="ic-label">@stat.Label</div>
+                </div>
+            }
+        </div>
     </div>
 </section>
 
 <style>
-    .impact-section {
-        padding: 40px 24px;
-        background: #fff;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .impact-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 0;
-        max-width: 900px;
-        margin: 0 auto;
-    }
-    .impact-card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        padding: 20px 16px;
-        border-right: 1px solid #f0f0f0;
-        text-align: center;
-    }
-    .impact-card:last-child { border-right: none; }
-    .impact-icon { font-size: 32px; line-height: 1; }
-    .impact-value {
-        font-size: 32px;
-        font-weight: 900;
-        color: #e43d51;
-        line-height: 1;
-        letter-spacing: -0.5px;
-    }
-    .impact-label {
-        font-size: 13px;
-        font-weight: 600;
-        color: #777;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
+.ic-section {
+    background: linear-gradient(135deg, #e43d51 0%, #c0392b 100%);
+    padding: 48px 0;
+}
+.ic-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+.ic-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+}
+.ic-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px 16px;
+    border-right: 1px solid rgba(255,255,255,0.2);
+}
+.ic-card:last-child { border-right: none; }
+.ic-icon {
+    font-size: 36px;
+    line-height: 1;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+}
+.ic-value {
+    font-size: 40px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.ic-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-    @@media (max-width: 767px) {
-        .impact-grid { grid-template-columns: repeat(2, 1fr); }
-        .impact-card:nth-child(2) { border-right: none; }
-        .impact-card:nth-child(3) { border-right: 1px solid #f0f0f0; }
-        .impact-card:nth-child(3),
-        .impact-card:nth-child(4) { border-top: 1px solid #f0f0f0; }
-        .impact-value { font-size: 26px; }
-    }
+@@media (max-width: 767px) {
+    .ic-grid { grid-template-columns: repeat(2, 1fr); }
+    .ic-card:nth-child(2) { border-right: none; }
+    .ic-card:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.2); border-top: 1px solid rgba(255,255,255,0.2); }
+    .ic-card:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.2); }
+    .ic-value { font-size: 30px; }
+}
 </style>

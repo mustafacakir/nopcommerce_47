@@ -1,82 +1,146 @@
 @model Nop.Plugin.Widgets.RecurringDonation.Models.PublicInfoModel
 @{ Layout = ""; }
 
-<section class="recurring-section">
-    <div class="recurring-inner">
-        <div class="recurring-left">
-            <div class="recurring-icon">🔄</div>
-            <h2 class="recurring-title">@Model.Title</h2>
-            <p class="recurring-subtitle">@Model.Subtitle</p>
+<section class="rd-section">
+    <div class="rd-container">
+        <div class="rd-left">
+            <div class="rd-badge">Düzenli Destek</div>
+            <h2 class="rd-title">@Model.Title</h2>
+            <p class="rd-subtitle">@Model.Subtitle</p>
+            <div class="rd-perks">
+                <div class="rd-perk">✅ İstediğin zaman iptal edebilirsin</div>
+                <div class="rd-perk">✅ Aylık otomatik bağış</div>
+                <div class="rd-perk">✅ Her ay fark yaratırsın</div>
+            </div>
         </div>
-        <div class="recurring-right">
-            <div class="recurring-amounts">
-                @foreach (var amount in Model.Amounts)
+        <div class="rd-right">
+            <div class="rd-card">
+                <div class="rd-card-title">Aylık bağış tutarını seç</div>
+                <div class="rd-amounts">
+                    @foreach (var amount in Model.Amounts)
+                    {
+                        var url = string.IsNullOrEmpty(amount.Url) ? "#" : amount.Url;
+                        <a href="@url" class="rd-btn">@amount.Label</a>
+                    }
+                </div>
+                @if (!string.IsNullOrEmpty(Model.CustomAmountUrl))
                 {
-                    var url = string.IsNullOrEmpty(amount.Url) ? "#" : amount.Url;
-                    <a href="@url" class="recurring-btn">@amount.Label</a>
+                    <a href="@Model.CustomAmountUrl" class="rd-custom">
+                        ✏️ Kendi tutarımı belirleyeyim
+                    </a>
                 }
             </div>
-            @if (!string.IsNullOrEmpty(Model.CustomAmountUrl))
-            {
-                <a href="@Model.CustomAmountUrl" class="recurring-custom">
-                    ✏️ Kendi tutarımı belirleyeyim
-                </a>
-            }
         </div>
     </div>
 </section>
 
 <style>
-    .recurring-section {
-        padding: 48px 0;
-        background: linear-gradient(135deg, #f8f9ff 0%, #fff5f6 100%);
-        border-top: 1px solid #f0f0f0;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .recurring-inner {
-        display: flex; align-items: center; gap: 48px;
-        max-width: 900px; margin: 0 auto; padding: 0 24px;
-    }
-    .recurring-left { flex: 1; }
-    .recurring-right { flex: 1; }
+.rd-section {
+    background: linear-gradient(135deg, #fff8f8 0%, #fff5f0 100%);
+    padding: 72px 0 80px;
+    border-top: 1px solid #f0e0e0;
+}
+.rd-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+}
+.rd-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #e43d51, #c0392b);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+.rd-title {
+    font-size: 32px;
+    font-weight: 900;
+    color: #1a1a1a;
+    margin: 0 0 14px;
+    line-height: 1.2;
+}
+.rd-subtitle {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.7;
+    margin: 0 0 24px;
+}
+.rd-perks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.rd-perk {
+    font-size: 14px;
+    color: #444;
+    font-weight: 600;
+}
+.rd-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 8px 32px rgba(228,61,81,0.12);
+    border: 1px solid #f0d0d0;
+}
+.rd-card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.rd-amounts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.rd-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    border: 2px solid #e43d51;
+    border-radius: 12px;
+    color: #e43d51;
+    font-size: 16px;
+    font-weight: 900;
+    text-decoration: none;
+    transition: all 0.2s;
+    background: #fff;
+}
+.rd-btn:hover {
+    background: linear-gradient(135deg, #e43d51, #c0392b);
+    color: #fff;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(228,61,81,0.35);
+}
+.rd-custom {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #999;
+    text-decoration: none;
+    padding: 10px;
+    transition: color 0.2s;
+    border-top: 1px solid #f5f5f5;
+    margin-top: 4px;
+}
+.rd-custom:hover { color: #e43d51; }
 
-    .recurring-icon { font-size: 40px; margin-bottom: 12px; line-height: 1; }
-    .recurring-title {
-        font-size: 26px; font-weight: 900;
-        color: #1a1a1a; margin: 0 0 12px; line-height: 1.2;
-    }
-    .recurring-subtitle {
-        font-size: 14px; color: #666;
-        line-height: 1.65; margin: 0;
-    }
-
-    .recurring-amounts {
-        display: grid; grid-template-columns: repeat(2, 1fr);
-        gap: 12px; margin-bottom: 14px;
-    }
-    .recurring-btn {
-        display: flex; align-items: center; justify-content: center;
-        padding: 14px 16px;
-        border: 2px solid #e43d51; border-radius: 10px;
-        color: #e43d51; font-size: 15px; font-weight: 800;
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-    .recurring-btn:hover {
-        background: #e43d51; color: #fff;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(228,61,81,0.3);
-    }
-    .recurring-custom {
-        display: block; text-align: center;
-        font-size: 13px; font-weight: 600; color: #888;
-        text-decoration: none; padding: 8px;
-        transition: color 0.2s;
-    }
-    .recurring-custom:hover { color: #e43d51; }
-
-    @@media (max-width: 767px) {
-        .recurring-inner { flex-direction: column; gap: 28px; }
-        .recurring-title { font-size: 22px; }
-    }
+@@media (max-width: 900px) {
+    .rd-container { grid-template-columns: 1fr; gap: 36px; }
+    .rd-title { font-size: 26px; }
+}
 </style>
