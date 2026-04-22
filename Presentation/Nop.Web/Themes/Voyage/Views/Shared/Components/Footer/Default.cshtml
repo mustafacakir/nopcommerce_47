@@ -1,4 +1,4 @@
-﻿@model FooterModel
+@model FooterModel
 
 @using Nop.Core
 @using Nop.Core.Domain.Tax
@@ -13,222 +13,251 @@
 @{
     var currentStore = await storeContext.GetCurrentStoreAsync();
     var storeId = currentStore.Id;
-    var removeCopyright = true; @* PEKIN_CUSTOM: nopCommerce footer yazısı gizlendi *@
-    var removeDesignedBy = true; @* PEKIN_CUSTOM: "Designed by" yazısı gizlendi *@
-    var hasContactInfo = !string.IsNullOrEmpty(currentStore.CompanyName) ||
-                         !string.IsNullOrEmpty(currentStore.CompanyAddress) ||
-                         !string.IsNullOrEmpty(currentStore.CompanyPhoneNumber);
+    var removeCopyright = true;
+    var removeDesignedBy = true;
+
+    var col1Topics = Model.Topics.Where(x => x.IncludeInFooterColumn1).ToList();
+    var col2Topics = Model.Topics.Where(x => x.IncludeInFooterColumn2).ToList();
+    var col3Topics = Model.Topics.Where(x => x.IncludeInFooterColumn3).ToList();
 }
 
-<div class="footer">
-    <div class="footer-upper">
-        @await Component.InvokeAsync(typeof(NewsletterBoxViewComponent))
-    </div>
-    <div class="footer-middle">
-        <div class="footer-blocks">
-            <div class="footer-block">
-                <div class="title">
-                    <strong>@T("Footer.Information")</strong>
-                </div>
-                <ul class="list">
-                    @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn1).ToList())
+<footer class="pf">
+    <div class="pf-main">
+        <div class="pf-container">
+
+            <!-- Dernek Tanıtım -->
+            <div class="pf-col pf-col--brand">
+                <div class="pf-logo">@currentStore.Name</div>
+                <p class="pf-tagline">Her bağışınız bir umut ışığı. İhtiyaç sahiplerine ulaşmak için doğru yerdesiniz.</p>
+                @if (!string.IsNullOrEmpty(currentStore.CompanyPhoneNumber))
+                {
+                    <a class="pf-phone" href="tel:@currentStore.CompanyPhoneNumber">
+                        <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C9.61 21 3 14.39 3 6a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+                        @currentStore.CompanyPhoneNumber
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(currentStore.CompanyAddress))
+                {
+                    <p class="pf-address">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+                        @currentStore.CompanyAddress
+                    </p>
+                }
+            </div>
+
+            <!-- Bağış Kategorileri -->
+            <div class="pf-col">
+                <h4 class="pf-col__title">Bağış Kategorileri</h4>
+                <ul class="pf-list">
+                    @foreach (var topic in col3Topics)
                     {
                         <li><a href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a></li>
                     }
-                    @if (Model.NewsEnabled && Model.DisplayNewsFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("NewsArchive")">@T("News")</a></li>
-                    }
-                    @if (Model.BlogEnabled && Model.DisplayBlogFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("Blog")">@T("Blog")</a></li>
-                    }
+                    <li><a href="@Url.RouteUrl("Catalog")">Tüm Kategoriler</a></li>
                 </ul>
             </div>
-            <div class="footer-block">
-                <div class="title">
-                    <strong>@T("Footer.CustomerService")</strong>
-                </div>
-                <ul class="list">
-                    @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn2).ToList())
+
+            <!-- Kurumsal -->
+            <div class="pf-col">
+                <h4 class="pf-col__title">Kurumsal</h4>
+                <ul class="pf-list">
+                    @foreach (var topic in col1Topics)
                     {
                         <li><a href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a></li>
                     }
                     @if (Model.DisplayContactUsFooterItem)
                     {
-                        <li><a href="@Url.RouteUrl("ContactUs")">@T("ContactUs")</a></li>
-                    }
-                    @if (Model.ForumEnabled && Model.DisplayForumsFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("Boards")">@T("Forum.Forums")</a></li>
+                        <li><a href="@Url.RouteUrl("ContactUs")">İletişim</a></li>
                     }
                 </ul>
             </div>
-            <div class="footer-block">
-                <div class="title">
-                    <strong>@T("SevenSpikes.Themes.Voyage.Footer.Offers")</strong>
-                </div>
-                <ul class="list">
-                    @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn3).ToList())
+
+            <!-- Yardım & Destek -->
+            <div class="pf-col">
+                <h4 class="pf-col__title">Yardım & Destek</h4>
+                <ul class="pf-list">
+                    @foreach (var topic in col2Topics)
                     {
                         <li><a href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a></li>
                     }
-                    @if (Model.NewProductsEnabled && Model.DisplayNewProductsFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("NewProducts")">@T("Products.NewProducts")</a></li>
-                    }
-                    @if (Model.RecentlyViewedProductsEnabled && Model.DisplayRecentlyViewedProductsFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("RecentlyViewedProducts")">@T("Products.RecentlyViewedProducts")</a></li>
-                    }
-                    @if (Model.CompareProductsEnabled && Model.DisplayCompareProductsFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("CompareProducts")">@T("Products.Compare.List")</a></li>
-                    }
-                    @if (Model.SearchEnabled && Model.DisplayProductSearchFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("ProductSearch")">@T("Search")</a> </li>
-                    }
-                </ul>
-            </div>
-            <div class="footer-block">
-                <div class="title">
-                    <strong>@T("Footer.MyAccount")</strong>
-                </div>
-                <ul class="list">
                     @if (Model.DisplayCustomerInfoFooterItem)
                     {
-                        <li><a href="@Url.RouteUrl("CustomerInfo")">@T("Account.MyAccount")</a></li>
+                        <li><a href="@Url.RouteUrl("CustomerInfo")">Hesabım</a></li>
                     }
                     @if (Model.DisplayCustomerOrdersFooterItem)
                     {
-                        <li><a href="@Url.RouteUrl("CustomerOrders")">@T("Account.CustomerOrders")</a></li>
-                    }
-                    @if (Model.DisplayCustomerAddressesFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("CustomerAddresses")">@T("Account.CustomerAddresses")</a></li>
-                    }
-                    @if (Model.ShoppingCartEnabled && Model.DisplayShoppingCartFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("ShoppingCart")">@T("ShoppingCart")</a></li>
-                    }
-                    @if (Model.WishlistEnabled && Model.DisplayWishlistFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("Wishlist")">@T("Wishlist")</a></li>
-                    }
-                    @if (Model.AllowCustomersToApplyForVendorAccount && Model.DisplayApplyVendorAccountFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("ApplyVendorAccount")">@T("Vendors.ApplyAccount")</a></li>
-                    }
-                    @if (Model.SitemapEnabled && Model.DisplaySitemapFooterItem)
-                    {
-                        <li><a href="@Url.RouteUrl("Sitemap")">@T("Sitemap")</a></li>
+                        <li><a href="@Url.RouteUrl("CustomerOrders")">Bağışlarım</a></li>
                     }
                 </ul>
             </div>
+
         </div>
-        @await Component.InvokeAsync(typeof(SocialButtonsViewComponent))
     </div>
-    @if (hasContactInfo)
-    {
-        <div class="footer-contact-band">
-            <div class="footer-contact-inner">
-                @if (!string.IsNullOrEmpty(currentStore.CompanyName))
+
+    <div class="pf-bottom">
+        <div class="pf-container pf-bottom__inner">
+            <span class="pf-copy">© @DateTime.Now.Year @currentStore.Name — Tüm hakları saklıdır.</span>
+            <div class="pf-legal">
+                @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn1 || x.IncludeInFooterColumn2).Take(4))
                 {
-                    <div class="footer-contact-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
-                        <span>@currentStore.CompanyName@(!string.IsNullOrEmpty(currentStore.CompanyAddress) ? ", " + currentStore.CompanyAddress : "")</span>
-                    </div>
-                }
-                else if (!string.IsNullOrEmpty(currentStore.CompanyAddress))
-                {
-                    <div class="footer-contact-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
-                        <span>@currentStore.CompanyAddress</span>
-                    </div>
-                }
-                @if (!string.IsNullOrEmpty(currentStore.CompanyPhoneNumber))
-                {
-                    <div class="footer-contact-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C9.61 21 3 14.39 3 6a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
-                        <a href="tel:@currentStore.CompanyPhoneNumber">@currentStore.CompanyPhoneNumber</a>
-                    </div>
+                    <a href="@(Url.RouteUrl<Topic>(new { SeName = topic.SeName }))">@topic.Name</a>
                 }
             </div>
         </div>
-        <style>
-            .footer-contact-band {
-                background-color: #2a2a2a;
-                padding: 18px 20px;
-                border-top: 3px solid #e43d51;
-            }
-            .footer-contact-inner {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 40px;
-                flex-wrap: wrap;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
-            .footer-contact-item {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                color: #ccc;
-                font-size: 14px;
-            }
-            .footer-contact-item svg {
-                width: 18px;
-                height: 18px;
-                fill: #e43d51;
-                flex-shrink: 0;
-            }
-            .footer-contact-item a {
-                color: #ccc;
-                text-decoration: none;
-            }
-            .footer-contact-item a:hover {
-                color: #e43d51;
-            }
-        </style>
-    }
+    </div>
+
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.Footer, additionalData = Model })
+
     <div class="footer-lower">
         <div class="footer-texts">
-            @if(!removeCopyright || !removeDesignedBy)
-            {
-                <div class="footer-text credits">
-                    @if(!removeCopyright)
-                    { 
-                        <div class="txt footer-powered-by">
-                            @*Would you like to remove the "Powered by nopCommerce" link in the bottom of the footer?
-                                Please find more info at https://www.nopcommerce.com/nopcommerce-copyright-removal-key*@
-                            Powered by <a href="@(OfficialSite.Main)" target="_blank" @(Model.IsHomePage ? string.Empty : "rel=nofollow")>nopCommerce</a>
-                        </div>
-                    }
-                    @if (!removeDesignedBy)
-                    {
-                        <div class="txt footer-designed-by">
-                            Designed by <a href="https://www.nop-templates.com/" target="_blank">Nop-Templates.com</a>
-                        </div>
-                    }
-                </div>
-            }
-            @* <div class="footer-text payment"> *@
-            @*     <img class="img footer-accepted-pay" src="@Url.Content($"~/Themes/{await themeContext.GetWorkingThemeNameAsync()}/Content/img/payment-sprite.png")" alt="" title=""> *@
-            @*     @if (Model.DisplayTaxShippingInfoFooter) *@
-            @*     { *@
-            @*         var inclTax = await workContext.GetTaxDisplayTypeAsync() == TaxDisplayType.IncludingTax; *@
-            @*         <div class="txt footer-tax-shipping"> *@
-            @*             @T(inclTax ? "Footer.TaxShipping.InclTax" : "Footer.TaxShipping.ExclTax", Url.RouteTopicUrl("shippinginfo")) *@
-            @*         </div> *@
-            @*     } *@
-            @* </div> *@
-            <div class="footer-text copyright">
-                <span class="txt footer-disclaimer">@T("Content.CopyrightNotice", DateTime.Now.Year, Model.StoreName)</span>
+            <div class="footer-text credits">
+                @if(!removeCopyright)
+                {
+                    <div class="txt footer-powered-by">
+                        @*Would you like to remove the "Powered by nopCommerce" link in the bottom of the footer?
+                            Please find more info at https://www.nopcommerce.com/nopcommerce-copyright-removal-key*@
+                        Powered by <a href="@(OfficialSite.Main)" target="_blank" @(Model.IsHomePage ? string.Empty : "rel=nofollow")>nopCommerce</a>
+                    </div>
+                }
+                @if (!removeDesignedBy)
+                {
+                    <div class="txt footer-designed-by">
+                        Designed by <a href="https://www.nop-templates.com/" target="_blank">Nop-Templates.com</a>
+                    </div>
+                }
             </div>
         </div>
         @await Component.InvokeAsync(typeof(StoreThemeSelectorViewComponent))
     </div>
-    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.Footer, additionalData = Model })
-</div>
+</footer>
+
+<style>
+.pf {
+    background: #111827;
+    color: #d1d5db;
+    font-size: 14px;
+    line-height: 1.6;
+}
+.pf-main {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid #1f2937;
+}
+.pf-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+}
+.pf-col--brand {}
+.pf-logo {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+}
+.pf-tagline {
+    color: #9ca3af;
+    font-size: 13.5px;
+    margin: 0 0 20px;
+    line-height: 1.7;
+    max-width: 280px;
+}
+.pf-phone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #e43d51;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    margin-bottom: 12px;
+}
+.pf-phone svg {
+    width: 18px;
+    height: 18px;
+    fill: #e43d51;
+    flex-shrink: 0;
+}
+.pf-phone:hover { color: #f87171; }
+.pf-address {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #9ca3af;
+    font-size: 13px;
+    margin: 0;
+}
+.pf-address svg {
+    width: 16px;
+    height: 16px;
+    fill: #6b7280;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.pf-col__title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e43d51;
+    display: inline-block;
+}
+.pf-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.pf-list a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-size: 13.5px;
+}
+.pf-list a:hover { color: #e43d51; padding-left: 4px; }
+.pf-bottom {
+    background: #0d1117;
+    padding: 18px 0;
+}
+.pf-bottom__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    grid-template-columns: unset;
+}
+.pf-copy {
+    color: #6b7280;
+    font-size: 13px;
+}
+.pf-legal {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.pf-legal a {
+    color: #6b7280;
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.pf-legal a:hover { color: #e43d51; }
+
+@@media (max-width: 1024px) {
+    .pf-container { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+@@media (max-width: 600px) {
+    .pf-container { grid-template-columns: 1fr; gap: 28px; }
+    .pf-main { padding: 40px 0 32px; }
+    .pf-bottom__inner { flex-direction: column; align-items: flex-start; }
+}
+</style>

@@ -1,18 +1,22 @@
 ﻿{
-  "Group": "Widgets",
-  "FriendlyName": "Whatsapp",
-  "SupportedVersions": [
-    "4.70"
-  ],
-  "Author": "umitsahin",
-  "DisplayOrder": 1,
-  "FileName": "Nop.Plugin.Widgets.Whatsapp.dll",
-  "Description": "This plugin contact us whatsapp",
-  "LimitedToStores": [
-    1
-  ],
-  "LimitedToCustomerRoles": [],
-  "DependsOnSystemNames": [],
-  "SystemName": "Widgets.Whatsapp",
-  "Version": "1.00"
+    "Group":  "Widgets",
+    "FriendlyName":  "Whatsapp",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "umitsahin",
+    "DisplayOrder":  1,
+    "FileName":  "Nop.Plugin.Widgets.Whatsapp.dll",
+    "Description":  "This plugin contact us whatsapp",
+    "LimitedToStores":  [
+                            31
+                        ],
+    "LimitedToCustomerRoles":  [
+
+                               ],
+    "DependsOnSystemNames":  [
+
+                             ],
+    "SystemName":  "Widgets.Whatsapp",
+    "Version":  "1.00"
 }

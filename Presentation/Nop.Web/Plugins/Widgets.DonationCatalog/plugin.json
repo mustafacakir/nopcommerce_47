@@ -1,18 +1,22 @@
 ﻿{
-  "Group": "Widgets",
-  "FriendlyName": "Donation Catalog",
-  "SupportedVersions": [
-    "4.70"
-  ],
-  "Author": "Pekin Teknoloji",
-  "DisplayOrder": 1,
-  "FileName": "Nop.Plugin.Widgets.DonationCatalog.dll",
-  "Description": "Displays a category-tabbed donation product catalog on the homepage",
-  "LimitedToStores": [
-    1
-  ],
-  "LimitedToCustomerRoles": [],
-  "DependsOnSystemNames": [],
-  "SystemName": "Widgets.DonationCatalog",
-  "Version": "1.0.0"
+    "Group":  "Widgets",
+    "FriendlyName":  "Donation Catalog",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "Pekin Teknoloji",
+    "DisplayOrder":  3,
+    "FileName":  "Nop.Plugin.Widgets.DonationCatalog.dll",
+    "Description":  "Displays a category-tabbed donation product catalog on the homepage",
+    "LimitedToStores":  [
+                            31,1
+                        ],
+    "LimitedToCustomerRoles":  [
+
+                               ],
+    "DependsOnSystemNames":  [
+
+                             ],
+    "SystemName":  "Widgets.DonationCatalog",
+    "Version":  "1.0.0"
 }

@@ -1,16 +1,22 @@
 ﻿{
-  "Group": "Widgets",
-  "FriendlyName": "Recurring Donation",
-  "SupportedVersions": [
-    "4.70"
-  ],
-  "Author": "pekinteknoloji",
-  "DisplayOrder": 1,
-  "FileName": "Nop.Plugin.Widgets.RecurringDonation.dll",
-  "Description": "Monthly recurring donation section",
-  "LimitedToStores": [],
-  "LimitedToCustomerRoles": [],
-  "DependsOnSystemNames": [],
-  "SystemName": "Widgets.RecurringDonation",
-  "Version": "1.00"
+    "Group":  "Widgets",
+    "FriendlyName":  "Recurring Donation",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "pekinteknoloji",
+    "DisplayOrder":  1,
+    "FileName":  "Nop.Plugin.Widgets.RecurringDonation.dll",
+    "Description":  "Monthly recurring donation section",
+    "LimitedToStores":  [
+                            31
+                        ],
+    "LimitedToCustomerRoles":  [
+
+                               ],
+    "DependsOnSystemNames":  [
+
+                             ],
+    "SystemName":  "Widgets.RecurringDonation",
+    "Version":  "1.00"
 }

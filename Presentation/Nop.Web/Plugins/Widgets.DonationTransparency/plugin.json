@@ -1,11 +1,16 @@
-{
-  "Group": "Widgets",
-  "FriendlyName": "Donation Transparency",
-  "SystemName": "Widgets.DonationTransparency",
-  "Version": "1.0",
-  "SupportedVersions": [ "4.70" ],
-  "Author": "Pekin Teknoloji",
-  "DisplayOrder": 2,
-  "FileName": "Nop.Plugin.Widgets.DonationTransparency.dll",
-  "Description": "Bağışların nereye gittiğini gösteren şeffaflık bölümü"
+﻿{
+    "Group":  "Widgets",
+    "FriendlyName":  "Donation Transparency",
+    "SystemName":  "Widgets.DonationTransparency",
+    "Version":  "1.0",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "Pekin Teknoloji",
+    "DisplayOrder":  2,
+    "FileName":  "Nop.Plugin.Widgets.DonationTransparency.dll",
+    "Description":  "Bağışların nereye gittiğini gösteren şeffaflık bölümü",
+    "LimitedToStores":  [
+                            31
+                        ]
 }

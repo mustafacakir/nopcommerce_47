@@ -1,11 +1,16 @@
-{
-  "Group": "Widgets",
-  "FriendlyName": "Volunteer CTA",
-  "SystemName": "Widgets.VolunteerCta",
-  "Version": "1.0",
-  "SupportedVersions": [ "4.70" ],
-  "Author": "Pekin Teknoloji",
-  "DisplayOrder": 3,
-  "FileName": "Nop.Plugin.Widgets.VolunteerCta.dll",
-  "Description": "Gönüllü ol çağrısı alanı"
+﻿{
+    "Group":  "Widgets",
+    "FriendlyName":  "Volunteer CTA",
+    "SystemName":  "Widgets.VolunteerCta",
+    "Version":  "1.0",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "Pekin Teknoloji",
+    "DisplayOrder":  3,
+    "FileName":  "Nop.Plugin.Widgets.VolunteerCta.dll",
+    "Description":  "Gönüllü ol çağrısı alanı",
+    "LimitedToStores":  [
+                            31
+                        ]
 }
