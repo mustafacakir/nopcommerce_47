@@ -4,8 +4,8 @@ namespace Nop.Plugin.Widgets.VolunteerCta;
 
 public class VolunteerCtaSettings : ISettings
 {
-    public string Title { get; set; } = "Sadece Bağış Değil, Gönüllü Ol!";
-    public string Subtitle { get; set; } = "Zamanını ve enerjini iyi bir amaç için kullan. Ekibimize katıl, sahada fark yarat.";
+    public string Title { get; set; } = "Gönüllü Ol!";
+    public string Subtitle { get; set; } = "Zamanını ve enerjini iyi bir amaç için kullan. Ekibimize katıl, iyiliğe ortak ol.";
     public string ButtonText { get; set; } = "Gönüllü Başvurusu Yap";
     public string ButtonUrl { get; set; } = "/volunteer";
     public string Stat1Value { get; set; } = "200+";

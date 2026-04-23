@@ -514,8 +514,14 @@
         .dc-card__media img,
         .dc-card__placeholder { height: 130px; }
         .dc-card__price-badge { font-size: 13px; }
-        .dc-card__btn { font-size: 11.5px; padding: 8px 6px; }
+        .dc-card__footer { flex-direction: column; gap: 8px; padding: 10px 12px 12px; }
+        .dc-card__qty { width: 100%; justify-content: center; }
+        .dc-card__qty button { flex: 1; }
+        .dc-card__btn { width: 100%; font-size: 13px; padding: 10px 8px; }
         .dc-hero__badge { font-size: 11px; }
+    }
+    @@media (max-width: 360px) {
+        .dc-grid { grid-template-columns: 1fr; }
     }
 </style>
 

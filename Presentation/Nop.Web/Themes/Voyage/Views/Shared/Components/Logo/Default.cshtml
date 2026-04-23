@@ -9,7 +9,7 @@
 @inject ILocalizationService localizationService
 
 @{
-    var logoPath = $"~/Themes/{await themeContext.GetWorkingThemeNameAsync()}/Content/img/logo.webp";
+    var logoPath = $"~/Themes/{await themeContext.GetWorkingThemeNameAsync()}/Content/img/logo.svg";
     var themeLogo = await Component.InvokeAsync("Widget", new { widgetZone = "voyage_theme_logo" });
 }
 
@@ -21,6 +21,6 @@
     else
     {
         string storeName = await localizationService.GetLocalizedAsync(await storeContext.GetCurrentStoreAsync(), x => x.Name);
-        <img title="" alt="@storeName" src="@Url.Content(logoPath)" style="max-height:56px;width:auto;object-fit:contain;">
+        <img title="" alt="@storeName" src="@Url.Content(logoPath)">
     }
 </a>

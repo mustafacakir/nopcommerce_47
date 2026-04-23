@@ -27,7 +27,9 @@
 
             <!-- Dernek Tanıtım -->
             <div class="pf-col pf-col--brand">
-                <div class="pf-logo">@currentStore.Name</div>
+                <div class="pf-logo">
+                    @await Component.InvokeAsync("Logo")
+                </div>
                 <p class="pf-tagline">Her bağışınız bir umut ışığı. İhtiyaç sahiplerine ulaşmak için doğru yerdesiniz.</p>
                 @if (!string.IsNullOrEmpty(currentStore.CompanyPhoneNumber))
                 {
@@ -152,11 +154,12 @@
 }
 .pf-col--brand {}
 .pf-logo {
-    font-size: 22px;
-    font-weight: 900;
-    color: #fff;
     margin-bottom: 14px;
-    letter-spacing: -0.3px;
+}
+.pf-logo .logo img {
+    max-height: 52px;
+    width: auto;
+    object-fit: contain;
 }
 .pf-tagline {
     color: #9ca3af;
@@ -251,6 +254,15 @@
     transition: color 0.2s;
 }
 .pf-legal a:hover { color: #e43d51; }
+
+.footer-lower {
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+    font-size: 0;
+    overflow: hidden;
+}
+.footer-lower * { line-height: 0; font-size: 0; }
 
 @@media (max-width: 1024px) {
     .pf-container { grid-template-columns: 1fr 1fr; gap: 36px; }
