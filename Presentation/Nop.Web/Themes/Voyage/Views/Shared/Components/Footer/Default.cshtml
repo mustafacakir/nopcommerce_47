@@ -3,6 +3,7 @@
 @using Nop.Core
 @using Nop.Core.Domain.Tax
 @using Nop.Core.Domain.Topics
+@using Nop.Web.Components
 @using Nop.Services.Configuration
 
 @inject IStoreContext storeContext
@@ -28,7 +29,7 @@
             <!-- Dernek Tanıtım -->
             <div class="pf-col pf-col--brand">
                 <div class="pf-logo">
-                    @await Component.InvokeAsync("Logo")
+                    @await Component.InvokeAsync(typeof(LogoViewComponent))
                 </div>
                 <p class="pf-tagline">Her bağışınız bir umut ışığı. İhtiyaç sahiplerine ulaşmak için doğru yerdesiniz.</p>
                 @if (!string.IsNullOrEmpty(currentStore.CompanyPhoneNumber))
