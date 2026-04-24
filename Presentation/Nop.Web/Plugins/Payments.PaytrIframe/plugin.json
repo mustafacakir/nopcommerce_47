@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Payment methods",
+  "FriendlyName": "Kredi / Banka Kartı (PayTR)",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "PayTR Ödeme ve Elektronik Para Kuruluşu A.Ş.",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Payments.PaytrIframe.dll",
+  "Description": "PayTR avantajları ile web sitenizi alışverişe açın, Ödemelerinizi güvenle alın.",
+  "LimitedToStores": [
+    39
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Payments.PaytrIframe",
+  "Version": "1.1"
+}

@@ -1,0 +1,83 @@
+@model Nop.Plugin.Widgets.CategoryShowcase.Models.ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<form asp-controller="WidgetsCategoryShowcase" asp-action="Configure" method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">Bölüm Başlığı</div>
+            <div class="panel-body">
+                @foreach (var field in new[] {
+                    ("SectionBadge",    "Rozet Metni"),
+                    ("SectionTitle",    "Başlık"),
+                    ("SectionSubtitle", "Alt Başlık"),
+                })
+                {
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>@field.Item2</label></div>
+                        <div class="col-md-9">
+                            <input type="text" name="@field.Item1"
+                                   value="@(Model.GetType().GetProperty(field.Item1)?.GetValue(Model))"
+                                   class="form-control" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Kart 1 (Koyu)</div>
+            <div class="panel-body">
+                @foreach (var field in new[] {
+                    ("Card1Title",       "Başlık"),
+                    ("Card1Description", "Açıklama"),
+                    ("Card1Badge",       "Rozet (örn: 85+ Ürün)"),
+                    ("Card1ImageUrl",    "Görsel URL"),
+                    ("Card1Url",         "Link"),
+                })
+                {
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>@field.Item2</label></div>
+                        <div class="col-md-9">
+                            <input type="text" name="@field.Item1"
+                                   value="@(Model.GetType().GetProperty(field.Item1)?.GetValue(Model))"
+                                   class="form-control" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Kart 2 (Açık)</div>
+            <div class="panel-body">
+                @foreach (var field in new[] {
+                    ("Card2Title",       "Başlık"),
+                    ("Card2Description", "Açıklama"),
+                    ("Card2Badge",       "Rozet (örn: 150+ Ürün)"),
+                    ("Card2ImageUrl",    "Görsel URL"),
+                    ("Card2Url",         "Link"),
+                })
+                {
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>@field.Item2</label></div>
+                        <div class="col-md-9">
+                            <input type="text" name="@field.Item1"
+                                   value="@(Model.GetType().GetProperty(field.Item1)?.GetValue(Model))"
+                                   class="form-control" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

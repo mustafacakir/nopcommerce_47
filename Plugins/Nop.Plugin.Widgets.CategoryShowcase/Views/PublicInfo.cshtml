@@ -1,0 +1,250 @@
+@model Nop.Plugin.Widgets.CategoryShowcase.Models.PublicInfoModel
+@{ Layout = ""; }
+
+<section class="cs-section">
+    <div class="cs-container">
+
+        <!-- Başlık -->
+        <div class="cs-header">
+            @if (!string.IsNullOrEmpty(Model.SectionBadge))
+            {
+                <span class="cs-badge">@Model.SectionBadge</span>
+            }
+            @if (!string.IsNullOrEmpty(Model.SectionTitle))
+            {
+                <h2 class="cs-title">@Model.SectionTitle</h2>
+            }
+            @if (!string.IsNullOrEmpty(Model.SectionSubtitle))
+            {
+                <p class="cs-subtitle">@Model.SectionSubtitle</p>
+            }
+        </div>
+
+        <!-- Kartlar -->
+        <div class="cs-grid">
+
+            <!-- Kart 1: koyu -->
+            <a href="@Model.Card1Url" class="cs-card cs-card--dark">
+                @if (!string.IsNullOrEmpty(Model.Card1ImageUrl))
+                {
+                    <img class="cs-card__img" src="@Model.Card1ImageUrl" alt="@Model.Card1Title" loading="lazy" />
+                }
+                <div class="cs-card__overlay"></div>
+                <div class="cs-card__body">
+                    @if (!string.IsNullOrEmpty(Model.Card1Badge))
+                    {
+                        <span class="cs-card__badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            @Model.Card1Badge
+                        </span>
+                    }
+                    <div class="cs-card__foot">
+                        <div>
+                            <h3 class="cs-card__title">@Model.Card1Title</h3>
+                            <p class="cs-card__desc">@Model.Card1Description</p>
+                        </div>
+                        <span class="cs-card__arrow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Kart 2: açık -->
+            <a href="@Model.Card2Url" class="cs-card cs-card--light">
+                @if (!string.IsNullOrEmpty(Model.Card2ImageUrl))
+                {
+                    <img class="cs-card__img" src="@Model.Card2ImageUrl" alt="@Model.Card2Title" loading="lazy" />
+                }
+                <div class="cs-card__overlay"></div>
+                <div class="cs-card__body">
+                    @if (!string.IsNullOrEmpty(Model.Card2Badge))
+                    {
+                        <span class="cs-card__badge cs-card__badge--dark">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            @Model.Card2Badge
+                        </span>
+                    }
+                    <div class="cs-card__foot">
+                        <div>
+                            <h3 class="cs-card__title cs-card__title--dark">@Model.Card2Title</h3>
+                            <p class="cs-card__desc cs-card__desc--dark">@Model.Card2Description</p>
+                        </div>
+                        <span class="cs-card__arrow cs-card__arrow--dark">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<style>
+    .cs-section {
+        background: #FAF7F2;
+        padding: 64px 24px;
+    }
+
+    .cs-container {
+        max-width: 1180px;
+        margin: 0 auto;
+    }
+
+    /* ── Başlık ── */
+    .cs-header {
+        text-align: center;
+        margin-bottom: 48px;
+    }
+    .cs-badge {
+        display: inline-block;
+        background: #FDF0E6;
+        color: #C96A2A;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 20px;
+        margin-bottom: 16px;
+        letter-spacing: 0.3px;
+    }
+    .cs-title {
+        font-size: clamp(26px, 3vw, 38px);
+        font-weight: 800;
+        color: #1A1A1A;
+        margin: 0 0 12px;
+        letter-spacing: -0.3px;
+    }
+    .cs-subtitle {
+        font-size: 15px;
+        color: #888;
+        margin: 0;
+    }
+
+    /* ── Grid ── */
+    .cs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    /* ── Kart ── */
+    .cs-card {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        display: block;
+        text-decoration: none;
+        aspect-ratio: 4/3;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cs-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+    }
+
+    .cs-card--dark { background: #2C1A10; }
+    .cs-card--light { background: #F2E8DF; }
+
+    .cs-card__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .cs-card:hover .cs-card__img { transform: scale(1.05); }
+
+    .cs-card__overlay {
+        position: absolute;
+        inset: 0;
+    }
+    .cs-card--dark .cs-card__overlay {
+        background: linear-gradient(to top, rgba(20,10,5,0.75) 0%, rgba(20,10,5,0.1) 55%, transparent 100%);
+    }
+    .cs-card--light .cs-card__overlay {
+        background: linear-gradient(to top, rgba(242,232,223,0.8) 0%, rgba(242,232,223,0.1) 55%, transparent 100%);
+    }
+
+    .cs-card__body {
+        position: absolute;
+        inset: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Rozet */
+    .cs-card__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255,255,255,0.18);
+        backdrop-filter: blur(6px);
+        color: #fff;
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 5px 12px;
+        border-radius: 20px;
+        align-self: flex-start;
+    }
+    .cs-card__badge--dark {
+        background: rgba(26,26,26,0.12);
+        color: #1A1A1A;
+    }
+
+    /* Alt kısım */
+    .cs-card__foot {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+    }
+    .cs-card__title {
+        font-size: 22px;
+        font-weight: 800;
+        color: #fff;
+        margin: 0 0 4px;
+        line-height: 1.2;
+    }
+    .cs-card__title--dark { color: #1A1A1A; }
+
+    .cs-card__desc {
+        font-size: 13px;
+        color: rgba(255,255,255,0.75);
+        margin: 0;
+        line-height: 1.5;
+    }
+    .cs-card__desc--dark { color: rgba(26,26,26,0.65); }
+
+    .cs-card__arrow {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        transition: background 0.2s;
+    }
+    .cs-card__arrow--dark {
+        background: rgba(26,26,26,0.12);
+        color: #1A1A1A;
+    }
+    .cs-card:hover .cs-card__arrow { background: #C96A2A; color: #fff; }
+
+    /* ── Responsive ── */
+    @@media (max-width: 767px) {
+        .cs-section { padding: 48px 20px; }
+        .cs-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        .cs-card { aspect-ratio: 3/2; }
+    }
+</style>

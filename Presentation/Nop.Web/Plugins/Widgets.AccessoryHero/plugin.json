@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Accessory Hero",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "pekinteknoloji",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.AccessoryHero.dll",
+  "Description": "Two-column hero section with image mosaic for accessory stores",
+  "LimitedToStores": [
+    39
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.AccessoryHero",
+  "Version": "1.00"
+}

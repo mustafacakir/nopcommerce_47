@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Featured Products",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "pekinteknoloji",
+  "DisplayOrder": 3,
+  "FileName": "Nop.Plugin.Widgets.FeaturedProducts.dll",
+  "Description": "Displays homepage-featured products in a card grid with live pricing",
+  "LimitedToStores": [
+    39
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.FeaturedProducts",
+  "Version": "1.00"
+}

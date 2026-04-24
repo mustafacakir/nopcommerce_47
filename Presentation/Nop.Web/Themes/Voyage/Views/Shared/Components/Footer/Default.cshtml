@@ -8,6 +8,16 @@
 
 @inject IStoreContext storeContext
 @inject IWorkContext workContext
+
+@{
+    var customFooter = await Component.InvokeAsync("Widget", new { widgetZone = "voyage_footer_content" });
+    var hasCustomFooter = !string.IsNullOrEmpty(await customFooter.RenderHtmlContentAsync());
+}
+@if (hasCustomFooter)
+{
+    @customFooter
+    return;
+}
 @inject ISettingService settingService
 @inject IThemeContext themeContext
 

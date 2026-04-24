@@ -1,0 +1,88 @@
+@model Nop.Plugin.Widgets.Footer.MinikhediyelCom.Models.ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+<form asp-controller="WidgetsFooterMinikhediyelCom" asp-action="Configure" method="post">
+    <div class="panel-group">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Marka</div>
+            <div class="panel-body">
+                @foreach (var f in new[] {
+                    ("StoreName",   "Mağaza Adı"),
+                    ("LogoLetter",  "Logo Harfi (daire içindeki harf)"),
+                    ("Tagline",     "Slogan"),
+                    ("InstagramUrl","Instagram URL"),
+                    ("FacebookUrl", "Facebook URL"),
+                    ("TwitterUrl",  "Twitter URL"),
+                })
+                { <div class="form-group row">
+                    <div class="col-md-3"><label>@f.Item2</label></div>
+                    <div class="col-md-9"><input type="text" name="@f.Item1" value="@(Model.GetType().GetProperty(f.Item1)?.GetValue(Model))" class="form-control" /></div>
+                </div> }
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Hızlı Linkler</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Kolon Başlığı</label></div>
+                    <div class="col-md-9"><input type="text" name="QuickLinksTitle" value="@Model.QuickLinksTitle" class="form-control" /></div>
+                </div>
+                @foreach (var i in Enumerable.Range(1, 4))
+                { <div class="form-group row">
+                    <div class="col-md-3"><label>Link @i</label></div>
+                    <div class="col-md-4"><input type="text" name="QuickLink@(i)Text" value="@(Model.GetType().GetProperty($"QuickLink{i}Text")?.GetValue(Model))" class="form-control" placeholder="Metin" /></div>
+                    <div class="col-md-5"><input type="text" name="QuickLink@(i)Url" value="@(Model.GetType().GetProperty($"QuickLink{i}Url")?.GetValue(Model))" class="form-control" placeholder="URL" /></div>
+                </div> }
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Destek</div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><label>Kolon Başlığı</label></div>
+                    <div class="col-md-9"><input type="text" name="SupportTitle" value="@Model.SupportTitle" class="form-control" /></div>
+                </div>
+                @foreach (var i in Enumerable.Range(1, 4))
+                { <div class="form-group row">
+                    <div class="col-md-3"><label>Link @i</label></div>
+                    <div class="col-md-4"><input type="text" name="SupportLink@(i)Text" value="@(Model.GetType().GetProperty($"SupportLink{i}Text")?.GetValue(Model))" class="form-control" placeholder="Metin" /></div>
+                    <div class="col-md-5"><input type="text" name="SupportLink@(i)Url" value="@(Model.GetType().GetProperty($"SupportLink{i}Url")?.GetValue(Model))" class="form-control" placeholder="URL" /></div>
+                </div> }
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">İletişim</div>
+            <div class="panel-body">
+                @foreach (var f in new[] {
+                    ("ContactTitle","Kolon Başlığı"),
+                    ("Address",     "Adres"),
+                    ("Phone",       "Telefon"),
+                    ("Email",       "E-posta"),
+                    ("CopyrightText","Telif Hakkı Metni"),
+                })
+                { <div class="form-group row">
+                    <div class="col-md-3"><label>@f.Item2</label></div>
+                    <div class="col-md-9"><input type="text" name="@f.Item1" value="@(Model.GetType().GetProperty(f.Item1)?.GetValue(Model))" class="form-control" /></div>
+                </div> }
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

@@ -1,0 +1,294 @@
+@model Nop.Plugin.Widgets.Footer.MinikhediyelCom.Models.PublicInfoModel
+@{ Layout = ""; }
+
+<footer class="mf">
+    <div class="mf-top">
+        <div class="mf-container">
+
+            <!-- Marka kolonu -->
+            <div class="mf-col mf-col--brand">
+                <div class="mf-logo">
+                    <span class="mf-logo__letter">@Model.LogoLetter</span>
+                    <span class="mf-logo__name">@Model.StoreName</span>
+                </div>
+                <p class="mf-tagline">@Model.Tagline</p>
+                <div class="mf-social">
+                    @if (!string.IsNullOrEmpty(Model.InstagramUrl) && Model.InstagramUrl != "#")
+                    {
+                        <a href="@Model.InstagramUrl" class="mf-social__link" target="_blank" rel="noopener" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" class="mf-social__link" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.FacebookUrl) && Model.FacebookUrl != "#")
+                    {
+                        <a href="@Model.FacebookUrl" class="mf-social__link" target="_blank" rel="noopener" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                            </svg>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" class="mf-social__link" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                            </svg>
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.TwitterUrl) && Model.TwitterUrl != "#")
+                    {
+                        <a href="@Model.TwitterUrl" class="mf-social__link" target="_blank" rel="noopener" aria-label="Twitter">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                            </svg>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" class="mf-social__link" aria-label="Twitter">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                            </svg>
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <!-- Hızlı Linkler -->
+            <div class="mf-col">
+                <h4 class="mf-col__title">@Model.QuickLinksTitle</h4>
+                <ul class="mf-links">
+                    @foreach (var link in Model.QuickLinks)
+                    {
+                        <li><a href="@link.Url">@link.Text</a></li>
+                    }
+                </ul>
+            </div>
+
+            <!-- Destek -->
+            <div class="mf-col">
+                <h4 class="mf-col__title">@Model.SupportTitle</h4>
+                <ul class="mf-links">
+                    @foreach (var link in Model.SupportLinks)
+                    {
+                        <li><a href="@link.Url">@link.Text</a></li>
+                    }
+                </ul>
+            </div>
+
+            <!-- İletişim -->
+            <div class="mf-col">
+                <h4 class="mf-col__title">@Model.ContactTitle</h4>
+                <ul class="mf-contact">
+                    @if (!string.IsNullOrEmpty(Model.Address))
+                    {
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            @Model.Address
+                        </li>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Phone))
+                    {
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            <a href="tel:@Model.Phone.Replace(" ", "")">@Model.Phone</a>
+                        </li>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Email))
+                    {
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <a href="mailto:@Model.Email">@Model.Email</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mf-bottom">
+        <div class="mf-container mf-bottom__inner">
+            <span class="mf-copy">@Model.CopyrightText</span>
+            <div class="mf-payment">
+                <img src="/Themes/Voyage/Content/img/mastercard.svg" alt="Mastercard" onerror="this.style.display='none'" />
+                <img src="/Themes/Voyage/Content/img/visa.svg" alt="Visa" onerror="this.style.display='none'" />
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .mf {
+        background: #231610;
+        color: #C8BFB8;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .mf-container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    /* ── Üst alan ── */
+    .mf-top {
+        padding: 64px 0 48px;
+    }
+    .mf-container {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1fr;
+        gap: 48px;
+    }
+
+    /* Marka */
+    .mf-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+    .mf-logo__letter {
+        width: 44px;
+        height: 44px;
+        background: #C96A2A;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+    }
+    .mf-logo__name {
+        font-size: 17px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .mf-tagline {
+        font-size: 13.5px;
+        line-height: 1.7;
+        color: #A09890;
+        margin: 0 0 24px;
+    }
+    .mf-social {
+        display: flex;
+        gap: 10px;
+    }
+    .mf-social__link {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #C8BFB8;
+        transition: background 0.2s, color 0.2s;
+    }
+    .mf-social__link svg { width: 17px; height: 17px; }
+    .mf-social__link:hover { background: #C96A2A; color: #fff; }
+
+    /* Kolonlar */
+    .mf-col__title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        margin: 0 0 20px;
+        letter-spacing: 0.2px;
+    }
+
+    .mf-links {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .mf-links a {
+        font-size: 13.5px;
+        color: #A09890;
+        text-decoration: none;
+        transition: color 0.18s;
+    }
+    .mf-links a:hover { color: #fff; }
+
+    .mf-contact {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+    .mf-contact li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 13.5px;
+        color: #A09890;
+    }
+    .mf-contact li svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        stroke: #C96A2A;
+    }
+    .mf-contact a { color: #A09890; text-decoration: none; }
+    .mf-contact a:hover { color: #fff; }
+
+    /* ── Alt çubuk ── */
+    .mf-bottom {
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding: 20px 0;
+    }
+    .mf-bottom__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+    .mf-copy {
+        font-size: 13px;
+        color: #6B6060;
+    }
+    .mf-payment {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .mf-payment img {
+        height: 24px;
+        opacity: 0.7;
+    }
+
+    /* ── Responsive ── */
+    @@media (max-width: 900px) {
+        .mf-container { grid-template-columns: 1fr 1fr; gap: 36px; }
+        .mf-col--brand { grid-column: 1 / -1; }
+    }
+    @@media (max-width: 560px) {
+        .mf-top { padding: 48px 0 36px; }
+        .mf-container { grid-template-columns: 1fr; gap: 28px; }
+        .mf-bottom__inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+</style>

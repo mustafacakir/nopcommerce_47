@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Category Showcase",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "pekinteknoloji",
+  "DisplayOrder": 2,
+  "FileName": "Nop.Plugin.Widgets.CategoryShowcase.dll",
+  "Description": "Two-card category showcase section for the homepage",
+  "LimitedToStores": [
+    39
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.CategoryShowcase",
+  "Version": "1.00"
+}

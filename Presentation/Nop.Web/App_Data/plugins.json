@@ -150,6 +150,26 @@
     {
       "SystemName": "Widgets.SocialShare",
       "Version": "1.0"
+    },
+    {
+      "SystemName": "Widgets.AccessoryHero",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.CategoryShowcase",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.FeaturedProducts",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.Footer.MinikhediyelCom",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Payments.PaytrIframe",
+      "Version": "1.1"
     }
   ],
   "PluginNamesToUninstall": [],

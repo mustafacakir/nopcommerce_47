@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Footer — minikhediyen.com",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "pekinteknoloji",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.Footer.MinikhediyelCom.dll",
+  "Description": "minikhediyen.com mağazasına özel footer widget (voyage_footer_content zone)",
+  "LimitedToStores": [
+    39
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.Footer.MinikhediyelCom",
+  "Version": "1.00"
+}

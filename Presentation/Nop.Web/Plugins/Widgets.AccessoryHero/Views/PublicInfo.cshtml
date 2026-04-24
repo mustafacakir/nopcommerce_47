@@ -1,0 +1,229 @@
+@model Nop.Plugin.Widgets.AccessoryHero.Models.PublicInfoModel
+@{ Layout = ""; }
+
+<section class="ah-section">
+    <div class="ah-container">
+
+        <!-- Sol: metin -->
+        <div class="ah-content">
+
+            @if (!string.IsNullOrEmpty(Model.BadgeText))
+            {
+                <span class="ah-badge">@Model.BadgeText</span>
+            }
+
+            <h1 class="ah-title">
+                @if (!string.IsNullOrEmpty(Model.TitleLine1))
+                {
+                    <span class="ah-title__line">@Model.TitleLine1</span>
+                }
+                @if (!string.IsNullOrEmpty(Model.TitleAccent))
+                {
+                    <span class="ah-title__line ah-title__line--accent">@Model.TitleAccent</span>
+                }
+                @if (!string.IsNullOrEmpty(Model.TitleLine2))
+                {
+                    <span class="ah-title__line">@Model.TitleLine2</span>
+                }
+            </h1>
+
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <p class="ah-desc">@Model.Description</p>
+            }
+
+            <div class="ah-actions">
+                @if (!string.IsNullOrEmpty(Model.Button1Text))
+                {
+                    <a href="@Model.Button1Url" class="ah-btn ah-btn--primary">@Model.Button1Text</a>
+                }
+                @if (!string.IsNullOrEmpty(Model.Button2Text))
+                {
+                    <a href="@Model.Button2Url" class="ah-btn ah-btn--outline">@Model.Button2Text</a>
+                }
+            </div>
+
+        </div>
+
+        <!-- Sağ: 4 görselli mozaik -->
+        <div class="ah-mosaic">
+
+            <!-- Sol kolon: büyük (üst) + küçük (alt) -->
+            <div class="ah-mosaic__col">
+                <div class="ah-mosaic__cell ah-mosaic__cell--lg">
+                    @if (!string.IsNullOrEmpty(Model.Image1Url))
+                    {
+                        <img src="@Model.Image1Url" alt="aksesuar" loading="lazy" />
+                    }
+                </div>
+                <div class="ah-mosaic__cell ah-mosaic__cell--sm">
+                    @if (!string.IsNullOrEmpty(Model.Image3Url))
+                    {
+                        <img src="@Model.Image3Url" alt="aksesuar" loading="lazy" />
+                    }
+                </div>
+            </div>
+
+            <!-- Sağ kolon: 2 eşit -->
+            <div class="ah-mosaic__col">
+                <div class="ah-mosaic__cell">
+                    @if (!string.IsNullOrEmpty(Model.Image2Url))
+                    {
+                        <img src="@Model.Image2Url" alt="aksesuar" loading="lazy" />
+                    }
+                </div>
+                <div class="ah-mosaic__cell">
+                    @if (!string.IsNullOrEmpty(Model.Image4Url))
+                    {
+                        <img src="@Model.Image4Url" alt="aksesuar" loading="lazy" />
+                    }
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<style>
+    .ah-section {
+        background: #FAF7F2;
+        padding: 72px 24px;
+    }
+
+    .ah-container {
+        max-width: 1180px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: center;
+    }
+
+    /* ── Badge ── */
+    .ah-badge {
+        display: inline-block;
+        background: #FDF0E6;
+        color: #C96A2A;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 20px;
+        margin-bottom: 28px;
+        letter-spacing: 0.3px;
+    }
+
+    /* ── Başlık ── */
+    .ah-title {
+        display: flex;
+        flex-direction: column;
+        font-size: clamp(34px, 4vw, 54px);
+        font-weight: 800;
+        line-height: 1.1;
+        margin: 0 0 20px;
+        letter-spacing: -0.5px;
+    }
+    .ah-title__line {
+        color: #1A1A1A;
+    }
+    .ah-title__line--accent {
+        color: #C96A2A;
+    }
+
+    /* ── Açıklama ── */
+    .ah-desc {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.7;
+        margin: 0 0 36px;
+        max-width: 440px;
+    }
+
+    /* ── Butonlar ── */
+    .ah-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+    .ah-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 13px 28px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 0.18s, box-shadow 0.18s;
+        white-space: nowrap;
+    }
+    .ah-btn--primary {
+        background: #1A1A1A;
+        color: #FAF7F2;
+    }
+    .ah-btn--primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+        color: #FAF7F2;
+    }
+    .ah-btn--outline {
+        background: transparent;
+        color: #1A1A1A;
+        border: 1.5px solid #1A1A1A;
+    }
+    .ah-btn--outline:hover {
+        background: #1A1A1A;
+        color: #FAF7F2;
+    }
+
+    /* ── Mozaik ── */
+    .ah-mosaic {
+        display: flex;
+        gap: 12px;
+        height: 480px;
+        padding-top: 32px;
+        box-sizing: border-box;
+    }
+    .ah-mosaic__col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .ah-mosaic__cell {
+        flex: 1;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #EDE8E0;
+        min-height: 0;
+    }
+    /* Sol kolon: üst görsel daha büyük */
+    .ah-mosaic__cell--lg { flex: 1.7; }
+    .ah-mosaic__cell--sm { flex: 1; }
+
+    .ah-mosaic__cell img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+    }
+    .ah-mosaic__cell:hover img {
+        transform: scale(1.04);
+    }
+
+    /* ── Responsive ── */
+    @@media (max-width: 900px) {
+        .ah-container {
+            gap: 40px;
+        }
+    }
+    @@media (max-width: 767px) {
+        .ah-section { padding: 48px 20px; }
+        .ah-container {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+        .ah-mosaic { order: -1; }
+        .ah-title { font-size: 32px; }
+    }
+</style>

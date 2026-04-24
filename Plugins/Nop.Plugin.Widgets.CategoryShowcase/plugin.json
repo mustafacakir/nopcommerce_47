@@ -1,0 +1,11 @@
+{
+    "Group":  "Widgets",
+    "FriendlyName":  "Category Showcase",
+    "SystemName":  "Widgets.CategoryShowcase",
+    "Version":  "1.00",
+    "SupportedVersions":  [ "4.70" ],
+    "Author":  "pekinteknoloji",
+    "DisplayOrder":  2,
+    "FileName":  "Nop.Plugin.Widgets.CategoryShowcase.dll",
+    "Description":  "Two-card category showcase section for the homepage"
+}

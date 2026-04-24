@@ -1,0 +1,11 @@
+{
+    "Group":  "Widgets",
+    "FriendlyName":  "Logo — minikhediyen.com",
+    "SystemName":  "Widgets.Logo.MinikhediyelCom",
+    "Version":  "1.00",
+    "SupportedVersions":  [ "4.70" ],
+    "Author":  "pekinteknoloji",
+    "DisplayOrder":  1,
+    "FileName":  "Nop.Plugin.Widgets.Logo.MinikhediyelCom.dll",
+    "Description":  "minikhediyen.com mağazasına özel text logo widget (voyage_theme_logo zone)"
+}
