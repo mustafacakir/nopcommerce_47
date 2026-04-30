@@ -243,9 +243,17 @@
 
 @@media (max-width: 860px) {
     .jc-grid { grid-template-columns: 1fr; }
+    .jc-bank-iban { word-break: break-all; }
 }
 @@media (max-width: 520px) {
+    .jc-section { padding: 40px 16px; }
     .jc-cta-row { grid-template-columns: 1fr; }
+    .jc-nl-form { flex-wrap: wrap; }
+    .jc-nl-input { min-width: 0; flex: 1 1 100%; order: 2; padding: 12px; border-top: 1px solid #e5e7eb; }
+    .jc-nl-ico { order: 1; padding: 10px 12px 0; }
+    .jc-nl-btn { order: 3; flex: 1 1 100%; justify-content: center; border-radius: 0 0 8px 8px; }
+    .jc-bank-row { gap: 8px; padding: 12px 14px; }
+    .jc-bank-cur { min-width: 38px; }
 }
 </style>
 
