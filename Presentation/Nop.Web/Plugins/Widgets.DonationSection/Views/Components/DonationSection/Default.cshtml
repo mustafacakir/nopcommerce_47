@@ -432,12 +432,13 @@
         if (!btn) return;
         var active = btn.classList.contains('ds-preset-on');
         clearPresets();
-        customInput.value = '';
         if (active) {
             selectedAmount = 0;
+            customInput.value = '';
         } else {
             btn.classList.add('ds-preset-on');
             selectedAmount = parseFloat(btn.dataset.amount);
+            customInput.value = btn.dataset.amount;
         }
         updateActionPanel();
     });
