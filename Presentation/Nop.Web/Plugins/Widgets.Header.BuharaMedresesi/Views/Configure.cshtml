@@ -1,0 +1,46 @@
+@model Nop.Plugin.Widgets.Header.BuharaMedresesi.Models.ConfigurationModel
+@{ Layout = "_AdminLayout"; }
+
+<div class="content-header clearfix">
+    <h1 class="float-left">Header - Buhara Medresesi</h1>
+</div>
+
+<form asp-action="Configure" method="post">
+    <div class="cards-group">
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">İletişim</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Telefon</label></div><div class="col-md-9"><input asp-for="Phone" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>E-posta</label></div><div class="col-md-9"><input asp-for="Email" class="form-control" /></div></div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Sosyal Medya</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Instagram</label></div><div class="col-md-9"><input asp-for="InstagramUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>X (Twitter)</label></div><div class="col-md-9"><input asp-for="TwitterUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>YouTube</label></div><div class="col-md-9"><input asp-for="YoutubeUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Facebook</label></div><div class="col-md-9"><input asp-for="FacebookUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>LinkedIn</label></div><div class="col-md-9"><input asp-for="LinkedinUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>TikTok</label></div><div class="col-md-9"><input asp-for="TiktokUrl" class="form-control" /></div></div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Bağış Butonu</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Buton Metni</label></div><div class="col-md-9"><input asp-for="DonateText" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Buton URL</label></div><div class="col-md-9"><input asp-for="DonateUrl" class="form-control" /></div></div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-body">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+
+    </div>
+</form>

@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Footer - Buhara Medresesi",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "pekinteknoloji",
+  "DisplayOrder": 20,
+  "FileName": "Nop.Plugin.Widgets.Footer.BuharaMedresesi.dll",
+  "Description": "Buhara Medresesi store custom footer widget",
+  "LimitedToStores": [
+    40
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.Footer.BuharaMedresesi",
+  "Version": "1.00"
+}

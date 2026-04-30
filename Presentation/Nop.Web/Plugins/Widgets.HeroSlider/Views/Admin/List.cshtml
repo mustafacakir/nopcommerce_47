@@ -1,0 +1,58 @@
+@using Nop.Web.Framework.Models.DataTables
+@model HeroSlideSearchModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = "Hero Slider Öğeleri";
+}
+
+<div class="cards-group">
+    <div class="card card-default">
+        <div class="card-header">
+            <h5 class="card-title">Slider Öğeleri</h5>
+            <div class="card-header-actions">
+                <a asp-action="Create" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Yeni Slide
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("Table", new DataTablesModel
+            {
+                Name = "heroslider-grid",
+                UrlRead = new DataUrl("List", "HeroSliderAdmin", null),
+                Length = Model.PageSize,
+                LengthMenu = Model.AvailablePageSizes,
+                ColumnCollection = new List<ColumnProperty>
+                {
+                    new ColumnProperty(nameof(HeroSlideModel.DisplayOrder)) { Title = "Sıra", Width = "60" },
+                    new ColumnProperty(nameof(HeroSlideModel.CategoryName)) { Title = "Kategori", Width = "160" },
+                    new ColumnProperty(nameof(HeroSlideModel.Title))        { Title = "Başlık" },
+                    new ColumnProperty(nameof(HeroSlideModel.IsActive))
+                    {
+                        Title = "Aktif", Width = "70",
+                        Render = new RenderBoolean()
+                    },
+                    new ColumnProperty(nameof(HeroSlideModel.Id))
+                    {
+                        Title = "İşlem", Width = "160",
+                        ClassName = NopColumnClassDefaults.Button,
+                        Render = new RenderCustom("renderSlideActions")
+                    }
+                }
+            })
+        </div>
+    </div>
+</div>
+
+<script>
+function renderSlideActions(data) {
+    return '<a class="btn btn-default btn-sm" href="@Url.Action("Edit","HeroSliderAdmin")/' + data + '"><i class="fas fa-pencil-alt"></i> Düzenle</a>'
+         + ' <button class="btn btn-danger btn-sm" onclick="deleteSlide(' + data + ')"><i class="fas fa-trash"></i></button>';
+}
+function deleteSlide(id) {
+    if (!confirm('Bu slide\'ı silmek istediğinize emin misiniz?')) return;
+    $.post('@Url.Action("Delete","HeroSliderAdmin")', { id: id }, function (r) {
+        if (r.success) updateTable('#heroslider-grid');
+    });
+}
+</script>

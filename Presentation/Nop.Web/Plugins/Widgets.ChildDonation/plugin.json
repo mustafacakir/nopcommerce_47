@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Child Donation Widget",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "pekinteknoloji",
+  "DisplayOrder": 8,
+  "FileName": "Nop.Plugin.Widgets.ChildDonation.dll",
+  "Description": "Interactive child donation widget with category selection",
+  "LimitedToStores": [
+    39
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.ChildDonation",
+  "Version": "1.00"
+}

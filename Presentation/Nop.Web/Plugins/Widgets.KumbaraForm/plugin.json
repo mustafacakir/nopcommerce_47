@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Kumbara Bağış Formu",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "Pekin Teknoloji",
+  "DisplayOrder": 10,
+  "FileName": "Nop.Plugin.Widgets.KumbaraForm.dll",
+  "Description": "Kumbara bağış formu widgeti ve admin kayıt listesi.",
+  "LimitedToStores": [
+    40
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.KumbaraForm",
+  "Version": "1.00"
+}

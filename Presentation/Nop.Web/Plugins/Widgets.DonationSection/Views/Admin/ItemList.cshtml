@@ -1,0 +1,57 @@
+@using Nop.Web.Framework.Models.DataTables
+@model DonItemSearchModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = "Bağış Öğeleri";
+}
+
+<div class="cards-group">
+    <div class="card card-default">
+        <div class="card-header">
+            <h5 class="card-title">Bağış Öğeleri</h5>
+            <div class="card-header-actions">
+                <a asp-action="Sections" class="btn btn-default btn-sm"><i class="fas fa-tags"></i> Kategoriler</a>
+                <a asp-action="CreateItem" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Yeni Öğe</a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("Table", new DataTablesModel
+            {
+                Name = "donitem-grid",
+                UrlRead = new DataUrl("Items", "DonationAdmin", null),
+                Length = Model.PageSize,
+                LengthMenu = Model.AvailablePageSizes,
+                ColumnCollection = new List<ColumnProperty>
+                {
+                    new ColumnProperty(nameof(DonItemModel.DisplayOrder)) { Title = "Sıra", Width = "60" },
+                    new ColumnProperty(nameof(DonItemModel.Name))         { Title = "Ad" },
+                    new ColumnProperty(nameof(DonItemModel.Price))        { Title = "Fiyat (₺)", Width = "120", Render = new RenderCustom("renderPrice") },
+                    new ColumnProperty(nameof(DonItemModel.ProductId))    { Title = "Ürün ID", Width = "100" },
+                    new ColumnProperty(nameof(DonItemModel.IsActive))     { Title = "Aktif", Width = "70", Render = new RenderBoolean() },
+                    new ColumnProperty(nameof(DonItemModel.Id))
+                    {
+                        Title = "İşlem", Width = "160",
+                        ClassName = NopColumnClassDefaults.Button,
+                        Render = new RenderCustom("renderItemActions")
+                    }
+                }
+            })
+        </div>
+    </div>
+</div>
+
+<script>
+function renderPrice(data) {
+    return data.toLocaleString('tr-TR', { minimumFractionDigits: 0 }) + ' ₺';
+}
+function renderItemActions(data) {
+    return '<a class="btn btn-default btn-sm" href="@Url.Action("EditItem","DonationAdmin")/' + data + '"><i class="fas fa-pencil-alt"></i> Düzenle</a>'
+         + ' <button class="btn btn-danger btn-sm" onclick="delItem(' + data + ')"><i class="fas fa-trash"></i></button>';
+}
+function delItem(id) {
+    if (!confirm('Bu öğeyi silmek istediğinize emin misiniz?')) return;
+    $.post('@Url.Action("DeleteItem","DonationAdmin")', { id: id }, function(r) {
+        if (r.success) updateTable('#donitem-grid');
+    });
+}
+</script>

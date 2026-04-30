@@ -1,0 +1,103 @@
+@using Nop.Plugin.Widgets.JoinCta.Models
+@model ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = "Join CTA Ayarları";
+}
+
+@if (ViewBag.Saved == true)
+{
+    <div class="alert alert-success">Ayarlar kaydedildi.</div>
+}
+
+<form asp-action="Configure" asp-controller="JoinCtaAdmin" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="cards-group">
+
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">Genel</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="Title" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="Title" /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">Havale / EFT</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="BankSectionTitle" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="BankSectionTitle" /></div>
+                </div>
+                <hr />
+                @foreach (var i in new[] { 1, 2, 3 })
+                {
+                    <div class="form-group row align-items-center mb-2">
+                        <div class="col-md-1">
+                            <input type="text" name="Bank@(i)Currency" value="@(i == 1 ? Model.Bank1Currency : i == 2 ? Model.Bank2Currency : Model.Bank3Currency)"
+                                   class="form-control text-center" placeholder="TL" />
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" name="Bank@(i)Name" value="@(i == 1 ? Model.Bank1Name : i == 2 ? Model.Bank2Name : Model.Bank3Name)"
+                                   class="form-control" placeholder="Banka adı" />
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="Bank@(i)Iban" value="@(i == 1 ? Model.Bank1Iban : i == 2 ? Model.Bank2Iban : Model.Bank3Iban)"
+                                   class="form-control" placeholder="IBAN" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">Bağış Yap Kartı</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="DonateTitle" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="DonateTitle" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="DonateDescription" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="DonateDescription" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="DonateLinkText" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="DonateLinkText" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="DonateUrl" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="DonateUrl" /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">İletişime Geç Kartı</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="ContactTitle" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="ContactTitle" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="ContactDescription" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="ContactDescription" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="ContactLinkText" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="ContactLinkText" /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-body">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+
+    </div>
+</form>

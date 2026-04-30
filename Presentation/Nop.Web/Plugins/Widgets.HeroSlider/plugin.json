@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Hero Slider",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "pekinteknoloji",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.HeroSlider.dll",
+  "Description": "Category-based hero slider for homepage",
+  "LimitedToStores": [
+    40
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.HeroSlider",
+  "Version": "1.00"
+}

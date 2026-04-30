@@ -1,0 +1,12 @@
+{
+    "Group": "Widgets",
+    "FriendlyName": "Donation Section",
+    "SystemName": "Widgets.DonationSection",
+    "Version": "1.00",
+    "SupportedVersions": [ "4.70" ],
+    "Author": "pekinteknoloji",
+    "DisplayOrder": 2,
+    "FileName": "Nop.Plugin.Widgets.DonationSection.dll",
+    "Description": "Left-category right-items donation widget",
+    "LimitedToStores": [ 40 ]
+}
