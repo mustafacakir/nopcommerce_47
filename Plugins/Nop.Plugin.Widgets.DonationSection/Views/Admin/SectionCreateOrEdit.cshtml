@@ -1,0 +1,51 @@
+@model DonSectionModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = Model.Id == 0 ? "Yeni Kategori" : "Kategori Düzenle";
+}
+
+<form asp-action="@(Model.Id == 0 ? "CreateSection" : "EditSection")" asp-controller="DonationAdmin" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">@ViewBag.Title</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="Name" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="Name" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="Color" /></div>
+                    <div class="col-md-3"><nop-editor asp-for="Color" /></div>
+                    <div class="col-md-1"><div id="colorPreview" style="width:36px;height:36px;border-radius:6px;border:1px solid #ddd"></div></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><label>İkon SVG <small class="text-muted">(opsiyonel inline SVG kodu)</small></label></div>
+                    <div class="col-md-9"><textarea name="IconSvg" rows="4" class="form-control">@Model.IconSvg</textarea></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="DisplayOrder" /></div>
+                    <div class="col-md-3"><nop-editor asp-for="DisplayOrder" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="IsActive" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="IsActive" /></div>
+                </div>
+            </div>
+        </div>
+        <div class="card card-default">
+            <div class="card-body">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <a asp-action="Sections" class="btn btn-default">Geri</a>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+(function() {
+    var inp = document.querySelector('input[name="Color"]') || document.getElementById('Color');
+    var prev = document.getElementById('colorPreview');
+    if (inp && prev) { prev.style.background = inp.value; inp.addEventListener('input', function() { prev.style.background = this.value; }); }
+})();
+</script>

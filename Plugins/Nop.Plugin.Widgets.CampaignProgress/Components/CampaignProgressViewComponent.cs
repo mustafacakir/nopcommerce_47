@@ -1,44 +1,44 @@
 using Microsoft.AspNetCore.Mvc;
-using Nop.Core;
-using Nop.Plugin.Widgets.CampaignProgress.Models;
-using Nop.Services.Configuration;
+using Nop.Plugin.Widgets.CampaignProgress.Models.Public;
+using Nop.Plugin.Widgets.CampaignProgress.Services;
 using Nop.Web.Framework.Components;
 
 namespace Nop.Plugin.Widgets.CampaignProgress.Components;
 
 public class CampaignProgressViewComponent : NopViewComponent
 {
-    private readonly IStoreContext _storeContext;
-    private readonly ISettingService _settingService;
+    private readonly ICampaignService _campaignService;
 
-    public CampaignProgressViewComponent(IStoreContext storeContext, ISettingService settingService)
+    public CampaignProgressViewComponent(ICampaignService campaignService)
     {
-        _storeContext = storeContext;
-        _settingService = settingService;
+        _campaignService = campaignService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync(string widgetZone, object additionalData)
     {
-        var store = await _storeContext.GetCurrentStoreAsync();
-        var s = await _settingService.LoadSettingAsync<CampaignProgressSettings>(store.Id);
+        var campaigns = await _campaignService.GetActiveCampaignsAsync();
+        if (!campaigns.Any())
+            return Content(string.Empty);
 
-        var percent = s.GoalAmount > 0
-            ? (int)Math.Min(100, Math.Round(s.CurrentAmount / s.GoalAmount * 100))
-            : 0;
-
-        var model = new PublicInfoModel
+        var items = new List<CampaignWidgetItemModel>();
+        foreach (var c in campaigns)
         {
-            Title = s.Title,
-            Description = s.Description,
-            GoalAmount = s.GoalAmount,
-            CurrentAmount = s.CurrentAmount,
-            Currency = s.Currency,
-            ProgressPercent = percent,
-            EndDate = s.EndDate,
-            ButtonText = s.ButtonText,
-            ButtonUrl = s.ButtonUrl
-        };
+            var current = await _campaignService.GetCurrentAmountAsync(c);
+            var percent = c.GoalAmount > 0
+                ? (int)Math.Min(100, Math.Round(current / c.GoalAmount * 100))
+                : 0;
 
-        return View("~/Plugins/Widgets.CampaignProgress/Views/PublicInfo.cshtml", model);
+            items.Add(new CampaignWidgetItemModel
+            {
+                Title = c.Title,
+                Slug = c.Slug,
+                ImageUrl = c.ImageUrl,
+                GoalAmount = c.GoalAmount,
+                CurrentAmount = current,
+                ProgressPercent = percent
+            });
+        }
+
+        return View("~/Plugins/Widgets.CampaignProgress/Views/Components/CampaignProgress/Default.cshtml", items);
     }
 }

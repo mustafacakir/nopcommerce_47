@@ -788,6 +788,7 @@ const Navbar = ({ onConsult }) => {
             </div>
 
             <Link to="/eticaret" onClick={() => setDropdownOpen(false)}>E-Ticaret</Link>
+            <Link to="/dernekler" onClick={() => setDropdownOpen(false)}>Dernekler İçin</Link>
             <a href="#" onClick={(e) => { e.preventDefault(); goSection('contact'); }}>İletişim</a>
 
             <div className="nav-cta-group">
@@ -813,6 +814,7 @@ const Navbar = ({ onConsult }) => {
             >
               <button className="nav-mobile-item" onClick={() => goSection('services')}>Hizmetler</button>
               <Link className="nav-mobile-item" to="/eticaret" onClick={() => setMobileOpen(false)}>E-Ticaret</Link>
+              <Link className="nav-mobile-item" to="/dernekler" onClick={() => setMobileOpen(false)}>Dernekler İçin</Link>
               <button className="nav-mobile-item" onClick={() => goSection('contact')}>İletişim</button>
               <button className="btn-nav nav-mobile-cta" onClick={() => { setMobileOpen(false); onConsult(); }}>Ücretsiz Danışmanlık Al</button>
             </motion.div>
@@ -2100,6 +2102,191 @@ function App() {
     };
   }, []);
 
+// ── Dernekler İçin Page ──────────────────────────────────────────────────────
+
+const DERNEK_FEATURES = [
+  { icon: '🎯', title: 'Bağış Kampanyası Yönetimi', desc: 'Hedefli kampanyalar oluşturun, gerçek zamanlı takip edin. Bağışçılarınıza anlık bildirim gönderin.' },
+  { icon: '📅', title: 'Etkinlik & Aktivite Yönetimi', desc: 'Online etkinlik kayıtları, kontenjan takibi ve katılımcı listesi — hepsi tek panelden.' },
+  { icon: '📊', title: 'Şeffaf Raporlama', desc: 'Toplanan bağışlar, kampanya performansı ve harcamalar tek panelde. Bağışçılara güven verin.' },
+  { icon: '🔁', title: 'Düzenli Bağış Otomasyonu', desc: 'Aylık otomatik bağış talimatı kurun. Sürekli gelir akışı sağlayın, bağışçı kaybını azaltın.' },
+  { icon: '👥', title: 'Gönüllü Koordinasyonu', desc: 'Gönüllü kayıt formu, görev atama ve iletişim araçları — hepsini tek platformdan yönetin.' },
+  { icon: '📱', title: 'Mobil Uyumlu', desc: 'Bağışçılarınız telefondan kolayca bağış yapabilir. Hızlı, güvenli, sezgisel.' },
+];
+
+const DERNEK_PACKAGES = [
+  {
+    name: 'Başlangıç',
+    price: '1.499',
+    period: 'ay',
+    desc: 'Dijitale ilk adımını atan küçük dernek ve vakıflar için.',
+    features: [
+      { text: 'Bağış kampanya modülü', ok: true },
+      { text: 'Güvenli ödeme (iyzico / PayTR)', ok: true },
+      { text: 'Otomatik bağış makbuzu', ok: true },
+      { text: 'Kampanya yönetimi & hedef takibi', ok: true },
+      { text: 'Mobil uyumlu site + SSL + hosting', ok: true },
+      { text: 'Türkçe & İngilizce dil desteği', ok: true },
+      { text: 'Düzenli bağış talimatı (otomatik)', ok: false },
+      { text: 'Gönüllülük modülü', ok: false },
+      { text: 'Etkinlik & aktivite yönetimi', ok: false },
+      { text: 'Çoklu para birimi', ok: false },
+      { text: '7/24 öncelikli destek', ok: false },
+    ],
+  },
+  {
+    name: 'Dernek Paneli',
+    price: '2.499',
+    period: 'ay',
+    popular: true,
+    desc: 'Aktif kampanyalar yürüten, büyüyen dernek ve vakıflar için.',
+    features: [
+      { text: 'Bağış kampanya modülü', ok: true },
+      { text: 'Güvenli ödeme (iyzico / PayTR)', ok: true },
+      { text: 'Otomatik bağış makbuzu', ok: true },
+      { text: 'Kampanya yönetimi & hedef takibi', ok: true },
+      { text: 'Mobil uyumlu site + SSL + hosting', ok: true },
+      { text: 'Çoklu dil desteği (TR, EN + daha fazlası)', ok: true },
+      { text: 'Düzenli bağış talimatı (otomatik)', ok: true },
+      { text: 'Gönüllülük modülü', ok: true },
+      { text: 'Etkinlik & aktivite yönetimi', ok: true },
+      { text: 'Çoklu para birimi (₺, $, €)', ok: true },
+      { text: '7/24 öncelikli destek', ok: true },
+    ],
+  },
+];
+
+const DERNEK_TESTIMONIALS = [
+  { name: 'Mehmet Y.', role: 'Dernek Başkanı', text: 'Kampanyamızı başlatmak 1 günden az sürdü. İlk ayda hedefimizin %120\'sine ulaştık.' },
+  { name: 'Ayşe K.', role: 'Vakıf Koordinatörü', text: 'Düzenli bağış talimatı sayesinde gelirlerimiz öngörülebilir hale geldi. Kampanya yönetmek artık çok daha kolay.' },
+  { name: 'Hasan T.', role: 'STK Yöneticisi', text: 'Şeffaf raporlama sayesinde bağışçılarımızın güveni arttı. Düzenli bağış oranımız %40 yükseldi.' },
+];
+
+const DerneklerPage = ({ onConsult }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="dernekler-page">
+
+      {/* Hero */}
+      <section className="dk-hero">
+        <div className="dk-hero-bg" />
+        <div className="container">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="dk-hero-content">
+            <span className="ec-badge"><span className="ec-badge-dot" />Sivil Toplum & Dernek Çözümleri</span>
+            <h1 className="dk-hero-title">Dernekler için<br /><span className="text-gradient-green">dijital bağış</span><br />platformu</h1>
+            <p className="dk-hero-sub">Bağış kampanyaları, gönüllü koordinasyonu ve şeffaf raporlamayı tek platformdan yönetin. Kurulum 1 gün, teknik bilgi gerektirmez.</p>
+            <div className="dk-hero-btns">
+              <button className="btn-primary" onClick={onConsult}>Ücretsiz Demo İsteyin <ArrowRight size={18} /></button>
+              <button className="btn-ghost" onClick={() => document.getElementById('dk-packages')?.scrollIntoView({ behavior: 'smooth' })}>Paketleri İncele</button>
+            </div>
+            <div className="dk-hero-stats">
+              <div className="dk-stat"><span className="dk-stat-num">1 gün</span><span className="dk-stat-label">Kurulum süresi</span></div>
+              <div className="dk-stat-sep" />
+              <div className="dk-stat"><span className="dk-stat-num">1.499 ₺/ay</span><span className="dk-stat-label">Başlangıç fiyatı</span></div>
+              <div className="dk-stat-sep" />
+              <div className="dk-stat"><span className="dk-stat-num">7/24</span><span className="dk-stat-label">Teknik destek</span></div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Özellikler */}
+      <section className="dk-features">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-label">Platform Özellikleri</span>
+            <h2>Derneğinizin ihtiyacı olan her şey</h2>
+          </div>
+          <div className="dk-features-grid">
+            {DERNEK_FEATURES.map((f, i) => (
+              <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="dk-feature-card">
+                <span className="dk-feature-icon">{f.icon}</span>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Paketler */}
+      <section className="dk-packages" id="dk-packages">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-label">Fiyatlandırma</span>
+            <h2>Derneğinize uygun paket</h2>
+            <p className="section-desc">Aylık sabit ücret. Gizli masraf yok, komisyon yok.</p>
+          </div>
+          <div className="dk-packages-grid">
+            {DERNEK_PACKAGES.map((pkg) => (
+              <div key={pkg.name} className={`dk-pkg-card ${pkg.popular ? 'dk-pkg-card--popular' : ''}`}>
+                {pkg.popular && <div className="dk-pkg-popular-badge">En Çok Tercih Edilen</div>}
+                <h3 className="dk-pkg-name">{pkg.name}</h3>
+                <div className="dk-pkg-price">
+                  <span className="dk-pkg-amount">{pkg.price} ₺</span>
+                  <span className="dk-pkg-period">/{pkg.period}</span>
+                </div>
+                <p className="dk-pkg-desc">{pkg.desc}</p>
+                <ul className="dk-pkg-features">
+                  {pkg.features.map(f => (
+                    <li key={f.text} className={f.ok ? '' : 'dk-pkg-feature--no'}>
+                      {f.ok ? <Check size={15} /> : <X size={15} />} {f.text}
+                    </li>
+                  ))}
+                </ul>
+                <button className={`dk-pkg-btn ${pkg.popular ? 'dk-pkg-btn--primary' : 'dk-pkg-btn--ghost'}`} onClick={onConsult}>
+                  Demo İste
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Referanslar */}
+      <section className="dk-testimonials">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-label">Kullanıcı Yorumları</span>
+            <h2>Onlar memnun, siz de olun</h2>
+          </div>
+          <div className="dk-testimonials-grid">
+            {DERNEK_TESTIMONIALS.map((t) => (
+              <div key={t.name} className="dk-testimonial-card">
+                <p className="dk-testimonial-text">"{t.text}"</p>
+                <div className="dk-testimonial-author">
+                  <div className="dk-testimonial-avatar">{t.name[0]}</div>
+                  <div>
+                    <div className="dk-testimonial-name">{t.name}</div>
+                    <div className="dk-testimonial-role">{t.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="dk-cta">
+        <div className="container">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="dk-cta-box">
+            <h2>Derneğinizi dijitale taşımaya hazır mısınız?</h2>
+            <p>Ücretsiz demo ile platformu kendi gözlerinizle görün. Kurulum sonrası 30 gün tam destek.</p>
+            <div className="dk-cta-btns">
+              <button className="btn-primary" onClick={onConsult}>Ücretsiz Demo İste <ArrowRight size={18} /></button>
+              <a href="mailto:bilgi@pekinteknoloji.com" className="btn-ghost">Bize Yazın</a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+    </div>
+  );
+};
+
+// ── End DerneklerPage ────────────────────────────────────────────────────────
+
 const AgencyServices = ({ onConsult }) => (
   <section id="services" className="services-section">
     <div className="container">
@@ -2243,6 +2430,7 @@ const AgencyServices = ({ onConsult }) => (
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/eticaret" element={<EcommercePage onRegister={() => navigate('/magaza-ac')} onThemeSelect={setSelectedTheme} themesData={THEMES_DATA} />} />
+        <Route path="/dernekler" element={<DerneklerPage onConsult={() => setConsultModalOpen(true)} />} />
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogDetailPage />} />
         <Route path="/sss" element={<FAQPage />} />
@@ -2273,6 +2461,7 @@ const AgencyServices = ({ onConsult }) => (
               <h4>Kurumsal</h4>
               <Link to="/">Anasayfa</Link>
               <Link to="/eticaret">E-Ticaret Platform</Link>
+              <Link to="/dernekler">Dernekler İçin</Link>
               <Link to="/blog">Blog</Link>
               <Link to="/sss">SSS</Link>
             </div>

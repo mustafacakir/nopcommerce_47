@@ -1,0 +1,96 @@
+@using Nop.Plugin.Widgets.CampaignProgress.Models.Admin
+@using Nop.Web.Framework.Models.DataTables
+@model CampaignSearchModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = "Kampanya Projeleri";
+}
+
+<div class="cards-group">
+    <div class="card card-default">
+        <div class="card-header">
+            <h5 class="card-title">Kampanya Projeleri</h5>
+            <div class="card-header-actions">
+                <a asp-action="Create" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Yeni Kampanya
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("Table", new DataTablesModel
+            {
+                Name = "campaign-grid",
+                UrlRead = new DataUrl("List", "CampaignAdmin", null),
+                Length = Model.PageSize,
+                LengthMenu = Model.AvailablePageSizes,
+                ColumnCollection = new List<ColumnProperty>
+                {
+                    new ColumnProperty(nameof(CampaignModel.DisplayOrder))
+                    {
+                        Title = "Sıra", Width = "60"
+                    },
+                    new ColumnProperty(nameof(CampaignModel.Title))
+                    {
+                        Title = "Başlık"
+                    },
+                    new ColumnProperty(nameof(CampaignModel.Slug))
+                    {
+                        Title = "Slug", Width = "160",
+                        Render = new RenderCustom("renderSlug")
+                    },
+                    new ColumnProperty(nameof(CampaignModel.GoalAmount))
+                    {
+                        Title = "Hedef (₺)", Width = "120",
+                        Render = new RenderCustom("renderAmount")
+                    },
+                    new ColumnProperty(nameof(CampaignModel.CurrentAmount))
+                    {
+                        Title = "Toplanan (₺)", Width = "130",
+                        Render = new RenderCustom("renderCurrentAmount")
+                    },
+                    new ColumnProperty(nameof(CampaignModel.ProgressPercent))
+                    {
+                        Title = "%", Width = "100",
+                        Render = new RenderCustom("renderProgress")
+                    },
+                    new ColumnProperty(nameof(CampaignModel.IsActive))
+                    {
+                        Title = "Aktif", Width = "70",
+                        Render = new RenderBoolean()
+                    },
+                    new ColumnProperty(nameof(CampaignModel.Id))
+                    {
+                        Title = "İşlem", Width = "160",
+                        ClassName = NopColumnClassDefaults.Button,
+                        Render = new RenderCustom("renderActions")
+                    }
+                }
+            })
+        </div>
+    </div>
+</div>
+
+<script>
+function renderSlug(data) {
+    return '<a href="/proje/' + data + '" target="_blank">/proje/' + data + '</a>';
+}
+function renderAmount(data) {
+    return data.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ₺';
+}
+function renderCurrentAmount(data, type, row) {
+    return '<strong>' + data.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ₺</strong>';
+}
+function renderProgress(data) {
+    return '<div class="progress" style="min-width:80px"><div class="progress-bar bg-success" style="width:' + data + '%">' + data + '%</div></div>';
+}
+function renderActions(data) {
+    return '<a class="btn btn-default btn-sm" href="@Url.Action("Edit", "CampaignAdmin")/' + data + '"><i class="fas fa-pencil-alt"></i> Düzenle</a>'
+         + ' <button class="btn btn-danger btn-sm" onclick="deleteCampaign(' + data + ')"><i class="fas fa-trash"></i></button>';
+}
+function deleteCampaign(id) {
+    if (!confirm('Bu kampanyayı silmek istediğinize emin misiniz?')) return;
+    $.post('@Url.Action("Delete", "CampaignAdmin")', { id: id }, function(r) {
+        if (r.success) updateTable('#campaign-grid');
+    });
+}
+</script>

@@ -132,10 +132,6 @@
       "Version": "1.00"
     },
     {
-      "SystemName": "Widgets.CampaignProgress",
-      "Version": "1.00"
-    },
-    {
       "SystemName": "Widgets.HeroBanner",
       "Version": "1.00"
     },
@@ -170,6 +166,38 @@
     {
       "SystemName": "Payments.PaytrIframe",
       "Version": "1.1"
+    },
+    {
+      "SystemName": "Widgets.KumbaraForm",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.DonationTransparency",
+      "Version": "1.0"
+    },
+    {
+      "SystemName": "Widgets.ChildDonation",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.HeroSlider",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.JoinCta",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.DonationSection",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.Footer.BuharaMedresesi",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.Header.BuharaMedresesi",
+      "Version": "1.00"
     }
   ],
   "PluginNamesToUninstall": [],
@@ -177,6 +205,10 @@
   "PluginNamesToInstall": [
     {
       "Item1": "SevenSpikes.Nop.Plugins.AjaxFilters",
+      "Item2": "ac9a53cf-a6ca-44a5-921d-524ba74f874f"
+    },
+    {
+      "Item1": "Widgets.CampaignProgress",
       "Item2": "ac9a53cf-a6ca-44a5-921d-524ba74f874f"
     }
   ]

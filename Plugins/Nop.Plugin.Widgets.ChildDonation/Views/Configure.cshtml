@@ -1,0 +1,83 @@
+@using Nop.Plugin.Widgets.ChildDonation.Models
+@model ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = "Çocuk Bağış Widget Ayarları";
+}
+
+@if (ViewBag.Saved == true)
+{
+    <div class="alert alert-success">Ayarlar kaydedildi.</div>
+}
+
+<form asp-action="Configure" asp-controller="ChildDonationAdmin" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="cards-group">
+
+        <!-- Genel -->
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">Genel</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="ChildName" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="ChildName" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="ChildImageUrl" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="ChildImageUrl" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="WidgetTitle" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="WidgetTitle" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="WidgetSubtitle" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="WidgetSubtitle" /></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kategoriler -->
+        @foreach (var (label, nameProp, iconProp, overlayProp, priceProp, pidProp) in new[] {
+            ("Kategori 1", nameof(Model.Cat1Name), nameof(Model.Cat1IconUrl), nameof(Model.Cat1OverlayUrl), nameof(Model.Cat1Price), nameof(Model.Cat1ProductId)),
+            ("Kategori 2", nameof(Model.Cat2Name), nameof(Model.Cat2IconUrl), nameof(Model.Cat2OverlayUrl), nameof(Model.Cat2Price), nameof(Model.Cat2ProductId)),
+            ("Kategori 3", nameof(Model.Cat3Name), nameof(Model.Cat3IconUrl), nameof(Model.Cat3OverlayUrl), nameof(Model.Cat3Price), nameof(Model.Cat3ProductId)),
+            ("Kategori 4", nameof(Model.Cat4Name), nameof(Model.Cat4IconUrl), nameof(Model.Cat4OverlayUrl), nameof(Model.Cat4Price), nameof(Model.Cat4ProductId)),
+        })
+        {
+            <div class="card card-default">
+                <div class="card-header"><h5 class="card-title">@label</h5></div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Ad</label></div>
+                        <div class="col-md-9"><input type="text" name="@nameProp" value="@(typeof(ConfigurationModel).GetProperty(nameProp)?.GetValue(Model))" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>İkon URL</label></div>
+                        <div class="col-md-9"><input type="text" name="@iconProp" value="@(typeof(ConfigurationModel).GetProperty(iconProp)?.GetValue(Model))" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Animasyon Katmanı URL <small class="text-muted">(PNG şeffaf)</small></label></div>
+                        <div class="col-md-9"><input type="text" name="@overlayProp" value="@(typeof(ConfigurationModel).GetProperty(overlayProp)?.GetValue(Model))" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Fiyat (₺)</label></div>
+                        <div class="col-md-3"><input type="number" step="0.01" name="@priceProp" value="@(typeof(ConfigurationModel).GetProperty(priceProp)?.GetValue(Model))" class="form-control" /></div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Ürün ID</label></div>
+                        <div class="col-md-3"><input type="number" name="@pidProp" value="@(typeof(ConfigurationModel).GetProperty(pidProp)?.GetValue(Model))" class="form-control" /></div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="card card-default">
+            <div class="card-body">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+
+    </div>
+</form>

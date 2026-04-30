@@ -1,0 +1,12 @@
+{
+    "Group": "Widgets",
+    "FriendlyName": "Join CTA",
+    "SystemName": "Widgets.JoinCta",
+    "Version": "1.00",
+    "SupportedVersions": [ "4.70" ],
+    "Author": "pekinteknoloji",
+    "DisplayOrder": 15,
+    "FileName": "Nop.Plugin.Widgets.JoinCta.dll",
+    "Description": "Call-to-action section for homepage bottom",
+    "LimitedToStores": [ 39, 42 ]
+}

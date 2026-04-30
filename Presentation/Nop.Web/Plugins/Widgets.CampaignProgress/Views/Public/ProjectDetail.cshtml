@@ -1,0 +1,123 @@
+@using Nop.Plugin.Widgets.CampaignProgress.Models.Public
+@model ProjectDetailModel
+@{
+    Layout = "_ColumnsOne";
+    ViewBag.Title = Model.Title;
+    Html.AddTitleParts(Model.Title);
+}
+
+<div class="pd-hero" @(string.IsNullOrEmpty(Model.ImageUrl) ? "" : $"style=\"background-image:url('{Model.ImageUrl}')\"")>
+    <div class="pd-hero-overlay">
+        <div class="pd-hero-content">
+            <h1 class="pd-hero-title">@Model.Title</h1>
+        </div>
+    </div>
+</div>
+
+<div class="pd-container">
+    <div class="pd-layout">
+
+        <div class="pd-main">
+            <div class="pd-description">
+                @Html.Raw(Model.Description?.Replace("\n", "<br/>"))
+            </div>
+        </div>
+
+        <aside class="pd-sidebar">
+            <div class="pd-progress-card">
+                <div class="pd-amounts-row">
+                    <div>
+                        <div class="pd-raised-label">Toplanan</div>
+                        <div class="pd-raised-value">@Model.CurrentAmount.ToString("N0") ₺</div>
+                    </div>
+                    <div class="pd-pct-badge">%@Model.ProgressPercent</div>
+                </div>
+
+                <div class="pd-bar-wrap">
+                    <div class="pd-bar">
+                        <div class="pd-bar-fill" style="width:@Model.ProgressPercent%"></div>
+                    </div>
+                </div>
+
+                <div class="pd-goal-row">
+                    <span class="pd-goal-label">Hedef</span>
+                    <span class="pd-goal-value">@Model.GoalAmount.ToString("N0") ₺</span>
+                </div>
+
+                @if (Model.LinkedProductId > 0)
+                {
+                    <div class="pd-donate-section">
+                        <div class="pd-donate-label">Bağış tutarını girin (₺)</div>
+                        <div class="pd-amount-presets">
+                            <button type="button" class="pd-preset" data-amount="100">100</button>
+                            <button type="button" class="pd-preset" data-amount="250">250</button>
+                            <button type="button" class="pd-preset" data-amount="500">500</button>
+                            <button type="button" class="pd-preset" data-amount="1000">1.000</button>
+                        </div>
+                        <form id="pd-donate-form"
+                              action="/addproducttocart/details/@Model.LinkedProductId/1"
+                              method="post">
+                            <input type="number"
+                                   id="pd-amount-input"
+                                   name="addtocart_@(Model.LinkedProductId).CustomerEnteredPrice"
+                                   class="pd-amount-input"
+                                   min="1" step="1" placeholder="Tutar giriniz" required />
+                            <button type="submit" class="pd-donate-btn">
+                                Bağış Yap
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </aside>
+
+    </div>
+</div>
+
+<style>
+.pd-hero { min-height: 340px; background: linear-gradient(135deg,#1a3d1f,#2d7a3a); background-size:cover; background-position:center; position:relative; }
+.pd-hero-overlay { position:absolute; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:flex-end; }
+.pd-hero-content { padding:40px; max-width:900px; }
+.pd-hero-title { color:#fff; font-size:2rem; font-weight:700; margin:0; line-height:1.3; text-shadow:0 2px 8px rgba(0,0,0,.4); }
+.pd-container { max-width:1200px; margin:0 auto; padding:40px 20px; }
+.pd-layout { display:grid; grid-template-columns:1fr 360px; gap:40px; align-items:start; }
+.pd-description { font-size:1rem; color:#333; line-height:1.8; }
+.pd-progress-card { background:#fff; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,.1); padding:28px; position:sticky; top:20px; }
+.pd-amounts-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.pd-raised-label { font-size:.8rem; color:#888; margin-bottom:4px; }
+.pd-raised-value { font-size:1.6rem; font-weight:700; color:#2d7a3a; }
+.pd-pct-badge { background:#e8f5e9; color:#2d7a3a; font-size:1.1rem; font-weight:700; padding:8px 14px; border-radius:50px; }
+.pd-bar-wrap { margin-bottom:10px; }
+.pd-bar { height:10px; background:#e5ede6; border-radius:5px; overflow:hidden; }
+.pd-bar-fill { height:100%; background:linear-gradient(90deg,#2d7a3a,#4caf65); border-radius:5px; }
+.pd-goal-row { display:flex; justify-content:space-between; font-size:.85rem; color:#666; margin-bottom:24px; }
+.pd-donate-section { border-top:1px solid #eee; padding-top:20px; }
+.pd-donate-label { font-size:.9rem; font-weight:600; color:#333; margin-bottom:10px; }
+.pd-amount-presets { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
+.pd-preset { border:2px solid #2d7a3a; background:#fff; color:#2d7a3a; font-weight:600; font-size:.85rem; padding:8px 4px; border-radius:8px; cursor:pointer; transition:all .15s; }
+.pd-preset:hover, .pd-preset.active { background:#2d7a3a; color:#fff; }
+.pd-amount-input { width:100%; border:2px solid #ddd; border-radius:10px; padding:12px 16px; font-size:1.1rem; margin-bottom:12px; box-sizing:border-box; }
+.pd-amount-input:focus { border-color:#2d7a3a; outline:none; }
+.pd-donate-btn { width:100%; background:linear-gradient(135deg,#2d7a3a,#4caf65); color:#fff; border:none; border-radius:10px; padding:14px; font-size:1.05rem; font-weight:700; cursor:pointer; letter-spacing:.3px; transition:opacity .2s; }
+.pd-donate-btn:hover { opacity:.9; }
+@@media (max-width:768px) { .pd-layout { grid-template-columns:1fr; } .pd-progress-card { position:static; } .pd-hero-title { font-size:1.4rem; } }
+</style>
+
+<script>
+(function () {
+    var presets = document.querySelectorAll('.pd-preset');
+    var input = document.getElementById('pd-amount-input');
+    presets.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            presets.forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            input.value = btn.dataset.amount;
+        });
+    });
+    if (input) {
+        input.addEventListener('input', function () {
+            presets.forEach(function (b) { b.classList.remove('active'); });
+        });
+    }
+})();
+</script>

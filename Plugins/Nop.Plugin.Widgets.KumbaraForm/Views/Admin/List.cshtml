@@ -1,0 +1,100 @@
+@using Nop.Plugin.Widgets.KumbaraForm.Models
+@using Nop.Web.Framework.Models.DataTables
+@model KumbaraEntrySearchModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = "Kumbara Talepleri";
+}
+
+<div class="cards-group">
+    <div class="card card-default">
+        <div class="card-header">
+            <h5 class="card-title">🐷 Kumbara Gönderim Talepleri</h5>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("Table", new DataTablesModel
+            {
+                Name = "kumbara-grid",
+                UrlRead = new DataUrl("List", "KumbaraAdmin", null),
+                Length = Model.PageSize,
+                LengthMenu = Model.AvailablePageSizes,
+                ColumnCollection = new List<ColumnProperty>
+                {
+                    new ColumnProperty(nameof(KumbaraEntryModel.CreatedOn))
+                    {
+                        Title = "Tarih", Width = "120"
+                    },
+                    new ColumnProperty(nameof(KumbaraEntryModel.IsRead))
+                    {
+                        Title = "Durum", Width = "80",
+                        Render = new RenderCustom("renderStatus")
+                    },
+                    new ColumnProperty(nameof(KumbaraEntryModel.FullName))
+                    {
+                        Title = "Ad Soyad", Width = "150"
+                    },
+                    new ColumnProperty(nameof(KumbaraEntryModel.Phone))
+                    {
+                        Title = "Telefon", Width = "120"
+                    },
+                    new ColumnProperty(nameof(KumbaraEntryModel.City))
+                    {
+                        Title = "İl", Width = "90"
+                    },
+                    new ColumnProperty(nameof(KumbaraEntryModel.District))
+                    {
+                        Title = "İlçe", Width = "90"
+                    },
+                    new ColumnProperty(nameof(KumbaraEntryModel.Address))
+                    {
+                        Title = "Adres"
+                    },
+                    new ColumnProperty(nameof(KumbaraEntryModel.Quantity))
+                    {
+                        Title = "Adet", Width = "60"
+                    },
+                    new ColumnProperty(nameof(KumbaraEntryModel.UsagePlace))
+                    {
+                        Title = "Kullanım Yeri", Width = "110"
+                    },
+                    new ColumnProperty(nameof(KumbaraEntryModel.Id))
+                    {
+                        Title = "İşlem", Width = "180",
+                        ClassName = NopColumnClassDefaults.Button,
+                        Render = new RenderCustom("renderActions")
+                    }
+                }
+            })
+        </div>
+    </div>
+</div>
+
+<script>
+function renderStatus(data, type, row) {
+    return data
+        ? '<span class="badge badge-success">İşlendi</span>'
+        : '<span class="badge badge-warning">Bekliyor</span>';
+}
+
+function renderActions(data, type, row) {
+    var html = '';
+    if (!row.isRead) {
+        html += '<button class="btn btn-sm btn-info mr-1" onclick="markRead(' + data + ')">İşlendi</button>';
+    }
+    html += '<button class="btn btn-sm btn-danger" onclick="deleteEntry(' + data + ')">Sil</button>';
+    return html;
+}
+
+function markRead(id) {
+    $.post('@Url.Action("MarkRead", "KumbaraAdmin")', { id: id }, function (r) {
+        if (r.success) updateTable('#kumbara-grid');
+    });
+}
+
+function deleteEntry(id) {
+    if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) return;
+    $.post('@Url.Action("Delete", "KumbaraAdmin")', { id: id }, function (r) {
+        if (r.success) updateTable('#kumbara-grid');
+    });
+}
+</script>

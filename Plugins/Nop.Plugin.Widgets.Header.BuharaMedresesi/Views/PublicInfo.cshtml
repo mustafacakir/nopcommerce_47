@@ -1,0 +1,251 @@
+@model Nop.Plugin.Widgets.Header.BuharaMedresesi.Models.PublicInfoModel
+@{ Layout = ""; }
+
+<!-- Üst bar -->
+<div class="bh-topbar">
+    <div class="bh-topbar__inner">
+        <div class="bh-topbar__left">
+            @if (!string.IsNullOrEmpty(Model.Phone))
+            {
+                <a href="tel:@Model.Phone.Replace(" ", "")" class="bh-topbar__item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    @Model.Phone
+                </a>
+            }
+            @if (!string.IsNullOrEmpty(Model.Email))
+            {
+                <a href="mailto:@Model.Email" class="bh-topbar__item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    @Model.Email
+                </a>
+            }
+        </div>
+        <div class="bh-topbar__right">
+            <div class="bh-topbar__social">
+                @if (!string.IsNullOrEmpty(Model.InstagramUrl))
+                {
+                    <a href="@Model.InstagramUrl" target="_blank" rel="noopener" aria-label="Instagram" class="bh-topbar__soc">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.TwitterUrl))
+                {
+                    <a href="@Model.TwitterUrl" target="_blank" rel="noopener" aria-label="X" class="bh-topbar__soc">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.YoutubeUrl))
+                {
+                    <a href="@Model.YoutubeUrl" target="_blank" rel="noopener" aria-label="YouTube" class="bh-topbar__soc">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-1.9-1.2-2.7c-1.1-1.2-2.4-1.2-3-1.3C16.2 3 12 3 12 3s-4.2 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5.3 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 1.9 1.2 2.7c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.7 1.2-2.7s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.FacebookUrl))
+                {
+                    <a href="@Model.FacebookUrl" target="_blank" rel="noopener" aria-label="Facebook" class="bh-topbar__soc">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.LinkedinUrl))
+                {
+                    <a href="@Model.LinkedinUrl" target="_blank" rel="noopener" aria-label="LinkedIn" class="bh-topbar__soc">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.TiktokUrl))
+                {
+                    <a href="@Model.TiktokUrl" target="_blank" rel="noopener" aria-label="TikTok" class="bh-topbar__soc">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.5a8.18 8.18 0 0 0 4.79 1.54V6.59a4.85 4.85 0 0 1-1.02.1z"/></svg>
+                    </a>
+                }
+            </div>
+            <div class="bh-topbar__divider"></div>
+            @await Component.InvokeAsync("LanguageSelector")
+        </div>
+    </div>
+</div>
+
+<!-- Bağış Yap butonu header-lower'a enjekte et -->
+<style>
+    /* Voyage default üst bar'ı gizle */
+    .header-upper { display: none !important; }
+
+    /* Header-lower içeriği container hizasında */
+    .header-lower {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 12px 24px;
+        min-height: 80px;
+    }
+
+    /* Arama inputunu gizle */
+    .search-box.store-search-box { display: none !important; }
+
+    /* Sepet: label gizle, CSS ikon + badge */
+    .ico-cart .cart-label { display: none !important; }
+    .cart-link {
+        position: relative;
+        display: inline-block;
+    }
+    .cart-link .ico-cart {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 0;
+        padding: 8px 10px !important;
+    }
+    .cart-link .ico-cart::before {
+        content: '';
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z'/%3E%3Cline x1='3' y1='6' x2='21' y2='6'/%3E%3Cpath d='M16 10a4 4 0 0 1-8 0'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-size: contain;
+        flex-shrink: 0;
+    }
+    .cart-link .ico-cart .cart-qty {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 10px !important;
+        line-height: 1 !important;
+        margin-left: -10px;
+        margin-top: -10px;
+        vertical-align: top;
+    }
+
+    /* ── Üst bar ── */
+    .bh-topbar {
+        background: #1a2370;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+    }
+    .bh-topbar__inner {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 8px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+    .bh-topbar__left { display: flex; align-items: center; gap: 20px; }
+    .bh-topbar__item {
+        display: flex; align-items: center; gap: 6px;
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.18s;
+    }
+    .bh-topbar__item:hover { color: #fff; opacity: 0.85; }
+    .bh-topbar__item svg { flex-shrink: 0; }
+
+    .bh-topbar__right { display: flex; align-items: center; gap: 14px; }
+    .bh-topbar__social { display: flex; align-items: center; gap: 12px; }
+    .bh-topbar__soc {
+        color: #fff;
+        display: flex; align-items: center;
+        transition: opacity 0.18s;
+    }
+    .bh-topbar__soc svg { width: 17px; height: 17px; }
+    .bh-topbar__soc:hover { opacity: 0.75; }
+
+    .bh-topbar__divider { width: 1px; height: 16px; background: rgba(255,255,255,0.35); }
+
+    /* Dil seçici — topbar'a uyum */
+    .bh-topbar .language-selector { display: flex; align-items: center; position: relative; }
+    .bh-topbar .language-selector a,
+    .bh-topbar .language-selector span,
+    .bh-topbar .language-selector button,
+    .bh-topbar .language-selector select,
+    .bh-topbar .language-selector .selected-value { color: #fff !important; font-size: 13px; font-weight: 600; background: transparent; border: none; cursor: pointer; }
+    .bh-topbar .language-selector a:hover,
+    .bh-topbar .language-selector span:hover { color: #fff !important; }
+    /* Dropdown listesi */
+    .bh-topbar .language-selector ul,
+    .bh-topbar .language-selector .dropdown-list {
+        background: #1a2370;
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 6px;
+    }
+    .bh-topbar .language-selector ul li a,
+    .bh-topbar .language-selector .dropdown-list a { color: rgba(255,255,255,0.85) !important; padding: 6px 12px; display: block; }
+    .bh-topbar .language-selector ul li a:hover,
+    .bh-topbar .language-selector .dropdown-list a:hover { color: #fff !important; background: rgba(255,255,255,0.08); }
+
+    /* ── Bağış Yap butonu ── */
+    .bh-donate-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #e85d04;
+        color: #fff !important;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 10px 22px;
+        border-radius: 50px;
+        text-decoration: none !important;
+        white-space: nowrap;
+        font-family: 'Poppins', sans-serif;
+        transition: background 0.2s, transform 0.15s;
+        margin-left: 8px;
+    }
+    .bh-donate-btn:hover { background: #d04e00; transform: translateY(-1px); }
+    .bh-donate-btn svg { flex-shrink: 0; }
+
+    /* Giriş Yap butonu */
+    .bh-login-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: transparent;
+        color: #1a2370 !important;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 9px 20px;
+        border-radius: 50px;
+        border: 1.5px solid #1a2370;
+        text-decoration: none !important;
+        white-space: nowrap;
+        font-family: 'Poppins', sans-serif;
+        transition: background 0.2s, color 0.2s;
+        margin-left: 8px;
+    }
+    .bh-login-btn:hover { background: #1a2370; color: #fff !important; }
+
+    @@media (max-width: 768px) {
+        .bh-topbar__left { display: none; }
+        .bh-topbar__inner { justify-content: flex-end; }
+    }
+</style>
+
+<script>
+    (function () {
+        function injectButtons() {
+            var wrap = document.querySelector('.search-cart-wrapper');
+            if (!wrap) return;
+
+            var loginBtn = document.createElement('a');
+            loginBtn.href = '/login';
+            loginBtn.className = 'bh-login-btn';
+            loginBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Giriş Yap';
+
+            var donateBtn = document.createElement('a');
+            donateBtn.href = '@Model.DonateUrl';
+            donateBtn.className = 'bh-donate-btn';
+            donateBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>@Model.DonateText';
+
+            wrap.appendChild(loginBtn);
+            wrap.appendChild(donateBtn);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', injectButtons);
+        } else {
+            injectButtons();
+        }
+    })();
+</script>

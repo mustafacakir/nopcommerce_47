@@ -1,24 +1,21 @@
-﻿using Nop.Core;
+using Microsoft.AspNetCore.Routing;
 using Nop.Plugin.Widgets.CampaignProgress.Components;
 using Nop.Services.Cms;
-using Nop.Services.Configuration;
-using Nop.Services.Localization;
 using Nop.Services.Plugins;
+using Nop.Services.Security;
+using Nop.Web.Framework;
 using Nop.Web.Framework.Infrastructure;
+using Nop.Web.Framework.Menu;
 
 namespace Nop.Plugin.Widgets.CampaignProgress;
 
-public class CampaignProgressPlugin : BasePlugin, IWidgetPlugin
+public class CampaignProgressPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
 {
-    private readonly ILocalizationService _localizationService;
-    private readonly ISettingService _settingService;
-    private readonly IWebHelper _webHelper;
+    private readonly IPermissionService _permissionService;
 
-    public CampaignProgressPlugin(ILocalizationService localizationService, ISettingService settingService, IWebHelper webHelper)
+    public CampaignProgressPlugin(IPermissionService permissionService)
     {
-        _localizationService = localizationService;
-        _settingService = settingService;
-        _webHelper = webHelper;
+        _permissionService = permissionService;
     }
 
     public bool HideInWidgetList => false;
@@ -29,31 +26,35 @@ public class CampaignProgressPlugin : BasePlugin, IWidgetPlugin
         return Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageTop });
     }
 
-    public override string GetConfigurationPageUrl() =>
-        $"{_webHelper.GetStoreLocation()}Admin/WidgetsCampaignProgress/Configure";
+    public override string GetConfigurationPageUrl() => "/Admin/CampaignAdmin/List";
+
+    public async Task ManageSiteMapAsync(SiteMapNode rootNode)
+    {
+        if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
+            return;
+
+        var parent = rootNode.ChildNodes.FirstOrDefault(x => x.SystemName == "Content management")
+                     ?? rootNode;
+
+        parent.ChildNodes.Add(new SiteMapNode
+        {
+            SystemName = "Widgets.CampaignProgress.List",
+            Title = "Kampanya Projeleri",
+            ControllerName = "CampaignAdmin",
+            ActionName = "List",
+            IconClass = "far fa-dot-circle",
+            Visible = true,
+            RouteValues = new RouteValueDictionary { ["area"] = AreaNames.ADMIN }
+        });
+    }
 
     public override async Task InstallAsync()
     {
-        await _settingService.SaveSettingAsync(new CampaignProgressSettings());
-        await _localizationService.AddOrUpdateLocaleResourceAsync(new Dictionary<string, string>
-        {
-            ["Plugins.Widgets.CampaignProgress.Title"] = "Kampanya Başlığı",
-            ["Plugins.Widgets.CampaignProgress.Description"] = "Açıklama",
-            ["Plugins.Widgets.CampaignProgress.GoalAmount"] = "Hedef Tutar",
-            ["Plugins.Widgets.CampaignProgress.CurrentAmount"] = "Mevcut Tutar",
-            ["Plugins.Widgets.CampaignProgress.Currency"] = "Para Birimi",
-            ["Plugins.Widgets.CampaignProgress.EndDate"] = "Bitiş Tarihi",
-            ["Plugins.Widgets.CampaignProgress.ButtonText"] = "Buton Yazısı",
-            ["Plugins.Widgets.CampaignProgress.ButtonUrl"] = "Buton Linki",
-        });
         await base.InstallAsync();
     }
 
     public override async Task UninstallAsync()
     {
-        await _settingService.DeleteSettingAsync<CampaignProgressSettings>();
-        await _localizationService.DeleteLocaleResourcesAsync("Plugins.Widgets.CampaignProgress");
         await base.UninstallAsync();
     }
 }
-

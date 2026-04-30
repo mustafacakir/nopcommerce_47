@@ -11,6 +11,6 @@
     "FileName":  "Nop.Plugin.Widgets.CampaignProgress.dll",
     "Description":  "Homepage campaign goal progress bar",
     "LimitedToStores":  [
-                            31
+                            39
                         ]
 }

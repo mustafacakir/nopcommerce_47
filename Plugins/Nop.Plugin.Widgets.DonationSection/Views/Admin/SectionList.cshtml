@@ -1,0 +1,56 @@
+@using Nop.Web.Framework.Models.DataTables
+@model DonSectionSearchModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = "Bağış Kategorileri";
+}
+
+<div class="cards-group">
+    <div class="card card-default">
+        <div class="card-header">
+            <h5 class="card-title">Bağış Kategorileri</h5>
+            <div class="card-header-actions">
+                <a asp-action="Items" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Bağış Öğeleri</a>
+                <a asp-action="CreateSection" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Yeni Kategori</a>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("Table", new DataTablesModel
+            {
+                Name = "donsection-grid",
+                UrlRead = new DataUrl("Sections", "DonationAdmin", null),
+                Length = Model.PageSize,
+                LengthMenu = Model.AvailablePageSizes,
+                ColumnCollection = new List<ColumnProperty>
+                {
+                    new ColumnProperty(nameof(DonSectionModel.DisplayOrder)) { Title = "Sıra", Width = "60" },
+                    new ColumnProperty(nameof(DonSectionModel.Name))         { Title = "Kategori Adı" },
+                    new ColumnProperty(nameof(DonSectionModel.Color))        { Title = "Renk", Width = "100", Render = new RenderCustom("renderColor") },
+                    new ColumnProperty(nameof(DonSectionModel.IsActive))     { Title = "Aktif", Width = "70", Render = new RenderBoolean() },
+                    new ColumnProperty(nameof(DonSectionModel.Id))
+                    {
+                        Title = "İşlem", Width = "160",
+                        ClassName = NopColumnClassDefaults.Button,
+                        Render = new RenderCustom("renderSecActions")
+                    }
+                }
+            })
+        </div>
+    </div>
+</div>
+
+<script>
+function renderColor(data) {
+    return '<span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:' + data + ';vertical-align:middle;margin-right:6px"></span>' + (data || '');
+}
+function renderSecActions(data) {
+    return '<a class="btn btn-default btn-sm" href="@Url.Action("EditSection","DonationAdmin")/' + data + '"><i class="fas fa-pencil-alt"></i> Düzenle</a>'
+         + ' <button class="btn btn-danger btn-sm" onclick="delSection(' + data + ')"><i class="fas fa-trash"></i></button>';
+}
+function delSection(id) {
+    if (!confirm('Bu kategoriyi silmek istediğinize emin misiniz?')) return;
+    $.post('@Url.Action("DeleteSection","DonationAdmin")', { id: id }, function(r) {
+        if (r.success) updateTable('#donsection-grid');
+    });
+}
+</script>

@@ -1,0 +1,134 @@
+@using Nop.Plugin.Widgets.CampaignProgress.Models.Admin
+@model CampaignModel
+@{
+    Layout = "_ConfigurePlugin";
+    var isEdit = Model.Id > 0;
+    ViewBag.Title = isEdit ? "Kampanya Düzenle" : "Yeni Kampanya";
+}
+
+<div class="cards-group">
+    <div class="card card-default">
+        <div class="card-header">
+            <h5 class="card-title">@ViewBag.Title</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="@(isEdit ? "Edit" : "Create")" asp-controller="CampaignAdmin" method="post">
+                @Html.AntiForgeryToken()
+                @if (isEdit)
+                {
+                    <input type="hidden" asp-for="Id" />
+                }
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="Title" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="Title" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="Slug" />
+                        <small class="text-muted d-block">URL: /proje/slug-degeri</small>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="Slug" />
+                        <span asp-validation-for="Slug" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="Description" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-textarea asp-for="Description" rows="6" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ImageUrl" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ImageUrl" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="GoalAmount" />
+                    </div>
+                    <div class="col-md-3">
+                        <nop-editor asp-for="GoalAmount" />
+                        <span asp-validation-for="GoalAmount" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ManualBonus" />
+                        <small class="text-muted d-block">Banka transferi, nakit vb. eklemek için</small>
+                    </div>
+                    <div class="col-md-3">
+                        <nop-editor asp-for="ManualBonus" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="LinkedProductId" />
+                        <small class="text-muted d-block">Katalog → Ürünler sayfasından "CustomerEntersPrice" tipli ürünün ID'si</small>
+                    </div>
+                    <div class="col-md-3">
+                        <nop-editor asp-for="LinkedProductId" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="DisplayOrder" />
+                    </div>
+                    <div class="col-md-3">
+                        <nop-editor asp-for="DisplayOrder" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="IsActive" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="IsActive" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-9 offset-md-3">
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                        <a asp-action="List" class="btn btn-default ml-2">İptal</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('@Html.IdFor(m => m.Title)').addEventListener('input', function () {
+        var slug = this.value
+            .toLowerCase()
+            .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's')
+            .replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c')
+            .replace(/[^a-z0-9\s-]/g, '')
+            .trim().replace(/\s+/g, '-');
+        var slugField = document.getElementById('@Html.IdFor(m => m.Slug)');
+        if (!slugField.dataset.touched) slugField.value = slug;
+    });
+    document.getElementById('@Html.IdFor(m => m.Slug)').addEventListener('input', function () {
+        this.dataset.touched = '1';
+    });
+</script>

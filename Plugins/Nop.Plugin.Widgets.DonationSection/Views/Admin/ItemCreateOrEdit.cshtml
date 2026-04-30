@@ -1,0 +1,62 @@
+@model DonItemModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = Model.Id == 0 ? "Yeni Bağış Öğesi" : "Bağış Öğesi Düzenle";
+}
+
+<form asp-action="@(Model.Id == 0 ? "CreateItem" : "EditItem")" asp-controller="DonationAdmin" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">@ViewBag.Title</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="SectionId" /></div>
+                    <div class="col-md-9">
+                        <select name="SectionId" class="form-control">
+                            @foreach (var opt in Model.AvailableSections)
+                            {
+                                <option value="@opt.Value" @(opt.Value == Model.SectionId.ToString() ? "selected" : "")>@opt.Text</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="Name" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="Name" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="Description" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="Description" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="ImageUrl" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="ImageUrl" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="Price" /></div>
+                    <div class="col-md-3"><nop-editor asp-for="Price" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="ProductId" /> <small class="text-muted">(nopCommerce ürün ID)</small></div>
+                    <div class="col-md-3"><nop-editor asp-for="ProductId" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="DisplayOrder" /></div>
+                    <div class="col-md-3"><nop-editor asp-for="DisplayOrder" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="IsActive" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="IsActive" /></div>
+                </div>
+            </div>
+        </div>
+        <div class="card card-default">
+            <div class="card-body">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <a asp-action="Items" class="btn btn-default">Geri</a>
+            </div>
+        </div>
+    </div>
+</form>

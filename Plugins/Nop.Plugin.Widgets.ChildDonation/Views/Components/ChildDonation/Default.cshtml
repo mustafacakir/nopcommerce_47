@@ -1,0 +1,337 @@
+@using Nop.Plugin.Widgets.ChildDonation.Models
+@model ChildDonationPublicModel
+@{ Layout = ""; }
+
+@{
+    var cats = Model.Categories.Where(c => !string.IsNullOrEmpty(c.Name)).ToList();
+    // Fallback SVG ikonlar (kategori ikonu yoksa bunlar kullanılır)
+    var fallbackIcons = new[] {
+        // Yemek
+        "<svg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'><circle cx='32' cy='38' r='20' fill='#F59E0B'/><ellipse cx='32' cy='38' rx='14' ry='10' fill='#FCD34D'/><circle cx='26' cy='35' r='3' fill='#16a34a' opacity='.8'/><circle cx='32' cy='33' r='3' fill='#16a34a' opacity='.8'/><circle cx='38' cy='36' r='3' fill='#16a34a' opacity='.8'/><rect x='20' y='17' width='24' height='5' rx='2.5' fill='#9CA3AF'/></svg>",
+        // Oyuncak
+        "<svg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'><rect x='8' y='22' width='48' height='32' rx='6' fill='#3B82F6'/><rect x='20' y='14' width='10' height='10' rx='2' fill='#EF4444'/><rect x='34' y='14' width='10' height='10' rx='2' fill='#EF4444'/><circle cx='24' cy='36' r='6' fill='#FCD34D'/><circle cx='40' cy='36' r='6' fill='#FCD34D'/><rect x='28' y='30' width='8' height='12' rx='2' fill='#fff' opacity='.4'/></svg>",
+        // Kırtasiye
+        "<svg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'><path d='M16 12 Q16 8 20 8 L44 8 Q48 8 48 12 L48 52 Q48 56 44 56 L20 56 Q16 56 16 52 Z' fill='#3B82F6'/><rect x='22' y='18' width='20' height='3' rx='1.5' fill='#fff' opacity='.7'/><rect x='22' y='25' width='20' height='3' rx='1.5' fill='#fff' opacity='.7'/><rect x='22' y='32' width='14' height='3' rx='1.5' fill='#fff' opacity='.7'/><circle cx='32' cy='46' r='4' fill='#FCD34D'/></svg>",
+        // Giyecek
+        "<svg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'><path d='M22 10 L10 22 L18 26 L18 52 L46 52 L46 26 L54 22 L42 10 Q38 16 32 16 Q26 16 22 10Z' fill='#60A5FA'/><path d='M26 10 Q32 18 38 10' fill='none' stroke='#fff' stroke-width='2'/></svg>"
+    };
+}
+
+<section class="cd-section">
+    <div class="cd-container">
+
+        <div class="cd-header">
+            <h2 class="cd-title">@Html.Raw(Model.Title?.Replace(Model.ChildName ?? "", $"<strong>{Model.ChildName}</strong>"))</h2>
+            @if (!string.IsNullOrEmpty(Model.Subtitle))
+            {
+                <p class="cd-subtitle">@Model.Subtitle</p>
+            }
+        </div>
+
+        <div class="cd-stage">
+
+            <!-- Sol: 0 ve 2 -->
+            <div class="cd-col cd-col-left">
+                @for (int i = 0; i < cats.Count; i += 2)
+                {
+                    var cat = cats[i];
+                    var fb = i < fallbackIcons.Length ? fallbackIcons[i] : fallbackIcons[0];
+                    <div class="cd-item" data-idx="@i"
+                         data-product-id="@cat.ProductId"
+                         data-price="@cat.Price.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)"
+                         data-icon="@cat.IconUrl">
+                        <div class="cd-item-icon-wrap">
+                            @if (!string.IsNullOrEmpty(cat.IconUrl))
+                            {
+                                <img src="@cat.IconUrl" referrerpolicy="no-referrer" crossorigin="anonymous" class="cd-item-icon" alt="@cat.Name"
+                                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                                <span class="cd-item-icon-svg" style="display:none">@Html.Raw(fb)</span>
+                            }
+                            else
+                            {
+                                <span class="cd-item-icon-svg">@Html.Raw(fb)</span>
+                            }
+                        </div>
+                        <div class="cd-item-meta">
+                            <span class="cd-item-name">@cat.Name</span>
+                            <span class="cd-item-price">@cat.Price.ToString("N0")₺</span>
+                        </div>
+                        <div class="cd-stepper">
+                            <button type="button" class="cd-minus">−</button>
+                            <span class="cd-qty">0</span>
+                            <button type="button" class="cd-plus">+</button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Merkez: çocuk + uçan ikonlar -->
+            <div class="cd-child-wrap" id="cd-child-wrap">
+                @if (!string.IsNullOrEmpty(Model.ChildImageUrl))
+                {
+                    <img src="@Model.ChildImageUrl" alt="@Model.ChildName" class="cd-child-img" />
+                }
+                else
+                {
+                    <svg class="cd-child-img" viewBox="0 0 160 310" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="80" cy="298" rx="36" ry="9" fill="#e5e7eb"/>
+                        <!-- saç -->
+                        <ellipse cx="80" cy="44" rx="34" ry="36" fill="#5c3a1e"/>
+                        <!-- yüz -->
+                        <circle cx="80" cy="56" r="32" fill="#FDDBB4"/>
+                        <!-- gözler -->
+                        <circle cx="68" cy="52" r="6" fill="#fff"/>
+                        <circle cx="92" cy="52" r="6" fill="#fff"/>
+                        <circle cx="69" cy="53" r="3.5" fill="#2d1a0e"/>
+                        <circle cx="93" cy="53" r="3.5" fill="#2d1a0e"/>
+                        <circle cx="70" cy="52" r="1.2" fill="#fff"/>
+                        <circle cx="94" cy="52" r="1.2" fill="#fff"/>
+                        <!-- yanak -->
+                        <ellipse cx="62" cy="64" rx="6" ry="4" fill="#f9a8a8" opacity=".5"/>
+                        <ellipse cx="98" cy="64" rx="6" ry="4" fill="#f9a8a8" opacity=".5"/>
+                        <!-- ağız -->
+                        <path d="M74 68 Q80 74 86 68" stroke="#c07060" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        <!-- kulak -->
+                        <ellipse cx="48" cy="56" rx="7" ry="10" fill="#FDDBB4"/>
+                        <ellipse cx="112" cy="56" rx="7" ry="10" fill="#FDDBB4"/>
+                        <!-- gövde/tişört -->
+                        <rect x="50" y="86" width="60" height="72" rx="12" fill="#4ade80"/>
+                        <!-- kol sol -->
+                        <rect x="32" y="89" width="20" height="54" rx="10" fill="#4ade80"/>
+                        <ellipse cx="42" cy="145" rx="10" ry="11" fill="#FDDBB4"/>
+                        <!-- kol sağ -->
+                        <rect x="108" y="89" width="20" height="54" rx="10" fill="#4ade80"/>
+                        <ellipse cx="118" cy="145" rx="10" ry="11" fill="#FDDBB4"/>
+                        <!-- pantolon -->
+                        <rect x="52" y="156" width="26" height="90" rx="10" fill="#92400e"/>
+                        <rect x="82" y="156" width="26" height="90" rx="10" fill="#7c3a0e"/>
+                        <!-- ayak -->
+                        <ellipse cx="65" cy="248" rx="14" ry="8" fill="#3b2007"/>
+                        <ellipse cx="95" cy="248" rx="14" ry="8" fill="#3b2007"/>
+                    </svg>
+                }
+                <!-- Uçan ikon slotları (her kategori için sabit pozisyon) -->
+                @for (int i = 0; i < cats.Count && i < 4; i++)
+                {
+                    var cat = cats[i];
+                    var fb = i < fallbackIcons.Length ? fallbackIcons[i] : fallbackIcons[0];
+                    <div class="cd-float" data-idx="@i">
+                        @if (!string.IsNullOrEmpty(cat.IconUrl))
+                        {
+                            <img src="@cat.IconUrl" referrerpolicy="no-referrer" crossorigin="anonymous" class="cd-float-img" alt=""
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                            <span class="cd-float-svg" style="display:none">@Html.Raw(fb)</span>
+                        }
+                        else
+                        {
+                            <span class="cd-float-svg">@Html.Raw(fb)</span>
+                        }
+                    </div>
+                }
+            </div>
+
+            <!-- Sağ: 1 ve 3 -->
+            <div class="cd-col cd-col-right">
+                @for (int i = 1; i < cats.Count; i += 2)
+                {
+                    var cat = cats[i];
+                    var fb = i < fallbackIcons.Length ? fallbackIcons[i] : fallbackIcons[0];
+                    <div class="cd-item" data-idx="@i"
+                         data-product-id="@cat.ProductId"
+                         data-price="@cat.Price.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)"
+                         data-icon="@cat.IconUrl">
+                        <div class="cd-item-icon-wrap">
+                            @if (!string.IsNullOrEmpty(cat.IconUrl))
+                            {
+                                <img src="@cat.IconUrl" referrerpolicy="no-referrer" crossorigin="anonymous" class="cd-item-icon" alt="@cat.Name"
+                                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                                <span class="cd-item-icon-svg" style="display:none">@Html.Raw(fb)</span>
+                            }
+                            else
+                            {
+                                <span class="cd-item-icon-svg">@Html.Raw(fb)</span>
+                            }
+                        </div>
+                        <div class="cd-item-meta">
+                            <span class="cd-item-name">@cat.Name</span>
+                            <span class="cd-item-price">@cat.Price.ToString("N0")₺</span>
+                        </div>
+                        <div class="cd-stepper">
+                            <button type="button" class="cd-minus">−</button>
+                            <span class="cd-qty">0</span>
+                            <button type="button" class="cd-plus">+</button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+
+        <div class="cd-footer">
+            <p class="cd-total">Toplam <strong id="cd-total-val">0₺</strong></p>
+            <button type="button" id="cd-cart-btn" class="cd-cart-btn" disabled>Sepete Ekle</button>
+        </div>
+
+    </div>
+</section>
+
+<style>
+.cd-section { background: #fff; padding: 60px 20px 50px; font-family: 'Poppins', sans-serif; }
+.cd-container { max-width: 920px; margin: 0 auto; }
+.cd-header { text-align: center; margin-bottom: 40px; }
+.cd-title { font-size: 2rem; font-weight: 800; color: #1a1a2e; margin: 0 0 10px; }
+.cd-title strong { color: #16a34a; }
+.cd-subtitle { color: #6b7280; font-size: .95rem; line-height: 1.7; margin: 0; }
+
+.cd-stage { display: grid; grid-template-columns: 1fr 200px 1fr; align-items: center; gap: 12px; }
+.cd-col { display: flex; flex-direction: column; gap: 28px; }
+.cd-col-left { align-items: flex-end; }
+.cd-col-right { align-items: flex-start; }
+
+/* Kategori item */
+.cd-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.cd-item-icon-wrap { width: 88px; height: 88px; display: flex; align-items: center; justify-content: center; transition: transform .2s; }
+.cd-item:hover .cd-item-icon-wrap { transform: scale(1.08); }
+.cd-item-icon { width: 76px; height: 76px; object-fit: contain; }
+.cd-item-icon-svg { width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; }
+.cd-item-icon-svg svg { width: 72px; height: 72px; }
+.cd-item-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.cd-item-name { font-size: .88rem; font-weight: 700; color: #1f2937; }
+.cd-item-price { background: #fef3c7; color: #b45309; font-size: .76rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+.cd-item.cd-active .cd-item-price { background: #dcfce7; color: #16a34a; }
+
+.cd-stepper { display: flex; align-items: center; border: 1.5px solid #e5e7eb; border-radius: 50px; overflow: hidden; transition: border-color .2s; }
+.cd-item.cd-active .cd-stepper { border-color: #16a34a; }
+.cd-minus, .cd-plus { width: 32px; height: 32px; border: none; background: #f9fafb; font-size: 1.1rem; font-weight: 700; color: #374151; cursor: pointer; transition: background .15s; line-height: 1; }
+.cd-minus:hover, .cd-plus:hover { background: #f0fdf4; color: #16a34a; }
+.cd-qty { min-width: 30px; text-align: center; font-size: .9rem; font-weight: 700; color: #111827; }
+
+/* Çocuk merkez */
+.cd-child-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
+.cd-child-img { width: 180px; height: auto; display: block; position: relative; z-index: 1; filter: drop-shadow(0 8px 16px rgba(0,0,0,.1)); }
+
+/* Uçan ikon slotları */
+.cd-float {
+    position: absolute;
+    width: 60px; height: 60px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transform: scale(0) rotate(-20deg);
+    transition: opacity .35s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
+    z-index: 3;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,.2));
+    pointer-events: none;
+}
+.cd-float.cd-visible {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+.cd-float-img { width: 56px; height: 56px; object-fit: contain; }
+.cd-float-svg { width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; }
+.cd-float-svg svg { width: 54px; height: 54px; }
+
+/* Slot pozisyonları (çocuk wrapper'a göre absolute) */
+/* idx=0: yemek → ellerin önü (alt merkez) */
+.cd-float[data-idx="0"] { bottom: 2%; left: 50%; transform-origin: center; margin-left: -30px; }
+.cd-float[data-idx="0"].cd-visible { transform: scale(1) rotate(0deg); bottom: 2%; }
+/* idx=1: oyuncak → sağ ön */
+.cd-float[data-idx="1"] { top: 28%; right: -8px; }
+/* idx=2: kırtasiye → sol omuz/sırt */
+.cd-float[data-idx="2"] { top: 22%; left: -8px; }
+/* idx=3: giyecek → gövde üstü */
+.cd-float[data-idx="3"] { top: 12%; left: 50%; margin-left: -30px; }
+
+/* Alt footer */
+.cd-footer { text-align: center; margin-top: 36px; }
+.cd-total { font-size: 1rem; color: #374151; margin-bottom: 14px; }
+.cd-total strong { font-size: 1.35rem; font-weight: 800; color: #16a34a; }
+.cd-cart-btn { background: linear-gradient(135deg, #16a34a, #4ade80); color: #fff; border: none; border-radius: 50px; padding: 14px 52px; font-size: 1rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: opacity .2s, transform .15s; letter-spacing: .3px; }
+.cd-cart-btn:hover:not(:disabled) { opacity: .9; transform: translateY(-2px); }
+.cd-cart-btn:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; transform: none; }
+
+@@keyframes cd-bounce-item {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+.cd-item.cd-just-activated .cd-item-icon-wrap { animation: cd-bounce-item .3s ease; }
+
+@@media (max-width: 640px) {
+    .cd-stage { grid-template-columns: 1fr 120px 1fr; gap: 6px; }
+    .cd-child-img { width: 120px; }
+    .cd-item-icon-wrap { width: 60px; height: 60px; }
+    .cd-item-icon, .cd-item-icon-svg, .cd-item-icon-svg svg { width: 52px; height: 52px; }
+    .cd-float { width: 44px; height: 44px; }
+    .cd-float-img, .cd-float-svg, .cd-float-svg svg { width: 40px; height: 40px; }
+    .cd-title { font-size: 1.3rem; }
+    .cd-cart-btn { padding: 12px 32px; font-size: .9rem; }
+}
+</style>
+
+<script>
+(function () {
+    var items = document.querySelectorAll('.cd-item');
+    var totalEl = document.getElementById('cd-total-val');
+    var cartBtn = document.getElementById('cd-cart-btn');
+
+    items.forEach(function (item) {
+        var minus = item.querySelector('.cd-minus');
+        var plus = item.querySelector('.cd-plus');
+        var qtyEl = item.querySelector('.cd-qty');
+        var idx = item.dataset.idx;
+        var floatEl = document.querySelector('.cd-float[data-idx="' + idx + '"]');
+
+        plus.addEventListener('click', function () {
+            var q = parseInt(qtyEl.textContent) + 1;
+            qtyEl.textContent = q;
+            if (q === 1) {
+                item.classList.add('cd-active');
+                item.classList.add('cd-just-activated');
+                setTimeout(function () { item.classList.remove('cd-just-activated'); }, 350);
+                if (floatEl) floatEl.classList.add('cd-visible');
+            }
+            updateTotal();
+        });
+
+        minus.addEventListener('click', function () {
+            var q = Math.max(0, parseInt(qtyEl.textContent) - 1);
+            qtyEl.textContent = q;
+            if (q === 0) {
+                item.classList.remove('cd-active');
+                if (floatEl) floatEl.classList.remove('cd-visible');
+            }
+            updateTotal();
+        });
+    });
+
+    function updateTotal() {
+        var total = 0;
+        items.forEach(function (item) {
+            var q = parseInt(item.querySelector('.cd-qty').textContent);
+            total += q * (parseFloat(item.dataset.price) || 0);
+        });
+        totalEl.textContent = total.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + '₺';
+        cartBtn.disabled = (total === 0);
+    }
+
+    cartBtn.addEventListener('click', async function () {
+        var selected = [];
+        items.forEach(function (item) {
+            var q = parseInt(item.querySelector('.cd-qty').textContent);
+            var pid = item.dataset.productId;
+            if (q > 0 && pid && pid !== '0') selected.push({ productId: pid, qty: q });
+        });
+        if (!selected.length) return;
+
+        cartBtn.disabled = true;
+        cartBtn.textContent = 'Ekleniyor...';
+
+        for (var i = 0; i < selected.length; i++) {
+            try {
+                await fetch('/addproducttocart/catalog/' + selected[i].productId + '/1/' + selected[i].qty, { method: 'POST' });
+            } catch (e) {}
+        }
+        window.location.href = '/cart';
+    });
+})();
+</script>

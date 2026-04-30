@@ -1,0 +1,403 @@
+@model Nop.Plugin.Widgets.KumbaraForm.Models.KumbaraFormModel
+@{ Layout = ""; }
+
+<section class="kb-section">
+  <div class="kb-container">
+    <div class="kb-card">
+
+      <!-- Sol panel -->
+      <div class="kb-left">
+        <div class="kb-piggy-wrap">
+          <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" width="90" height="90">
+            <ellipse cx="60" cy="70" rx="42" ry="36" fill="#FDE68A"/>
+            <circle cx="88" cy="56" r="14" fill="#FCD34D"/>
+            <rect x="48" y="28" width="24" height="8" rx="4" fill="#F59E0B"/>
+            <rect x="54" y="22" width="12" height="10" rx="3" fill="#FBBF24"/>
+            <circle cx="44" cy="62" r="5" fill="#fff" opacity=".4"/>
+            <ellipse cx="76" cy="92" rx="8" ry="4" fill="#F59E0B"/>
+            <ellipse cx="44" cy="92" rx="8" ry="4" fill="#F59E0B"/>
+            <circle cx="72" cy="60" r="3" fill="#92400E" opacity=".5"/>
+            <rect x="52" y="26" width="16" height="4" rx="2" fill="#D97706" opacity=".6"/>
+          </svg>
+        </div>
+        <h2 class="kb-left-title">Kumbara<br/>Talep Et</h2>
+        <p class="kb-left-desc">
+          Vakfımız adına bağış toplamak mı istiyorsunuz?
+          Formü doldurun, kumbaranızı adresinize gönderelim.
+        </p>
+        <div class="kb-steps-info">
+          <div class="kb-step-info"><span class="kb-step-num">1</span>Formu doldurun</div>
+          <div class="kb-step-info"><span class="kb-step-num">2</span>Kumbaranız adresinize gelsin</div>
+          <div class="kb-step-info"><span class="kb-step-num">3</span>Bağış toplayın, iade edin</div>
+        </div>
+      </div>
+
+      <!-- Sağ panel: form -->
+      <div class="kb-right">
+        <div id="kb-form-area">
+
+          <h3 class="kb-form-title">Kumbara Gönderim Talebi</h3>
+
+          <!-- Kişisel bilgiler -->
+          <div class="kb-section-label">Kişisel Bilgiler</div>
+          <div class="kb-row">
+            <div class="kb-field">
+              <label>Ad <span class="kb-req">*</span></label>
+              <input type="text" id="kb-firstname" class="kb-input" placeholder="Adınız" />
+            </div>
+            <div class="kb-field">
+              <label>Soyad <span class="kb-req">*</span></label>
+              <input type="text" id="kb-lastname" class="kb-input" placeholder="Soyadınız" />
+            </div>
+          </div>
+          <div class="kb-row">
+            <div class="kb-field">
+              <label>Telefon <span class="kb-req">*</span></label>
+              <input type="tel" id="kb-phone" class="kb-input" placeholder="05XX XXX XX XX" />
+            </div>
+            <div class="kb-field">
+              <label>E-posta <span class="kb-req">*</span></label>
+              <input type="email" id="kb-email" class="kb-input" placeholder="ornek@mail.com" />
+            </div>
+          </div>
+
+          <!-- Adres bilgileri -->
+          <div class="kb-section-label" style="margin-top:18px">Kumbara Gönderim Adresi</div>
+          <div class="kb-row">
+            <div class="kb-field">
+              <label>İl <span class="kb-req">*</span></label>
+              <input type="text" id="kb-city" class="kb-input" placeholder="İstanbul" />
+            </div>
+            <div class="kb-field">
+              <label>İlçe <span class="kb-req">*</span></label>
+              <input type="text" id="kb-district" class="kb-input" placeholder="Kadıköy" />
+            </div>
+          </div>
+          <div class="kb-field">
+            <label>Açık Adres <span class="kb-req">*</span></label>
+            <textarea id="kb-address" class="kb-input kb-textarea" rows="2" placeholder="Mahalle, cadde, sokak, bina no, daire no..."></textarea>
+          </div>
+
+          <!-- Kumbara detayları -->
+          <div class="kb-section-label" style="margin-top:18px">Kumbara Detayları</div>
+          <div class="kb-row">
+            <div class="kb-field">
+              <label>Kaç Adet Kumbara? <span class="kb-req">*</span></label>
+              <div class="kb-qty-wrap">
+                <button type="button" class="kb-qty-btn" id="kb-qty-minus">−</button>
+                <span class="kb-qty-val" id="kb-qty-display">1</span>
+                <button type="button" class="kb-qty-btn" id="kb-qty-plus">+</button>
+              </div>
+              <input type="hidden" id="kb-quantity" value="1" />
+            </div>
+            <div class="kb-field">
+              <label>Kullanım Yeri</label>
+              <select id="kb-usage" class="kb-input kb-select">
+                <option value="">Seçiniz...</option>
+                <option value="home">Ev</option>
+                <option value="work">İşyeri</option>
+                <option value="school">Okul / Üniversite</option>
+                <option value="mosque">Cami / Dini Mekan</option>
+                <option value="other">Diğer</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="kb-field">
+            <label>Eklemek İstediğiniz Not</label>
+            <textarea id="kb-message" class="kb-input kb-textarea" rows="2" placeholder="Varsa eklemek istediğiniz bilgiler..."></textarea>
+          </div>
+
+          <div class="kb-error" id="kb-error" style="display:none"></div>
+
+          <button type="button" class="kb-btn-submit" id="kb-submit-btn">
+            <span id="kb-btn-text">Kumbara Talep Et 🐷</span>
+            <span id="kb-btn-spinner" style="display:none">Gönderiliyor...</span>
+          </button>
+
+          <p class="kb-note">Talebiniz alındıktan sonra en geç 5 iş günü içinde kumbaranız kargoya verilir.</p>
+        </div>
+
+        <!-- Teşekkür -->
+        <div id="kb-thanks" style="display:none" class="kb-thanks">
+          <div class="kb-thanks-icon">🎉</div>
+          <h3>Talebiniz Alındı!</h3>
+          <p>Kumbara gönderim talebiniz başarıyla iletildi. En geç 5 iş günü içinde adresinize kargolayacağız.</p>
+          <button type="button" class="kb-btn-reset" id="kb-reset-btn">Yeni Talep Oluştur</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.kb-section {
+  background: linear-gradient(135deg, #FFF7ED 0%, #FFFBF5 100%);
+  padding: 64px 24px;
+  font-family: 'Poppins', sans-serif;
+}
+.kb-container { max-width: 980px; margin: 0 auto; }
+.kb-card {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+  overflow: hidden;
+}
+
+/* Sol */
+.kb-left {
+  background: linear-gradient(160deg, #1C3A2B 0%, #0F2420 100%);
+  padding: 44px 28px;
+  display: flex;
+  flex-direction: column;
+}
+.kb-piggy-wrap {
+  width: 90px;
+  height: 90px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+.kb-left-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin: 0 0 14px;
+  letter-spacing: -0.02em;
+}
+.kb-left-desc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+.kb-steps-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: auto;
+}
+.kb-step-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.65);
+}
+.kb-step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4ade80;
+  flex-shrink: 0;
+}
+
+/* Sağ */
+.kb-right { padding: 36px 36px; }
+.kb-form-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0 0 22px;
+}
+.kb-section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #F1F5F9;
+}
+.kb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.kb-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.kb-field label { font-size: 0.8rem; font-weight: 600; color: #374151; }
+.kb-req { color: #EF4444; }
+.kb-input {
+  padding: 10px 13px;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: border-color 0.18s;
+  width: 100%;
+  box-sizing: border-box;
+  color: #0F172A;
+}
+.kb-input:focus { border-color: #16a34a; }
+.kb-textarea { resize: vertical; min-height: 64px; }
+.kb-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+/* Adet seçici */
+.kb-qty-wrap { display: flex; align-items: center; gap: 0; border: 1.5px solid #E5E7EB; border-radius: 9px; overflow: hidden; width: fit-content; }
+.kb-qty-btn { width: 36px; height: 40px; border: none; background: #F9FAFB; font-size: 1.2rem; font-weight: 700; color: #374151; cursor: pointer; transition: background 0.15s; }
+.kb-qty-btn:hover { background: #F0FDF4; color: #16a34a; }
+.kb-qty-val { min-width: 40px; text-align: center; font-size: 1rem; font-weight: 700; color: #0F172A; padding: 0 4px; }
+
+/* Hata */
+.kb-error { background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 14px; }
+
+/* Gönder */
+.kb-btn-submit {
+  width: 100%;
+  padding: 14px;
+  border-radius: 11px;
+  border: none;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.kb-btn-submit:hover { opacity: 0.91; transform: translateY(-1px); }
+.kb-btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.kb-note { font-size: 0.78rem; color: #9CA3AF; text-align: center; margin-top: 10px; }
+
+/* Teşekkür */
+.kb-thanks { text-align: center; padding: 60px 20px; display: flex; flex-direction: column; align-items: center; }
+.kb-thanks-icon { font-size: 3.5rem; margin-bottom: 16px; }
+.kb-thanks h3 { font-size: 1.4rem; font-weight: 800; color: #0F172A; margin-bottom: 10px; }
+.kb-thanks p { color: #6B7280; line-height: 1.65; margin-bottom: 24px; max-width: 380px; }
+.kb-btn-reset { padding: 11px 26px; border-radius: 9px; border: 1.5px solid #16a34a; background: transparent; color: #16a34a; font-size: 0.88rem; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; }
+.kb-btn-reset:hover { background: #F0FDF4; }
+
+@@media (max-width: 720px) {
+  .kb-card { grid-template-columns: 1fr; }
+  .kb-left { padding: 24px 20px; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 14px; }
+  .kb-left-title { font-size: 1.2rem; margin-bottom: 0; }
+  .kb-left-desc, .kb-steps-info { display: none; }
+  .kb-right { padding: 24px 18px; }
+  .kb-row { grid-template-columns: 1fr; gap: 0; }
+}
+</style>
+
+<script>
+(function () {
+  var qty = 1;
+
+  // Telefon maskesi: 05XX XXX XX XX
+  var phoneInput = document.getElementById('kb-phone');
+  phoneInput.addEventListener('input', function () {
+    var digits = this.value.replace(/\D/g, '').slice(0, 11);
+    var masked = '';
+    for (var i = 0; i < digits.length; i++) {
+      if (i === 4 || i === 7 || i === 9) masked += ' ';
+      masked += digits[i];
+    }
+    this.value = masked;
+  });
+  phoneInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Backspace' && this.value.slice(-1) === ' ') {
+      e.preventDefault();
+      this.value = this.value.slice(0, -2);
+    }
+  });
+
+  document.getElementById('kb-qty-plus').addEventListener('click', function () {
+    if (qty < 10) { qty++; update(); }
+  });
+  document.getElementById('kb-qty-minus').addEventListener('click', function () {
+    if (qty > 1) { qty--; update(); }
+  });
+  function update() {
+    document.getElementById('kb-qty-display').textContent = qty;
+    document.getElementById('kb-quantity').value = qty;
+  }
+
+  document.getElementById('kb-submit-btn').addEventListener('click', function () {
+    var firstName = document.getElementById('kb-firstname').value.trim();
+    var lastName  = document.getElementById('kb-lastname').value.trim();
+    var phone     = document.getElementById('kb-phone').value.replace(/\s/g, '').trim();
+    var email     = document.getElementById('kb-email').value.trim();
+    var city      = document.getElementById('kb-city').value.trim();
+    var district  = document.getElementById('kb-district').value.trim();
+    var address   = document.getElementById('kb-address').value.trim();
+    var usage     = document.getElementById('kb-usage').value;
+    var message   = document.getElementById('kb-message').value.trim();
+    var errorEl   = document.getElementById('kb-error');
+
+    if (!firstName || !lastName || !phone || !email || !city || !district || !address) {
+      errorEl.textContent = 'Lütfen * ile işaretli zorunlu alanları eksiksiz doldurun.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    if (!/^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/.test(email)) {
+      errorEl.textContent = 'Geçerli bir e-posta adresi girin.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    errorEl.style.display = 'none';
+
+    var btn = document.getElementById('kb-submit-btn');
+    btn.disabled = true;
+    document.getElementById('kb-btn-text').style.display = 'none';
+    document.getElementById('kb-btn-spinner').style.display = 'inline';
+
+    var formData = new FormData();
+    formData.append('FirstName', firstName);
+    formData.append('LastName', lastName);
+    formData.append('Email', email);
+    formData.append('Phone', phone);
+    formData.append('City', city);
+    formData.append('District', district);
+    formData.append('Address', address);
+    formData.append('Quantity', qty);
+    formData.append('UsagePlace', usage);
+    formData.append('Message', message);
+
+    var token = document.querySelector('input[name="__RequestVerificationToken"]');
+    if (token) formData.append('__RequestVerificationToken', token.value);
+
+    fetch('/KumbaraPublic/Submit', { method: 'POST', body: formData })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.success) {
+          document.getElementById('kb-form-area').style.display = 'none';
+          document.getElementById('kb-thanks').style.display = 'flex';
+        } else {
+          errorEl.textContent = data.message || 'Bir hata oluştu. Lütfen tekrar deneyin.';
+          errorEl.style.display = 'block';
+          btn.disabled = false;
+          document.getElementById('kb-btn-text').style.display = 'inline';
+          document.getElementById('kb-btn-spinner').style.display = 'none';
+        }
+      })
+      .catch(function () {
+        errorEl.textContent = 'Bağlantı hatası. Lütfen tekrar deneyin.';
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        document.getElementById('kb-btn-text').style.display = 'inline';
+        document.getElementById('kb-btn-spinner').style.display = 'none';
+      });
+  });
+
+  document.getElementById('kb-reset-btn').addEventListener('click', function () {
+    document.getElementById('kb-thanks').style.display = 'none';
+    document.getElementById('kb-form-area').style.display = 'block';
+    ['kb-firstname','kb-lastname','kb-phone','kb-email','kb-city','kb-district','kb-address','kb-message'].forEach(function(id) {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('kb-usage').value = '';
+    qty = 1; update();
+  });
+})();
+</script>

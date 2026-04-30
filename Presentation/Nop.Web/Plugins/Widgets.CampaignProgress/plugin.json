@@ -1,22 +1,18 @@
 ﻿{
-    "Group":  "Widgets",
-    "FriendlyName":  "Campaign Progress",
-    "SupportedVersions":  [
-                              "4.70"
-                          ],
-    "Author":  "pekinteknoloji",
-    "DisplayOrder":  7,
-    "FileName":  "Nop.Plugin.Widgets.CampaignProgress.dll",
-    "Description":  "Homepage campaign goal progress bar",
-    "LimitedToStores":  [
-                            31
-                        ],
-    "LimitedToCustomerRoles":  [
-
-                               ],
-    "DependsOnSystemNames":  [
-
-                             ],
-    "SystemName":  "Widgets.CampaignProgress",
-    "Version":  "1.00"
+  "Group": "Widgets",
+  "FriendlyName": "Campaign Progress",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "pekinteknoloji",
+  "DisplayOrder": 7,
+  "FileName": "Nop.Plugin.Widgets.CampaignProgress.dll",
+  "Description": "Homepage campaign goal progress bar",
+  "LimitedToStores": [
+    39
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Widgets.CampaignProgress",
+  "Version": "1.00"
 }

@@ -1,0 +1,101 @@
+@model HeroSlideModel
+@{
+    Layout = "_ConfigurePlugin";
+    ViewBag.Title = Model.Id == 0 ? "Yeni Slide" : "Slide Düzenle";
+}
+
+<form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" asp-controller="HeroSliderAdmin" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">Kategori Sekmesi</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="CategoryName" text="Kategori Adı" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="CategoryName" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="CategoryIcon" text="Kategori İkonu (SVG)" /></div>
+                    <div class="col-md-9"><textarea asp-for="CategoryIcon" class="form-control" rows="4" placeholder="&lt;svg ...&gt;&lt;/svg&gt;"></textarea></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">Sol Kolon — Başlık & Butonlar</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="Title" text="Başlık" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="Title" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="Subtitle" text="Alt Başlık" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="Subtitle" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="PrimaryButtonText" text="1. Buton Metni" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="PrimaryButtonText" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="PrimaryButtonUrl" text="1. Buton URL" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="PrimaryButtonUrl" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="SecondaryButtonText" text="2. Buton Metni" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="SecondaryButtonText" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="SecondaryButtonUrl" text="2. Buton URL" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="SecondaryButtonUrl" /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">Orta Kolon — Vurgu & Fiyat</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="BadgeLabel" text="Üst Etiket" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="BadgeLabel" placeholder="(Normal 365 Gün)" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="PriceBadge" text="Fiyat Etiketi" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="PriceBadge" placeholder="3.500+ Kurban Bedeli" /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">Sağ Kolon — Görsel</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="ImageUrl" text="Görsel URL" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="ImageUrl" /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h5 class="card-title">Ayarlar</h5></div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="DisplayOrder" text="Sıralama" /></div>
+                    <div class="col-md-3"><nop-editor asp-for="DisplayOrder" /></div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3"><nop-label asp-for="IsActive" text="Aktif" /></div>
+                    <div class="col-md-9"><nop-editor asp-for="IsActive" /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-body">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <a asp-action="List" class="btn btn-default">Geri</a>
+            </div>
+        </div>
+    </div>
+</form>

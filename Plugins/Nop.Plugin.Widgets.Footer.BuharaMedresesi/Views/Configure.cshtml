@@ -1,0 +1,98 @@
+@model Nop.Plugin.Widgets.Footer.BuharaMedresesi.Models.ConfigurationModel
+@{ Layout = "_AdminLayout"; }
+
+<div class="content-header clearfix">
+    <h1 class="float-left">Footer - Buhara Medresesi</h1>
+</div>
+
+<form asp-action="Configure" method="post">
+    <div class="cards-group">
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">CTA Banner</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Başlık</label></div><div class="col-md-9"><input asp-for="CtaTitle" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Alt Başlık</label></div><div class="col-md-9"><input asp-for="CtaSubtitle" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Buton Metni</label></div><div class="col-md-9"><input asp-for="CtaButtonText" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Buton URL</label></div><div class="col-md-9"><input asp-for="CtaButtonUrl" class="form-control" /></div></div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Marka</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Logo URL</label></div><div class="col-md-9"><input asp-for="LogoUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Açıklama</label></div><div class="col-md-9"><textarea asp-for="Description" class="form-control" rows="3"></textarea></div></div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Sosyal Medya</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Facebook</label></div><div class="col-md-9"><input asp-for="FacebookUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Instagram</label></div><div class="col-md-9"><input asp-for="InstagramUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>X (Twitter)</label></div><div class="col-md-9"><input asp-for="TwitterUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>YouTube</label></div><div class="col-md-9"><input asp-for="YoutubeUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>LinkedIn</label></div><div class="col-md-9"><input asp-for="LinkedinUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>TikTok</label></div><div class="col-md-9"><input asp-for="TiktokUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>WhatsApp</label></div><div class="col-md-9"><input asp-for="WhatsappUrl" class="form-control" /></div></div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Hızlı Linkler</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Başlık</label></div><div class="col-md-9"><input asp-for="QuickLinksTitle" class="form-control" /></div></div>
+                @foreach (var i in Enumerable.Range(1, 6))
+                {
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Link @i</label></div>
+                        <div class="col-md-4"><input name="QuickLink@(i)Text" value="@(i==1?Model.QuickLink1Text:i==2?Model.QuickLink2Text:i==3?Model.QuickLink3Text:i==4?Model.QuickLink4Text:i==5?Model.QuickLink5Text:Model.QuickLink6Text)" class="form-control" placeholder="Metin" /></div>
+                        <div class="col-md-5"><input name="QuickLink@(i)Url" value="@(i==1?Model.QuickLink1Url:i==2?Model.QuickLink2Url:i==3?Model.QuickLink3Url:i==4?Model.QuickLink4Url:i==5?Model.QuickLink5Url:Model.QuickLink6Url)" class="form-control" placeholder="URL" /></div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Proje Kategorileri</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Başlık</label></div><div class="col-md-9"><input asp-for="CategoryLinksTitle" class="form-control" /></div></div>
+                @foreach (var i in Enumerable.Range(1, 4))
+                {
+                    <div class="form-group row">
+                        <div class="col-md-3"><label>Kategori @i</label></div>
+                        <div class="col-md-4"><input name="CategoryLink@(i)Text" value="@(i==1?Model.CategoryLink1Text:i==2?Model.CategoryLink2Text:i==3?Model.CategoryLink3Text:Model.CategoryLink4Text)" class="form-control" placeholder="Metin" /></div>
+                        <div class="col-md-5"><input name="CategoryLink@(i)Url" value="@(i==1?Model.CategoryLink1Url:i==2?Model.CategoryLink2Url:i==3?Model.CategoryLink3Url:Model.CategoryLink4Url)" class="form-control" placeholder="URL" /></div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">İletişim</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Başlık</label></div><div class="col-md-9"><input asp-for="ContactTitle" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Adres</label></div><div class="col-md-9"><input asp-for="Address" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Telefon</label></div><div class="col-md-9"><input asp-for="Phone" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>E-posta</label></div><div class="col-md-9"><input asp-for="Email" class="form-control" /></div></div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-header"><h3 class="card-title">Alt Çubuk</h3></div>
+            <div class="card-body">
+                <div class="form-group row"><div class="col-md-3"><label>Telif Metni</label></div><div class="col-md-9"><input asp-for="CopyrightText" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>KVKK URL</label></div><div class="col-md-9"><input asp-for="KvkkUrl" class="form-control" /></div></div>
+                <div class="form-group row"><div class="col-md-3"><label>Gizlilik URL</label></div><div class="col-md-9"><input asp-for="GizlilikUrl" class="form-control" /></div></div>
+            </div>
+        </div>
+
+        <div class="card card-default">
+            <div class="card-body">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </div>
+        </div>
+
+    </div>
+</form>

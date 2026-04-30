@@ -1,0 +1,229 @@
+@using Nop.Plugin.Widgets.HeroSlider.Models.Public
+@model HeroSliderPublicModel
+@{ Layout = ""; }
+
+@if (!Model.Slides.Any()) { return; }
+
+<div class="hs-wrap">
+
+    <!-- Slider kartı -->
+    <div class="hs-root">
+        <div class="hs-slides" id="hs-slides">
+            @{ int si = 0; }
+            @foreach (var slide in Model.Slides)
+            {
+                <div class="hs-slide@(si == 0 ? " hs-active" : "")"
+                     data-idx="@si"
+                     style="background-image:url('@slide.ImageUrl')">
+
+                    <div class="hs-overlay">
+                        <h2 class="hs-title">@slide.Title</h2>
+                        @if (!string.IsNullOrEmpty(slide.Subtitle))
+                        {
+                            <p class="hs-sub">@slide.Subtitle</p>
+                        }
+                        <div class="hs-btns">
+                            @if (!string.IsNullOrEmpty(slide.PrimaryButtonUrl))
+                            {
+                                <a href="@slide.PrimaryButtonUrl" class="hs-btn1">@slide.PrimaryButtonText</a>
+                            }
+                            @if (!string.IsNullOrEmpty(slide.SecondaryButtonUrl))
+                            {
+                                <a href="@slide.SecondaryButtonUrl" class="hs-btn2">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4h8"/></svg>
+                                    @slide.SecondaryButtonText
+                                </a>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+                si++;
+            }
+        </div>
+    </div>
+
+    <!-- Kategoriler — slider dışında -->
+    <div class="hs-tabs" id="hs-tabs">
+        @{ int ti = 0; }
+        @foreach (var slide in Model.Slides)
+        {
+            <button class="hs-tab@(ti == 0 ? " hs-on" : "")" data-idx="@ti" type="button">
+                @if (!string.IsNullOrEmpty(slide.CategoryIcon))
+                {
+                    <span class="hs-ico">@Html.Raw(slide.CategoryIcon)</span>
+                }
+                <span class="hs-lbl">@slide.CategoryName</span>
+            </button>
+            ti++;
+        }
+    </div>
+
+</div>
+
+<style>
+.hs-wrap {
+    margin-bottom: 24px;
+}
+
+/* Tema'nın tüm çözünürlüklerdeki page-body margin'ini override et */
+.home-page .page-body > div {
+    margin-top: 40px !important;
+    margin-bottom: 40px !important;
+}
+
+/* Slider kartı */
+.hs-root {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 18px rgba(0,0,0,.12);
+}
+
+/* Slide: görsel tam arkaplan */
+.hs-slide {
+    display: none;
+    position: relative;
+    height: 530px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.hs-slide.hs-active { display: block; }
+
+/* Sol içerik — görsel üzerinde doğrudan */
+.hs-overlay {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    padding: 44px 36px 44px 44px;
+}
+
+.hs-title {
+    font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.2;
+    margin: 0;
+}
+.hs-sub {
+    font-size: .88rem;
+    color: #374151;
+    margin: 0;
+    line-height: 1.5;
+}
+.hs-btns { display: flex; flex-direction: column; gap: 9px; max-width: 220px; }
+
+.hs-btn1 {
+    display: block;
+    border: 2px solid #111827;
+    color: #111827;
+    background: transparent;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: .85rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    transition: background .15s, color .15s;
+}
+.hs-btn1:hover { background: #111827; color: #fff; }
+
+.hs-btn2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #0d9488;
+    color: #fff;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 700;
+    text-decoration: none;
+    line-height: 1.3;
+    transition: background .15s;
+}
+.hs-btn2:hover { background: #0f766e; color: #fff; }
+
+/* Kategoriler — slider kartının dışında */
+.hs-tabs {
+    display: flex;
+    border-radius: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-top: 10px;
+}
+.hs-tabs::-webkit-scrollbar { display: none; }
+.hs-tab {
+    flex: 1;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 10px 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    position: relative;
+    transition: color .2s;
+}
+.hs-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 3px;
+    background: #f97316;
+    border-radius: 2px;
+    transition: width .2s;
+}
+.hs-tab:hover { color: #111827; }
+.hs-tab.hs-on { color: #111827; }
+.hs-tab.hs-on::after { width: 40px; }
+
+.hs-ico {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+}
+.hs-ico svg { width: 24px; height: 24px; color: #9ca3af; transition: color .2s; }
+.hs-tab.hs-on .hs-ico { background: #f97316; }
+.hs-tab.hs-on .hs-ico svg { color: #fff; }
+.hs-tab:hover:not(.hs-on) .hs-ico { background: #e5e7eb; }
+
+.hs-lbl { font-size: .72rem; font-weight: 500; text-align: center; line-height: 1.3; }
+.hs-tab.hs-on .hs-lbl { font-weight: 700; }
+
+@@media (max-width: 860px) {
+    .hs-slide { height: 280px; }
+    .hs-overlay { width: 55%; padding: 28px 20px 28px 24px; }
+}
+@@media (max-width: 520px) {
+    .hs-slide { height: 240px; }
+    .hs-overlay { width: 100%; padding: 24px 20px; }
+    .hs-btns { max-width: 100%; flex-direction: row; flex-wrap: wrap; }
+}
+</style>
+
+<script>
+(function () {
+    var slides = document.querySelectorAll('#hs-slides .hs-slide');
+    var tabs   = document.querySelectorAll('#hs-tabs .hs-tab');
+    Array.from(tabs).forEach(function (tab, idx) {
+        tab.addEventListener('click', function () {
+            Array.from(slides).forEach(function (s, i) { s.classList.toggle('hs-active', i === idx); });
+            Array.from(tabs).forEach(function (t, i)   { t.classList.toggle('hs-on', i === idx); });
+        });
+    });
+})();
+</script>
