@@ -1,0 +1,100 @@
+@model Nop.Plugin.Misc.PluginManager.Models.PluginManagerIndexModel
+@{ Layout = "_AdminLayout"; }
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        Plugin Store Yönetimi
+        <small>plugin.json — LimitedToStores</small>
+    </h1>
+</div>
+
+<div class="content">
+    <div class="card card-default">
+        <div class="card-body">
+            <p class="text-muted" style="margin-bottom:16px">
+                Hiçbir store seçili değilse plugin tüm storelarda aktif olur.
+                Kaydet butonuna basınca değişiklik <strong>anında plugin.json dosyasına</strong> yazılır;
+                uygulama restart olmadan bir sonraki restart'ta devreye girer.
+            </p>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="pm-table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th style="min-width:220px">Plugin</th>
+                            <th style="min-width:80px">Grup</th>
+                            @foreach (var store in Model.Stores)
+                            {
+                                <th style="text-align:center;min-width:90px;font-size:.8rem">@store.Name<br/><small class="text-muted">#@store.Id</small></th>
+                            }
+                            <th style="min-width:110px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var plugin in Model.Plugins)
+                        {
+                            <tr data-path="@plugin.FilePath">
+                                <td>
+                                    <strong>@plugin.FriendlyName</strong><br/>
+                                    <small class="text-muted">@plugin.SystemName</small>
+                                </td>
+                                <td><small>@plugin.Group</small></td>
+                                @foreach (var store in Model.Stores)
+                                {
+                                    <td style="text-align:center;vertical-align:middle">
+                                        <input type="checkbox" class="pm-store-cb"
+                                               data-store-id="@store.Id"
+                                               @(plugin.LimitedToStores.Contains(store.Id) ? "checked" : "") />
+                                    </td>
+                                }
+                                <td style="vertical-align:middle">
+                                    <button class="btn btn-sm btn-primary pm-save-btn" type="button" onclick="pmSave(this)">Kaydet</button>
+                                    <span class="pm-status" style="font-size:.8rem;margin-left:6px"></span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function pmSave(btn) {
+    var row = btn.closest('tr');
+    var path = row.dataset.path;
+    var storeIds = [];
+    row.querySelectorAll('.pm-store-cb:checked').forEach(function(cb) {
+        storeIds.push(parseInt(cb.dataset.storeId));
+    });
+
+    var status = row.querySelector('.pm-status');
+    btn.disabled = true;
+    status.textContent = '...';
+    status.style.color = '#6b7280';
+
+    fetch('/Admin/PluginManager/SavePlugin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filePath: path, storeIds: storeIds })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        btn.disabled = false;
+        if (data && data.success) {
+            status.textContent = '✓ Kaydedildi';
+            status.style.color = '#16a34a';
+        } else {
+            status.textContent = '✗ Hata';
+            status.style.color = '#dc2626';
+        }
+        setTimeout(function() { status.textContent = ''; }, 3000);
+    })
+    .catch(function() {
+        btn.disabled = false;
+        status.textContent = '✗ Hata';
+        status.style.color = '#dc2626';
+        setTimeout(function() { status.textContent = ''; }, 3000);
+    });
+}
+</script>

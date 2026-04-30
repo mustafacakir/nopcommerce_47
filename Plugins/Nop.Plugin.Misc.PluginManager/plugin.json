@@ -1,0 +1,12 @@
+{
+    "Group": "Misc",
+    "FriendlyName": "Plugin Store Manager",
+    "SystemName": "Misc.PluginManager",
+    "Version": "1.00",
+    "SupportedVersions": [ "4.70" ],
+    "Author": "pekinteknoloji",
+    "DisplayOrder": 1,
+    "FileName": "Nop.Plugin.Misc.PluginManager.dll",
+    "Description": "Manage plugin.json LimitedToStores without deployment",
+    "LimitedToStores": []
+}
