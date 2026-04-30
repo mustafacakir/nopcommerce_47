@@ -431,14 +431,15 @@
         var btn = e.target.closest('#ds-cep-panel .ds-preset-btn');
         if (!btn) return;
         var active = btn.classList.contains('ds-preset-on');
+        var inp = document.getElementById('ds-custom-amount');
         clearPresets();
         if (active) {
             selectedAmount = 0;
-            customInput.value = '';
+            if (inp) inp.value = '';
         } else {
             btn.classList.add('ds-preset-on');
             selectedAmount = parseFloat(btn.dataset.amount);
-            customInput.value = btn.dataset.amount;
+            if (inp) { inp.value = btn.dataset.amount; inp.focus(); inp.blur(); }
         }
         updateActionPanel();
     });
