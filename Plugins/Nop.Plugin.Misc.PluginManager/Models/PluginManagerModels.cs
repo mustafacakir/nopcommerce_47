@@ -61,3 +61,13 @@ public class SavePluginRequest
     public string FilePath { get; set; }
     public List<int> StoreIds { get; set; } = new();
 }
+
+public class StoreWidgetEntry
+{
+    public string SystemName   { get; set; }
+    public string FriendlyName { get; set; }
+    public string Group        { get; set; }
+    public string Description  { get; set; }
+    public string ConfigureUrl { get; set; }
+    public List<string> StoreNames { get; set; } = new();
+}

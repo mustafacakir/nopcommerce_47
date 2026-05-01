@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Nop.Core;
 using Nop.Plugin.Misc.PluginManager.Models;
+using Nop.Services.Customers;
+using Nop.Services.Plugins;
 using Nop.Services.Stores;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
@@ -15,11 +18,22 @@ public class PluginManagerController : BasePluginController
 {
     private readonly IWebHostEnvironment _env;
     private readonly IStoreService _storeService;
+    private readonly IPluginService _pluginService;
+    private readonly IWorkContext _workContext;
+    private readonly ICustomerService _customerService;
 
-    public PluginManagerController(IWebHostEnvironment env, IStoreService storeService)
+    public PluginManagerController(
+        IWebHostEnvironment env,
+        IStoreService storeService,
+        IPluginService pluginService,
+        IWorkContext workContext,
+        ICustomerService customerService)
     {
         _env = env;
         _storeService = storeService;
+        _pluginService = pluginService;
+        _workContext = workContext;
+        _customerService = customerService;
     }
 
     public async Task<IActionResult> Index()
@@ -80,5 +94,44 @@ public class PluginManagerController : BasePluginController
         await System.IO.File.WriteAllTextAsync(fullPath, JsonSerializer.Serialize(descriptor, options));
 
         return Ok(new { success = true });
+    }
+
+    public async Task<IActionResult> StoreWidgets()
+    {
+        var customer = await _workContext.GetCurrentCustomerAsync();
+        var isAdmin  = await _customerService.IsAdminAsync(customer);
+
+        var descriptors = await _pluginService.GetPluginDescriptorsAsync<IPlugin>(
+            LoadPluginsMode.InstalledOnly, customer);
+
+        var stores = await _storeService.GetAllStoresAsync();
+
+        var widgets = new List<StoreWidgetEntry>();
+        foreach (var d in descriptors.OrderBy(d => d.Group).ThenBy(d => d.FriendlyName))
+        {
+            // DernekOwner sadece store-specific widgetları görür
+            if (!isAdmin && !d.LimitedToStores.Any())
+                continue;
+
+            var configUrl = d.Instance<IPlugin>()?.GetConfigurationPageUrl();
+            if (string.IsNullOrEmpty(configUrl))
+                continue;
+
+            var storeNames = d.LimitedToStores.Any()
+                ? stores.Where(s => d.LimitedToStores.Contains(s.Id)).Select(s => s.Name).ToList()
+                : new List<string> { "Tüm Mağazalar" };
+
+            widgets.Add(new StoreWidgetEntry
+            {
+                SystemName   = d.SystemName,
+                FriendlyName = d.FriendlyName,
+                Group        = d.Group,
+                Description  = d.Description,
+                ConfigureUrl = configUrl,
+                StoreNames   = storeNames
+            });
+        }
+
+        return View("~/Plugins/Misc.PluginManager/Views/StoreWidgets.cshtml", widgets);
     }
 }
