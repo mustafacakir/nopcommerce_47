@@ -1,0 +1,11 @@
+{
+    "Group": "Misc",
+    "FriendlyName": "WhatsApp Order Notification",
+    "SystemName": "Misc.WhatsAppNotification",
+    "Version": "1.0.0",
+    "SupportedVersions": [ "4.70" ],
+    "Author": "Pekin Teknoloji",
+    "DisplayOrder": 1,
+    "FileName": "Nop.Plugin.Misc.WhatsAppNotification.dll",
+    "Description": "Sends WhatsApp message to store owner via Meta Cloud API when an order is placed"
+}

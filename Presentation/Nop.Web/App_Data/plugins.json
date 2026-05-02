@@ -210,6 +210,10 @@
     {
       "SystemName": "Widgets.DonationGrid",
       "Version": "1.0.0"
+    },
+    {
+      "SystemName": "Misc.WhatsAppNotification",
+      "Version": "1.0.0"
     }
   ],
   "PluginNamesToUninstall": [],

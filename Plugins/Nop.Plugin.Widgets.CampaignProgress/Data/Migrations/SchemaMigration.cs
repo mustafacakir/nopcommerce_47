@@ -6,10 +6,17 @@ using Nop.Plugin.Widgets.CampaignProgress.Domain;
 namespace Nop.Plugin.Widgets.CampaignProgress.Data.Migrations;
 
 [NopMigration("2026/04/27 11:00:00", "Widgets.CampaignProgress base schema", MigrationProcessType.Installation)]
-public class SchemaMigration : AutoReversingMigration
+public class SchemaMigration : Migration
 {
     public override void Up()
     {
-        Create.TableFor<Campaign>();
+        if (!Schema.Table("Campaign").Exists())
+            Create.TableFor<Campaign>();
+    }
+
+    public override void Down()
+    {
+        if (Schema.Table("Campaign").Exists())
+            Delete.Table("Campaign");
     }
 }
