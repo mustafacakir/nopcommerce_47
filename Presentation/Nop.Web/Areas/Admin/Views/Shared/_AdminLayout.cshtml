@@ -275,13 +275,25 @@
     @NopHtml.GenerateScripts(ResourceLocation.Footer)
     @NopHtml.GenerateInlineScripts(ResourceLocation.Footer)
 
-    @* PEKIN_CUSTOM: StoreOwner için store seçici UI'ı gizle *@
-    @if (await customerService.IsInCustomerRoleAsync(layoutCustomer, "StoreOwner"))
+    @* PEKIN_CUSTOM: StoreOwner / DernekOwner için store seçici ve gereksiz filtreler gizle *@
+    @if (await customerService.IsInCustomerRoleAsync(layoutCustomer, "StoreOwner") ||
+         await customerService.IsInCustomerRoleAsync(layoutCustomer, "DernekOwner"))
     {
         <style>
             .form-group:has(#SelectedStoreIds) { display: none !important; }
             .form-group:has(#SearchStoreId) { display: none !important; }
             .form-group:has(#StoreId) { display: none !important; }
+            .form-group:has(#SearchWarehouseId) { display: none !important; }
+            .form-group:has(#SearchVendorId) { display: none !important; }
+            .form-group:has(#SearchProductTypeId) { display: none !important; }
+            .form-group:has(#GoDirectlyToSku) { display: none !important; }
+            .form-group:has(#WarehouseId) { display: none !important; }
+            .form-group:has(#OrderStatusIds) { display: none !important; }
+            .form-group:has(#PaymentStatusIds) { display: none !important; }
+            .form-group:has(#ShippingStatusIds) { display: none !important; }
+            .form-group:has(#VendorId) { display: none !important; }
+            .form-group:has(#GoDirectlyToCustomOrderNumber) { display: none !important; }
+            a[href="/Admin/Order/ShipmentList"] { display: none !important; }
         </style>
     }
 </body>

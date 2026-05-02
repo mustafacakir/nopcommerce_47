@@ -198,6 +198,14 @@
     {
       "SystemName": "Widgets.Header.BuharaMedresesi",
       "Version": "1.00"
+    },
+    {
+      "SystemName": "Misc.PluginManager",
+      "Version": "1.00"
+    },
+    {
+      "SystemName": "Widgets.ContactInfo",
+      "Version": "1.0"
     }
   ],
   "PluginNamesToUninstall": [],

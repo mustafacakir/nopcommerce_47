@@ -693,10 +693,14 @@ public partial class CustomerModelFactory : ICustomerModelFactory
                 model.LastIpAddress = customer.LastIpAddress;
                 model.LastVisitedPage = await _genericAttributeService.GetAttributeAsync<string>(customer, NopCustomerDefaults.LastVisitedPageAttribute);
                 model.SelectedCustomerRoleIds = (await _customerService.GetCustomerRoleIdsAsync(customer)).ToList();
-                model.RegisteredInStore = (await _storeService.GetAllStoresAsync())
-                    .FirstOrDefault(store => store.Id == customer.RegisteredInStoreId)?.Name ?? string.Empty;
-                model.DisplayRegisteredInStore = model.Id > 0 && !string.IsNullOrEmpty(model.RegisteredInStore) &&
-                                                 (await _storeService.GetAllStoresAsync()).Select(x => x.Id).Count() > 1;
+                var allStores = await _storeService.GetAllStoresAsync();
+                model.RegisteredInStore = allStores.FirstOrDefault(s => s.Id == customer.RegisteredInStoreId)?.Name ?? string.Empty;
+                model.RegisteredInStoreId = customer.RegisteredInStoreId;
+                model.AvailableRegisteredInStores = allStores
+                    .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name, Selected = s.Id == customer.RegisteredInStoreId })
+                    .ToList();
+                model.AvailableRegisteredInStores.Insert(0, new SelectListItem { Value = "0", Text = "--- Tüm mağazalar ---", Selected = customer.RegisteredInStoreId == 0 });
+                model.DisplayRegisteredInStore = model.Id > 0 && allStores.Count > 1;
                 model.CreatedOn = await _dateTimeHelper.ConvertToUserTimeAsync(customer.CreatedOnUtc, DateTimeKind.Utc);
 
                 //prepare model affiliate

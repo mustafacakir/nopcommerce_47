@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Nop.Plugin.Widgets.HeroSlider.Domain;
 using Nop.Plugin.Widgets.HeroSlider.Models.Admin;
 using Nop.Plugin.Widgets.HeroSlider.Services;
-using Nop.Services.Security;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Models.Extensions;
@@ -16,18 +15,14 @@ namespace Nop.Plugin.Widgets.HeroSlider.Controllers;
 public class HeroSliderAdminController : BasePluginController
 {
     private readonly IHeroSliderService _service;
-    private readonly IPermissionService _permission;
 
-    public HeroSliderAdminController(IHeroSliderService service, IPermissionService permission)
+    public HeroSliderAdminController(IHeroSliderService service)
     {
         _service = service;
-        _permission = permission;
     }
 
-    public async Task<IActionResult> List()
+    public IActionResult List()
     {
-        if (!await _permission.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return AccessDeniedView();
         var model = new HeroSlideSearchModel();
         model.SetGridPageSize();
         return View("~/Plugins/Widgets.HeroSlider/Views/Admin/List.cshtml", model);
@@ -36,9 +31,6 @@ public class HeroSliderAdminController : BasePluginController
     [HttpPost]
     public async Task<IActionResult> List(HeroSlideSearchModel searchModel)
     {
-        if (!await _permission.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return await AccessDeniedDataTablesJson();
-
         var slides = await _service.GetAllPagedAsync(searchModel.Page - 1, searchModel.PageSize);
         var model = await new HeroSlideListModel().PrepareToGridAsync(searchModel, slides, () =>
             slides.ToAsyncEnumerable().Select(s => new HeroSlideModel

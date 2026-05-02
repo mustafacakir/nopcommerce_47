@@ -146,6 +146,9 @@ public partial record CustomerModel : BaseNopEntityModel, IAclSupportedModel
     [NopResourceDisplayName("Admin.Customers.Customers.Fields.RegisteredInStore")]
     public string RegisteredInStore { get; set; }
 
+    public int RegisteredInStoreId { get; set; }
+    public IList<SelectListItem> AvailableRegisteredInStores { get; set; } = new List<SelectListItem>();
+
     [NopResourceDisplayName("Admin.Customers.Customers.Fields.AdminComment")]
     public string AdminComment { get; set; }
 

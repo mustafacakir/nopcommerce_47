@@ -92,7 +92,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             var customer = await _workContext.GetCurrentCustomerAsync();
             var status   = await _genericAttributeService.GetAttributeAsync<string>(customer, "SubscriptionStatus") ?? "trial";
 
-            if (status == "active")
+            if (string.Equals(status, "active", StringComparison.OrdinalIgnoreCase))
                 return BadRequest("Zaten aktif aboneliğiniz var.");
 
             var ip      = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "85.34.78.112";

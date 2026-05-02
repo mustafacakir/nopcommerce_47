@@ -1,72 +1,53 @@
 // PEKIN_CUSTOM: StoreService override - admin panelinde tenant sadece kendi store'unu görür
-using Nop.Core;
+using System.Security.Claims;
+using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Stores;
 using Nop.Data;
-using Nop.Services.Customers;
 using Nop.Services.Stores;
 
 namespace Nop.Web.Infrastructure.Services;
 
 /// <summary>
 /// Admin panelinde tenant admin'lerin sadece kendi store'larını görmesini sağlar.
-/// IWorkContext constructor injection yerine RequestServices ile lazy resolve edilir
-/// — böylece IStoreContext → IStoreService circular dependency engellenir.
+/// RegisteredInStoreId = 0 → tüm mağazalar (super admin), > 0 → sadece o mağaza.
+/// IWorkContext yerine HTTP claim'lerinden customer okunur (circular dependency engellenir).
 /// </summary>
 public class TenantStoreService : StoreService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-
-    // Infinite recursion koruması: GetCurrentCustomerAsync içinde GetAllStoresAsync çağrılırsa
-    private static readonly AsyncLocal<bool> _isResolving = new();
+    private readonly IRepository<Customer> _customerRepository;
 
     public TenantStoreService(
         IRepository<Store> storeRepository,
-        IHttpContextAccessor httpContextAccessor) : base(storeRepository)
+        IHttpContextAccessor httpContextAccessor,
+        IRepository<Customer> customerRepository) : base(storeRepository)
     {
         _httpContextAccessor = httpContextAccessor;
+        _customerRepository = customerRepository;
     }
 
     public override async Task<IList<Store>> GetAllStoresAsync()
     {
         var allStores = await base.GetAllStoresAsync();
 
-        // Recursive call koruması
-        if (_isResolving.Value)
-            return allStores;
-
         var httpContext = _httpContextAccessor.HttpContext;
         if (httpContext == null || !httpContext.Request.Path.StartsWithSegments("/Admin"))
             return allStores;
 
-        _isResolving.Value = true;
-        try
-        {
-            var workContext = httpContext.RequestServices.GetService<IWorkContext>();
-            var customerService = httpContext.RequestServices.GetService<ICustomerService>();
-
-            if (workContext == null || customerService == null)
-                return allStores;
-
-            var currentCustomer = await workContext.GetCurrentCustomerAsync();
-
-            // Super admin tüm store'ları görür
-            if (await customerService.IsAdminAsync(currentCustomer))
-                return allStores;
-
-            // Tenant admin sadece kendi store'unu görür
-            var registeredInStoreId = currentCustomer.RegisteredInStoreId;
-            if (registeredInStoreId == 0)
-                return allStores;
-
-            return allStores.Where(s => s.Id == registeredInStoreId).ToList();
-        }
-        catch
-        {
+        var emailClaim = httpContext.User?.FindFirst(ClaimTypes.Email)?.Value;
+        if (string.IsNullOrEmpty(emailClaim))
             return allStores;
-        }
-        finally
-        {
-            _isResolving.Value = false;
-        }
+
+        var customers = await _customerRepository.GetAllAsync(q =>
+            q.Where(c => c.Email == emailClaim && !c.Deleted));
+        var customer = customers.FirstOrDefault();
+        if (customer == null)
+            return allStores;
+
+        // RegisteredInStoreId = 0 → super admin, tüm mağazaları görebilir
+        if (customer.RegisteredInStoreId == 0)
+            return allStores;
+
+        return allStores.Where(s => s.Id == customer.RegisteredInStoreId).ToList();
     }
 }

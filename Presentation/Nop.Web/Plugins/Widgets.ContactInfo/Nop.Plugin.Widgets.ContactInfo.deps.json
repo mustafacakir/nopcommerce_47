@@ -34,7 +34,7 @@
   },
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "Nop.Plugin.Misc.PluginManager/1.0.0": {
+      "Nop.Plugin.Widgets.ContactInfo/1.0.0": {
         "dependencies": {
           "Nop.Web.Framework": "4.70.0",
           "Microsoft.AspNetCore.Antiforgery": "8.0.0.0",
@@ -340,10 +340,10 @@
           "WindowsBase": "4.0.0.0"
         },
         "runtime": {
-          "Nop.Plugin.Misc.PluginManager.dll": {}
+          "Nop.Plugin.Widgets.ContactInfo.dll": {}
         },
         "compile": {
-          "Nop.Plugin.Misc.PluginManager.dll": {}
+          "Nop.Plugin.Widgets.ContactInfo.dll": {}
         }
       },
       "AdvancedStringBuilder/0.1.1": {
@@ -5551,7 +5551,7 @@
     }
   },
   "libraries": {
-    "Nop.Plugin.Misc.PluginManager/1.0.0": {
+    "Nop.Plugin.Widgets.ContactInfo/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

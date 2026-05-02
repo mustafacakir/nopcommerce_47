@@ -32,7 +32,7 @@
         </div>
     }
 
-    @if (status == "active")
+    @if (string.Equals(status, "active", StringComparison.OrdinalIgnoreCase))
     {
         <div class="card card-default">
             <div class="card-body">

@@ -468,10 +468,10 @@
     {
         <div class="form-group row">
             <div class="col-md-3">
-                <nop-label asp-for="RegisteredInStore" />
+                <nop-label asp-for="RegisteredInStoreId" />
             </div>
             <div class="col-md-9">
-                <div class="form-text-row">@Model.RegisteredInStore</div>
+                <select asp-for="RegisteredInStoreId" asp-items="Model.AvailableRegisteredInStores" class="form-control select2"></select>
             </div>
         </div>
     }

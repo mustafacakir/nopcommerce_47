@@ -1,18 +1,12 @@
-﻿{
-  "Group": "Widgets",
-  "FriendlyName": "Header - Buhara Medresesi",
-  "SupportedVersions": [
-    "4.70"
-  ],
-  "Author": "pekinteknoloji",
-  "DisplayOrder": 19,
-  "FileName": "Nop.Plugin.Widgets.Header.BuharaMedresesi.dll",
-  "Description": "Buhara Medresesi store custom header top bar widget",
-  "LimitedToStores": [
-    40
-  ],
-  "LimitedToCustomerRoles": [],
-  "DependsOnSystemNames": [],
-  "SystemName": "Widgets.Header.BuharaMedresesi",
-  "Version": "1.00"
+{
+    "Group": "Widgets",
+    "FriendlyName": "Header - Buhara Medresesi",
+    "SystemName": "Widgets.Header.BuharaMedresesi",
+    "Version": "1.00",
+    "SupportedVersions": [ "4.70" ],
+    "Author": "pekinteknoloji",
+    "DisplayOrder": 19,
+    "FileName": "Nop.Plugin.Widgets.Header.BuharaMedresesi.dll",
+    "Description": "Buhara Medresesi store custom header top bar widget",
+    "LimitedToStores": [ 40, 42 ]
 }

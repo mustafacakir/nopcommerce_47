@@ -423,8 +423,10 @@ public partial class BaseAdminModelFactory : IBaseAdminModelFactory
             items.Add(new SelectListItem { Value = store.Id.ToString(), Text = store.Name });
         }
 
-        //insert special item for the default value
-        await PrepareDefaultItemAsync(items, withSpecialDefaultItem, defaultItemText);
+        // Tenant kullanıcılar için tek mağaza varsa "Tüm mağazalar" ekleme —
+        // böylece tek seçenek otomatik seçili olur ve form doğru storeId'yi postlar
+        if (availableStores.Count > 1)
+            await PrepareDefaultItemAsync(items, withSpecialDefaultItem, defaultItemText);
     }
 
     /// <summary>

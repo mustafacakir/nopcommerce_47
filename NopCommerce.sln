@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nop.Plugin.Widgets.Donation
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nop.Plugin.Widgets.JoinCta", "Plugins\Nop.Plugin.Widgets.JoinCta\Nop.Plugin.Widgets.JoinCta.csproj", "{A1B2C3D4-0003-4000-8000-000000000003}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nop.Plugin.Widgets.ContactInfo", "Plugins\Nop.Plugin.Widgets.ContactInfo\Nop.Plugin.Widgets.ContactInfo.csproj", "{A1B2C3D4-0004-4000-8000-000000000004}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nop.Plugin.Misc.PluginManager", "Plugins\Nop.Plugin.Misc.PluginManager\Nop.Plugin.Misc.PluginManager.csproj", "{39B52D5B-468E-4D7A-8530-C7BC61FACDB7}"
 EndProject
 Global

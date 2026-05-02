@@ -21,19 +21,22 @@ public class PluginManagerController : BasePluginController
     private readonly IPluginService _pluginService;
     private readonly IWorkContext _workContext;
     private readonly ICustomerService _customerService;
+    private readonly IStoreContext _storeContext;
 
     public PluginManagerController(
         IWebHostEnvironment env,
         IStoreService storeService,
         IPluginService pluginService,
         IWorkContext workContext,
-        ICustomerService customerService)
+        ICustomerService customerService,
+        IStoreContext storeContext)
     {
         _env = env;
         _storeService = storeService;
         _pluginService = pluginService;
         _workContext = workContext;
         _customerService = customerService;
+        _storeContext = storeContext;
     }
 
     public async Task<IActionResult> Index()
@@ -100,6 +103,7 @@ public class PluginManagerController : BasePluginController
     {
         var customer = await _workContext.GetCurrentCustomerAsync();
         var isAdmin  = await _customerService.IsAdminAsync(customer);
+        var currentStore = await _storeContext.GetCurrentStoreAsync();
 
         var descriptors = await _pluginService.GetPluginDescriptorsAsync<IPlugin>(
             LoadPluginsMode.InstalledOnly, customer);
@@ -109,8 +113,8 @@ public class PluginManagerController : BasePluginController
         var widgets = new List<StoreWidgetEntry>();
         foreach (var d in descriptors.OrderBy(d => d.Group).ThenBy(d => d.FriendlyName))
         {
-            // DernekOwner sadece store-specific widgetları görür
-            if (!isAdmin && !d.LimitedToStores.Any())
+            // Non-admin kullanıcılar sadece kendi mağazalarına tanımlı widgetları görür
+            if (!isAdmin && !d.LimitedToStores.Contains(currentStore.Id))
                 continue;
 
             var configUrl = d.Instance<IPlugin>()?.GetConfigurationPageUrl();

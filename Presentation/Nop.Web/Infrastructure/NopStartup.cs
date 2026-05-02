@@ -157,5 +157,5 @@ public partial class NopStartup : INopStartup
     /// <summary>
     /// Gets order of this startup configuration implementation
     /// </summary>
-    public int Order => 200; // routing (400) ve endpoint (900)'dan önce çalışsın
+    public int Order => 3000; // Framework NopStartup (2000)'den sonra çalışsın — TenantStoreService override için
 }

@@ -18,6 +18,10 @@
     var firstSectionId = Model.FirstSectionId;
 }
 
+<form id="ds-cep-form" style="display:none">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="CustomerEnteredPrice" id="ds-cep-form-price" value="0" />
+</form>
 <div class="ds-wrap">
     <div class="ds-card">
 
@@ -486,33 +490,46 @@
 
     function addToCart(andGo) {
         if (!selectedItem) return;
-
         var isCep = selectedItem.customerEntersPrice;
         if (isCep && selectedAmount <= 0) return;
 
         btnDonate.disabled = true;
         btnCart.disabled   = true;
 
-        var p;
-        if (isCep) {
-            var fd = new FormData();
-            fd.append('CustomerEnteredPrice', selectedAmount.toString());
-            p = fetch('/addproducttocart/details/' + selectedItem.productId + '/1', { method: 'POST', body: fd });
+        // andGo=true ise success'te checkout'a yönlendir
+        if (andGo) {
+            var origSuccess = AjaxCart.success_process;
+            AjaxCart.success_process = function (data) {
+                AjaxCart.success_process = origSuccess;
+                btnDonate.disabled = false;
+                btnCart.disabled   = false;
+                if (data && (data.success === true || data.updatetopcartsectionhtml)) {
+                    window.location.href = '/cart';
+                } else {
+                    origSuccess.call(AjaxCart, data);
+                }
+            };
         } else {
-            p = fetch('/addproducttocart/catalog/' + selectedItem.productId + '/1/1', { method: 'POST' });
+            var origSuccess2 = AjaxCart.success_process;
+            AjaxCart.success_process = function (data) {
+                AjaxCart.success_process = origSuccess2;
+                btnDonate.disabled = false;
+                btnCart.disabled   = false;
+                origSuccess2.call(AjaxCart, data);
+            };
         }
 
-        p.then(function (r) { return r.json(); })
-         .then(function (data) {
-             if (data && data.success === false) {
-                 btnDonate.disabled = false;
-                 btnCart.disabled   = false;
-                 if (data.message) priceNote.textContent = data.message;
-             } else {
-                 window.location.href = andGo ? '/onepagecheckout' : '/cart';
-             }
-         })
-         .catch(function () { btnDonate.disabled = false; btnCart.disabled = false; });
+        if (isCep) {
+            document.getElementById('ds-cep-form-price').value = selectedAmount;
+            AjaxCart.addproducttocart_details(
+                '/addproducttocart/details/' + selectedItem.productId + '/1',
+                '#ds-cep-form'
+            );
+        } else {
+            AjaxCart.addproducttocart_catalog(
+                '/addproducttocart/catalog/' + selectedItem.productId + '/1/1'
+            );
+        }
     }
 
     btnDonate.addEventListener('click', function () { addToCart(true); });

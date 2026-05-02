@@ -62,14 +62,15 @@
                 <!-- E-bülten -->
                 <div class="jc-newsletter">
                     <p class="jc-nl-label">E-bültenimize abone olun, gelişmelerden haberdar olun</p>
+                    @Html.AntiForgeryToken()
                     <div class="jc-nl-form">
                         <span class="jc-nl-ico">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                         </span>
-                        <input type="email" class="jc-nl-input" placeholder="E-posta adresiniz" />
-                        <button type="button" class="jc-nl-btn">Abone Ol <span>→</span></button>
+                        <input type="email" id="jc-nl-email" class="jc-nl-input" placeholder="E-posta adresiniz" />
+                        <button type="button" id="jc-nl-btn" class="jc-nl-btn">Abone Ol <span>→</span></button>
                     </div>
-                    <p class="jc-nl-note">Bilgileriniz güvende. İstediğiniz zaman abonelikten çıkabilirsiniz.</p>
+                    <p id="jc-nl-note" class="jc-nl-note">Bilgileriniz güvende. İstediğiniz zaman abonelikten çıkabilirsiniz.</p>
                 </div>
 
             </div>
@@ -268,5 +269,43 @@
             });
         });
     });
+
+    var nlBtn   = document.getElementById('jc-nl-btn');
+    var nlEmail = document.getElementById('jc-nl-email');
+    var nlNote  = document.getElementById('jc-nl-note');
+
+    if (nlBtn && nlEmail) {
+        function doSubscribe() {
+            var email = nlEmail.value.trim();
+            if (!email) return;
+            nlBtn.disabled = true;
+
+            var postData = { email: email, subscribe: true };
+            addAntiForgeryToken(postData);
+
+            $.ajax({
+                cache: false,
+                url: '/newsletter/SubscribeNewsletter',
+                type: 'POST',
+                data: postData,
+                success: function (data) {
+                    nlBtn.disabled = false;
+                    if (data && data.Result) {
+                        nlNote.textContent = data.Result;
+                        nlNote.style.color = data.Success ? '#16a34a' : '#dc2626';
+                    }
+                    if (data && data.Success) nlEmail.value = '';
+                },
+                error: function () {
+                    nlBtn.disabled = false;
+                }
+            });
+        }
+
+        nlBtn.addEventListener('click', doSubscribe);
+        nlEmail.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') doSubscribe();
+        });
+    }
 })();
 </script>

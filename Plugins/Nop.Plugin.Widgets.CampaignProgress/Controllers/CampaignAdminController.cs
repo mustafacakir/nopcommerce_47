@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Nop.Plugin.Widgets.CampaignProgress.Domain;
 using Nop.Plugin.Widgets.CampaignProgress.Models.Admin;
 using Nop.Plugin.Widgets.CampaignProgress.Services;
-using Nop.Services.Security;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Models.Extensions;
@@ -16,20 +15,15 @@ namespace Nop.Plugin.Widgets.CampaignProgress.Controllers;
 public class CampaignAdminController : BasePluginController
 {
     private readonly ICampaignService _campaignService;
-    private readonly IPermissionService _permissionService;
 
-    public CampaignAdminController(ICampaignService campaignService, IPermissionService permissionService)
+    public CampaignAdminController(ICampaignService campaignService)
     {
         _campaignService = campaignService;
-        _permissionService = permissionService;
     }
 
     public async Task<IActionResult> List()
     {
-        if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return AccessDeniedView();
-
-        var searchModel = new CampaignSearchModel();
+var searchModel = new CampaignSearchModel();
         searchModel.SetGridPageSize();
         return View("~/Plugins/Widgets.CampaignProgress/Views/Admin/List.cshtml", searchModel);
     }
@@ -37,10 +31,7 @@ public class CampaignAdminController : BasePluginController
     [HttpPost]
     public async Task<IActionResult> List(CampaignSearchModel searchModel)
     {
-        if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return await AccessDeniedDataTablesJson();
-
-        var campaigns = await _campaignService.GetAllCampaignsPagedAsync(
+var campaigns = await _campaignService.GetAllCampaignsPagedAsync(
             pageIndex: searchModel.Page - 1,
             pageSize: searchModel.PageSize);
 
@@ -72,10 +63,7 @@ public class CampaignAdminController : BasePluginController
 
     public async Task<IActionResult> Create()
     {
-        if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return AccessDeniedView();
-
-        return View("~/Plugins/Widgets.CampaignProgress/Views/Admin/CreateOrEdit.cshtml", new CampaignModel
+return View("~/Plugins/Widgets.CampaignProgress/Views/Admin/CreateOrEdit.cshtml", new CampaignModel
         {
             IsActive = true,
             DisplayOrder = 1
@@ -85,10 +73,7 @@ public class CampaignAdminController : BasePluginController
     [HttpPost]
     public async Task<IActionResult> Create(CampaignModel model)
     {
-        if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return AccessDeniedView();
-
-        if (!ModelState.IsValid)
+if (!ModelState.IsValid)
             return View("~/Plugins/Widgets.CampaignProgress/Views/Admin/CreateOrEdit.cshtml", model);
 
         var campaign = new Campaign
@@ -110,10 +95,7 @@ public class CampaignAdminController : BasePluginController
 
     public async Task<IActionResult> Edit(int id)
     {
-        if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return AccessDeniedView();
-
-        var campaign = await _campaignService.GetByIdAsync(id);
+var campaign = await _campaignService.GetByIdAsync(id);
         if (campaign == null)
             return RedirectToAction(nameof(List));
 
@@ -137,10 +119,7 @@ public class CampaignAdminController : BasePluginController
     [HttpPost]
     public async Task<IActionResult> Edit(CampaignModel model)
     {
-        if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return AccessDeniedView();
-
-        if (!ModelState.IsValid)
+if (!ModelState.IsValid)
             return View("~/Plugins/Widgets.CampaignProgress/Views/Admin/CreateOrEdit.cshtml", model);
 
         var campaign = await _campaignService.GetByIdAsync(model.Id);
@@ -164,10 +143,7 @@ public class CampaignAdminController : BasePluginController
     [HttpPost]
     public async Task<IActionResult> Delete(int id)
     {
-        if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return AccessDeniedView();
-
-        var campaign = await _campaignService.GetByIdAsync(id);
+var campaign = await _campaignService.GetByIdAsync(id);
         if (campaign == null)
             return Json(new { success = false });
 

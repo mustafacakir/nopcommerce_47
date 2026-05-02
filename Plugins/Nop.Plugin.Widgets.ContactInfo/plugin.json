@@ -1,0 +1,11 @@
+{
+  "Group": "Widgets",
+  "FriendlyName": "Contact Info Widget",
+  "SystemName": "Widgets.ContactInfo",
+  "Version": "1.0",
+  "SupportedVersions": [ "4.70" ],
+  "Author": "Pekin Teknoloji",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.ContactInfo.dll",
+  "Description": "İletişim sayfası için bilgi kartları, harita ve sosyal medya bağlantıları"
+}

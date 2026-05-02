@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Plugin.Widgets.DonationSection.Domain;
 using Nop.Plugin.Widgets.DonationSection.Models.Admin;
 using Nop.Plugin.Widgets.DonationSection.Services;
-using Nop.Services.Security;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Models.Extensions;
@@ -17,20 +16,16 @@ namespace Nop.Plugin.Widgets.DonationSection.Controllers;
 public class DonationAdminController : BasePluginController
 {
     private readonly IDonationSectionService _service;
-    private readonly IPermissionService _permission;
 
-    public DonationAdminController(IDonationSectionService service, IPermissionService permission)
+    public DonationAdminController(IDonationSectionService service)
     {
         _service = service;
-        _permission = permission;
     }
 
     // ─── Sections ────────────────────────────────────────────────────────────
 
-    public async Task<IActionResult> Sections()
+    public IActionResult Sections()
     {
-        if (!await _permission.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return AccessDeniedView();
         var m = new DonSectionSearchModel(); m.SetGridPageSize();
         return View("~/Plugins/Widgets.DonationSection/Views/Admin/SectionList.cshtml", m);
     }
@@ -38,8 +33,6 @@ public class DonationAdminController : BasePluginController
     [HttpPost]
     public async Task<IActionResult> Sections(DonSectionSearchModel searchModel)
     {
-        if (!await _permission.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return await AccessDeniedDataTablesJson();
         var list = await _service.GetAllSectionsPagedAsync(searchModel.Page - 1, searchModel.PageSize);
         var model = await new DonSectionListModel().PrepareToGridAsync(searchModel, list, () =>
             list.ToAsyncEnumerable().Select(s => new DonSectionModel
@@ -99,10 +92,8 @@ public class DonationAdminController : BasePluginController
 
     // ─── Items ────────────────────────────────────────────────────────────────
 
-    public async Task<IActionResult> Items(int sectionId = 0)
+    public IActionResult Items(int sectionId = 0)
     {
-        if (!await _permission.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return AccessDeniedView();
         var m = new DonItemSearchModel { SectionId = sectionId }; m.SetGridPageSize();
         return View("~/Plugins/Widgets.DonationSection/Views/Admin/ItemList.cshtml", m);
     }
@@ -110,8 +101,6 @@ public class DonationAdminController : BasePluginController
     [HttpPost]
     public async Task<IActionResult> Items(DonItemSearchModel searchModel)
     {
-        if (!await _permission.AuthorizeAsync(StandardPermissionProvider.ManageWidgets))
-            return await AccessDeniedDataTablesJson();
         var list = await _service.GetAllItemsPagedAsync(searchModel.SectionId, searchModel.Page - 1, searchModel.PageSize);
         var model = await new DonItemListModel().PrepareToGridAsync(searchModel, list, () =>
             list.ToAsyncEnumerable().Select(i => new DonItemModel

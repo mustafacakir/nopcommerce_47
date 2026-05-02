@@ -1,0 +1,116 @@
+@model Nop.Plugin.Widgets.ContactInfo.Models.ConfigureModel
+@{
+    Layout = "_AdminLayout";
+    ViewBag.PageTitle = "İletişim Bilgileri";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">İletişim Bilgileri</h1>
+</div>
+
+<form asp-controller="ContactInfo" asp-action="Configure" method="post">
+    <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+    @await Component.InvokeAsync(typeof(Nop.Web.Areas.Admin.Components.StoreScopeConfigurationViewComponent))
+
+    <div class="card card-default">
+        <div class="card-body">
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-override-store-checkbox asp-for="Phone_OverrideForStore" asp-input="Phone" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                    <label asp-for="Phone">Telefon</label>
+                </div>
+                <div class="col-md-9">
+                    <input asp-for="Phone" class="form-control" placeholder="+90 212 000 00 00" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-override-store-checkbox asp-for="WhatsApp_OverrideForStore" asp-input="WhatsApp" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                    <label asp-for="WhatsApp">WhatsApp</label>
+                </div>
+                <div class="col-md-9">
+                    <input asp-for="WhatsApp" class="form-control" placeholder="+90 530 000 00 00" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-override-store-checkbox asp-for="Email_OverrideForStore" asp-input="Email" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                    <label asp-for="Email">E-posta</label>
+                </div>
+                <div class="col-md-9">
+                    <input asp-for="Email" class="form-control" placeholder="info@dernek.org" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-override-store-checkbox asp-for="Address_OverrideForStore" asp-input="Address" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                    <label asp-for="Address">Adres</label>
+                </div>
+                <div class="col-md-9">
+                    <textarea asp-for="Address" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-override-store-checkbox asp-for="MapEmbedUrl_OverrideForStore" asp-input="MapEmbedUrl" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                    <label asp-for="MapEmbedUrl">Harita Embed URL</label>
+                </div>
+                <div class="col-md-9">
+                    <input asp-for="MapEmbedUrl" class="form-control" placeholder="https://maps.google.com/maps?..." />
+                    <small class="text-muted">Google Maps → Paylaş → Haritayı göm → src içindeki URL</small>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-override-store-checkbox asp-for="FacebookUrl_OverrideForStore" asp-input="FacebookUrl" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                    <label asp-for="FacebookUrl">Facebook URL</label>
+                </div>
+                <div class="col-md-9">
+                    <input asp-for="FacebookUrl" class="form-control" placeholder="https://facebook.com/..." />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-override-store-checkbox asp-for="InstagramUrl_OverrideForStore" asp-input="InstagramUrl" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                    <label asp-for="InstagramUrl">Instagram URL</label>
+                </div>
+                <div class="col-md-9">
+                    <input asp-for="InstagramUrl" class="form-control" placeholder="https://instagram.com/..." />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-override-store-checkbox asp-for="TwitterUrl_OverrideForStore" asp-input="TwitterUrl" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                    <label asp-for="TwitterUrl">Twitter/X URL</label>
+                </div>
+                <div class="col-md-9">
+                    <input asp-for="TwitterUrl" class="form-control" placeholder="https://twitter.com/..." />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-override-store-checkbox asp-for="YoutubeUrl_OverrideForStore" asp-input="YoutubeUrl" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                    <label asp-for="YoutubeUrl">YouTube URL</label>
+                </div>
+                <div class="col-md-9">
+                    <input asp-for="YoutubeUrl" class="form-control" placeholder="https://youtube.com/..." />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
