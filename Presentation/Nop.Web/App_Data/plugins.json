@@ -206,6 +206,10 @@
     {
       "SystemName": "Widgets.ContactInfo",
       "Version": "1.0"
+    },
+    {
+      "SystemName": "Widgets.DonationGrid",
+      "Version": "1.0.0"
     }
   ],
   "PluginNamesToUninstall": [],

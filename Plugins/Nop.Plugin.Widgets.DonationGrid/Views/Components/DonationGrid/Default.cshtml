@@ -1,0 +1,348 @@
+@using Nop.Plugin.Widgets.DonationGrid.Models
+@model DonationGridModel
+@{ Layout = ""; }
+
+@{
+    var allProducts = Model.Categories.SelectMany(c => c.Products).ToList();
+}
+
+@if (!allProducts.Any()) { return; }
+
+<div class="dg-wrap">
+
+    <aside class="dg-sidebar">
+        <div class="dg-sidebar-title">Kategoriler</div>
+        <ul class="dg-cat-list">
+            <li>
+                <button class="dg-cat-btn dg-cat-active" data-cat="all" type="button">
+                    <span class="dg-cat-name">Tümü</span>
+                    <span class="dg-cat-count">@allProducts.Count</span>
+                </button>
+            </li>
+            @foreach (var cat in Model.Categories)
+            {
+                <li>
+                    <button class="dg-cat-btn" data-cat="@cat.Id" type="button">
+                        @if (!string.IsNullOrEmpty(cat.IconUrl))
+                        {
+                            <img class="dg-cat-icon" src="@cat.IconUrl" alt="" loading="lazy" />
+                        }
+                        <span class="dg-cat-name">@cat.Name</span>
+                        <span class="dg-cat-count">@cat.Products.Count</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    </aside>
+
+    <div class="dg-main">
+        <div class="dg-grid dg-grid-active" id="dg-cat-all">
+            @foreach (var product in allProducts)
+            {
+                var pic = product.PictureModels.FirstOrDefault();
+                <article class="dg-card" data-href="/@product.SeName">
+                    <div class="dg-card-media">
+                        @if (!string.IsNullOrEmpty(pic?.ImageUrl))
+                        {
+                            <img src="@pic.ImageUrl" alt="@(pic.AlternateText ?? product.Name)" loading="lazy" />
+                        }
+                        else
+                        {
+                            <div class="dg-card-placeholder">🤲</div>
+                        }
+                        <div class="dg-card-overlay"></div>
+                        <div class="dg-card-price">@product.ProductPrice.Price</div>
+                    </div>
+                    <div class="dg-card-body">
+                        <h3 class="dg-card-title">@product.Name</h3>
+                        @if (!string.IsNullOrEmpty(product.ShortDescription))
+                        {
+                            <p class="dg-card-desc">@product.ShortDescription</p>
+                        }
+                    </div>
+                    <div class="dg-card-footer">
+                        <div class="dg-qty">
+                            <button type="button" class="dg-qty-minus" aria-label="Azalt">−</button>
+                            <span class="dg-qty-val">1</span>
+                            <input type="hidden" class="dg-qty-input" value="1" />
+                            <button type="button" class="dg-qty-plus" aria-label="Artır">+</button>
+                        </div>
+                        <div class="dg-btns">
+                            <button type="button" class="dg-btn-donate" data-product-id="@product.Id" >
+                                🤲 Bağış Yap
+                            </button>
+                            <button type="button" class="dg-btn-cart" data-product-id="@product.Id" >
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                                Sepet
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+
+        @foreach (var cat in Model.Categories)
+        {
+            <div class="dg-grid" id="dg-cat-@cat.Id">
+                @foreach (var product in cat.Products)
+                {
+                    var pic = product.PictureModels.FirstOrDefault();
+                    <article class="dg-card" data-href="/@product.SeName">
+                        <div class="dg-card-media">
+                            @if (!string.IsNullOrEmpty(pic?.ImageUrl))
+                            {
+                                <img src="@pic.ImageUrl" alt="@(pic.AlternateText ?? product.Name)" loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="dg-card-placeholder">🤲</div>
+                            }
+                            <div class="dg-card-overlay"></div>
+                            <div class="dg-card-price">@product.ProductPrice.Price</div>
+                        </div>
+                        <div class="dg-card-body">
+                            <h3 class="dg-card-title">@product.Name</h3>
+                            @if (!string.IsNullOrEmpty(product.ShortDescription))
+                            {
+                                <p class="dg-card-desc">@product.ShortDescription</p>
+                            }
+                        </div>
+                        <div class="dg-card-footer">
+                            <div class="dg-qty">
+                                <button type="button" class="dg-qty-minus" aria-label="Azalt">−</button>
+                                <span class="dg-qty-val">1</span>
+                                <input type="hidden" class="dg-qty-input" value="1" />
+                                <button type="button" class="dg-qty-plus" aria-label="Artır">+</button>
+                            </div>
+                            <div class="dg-btns">
+                                <button type="button" class="dg-btn-donate" data-product-id="@product.Id" >
+                                    🤲 Bağış Yap
+                                </button>
+                                <button type="button" class="dg-btn-cart" data-product-id="@product.Id" >
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                                    Sepet
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+body:has(.dg-wrap) .side-2 { display: none !important; }
+body:has(.dg-wrap) .master-column-wrapper { grid-template-columns: 1fr !important; }
+
+.dg-wrap {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+/* ── Sidebar ── */
+.dg-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+    position: sticky;
+    top: 80px;
+}
+.dg-sidebar-title {
+    padding: 14px 16px 10px;
+    font-size: .72rem;
+    font-weight: 800;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    border-bottom: 1px solid #f3f4f6;
+}
+.dg-cat-list {
+    list-style: none;
+    margin: 0;
+    padding: 6px 0 8px;
+}
+.dg-cat-list li { margin: 0; }
+.dg-cat-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: .875rem;
+    font-weight: 600;
+    color: #374151;
+    text-align: left;
+    transition: background .12s, color .12s;
+    border-radius: 0;
+}
+.dg-cat-btn:hover { background: #f9fafb; color: #111827; }
+.dg-cat-active { background: #fff7ed !important; color: #ea580c !important; }
+.dg-cat-active .dg-cat-count { background: #fdba74; color: #7c2d12; }
+.dg-cat-icon { width: 22px; height: 22px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+.dg-cat-name { flex: 1; min-width: 0; }
+.dg-cat-count {
+    font-size: .72rem;
+    font-weight: 700;
+    background: #f3f4f6;
+    color: #6b7280;
+    padding: 2px 7px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+/* ── Main grid ── */
+.dg-main { flex: 1; min-width: 0; }
+.dg-grid { display: none; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.dg-grid-active { display: grid; }
+
+/* ── Card ── */
+.dg-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 1px 6px rgba(0,0,0,.04);
+}
+.dg-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
+
+.dg-card-media { position: relative; overflow: hidden; flex-shrink: 0; }
+.dg-card-media img { width: 100%; height: 160px; object-fit: cover; display: block; transition: transform .4s; }
+.dg-card:hover .dg-card-media img { transform: scale(1.06); }
+.dg-card-placeholder { width: 100%; height: 160px; display: flex; align-items: center; justify-content: center; font-size: 44px; background: linear-gradient(135deg, #fff7ed, #fef3c7); }
+.dg-card-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.4)); pointer-events: none; }
+.dg-card-price { position: absolute; bottom: 8px; left: 10px; background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 7px; box-shadow: 0 2px 6px rgba(234,88,12,.4); }
+
+.dg-card-body { padding: 12px 14px 0; flex: 1; }
+.dg-card-title { font-size: 13.5px; font-weight: 800; color: #111827; line-height: 1.35; margin: 0 0 5px; }
+.dg-card-desc { font-size: 11.5px; color: #9ca3af; line-height: 1.5; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.dg-card-footer { display: flex; align-items: center; gap: 8px; padding: 10px 14px 14px; margin-top: 10px; border-top: 1px solid #f3f4f6; flex-shrink: 0; flex-wrap: wrap; }
+
+.dg-qty { display: flex; align-items: center; border: 1.5px solid #e5e7eb; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: #fafafa; }
+.dg-qty button { width: 28px; height: 30px; border: none; background: transparent; font-size: 16px; cursor: pointer; color: #6b7280; transition: background .12s, color .12s; display: flex; align-items: center; justify-content: center; }
+.dg-qty button:hover { background: #f97316; color: #fff; }
+.dg-qty-val { min-width: 28px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 700; color: #111827; border-left: 1.5px solid #e5e7eb; border-right: 1.5px solid #e5e7eb; background: #fff; user-select: none; padding: 0 3px; }
+
+.dg-btns { display: flex; gap: 6px; flex: 1; min-width: 0; }
+.dg-btn-donate, .dg-btn-cart {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 8px 6px;
+    border: none; border-radius: 8px;
+    font-size: 12px; font-weight: 700;
+    cursor: pointer; transition: opacity .15s, transform .12s, box-shadow .15s;
+    white-space: nowrap;
+    min-width: 0;
+}
+.dg-btn-donate { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; box-shadow: 0 3px 10px rgba(234,88,12,.3); }
+.dg-btn-donate:hover { opacity: .9; transform: scale(1.03); }
+.dg-btn-cart { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; box-shadow: 0 3px 10px rgba(29,78,216,.3); }
+.dg-btn-cart:hover { opacity: .9; transform: scale(1.03); }
+.dg-btn-donate:disabled, .dg-btn-cart:disabled { background: #d1d5db; box-shadow: none; cursor: not-allowed; transform: none; }
+
+@@media (max-width: 1024px) {
+    .dg-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@@media (max-width: 767px) {
+    .dg-wrap { flex-direction: column; }
+    .dg-sidebar { width: 100%; position: static; }
+    .dg-cat-list { display: flex; flex-wrap: wrap; padding: 8px; gap: 6px; }
+    .dg-cat-btn { width: auto; border-radius: 20px; padding: 7px 14px; border: 1.5px solid #e5e7eb; }
+    .dg-cat-active { border-color: #f97316 !important; }
+    .dg-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+@@media (max-width: 480px) {
+    .dg-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .dg-card-media img, .dg-card-placeholder { height: 130px; }
+}
+@@media (max-width: 360px) {
+    .dg-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+(function () {
+    var wrap = document.querySelector('.dg-wrap');
+    if (!wrap) return;
+
+    wrap.querySelectorAll('.dg-cat-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            wrap.querySelectorAll('.dg-cat-btn').forEach(function (b) { b.classList.remove('dg-cat-active'); });
+            btn.classList.add('dg-cat-active');
+            wrap.querySelectorAll('.dg-grid').forEach(function (g) { g.classList.remove('dg-grid-active'); });
+            var grid = wrap.querySelector('#dg-cat-' + btn.dataset.cat);
+            if (grid) grid.classList.add('dg-grid-active');
+        });
+    });
+
+    wrap.querySelectorAll('.dg-card').forEach(function (card) {
+        var input   = card.querySelector('.dg-qty-input');
+        var display = card.querySelector('.dg-qty-val');
+        card.querySelector('.dg-qty-minus').addEventListener('click', function (e) {
+            e.stopPropagation();
+            var v = Math.max(1, (parseInt(input.value) || 1) - 1);
+            input.value = v; display.textContent = v;
+        });
+        card.querySelector('.dg-qty-plus').addEventListener('click', function (e) {
+            e.stopPropagation();
+            var v = (parseInt(input.value) || 1) + 1;
+            input.value = v; display.textContent = v;
+        });
+        card.addEventListener('click', function (e) {
+            if (!e.target.closest('.dg-card-footer')) {
+                window.location.href = card.dataset.href;
+            }
+        });
+    });
+
+    function addToCart(btn, andGo) {
+        var card      = btn.closest('.dg-card');
+        var productId = btn.dataset.productId;
+        var qty       = parseInt(card.querySelector('.dg-qty-input').value) || 1;
+
+        btn.disabled = true;
+
+        if (andGo) {
+            var orig = AjaxCart.success_process;
+            AjaxCart.success_process = function (data) {
+                AjaxCart.success_process = orig;
+                btn.disabled = false;
+                if (data && (data.success === true || data.updatetopcartsectionhtml)) {
+                    window.location.href = '/cart';
+                } else {
+                    orig.call(AjaxCart, data);
+                }
+            };
+        } else {
+            var orig2 = AjaxCart.success_process;
+            AjaxCart.success_process = function (data) {
+                AjaxCart.success_process = orig2;
+                btn.disabled = false;
+                orig2.call(AjaxCart, data);
+            };
+        }
+
+        AjaxCart.addproducttocart_catalog('/addproducttocart/catalog/' + productId + '/1/' + qty);
+    }
+
+    wrap.querySelectorAll('.dg-btn-donate').forEach(function (btn) {
+        btn.addEventListener('click', function (e) { e.stopPropagation(); addToCart(btn, true); });
+    });
+    wrap.querySelectorAll('.dg-btn-cart').forEach(function (btn) {
+        btn.addEventListener('click', function (e) { e.stopPropagation(); addToCart(btn, false); });
+    });
+})();
+</script>

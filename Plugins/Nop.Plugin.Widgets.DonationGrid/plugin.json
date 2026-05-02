@@ -1,0 +1,13 @@
+{
+    "Group":  "Widgets",
+    "FriendlyName":  "Donation Grid",
+    "SystemName":  "Widgets.DonationGrid",
+    "Version":  "1.0.0",
+    "SupportedVersions":  [
+                              "4.70"
+                          ],
+    "Author":  "Pekin Teknoloji",
+    "DisplayOrder":  5,
+    "FileName":  "Nop.Plugin.Widgets.DonationGrid.dll",
+    "Description":  "Displays a sidebar-category donation product grid on category pages"
+}
