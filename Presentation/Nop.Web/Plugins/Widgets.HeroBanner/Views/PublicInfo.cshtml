@@ -135,7 +135,7 @@
     .hb-section {
         position: relative;
         background: #fff;
-        padding: 64px 24px 72px;
+        padding: 64px 24px 72px 0;
         overflow: hidden;
     }
 
@@ -374,7 +374,7 @@
         .hb-title { font-size: 36px; }
     }
     @@media (max-width: 767px) {
-        .hb-section { padding: 48px 20px 56px; }
+        .hb-section { padding: 48px 20px 56px 20px; }
         .hb-container {
             grid-template-columns: 1fr;
             gap: 48px;
@@ -382,7 +382,10 @@
         .hb-visual { order: -1; }
         .hb-float-card--top  { top: -14px; left: -10px; }
         .hb-float-card--bottom { bottom: -14px; right: -10px; }
-        .hb-title { font-size: 30px; }
-        .hb-subtitle { font-size: 15px; }
+        .hb-title { font-size: 30px; text-align: center; }
+        .hb-subtitle { font-size: 15px; text-align: center; max-width: 100%; }
+        .hb-badge { margin-left: auto; margin-right: auto; }
+        .hb-actions { justify-content: center; }
+        .hb-content { display: flex; flex-direction: column; align-items: center; text-align: center; }
     }
 </style>

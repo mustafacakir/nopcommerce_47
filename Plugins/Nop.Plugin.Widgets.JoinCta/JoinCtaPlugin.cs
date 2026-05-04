@@ -17,7 +17,7 @@ public class JoinCtaPlugin : BasePlugin, IWidgetPlugin
     public Type GetWidgetViewComponent(string widgetZone) => typeof(JoinCtaViewComponent);
 
     public Task<IList<string>> GetWidgetZonesAsync() =>
-        Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageTop });
+        Task.FromResult<IList<string>>(new List<string> { PublicWidgetZones.HomepageBottom });
 
     public override string GetConfigurationPageUrl() => "/Admin/JoinCtaAdmin/Configure";
 

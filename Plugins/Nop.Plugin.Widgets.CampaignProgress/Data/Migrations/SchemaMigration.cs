@@ -10,13 +10,13 @@ public class SchemaMigration : Migration
 {
     public override void Up()
     {
-        if (!Schema.Table("Campaign").Exists())
+        if (!Schema.Table("CampaignProgress").Exists())
             Create.TableFor<Campaign>();
     }
 
     public override void Down()
     {
-        if (Schema.Table("Campaign").Exists())
-            Delete.Table("Campaign");
+        if (Schema.Table("CampaignProgress").Exists())
+            Delete.Table("CampaignProgress");
     }
 }

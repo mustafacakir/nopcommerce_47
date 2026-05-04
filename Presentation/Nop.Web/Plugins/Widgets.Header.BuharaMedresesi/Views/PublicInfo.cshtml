@@ -60,9 +60,24 @@
                 }
             </div>
             <div class="bh-topbar__divider"></div>
-            @await Component.InvokeAsync("LanguageSelector")
+            <div style="display:flex;align-items:center;gap:4px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#fff;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                @await Component.InvokeAsync("LanguageSelector")
+            </div>
         </div>
     </div>
+</div>
+
+<!-- Mobil buton barı -->
+<div class="bh-mobile-btns">
+    <a href="/login" class="bh-login-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Giriş Yap
+    </a>
+    <a href="/bagis" class="bh-donate-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Bağış Yap
+    </a>
 </div>
 
 <!-- Bağış Yap butonu header-lower'a enjekte et -->
@@ -216,9 +231,39 @@
     }
     .bh-login-btn:hover { background: #1a2370; color: #fff !important; }
 
+    /* Mobil buton barı */
+    .bh-mobile-btns { display: none; }
+
     @@media (max-width: 768px) {
-        .bh-topbar__left { display: none; }
-        .bh-topbar__inner { justify-content: flex-end; }
+        .bh-topbar__inner {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+        }
+        .bh-topbar__left { justify-content: center; flex-wrap: wrap; gap: 12px; }
+        .bh-topbar__right { justify-content: center; }
+        .header-lower { min-height: 0 !important; padding: 0 !important; }
+        .search-cart-wrapper .bh-login-btn,
+        .search-cart-wrapper .bh-donate-btn { display: none !important; }
+        .bh-mobile-btns {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: #fff;
+            border-top: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+        .bh-mobile-btns .bh-login-btn,
+        .bh-mobile-btns .bh-donate-btn {
+            margin-left: 0;
+            flex: 1;
+            justify-content: center;
+            min-width: 120px;
+        }
     }
 </style>
 
