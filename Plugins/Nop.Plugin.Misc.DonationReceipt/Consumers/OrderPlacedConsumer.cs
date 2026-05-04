@@ -5,6 +5,7 @@ using Nop.Plugin.Misc.DonationReceipt.Services;
 using Nop.Services.Catalog;
 using Nop.Services.Customers;
 using Nop.Services.Events;
+using Nop.Services.Configuration;
 using Nop.Services.Messages;
 using Nop.Services.Orders;
 using Nop.Services.Stores;
