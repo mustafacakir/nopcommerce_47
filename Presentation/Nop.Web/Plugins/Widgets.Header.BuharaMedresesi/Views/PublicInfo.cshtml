@@ -59,11 +59,6 @@
                     </a>
                 }
             </div>
-            <div class="bh-topbar__divider"></div>
-            <div style="display:flex;align-items:center;gap:4px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#fff;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                @await Component.InvokeAsync("LanguageSelector")
-            </div>
         </div>
     </div>
 </div>
@@ -85,6 +80,14 @@
         padding: 12px 24px;
         min-height: 80px;
     }
+
+    /* header-upper gizle (içeriği topbar'a taşındı) */
+    .header-upper { display: none !important; }
+
+    /* Wishlist gizle */
+    .bh-topbar .ico-wishlist,
+    .bh-topbar .ico-wishlist ~ * { display: none !important; }
+    .bh-topbar .header-links ul li:has(.ico-wishlist) { display: none !important; }
 
     /* Arama inputunu gizle */
     .search-box.store-search-box { display: none !important; }
@@ -151,8 +154,35 @@
     .bh-topbar__item:hover { color: #fff; opacity: 0.85; }
     .bh-topbar__item svg { flex-shrink: 0; }
 
-    .bh-topbar__right { display: flex; align-items: center; gap: 14px; }
+    .bh-topbar__right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
     .bh-topbar__social { display: flex; align-items: center; gap: 12px; }
+
+    /* Header links topbar'a taşındığında */
+    .bh-topbar .header-links-wrapper { display: flex; align-items: center; }
+    .bh-topbar .header-links ul,
+    .bh-topbar .admin-header-links ul { display: flex; align-items: center; gap: 0; margin: 0; padding: 0; list-style: none; }
+    .bh-topbar .header-links ul li a,
+    .bh-topbar .admin-header-links ul li a {
+        display: flex; align-items: center; gap: 5px;
+        color: rgba(255,255,255,0.85) !important;
+        font-size: 12px; font-weight: 700;
+        text-decoration: none !important;
+        padding: 4px 10px;
+        border-radius: 4px;
+        transition: color 0.15s, background 0.15s;
+        white-space: nowrap;
+    }
+    .bh-topbar .header-links ul li a:hover,
+    .bh-topbar .admin-header-links ul li a:hover { color: #fff !important; background: rgba(255,255,255,0.1); }
+    .bh-topbar .admin-header-links ul li a { color: #fbbf24 !important; font-weight: 700; }
+    .bh-topbar .admin-header-links ul li a:hover { color: #fde68a !important; }
+    .bh-topbar .header-links-wrapper::before {
+        content: '';
+        display: block;
+        width: 1px; height: 16px;
+        background: rgba(255,255,255,0.3);
+        margin-right: 6px;
+    }
     .bh-topbar__soc {
         color: #fff;
         display: flex; align-items: center;
@@ -203,8 +233,7 @@
     }
     .bh-donate-btn:hover { background: #d04e00; transform: translateY(-1px); }
     .bh-donate-btn svg { flex-shrink: 0; }
-    .search-cart-wrapper { display: flex; align-items: center; }
-    .search-cart-wrapper .bh-donate-btn { margin-left: auto; }
+    .search-cart-wrapper { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
 
     /* Mobil buton barı */
     .bh-mobile-btns { display: none; }
@@ -242,6 +271,13 @@
 
 <script>
     (function () {
+        function moveHeaderLinks() {
+            var linksWrap = document.querySelector('.header-links-wrapper');
+            var topbarRight = document.querySelector('.bh-topbar__right');
+            if (!linksWrap || !topbarRight) return;
+            topbarRight.appendChild(linksWrap);
+        }
+
         function injectButtons() {
             var wrap = document.querySelector('.search-cart-wrapper');
             if (!wrap) return;
@@ -254,10 +290,15 @@
             wrap.appendChild(donateBtn);
         }
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', injectButtons);
-        } else {
+        function init() {
+            moveHeaderLinks();
             injectButtons();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
         }
     })();
 </script>

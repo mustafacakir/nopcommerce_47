@@ -17,4 +17,5 @@ public class HeroSlide : BaseEntity
     public string CategoryIcon        { get; set; }
     public int    DisplayOrder        { get; set; }
     public bool   IsActive            { get; set; }
+    public int    StoreId             { get; set; }
 }

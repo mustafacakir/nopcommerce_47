@@ -1,7 +1,7 @@
 @model HeroSlideModel
 @{
     Layout = "_ConfigurePlugin";
-    ViewBag.Title = Model.Id == 0 ? "Yeni Slide" : "Slide Düzenle";
+    ViewBag.Title = Model.Id == 0 ? "Yeni Slide" : $"Slide Düzenle: {Model.Title}";
 }
 
 <form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" asp-controller="HeroSliderAdmin" method="post">

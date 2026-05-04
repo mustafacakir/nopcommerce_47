@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Nop.Core;
 using Nop.Plugin.Widgets.HeroSlider.Domain;
 using Nop.Plugin.Widgets.HeroSlider.Models.Admin;
 using Nop.Plugin.Widgets.HeroSlider.Services;
@@ -15,10 +16,12 @@ namespace Nop.Plugin.Widgets.HeroSlider.Controllers;
 public class HeroSliderAdminController : BasePluginController
 {
     private readonly IHeroSliderService _service;
+    private readonly IStoreContext _storeContext;
 
-    public HeroSliderAdminController(IHeroSliderService service)
+    public HeroSliderAdminController(IHeroSliderService service, IStoreContext storeContext)
     {
         _service = service;
+        _storeContext = storeContext;
     }
 
     public IActionResult List()
@@ -31,7 +34,8 @@ public class HeroSliderAdminController : BasePluginController
     [HttpPost]
     public async Task<IActionResult> List(HeroSlideSearchModel searchModel)
     {
-        var slides = await _service.GetAllPagedAsync(searchModel.Page - 1, searchModel.PageSize);
+        var storeId = (await _storeContext.GetCurrentStoreAsync()).Id;
+        var slides = await _service.GetAllPagedAsync(storeId, searchModel.Page - 1, searchModel.PageSize);
         var model = await new HeroSlideListModel().PrepareToGridAsync(searchModel, slides, () =>
             slides.ToAsyncEnumerable().Select(s => new HeroSlideModel
             {
@@ -51,6 +55,7 @@ public class HeroSliderAdminController : BasePluginController
         if (!ModelState.IsValid)
             return View("~/Plugins/Widgets.HeroSlider/Views/Admin/CreateOrEdit.cshtml", model);
 
+        var storeId = (await _storeContext.GetCurrentStoreAsync()).Id;
         await _service.InsertAsync(new HeroSlide
         {
             Title = model.Title, Subtitle = model.Subtitle,
@@ -58,7 +63,7 @@ public class HeroSliderAdminController : BasePluginController
             PrimaryButtonText = model.PrimaryButtonText, PrimaryButtonUrl = model.PrimaryButtonUrl,
             SecondaryButtonText = model.SecondaryButtonText, SecondaryButtonUrl = model.SecondaryButtonUrl,
             ImageUrl = model.ImageUrl, CategoryName = model.CategoryName, CategoryIcon = model.CategoryIcon,
-            DisplayOrder = model.DisplayOrder, IsActive = model.IsActive
+            DisplayOrder = model.DisplayOrder, IsActive = model.IsActive, StoreId = storeId
         });
         return RedirectToAction(nameof(List));
     }

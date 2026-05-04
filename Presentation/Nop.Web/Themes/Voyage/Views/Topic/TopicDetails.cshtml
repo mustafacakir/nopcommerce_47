@@ -1,0 +1,168 @@
+@model TopicModel
+
+@using Nop.Core
+@using Nop.Core.Domain.Seo
+@using Nop.Core.Domain.Topics
+
+@inject IWebHelper webHelper
+@inject SeoSettings seoSettings
+
+@{
+    var isPopup = ViewBag.IsPopup ?? false;
+    if (!isPopup)
+    {
+        Layout = "_ColumnsOne";
+    }
+    if (!Model.IsPasswordProtected)
+    {
+        NopHtml.AddTitleParts(!string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title);
+        NopHtml.AddMetaDescriptionParts(Model.MetaDescription);
+        NopHtml.AddMetaKeywordParts(Model.MetaKeywords);
+    }
+    if (seoSettings.CanonicalUrlsEnabled)
+    {
+        var topicUrl = Url.RouteUrl<Topic>(new { SeName = Model.SeName }, webHelper.GetCurrentRequestProtocol()).ToLowerInvariant();
+        NopHtml.AddCanonicalUrlParts(topicUrl, seoSettings.QueryStringInCanonicalUrlsEnabled);
+    }
+    NopHtml.AppendPageCssClassParts("html-topic-page");
+}
+
+<div class="tp-page" id="ph-topic">
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CustomerTopicDetailsTop, additionalData = Model })
+
+    @if (!Model.IsPasswordProtected && !string.IsNullOrEmpty(Model.Title))
+    {
+        <div class="tp-hero">
+            <div class="tp-hero__inner">
+                <h1 class="tp-hero__title">@Model.Title</h1>
+            </div>
+        </div>
+    }
+
+    @if (Model.IsPasswordProtected)
+    {
+        <script asp-location="Footer">
+            $(function () {
+                $('#button-password').on('click', function () {
+                    var postData = { id: $("#topic-@Model.Id").val(), password: $('#tp-password-input').val() };
+                    addAntiForgeryToken(postData);
+                    $.ajax({
+                        cache: false, type: "POST",
+                        url: "@Url.RouteUrl("TopicAuthenticate")",
+                        data: postData, dataType: "json",
+                        success: function (data) {
+                            if (data.Authenticated) {
+                                $('#ph-topic .tp-hero__title').html(data.Title);
+                                $('#ph-topic .tp-body').html(data.Body);
+                                $('#tp-pw-wrap').hide();
+                            } else {
+                                $('#tp-pw-error').text(data.Error).fadeIn('slow');
+                                $('#tp-password-input').select().focus();
+                            }
+                        }
+                    });
+                    return false;
+                });
+                $('#tp-pw-wrap #tp-password-input').select().focus();
+            });
+        </script>
+        <div class="tp-pw-wrap" id="tp-pw-wrap">
+            <form asp-route="TopicAuthenticate" method="post" autocomplete="off" class="tp-pw-form">
+                <input asp-for="Id" id="topic-@Model.Id" type="hidden" />
+                <p class="tp-pw-label">@T("Topic.EnterPassword")</p>
+                <div class="tp-pw-row">
+                    <input name="password" id="tp-password-input" type="password" class="tp-pw-input" />
+                    <button type="submit" id="button-password" class="tp-pw-btn">@T("Topic.Button")</button>
+                </div>
+                <div class="tp-pw-error" id="tp-pw-error" style="display:none"></div>
+            </form>
+        </div>
+    }
+
+    <div class="tp-body">
+        @Html.Raw(Model.Body)
+    </div>
+
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.CustomerTopicDetailsBottom, additionalData = Model })
+</div>
+
+<style>
+.tp-page { max-width: 860px; margin: 0 auto; padding: 0 20px 60px; }
+
+/* Hero başlık */
+.tp-hero {
+    margin: 40px 0 40px;
+    padding: 48px 40px;
+    background: linear-gradient(135deg, #1a2370 0%, #2d3a9e 100%);
+    border-radius: 16px;
+}
+.tp-hero__title {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+    line-height: 1.25;
+    letter-spacing: -.3px;
+}
+
+/* İçerik alanı */
+.tp-body {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #374151;
+}
+.tp-body h1, .tp-body h2, .tp-body h3, .tp-body h4 {
+    color: #111827;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 2em 0 .6em;
+}
+.tp-body h2 { font-size: 1.5rem; border-bottom: 2px solid #e5e7eb; padding-bottom: .4em; }
+.tp-body h3 { font-size: 1.2rem; }
+.tp-body h4 { font-size: 1rem; }
+.tp-body p { margin: 0 0 1.25em; }
+.tp-body ul, .tp-body ol { padding-left: 1.6em; margin: 0 0 1.25em; }
+.tp-body li { margin-bottom: .4em; }
+.tp-body a { color: #1d4ed8; text-decoration: underline; }
+.tp-body a:hover { color: #1e40af; }
+.tp-body blockquote {
+    border-left: 4px solid #1d4ed8;
+    margin: 1.5em 0;
+    padding: .8em 1.2em;
+    background: #eff6ff;
+    border-radius: 0 8px 8px 0;
+    color: #1e3a8a;
+    font-style: italic;
+}
+.tp-body img { max-width: 100%; height: auto; border-radius: 10px; margin: 1em 0; display: block; }
+.tp-body table {
+    width: 100%; border-collapse: collapse; margin: 1.5em 0; font-size: .95rem;
+}
+.tp-body table th, .tp-body table td {
+    border: 1px solid #e5e7eb; padding: 10px 14px; text-align: left;
+}
+.tp-body table th { background: #f3f4f6; font-weight: 700; color: #111827; }
+.tp-body table tr:nth-child(even) td { background: #f9fafb; }
+.tp-body hr { border: none; border-top: 2px solid #e5e7eb; margin: 2em 0; }
+
+/* Şifre koruması */
+.tp-pw-wrap { max-width: 400px; margin: 60px auto; text-align: center; }
+.tp-pw-label { font-weight: 600; color: #374151; margin-bottom: 14px; }
+.tp-pw-row { display: flex; gap: 8px; }
+.tp-pw-input {
+    flex: 1; padding: 10px 14px; border: 1.5px solid #d1d5db; border-radius: 8px;
+    font-size: .95rem; outline: none;
+}
+.tp-pw-input:focus { border-color: #1d4ed8; }
+.tp-pw-btn {
+    padding: 10px 20px; background: #1d4ed8; color: #fff; border: none;
+    border-radius: 8px; font-weight: 700; cursor: pointer;
+}
+.tp-pw-btn:hover { background: #1e40af; }
+.tp-pw-error { color: #dc2626; font-size: .85rem; margin-top: 8px; }
+
+@@media (max-width: 640px) {
+    .tp-hero { padding: 32px 24px; }
+    .tp-body { font-size: 1rem; }
+}
+</style>

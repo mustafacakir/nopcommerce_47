@@ -7,8 +7,6 @@ namespace Nop.Plugin.Widgets.HeroSlider.Services;
 
 public class HeroSliderService : IHeroSliderService
 {
-    private static readonly CacheKey _activeKey = new("heroslider.active.all", "heroslider.");
-
     private readonly IRepository<HeroSlide> _repo;
     private readonly IStaticCacheManager _cache;
 
@@ -18,13 +16,15 @@ public class HeroSliderService : IHeroSliderService
         _cache = cache;
     }
 
-    public async Task<IList<HeroSlide>> GetActiveSlidesAsync() =>
-        await _repo.GetAllAsync(
-            q => q.Where(s => s.IsActive).OrderBy(s => s.DisplayOrder),
-            _ => _activeKey);
+    private static CacheKey ActiveKey(int storeId) => new($"heroslider.active.{storeId}", "heroslider.");
 
-    public async Task<IPagedList<HeroSlide>> GetAllPagedAsync(int pageIndex = 0, int pageSize = int.MaxValue) =>
-        await _repo.GetAllPagedAsync(q => q.OrderBy(s => s.DisplayOrder), pageIndex, pageSize);
+    public async Task<IList<HeroSlide>> GetActiveSlidesAsync(int storeId) =>
+        await _repo.GetAllAsync(
+            q => q.Where(s => s.IsActive && s.StoreId == storeId).OrderBy(s => s.DisplayOrder),
+            _ => ActiveKey(storeId));
+
+    public async Task<IPagedList<HeroSlide>> GetAllPagedAsync(int storeId, int pageIndex = 0, int pageSize = int.MaxValue) =>
+        await _repo.GetAllPagedAsync(q => q.Where(s => s.StoreId == storeId).OrderBy(s => s.DisplayOrder), pageIndex, pageSize);
 
     public async Task<HeroSlide?> GetByIdAsync(int id) => await _repo.GetByIdAsync(id);
 

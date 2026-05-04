@@ -51,7 +51,9 @@ function renderSlideActions(data) {
 }
 function deleteSlide(id) {
     if (!confirm('Bu slide\'ı silmek istediğinize emin misiniz?')) return;
-    $.post('@Url.Action("Delete","HeroSliderAdmin")', { id: id }, function (r) {
+    var data = { id: id };
+    addAntiForgeryToken(data);
+    $.post('@Url.Action("Delete","HeroSliderAdmin")', data, function (r) {
         if (r.success) updateTable('#heroslider-grid');
     });
 }

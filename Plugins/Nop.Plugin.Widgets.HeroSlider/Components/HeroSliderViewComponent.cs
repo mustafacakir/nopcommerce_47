@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Nop.Core;
 using Nop.Plugin.Widgets.HeroSlider.Models.Public;
 using Nop.Plugin.Widgets.HeroSlider.Services;
 using Nop.Web.Framework.Components;
@@ -8,13 +9,18 @@ namespace Nop.Plugin.Widgets.HeroSlider.Components;
 public class HeroSliderViewComponent : NopViewComponent
 {
     private readonly IHeroSliderService _service;
+    private readonly IStoreContext _storeContext;
 
-    public HeroSliderViewComponent(IHeroSliderService service)
-        => _service = service;
+    public HeroSliderViewComponent(IHeroSliderService service, IStoreContext storeContext)
+    {
+        _service = service;
+        _storeContext = storeContext;
+    }
 
     public async Task<IViewComponentResult> InvokeAsync(string widgetZone, object additionalData)
     {
-        var slides = await _service.GetActiveSlidesAsync();
+        var storeId = (await _storeContext.GetCurrentStoreAsync()).Id;
+        var slides = await _service.GetActiveSlidesAsync(storeId);
         var model = new HeroSliderPublicModel
         {
             Slides = slides.Select(s => new HeroSlidePublic

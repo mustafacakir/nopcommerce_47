@@ -520,7 +520,9 @@
         }
 
         if (isCep) {
-            document.getElementById('ds-cep-form-price').value = selectedAmount;
+            var priceInput = document.getElementById('ds-cep-form-price');
+            priceInput.name  = 'addtocart_' + selectedItem.productId + '.CustomerEnteredPrice';
+            priceInput.value = selectedAmount;
             AjaxCart.addproducttocart_details(
                 '/addproducttocart/details/' + selectedItem.productId + '/1',
                 '#ds-cep-form'
