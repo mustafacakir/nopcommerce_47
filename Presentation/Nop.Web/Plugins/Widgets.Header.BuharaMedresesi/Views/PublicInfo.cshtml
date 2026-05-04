@@ -70,21 +70,14 @@
 
 <!-- Mobil buton barı -->
 <div class="bh-mobile-btns">
-    <a href="/login" class="bh-login-btn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-        Giriş Yap
-    </a>
-    <a href="/bagis" class="bh-donate-btn">
+    <a href="@Model.DonateUrl" class="bh-donate-btn">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Bağış Yap
+        @Model.DonateText
     </a>
 </div>
 
 <!-- Bağış Yap butonu header-lower'a enjekte et -->
 <style>
-    /* Voyage default üst bar'ı gizle */
-    .header-upper { display: none !important; }
-
     /* Header-lower içeriği container hizasında */
     .header-lower {
         max-width: 1180px;
@@ -211,26 +204,6 @@
     .bh-donate-btn:hover { background: #d04e00; transform: translateY(-1px); }
     .bh-donate-btn svg { flex-shrink: 0; }
 
-    /* Giriş Yap butonu */
-    .bh-login-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        background: transparent;
-        color: #1a2370 !important;
-        font-size: 14px;
-        font-weight: 600;
-        padding: 9px 20px;
-        border-radius: 50px;
-        border: 1.5px solid #1a2370;
-        text-decoration: none !important;
-        white-space: nowrap;
-        font-family: 'Poppins', sans-serif;
-        transition: background 0.2s, color 0.2s;
-        margin-left: 8px;
-    }
-    .bh-login-btn:hover { background: #1a2370; color: #fff !important; }
-
     /* Mobil buton barı */
     .bh-mobile-btns { display: none; }
 
@@ -245,7 +218,6 @@
         .bh-topbar__left { justify-content: center; flex-wrap: wrap; gap: 12px; }
         .bh-topbar__right { justify-content: center; }
         .header-lower { min-height: 0 !important; padding: 0 !important; }
-        .search-cart-wrapper .bh-login-btn,
         .search-cart-wrapper .bh-donate-btn { display: none !important; }
         .bh-mobile-btns {
             display: flex;
@@ -257,7 +229,6 @@
             border-top: 1px solid #eee;
             flex-wrap: wrap;
         }
-        .bh-mobile-btns .bh-login-btn,
         .bh-mobile-btns .bh-donate-btn {
             margin-left: 0;
             flex: 1;
@@ -273,17 +244,11 @@
             var wrap = document.querySelector('.search-cart-wrapper');
             if (!wrap) return;
 
-            var loginBtn = document.createElement('a');
-            loginBtn.href = '/login';
-            loginBtn.className = 'bh-login-btn';
-            loginBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Giriş Yap';
-
             var donateBtn = document.createElement('a');
             donateBtn.href = '@Model.DonateUrl';
             donateBtn.className = 'bh-donate-btn';
             donateBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>@Model.DonateText';
 
-            wrap.appendChild(loginBtn);
             wrap.appendChild(donateBtn);
         }
 
