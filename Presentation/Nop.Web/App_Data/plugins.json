@@ -214,6 +214,10 @@
     {
       "SystemName": "Misc.WhatsAppNotification",
       "Version": "1.0.0"
+    },
+    {
+      "SystemName": "Misc.DonationReceipt",
+      "Version": "1.0.0"
     }
   ],
   "PluginNamesToUninstall": [],

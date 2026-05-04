@@ -1,0 +1,159 @@
+@model BlogPostListModel
+
+@using Nop.Core.Domain.Blogs
+
+@{
+    Layout = "_ColumnsOne";
+    NopHtml.AddTitleParts(T("PageTitle.Blog").Text);
+    NopHtml.AppendPageCssClassParts("html-blog-page html-blog-cards-page");
+}
+
+<div class="page blog-page blog-cards-page">
+    <div class="page-title">
+        <h1>
+            @if (!string.IsNullOrEmpty(Model.PagingFilteringContext.Tag))
+            {
+                @string.Format(T("Blog.TaggedWith").Text, Model.PagingFilteringContext.Tag)
+            }
+            else if (Model.PagingFilteringContext.GetParsedMonth().HasValue)
+            {
+                @string.Format(T("Blog.FilteredByMonth").Text, Model.PagingFilteringContext.GetParsedMonth().Value.Year, Model.PagingFilteringContext.GetParsedMonth().Value.ToString("MMMM"))
+            }
+            else
+            {
+                <text>Faaliyetler</text>
+            }
+        </h1>
+    </div>
+    <div class="page-body">
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.BlogListPageBeforePosts, additionalData = Model })
+        <div class="blog-card-grid">
+            @foreach (var item in Model.BlogPosts)
+            {
+                @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.BlogListPageBeforePost, additionalData = item })
+                <div class="blog-card">
+                    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.BlogListPageBeforePostBody, additionalData = item })
+                    <div class="blog-card-content">
+                        <div class="blog-card-date">@item.CreatedOn.ToString("dd MMM yyyy")</div>
+                        <h3 class="blog-card-title">
+                            <a href="@(Url.RouteUrl<BlogPost>(new { SeName = item.SeName }))">@item.Title</a>
+                        </h3>
+                        <div class="blog-card-body">
+                            @Html.Raw(!string.IsNullOrEmpty(item.BodyOverview) ? item.BodyOverview : item.Body)
+                        </div>
+                        <a href="@(Url.RouteUrl<BlogPost>(new { SeName = item.SeName }))" class="blog-card-readmore">Devamını Oku</a>
+                    </div>
+                </div>
+                @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.BlogListPageAfterPost, additionalData = item })
+            }
+        </div>
+        @{
+            var pager = Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber");
+        }
+        @if (!(await pager.IsEmpty()))
+        {
+            <div class="pager">
+                @pager
+            </div>
+        }
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.BlogListPageAfterPosts, additionalData = Model })
+    </div>
+</div>
+
+<style>
+.blog-cards-page .blog-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    padding: 8px 0 40px;
+}
+@@media (max-width: 900px) {
+    .blog-cards-page .blog-card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@@media (max-width: 576px) {
+    .blog-cards-page .blog-card-grid { grid-template-columns: 1fr; }
+}
+
+.blog-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow .2s, transform .2s;
+}
+.blog-card:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,.14);
+    transform: translateY(-2px);
+}
+
+/* RichBlog resim inject — card'ın üstünü kapla */
+.blog-card .rich-blog-image,
+.blog-card .richblog-post-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #f3f4f6;
+}
+.blog-card .rich-blog-image a,
+.blog-card .richblog-post-image a { display: block; height: 100%; }
+.blog-card .rich-blog-image img,
+.blog-card .richblog-post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .35s;
+}
+.blog-card:hover .rich-blog-image img,
+.blog-card:hover .richblog-post-image img { transform: scale(1.04); }
+
+.blog-card-content {
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.blog-card-date {
+    font-size: 11px;
+    color: #9ca3af;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    margin-bottom: 8px;
+}
+.blog-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    line-height: 1.45;
+}
+.blog-card-title a { color: #111827; text-decoration: none; }
+.blog-card-title a:hover { color: #2563eb; }
+.blog-card-body {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.65;
+    flex: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+.blog-card-body p { margin: 0; }
+.blog-card-readmore {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 9px 22px;
+    background: #2563eb;
+    color: #fff !important;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none !important;
+    align-self: flex-start;
+    transition: background .15s;
+}
+.blog-card-readmore:hover { background: #1d4ed8; }
+</style>
