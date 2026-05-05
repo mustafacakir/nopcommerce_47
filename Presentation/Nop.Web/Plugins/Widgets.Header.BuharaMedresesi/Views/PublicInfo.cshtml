@@ -163,19 +163,18 @@
     .bh-topbar .header-links ul { display: flex; align-items: center; gap: 0; margin: 0; padding: 0; list-style: none; }
     .bh-topbar .header-links ul li a,
     .bh-topbar .admin-header-links a {
-        display: flex; align-items: center; gap: 5px;
-        color: rgba(255,255,255,0.85) !important;
+        display: inline-flex; align-items: center; gap: 5px;
+        color: #fff !important;
         font-size: 12px; font-weight: 700;
         text-decoration: none !important;
         padding: 4px 10px;
         border-radius: 4px;
         transition: color 0.15s, background 0.15s;
         white-space: nowrap;
+        vertical-align: middle;
     }
     .bh-topbar .header-links ul li a:hover,
-    .bh-topbar .admin-header-links a:hover { color: #fff !important; background: rgba(255,255,255,0.1); }
-    .bh-topbar .admin-header-links a { color: #fbbf24 !important; }
-    .bh-topbar .admin-header-links a:hover { color: #fde68a !important; }
+    .bh-topbar .admin-header-links a:hover { background: rgba(255,255,255,0.1); }
     .bh-topbar .header-links-wrapper::before {
         content: '';
         display: block;
