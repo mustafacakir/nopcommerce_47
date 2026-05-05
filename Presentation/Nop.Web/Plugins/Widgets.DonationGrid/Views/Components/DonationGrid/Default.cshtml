@@ -265,11 +265,17 @@ body:has(.dg-wrap) .master-column-wrapper { grid-template-columns: 1fr !importan
     .dg-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 @@media (max-width: 480px) {
-    .dg-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .dg-card-media img, .dg-card-placeholder { height: 130px; }
-}
-@@media (max-width: 360px) {
-    .dg-grid { grid-template-columns: 1fr; }
+    .dg-wrap { margin-left: -15px; margin-right: -15px; }
+    .dg-main { width: 100%; }
+    .dg-grid { grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+    .dg-card-media img, .dg-card-placeholder { height: 110px; }
+    .dg-card-body { padding: 8px 10px 0; }
+    .dg-card-title { font-size: 12px; }
+    .dg-card-desc { display: none; }
+    .dg-card-footer { flex-direction: column; align-items: stretch; gap: 6px; padding: 8px 10px 10px; }
+    .dg-qty { align-self: center; }
+    .dg-btns { flex-direction: column; gap: 6px; }
+    .dg-btn-donate, .dg-btn-cart { width: 100%; padding: 9px 6px; font-size: 11px; }
 }
 </style>
 

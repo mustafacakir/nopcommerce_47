@@ -1,0 +1,143 @@
+@using Nop.Plugin.Widgets.CampaignProgress.Models.Public
+@model CampaignListModel
+@{
+    Layout = "_ColumnsOne";
+    ViewBag.Title = "Kampanyalar";
+    NopHtml.AddTitleParts("Kampanyalar");
+}
+
+<div class="cl-page">
+    <div class="cl-hero">
+        <h1 class="cl-hero__title">Kampanyalar</h1>
+        <p class="cl-hero__sub">Devam eden bağış kampanyalarımıza destek olun</p>
+    </div>
+
+    @if (!Model.Campaigns.Any())
+    {
+        <div class="cl-empty">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <p>Şu an aktif kampanya bulunmuyor.</p>
+        </div>
+    }
+    else
+    {
+        <div class="cl-grid">
+            @foreach (var c in Model.Campaigns)
+            {
+                <a href="/proje/@c.Slug" class="cl-card">
+                    @if (!string.IsNullOrEmpty(c.ImageUrl))
+                    {
+                        <div class="cl-card__img-wrap">
+                            <img src="@c.ImageUrl" alt="@c.Title" class="cl-card__img" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="cl-card__img-wrap cl-card__img-wrap--empty">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        </div>
+                    }
+                    <div class="cl-card__body">
+                        <h2 class="cl-card__title">@c.Title</h2>
+
+                        <div class="cl-card__amounts">
+                            <span class="cl-card__raised">@c.CurrentAmount.ToString("N0") ₺</span>
+                            <span class="cl-card__pct">%@c.ProgressPercent</span>
+                        </div>
+
+                        <div class="cl-card__bar">
+                            <div class="cl-card__bar-fill" style="width:@c.ProgressPercent%"></div>
+                        </div>
+
+                        <div class="cl-card__goal">
+                            <span>Hedef</span>
+                            <span>@c.GoalAmount.ToString("N0") ₺</span>
+                        </div>
+
+                        <span class="cl-card__btn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            Destek Ol
+                        </span>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+</div>
+
+<style>
+.cl-page { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; }
+
+.cl-hero {
+    margin: 40px 0 36px;
+    padding: 48px 40px;
+    background: linear-gradient(135deg, #1a2370 0%, #2d3a9e 100%);
+    border-radius: 16px;
+    text-align: center;
+}
+.cl-hero__title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: #fff; margin: 0 0 8px; }
+.cl-hero__sub { font-size: 1rem; color: rgba(255,255,255,.75); margin: 0; }
+
+.cl-empty { text-align: center; padding: 60px 20px; color: #9ca3af; }
+.cl-empty p { margin-top: 12px; font-size: 1rem; }
+
+.cl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.cl-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.08);
+    overflow: hidden;
+    text-decoration: none !important;
+    transition: transform .18s, box-shadow .18s;
+    color: inherit;
+}
+.cl-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,.13); }
+
+.cl-card__img-wrap { height: 190px; overflow: hidden; }
+.cl-card__img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s; }
+.cl-card:hover .cl-card__img { transform: scale(1.04); }
+.cl-card__img-wrap--empty {
+    background: #f3f4f6;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.cl-card__body { padding: 20px; display: flex; flex-direction: column; flex: 1; gap: 10px; }
+
+.cl-card__title {
+    font-size: 1rem; font-weight: 700; color: #111827;
+    margin: 0; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.cl-card__amounts { display: flex; justify-content: space-between; align-items: center; }
+.cl-card__raised { font-size: 1.15rem; font-weight: 800; color: #2563eb; }
+.cl-card__pct { font-size: .82rem; font-weight: 700; background: #eff6ff; color: #1d4ed8; padding: 3px 9px; border-radius: 20px; }
+
+.cl-card__bar { height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+.cl-card__bar-fill { height: 100%; background: linear-gradient(90deg, #2563eb, #3b82f6); border-radius: 4px; transition: width .4s; }
+
+.cl-card__goal { display: flex; justify-content: space-between; font-size: .78rem; color: #6b7280; }
+
+.cl-card__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    margin-top: auto;
+    background: #2563eb; color: #fff;
+    padding: 10px 16px; border-radius: 8px;
+    font-size: .85rem; font-weight: 700;
+    transition: background .15s;
+}
+.cl-card:hover .cl-card__btn { background: #1d4ed8; }
+
+@@media (max-width: 860px) { .cl-grid { grid-template-columns: repeat(2, 1fr); } }
+@@media (max-width: 520px) {
+    .cl-grid { grid-template-columns: 1fr; }
+    .cl-hero { padding: 32px 20px; }
+}
+</style>

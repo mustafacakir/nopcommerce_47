@@ -348,15 +348,39 @@
 
 @@media (max-width: 860px) {
     .ds-card { flex-direction: column; }
+
+    /* Kategoriler — yatay kaydırmalı tab bar */
     .ds-col-cat { flex: none; border-right: none; border-bottom: 1px solid #f0f0f0; }
-    .ds-cat-list { display: flex; flex-wrap: wrap; gap: 4px; padding: 10px; }
-    .ds-cat-btn { width: auto; border-left: none; border-bottom: 2px solid transparent; padding: 8px 12px; font-size: .82rem; border-radius: 8px; }
-    .ds-cat-btn.ds-cat-on { border-left: none; border-bottom-color: #1d4ed8; background: #eff6ff; }
+    .ds-cat-list { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 10px 12px; scrollbar-width: none; }
+    .ds-cat-list::-webkit-scrollbar { display: none; }
+    .ds-cat-btn {
+        width: auto; flex-shrink: 0;
+        border-left: none; border-bottom: 2px solid transparent;
+        padding: 8px 14px; font-size: .82rem; border-radius: 20px;
+        background: #f3f4f6;
+    }
+    .ds-cat-btn.ds-cat-on { border-left: none; border-bottom: none; background: #1d4ed8; color: #fff; }
+
+    /* Ürünler — 2 kolonlu grid */
     .ds-col-items { border-right: none; border-bottom: 1px solid #f0f0f0; }
+    .ds-item-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px; }
+
+    /* Aksiyon alanı */
     .ds-col-action { flex: none; }
+    .ds-col-action > *:not(.ds-col-head) { padding-left: 14px; padding-right: 14px; }
+
+    /* Preset butonlar */
+    .ds-preset-row { gap: 6px; }
+    .ds-preset-btn { padding: 12px 4px; font-size: .9rem; }
+
+    /* Aksiyon butonları — alt alta, tam genişlik */
+    .ds-action-btns { flex-direction: column; gap: 8px; margin-top: 14px; }
+    .ds-btn-donate, .ds-btn-cart { width: 100%; justify-content: center; padding: 14px; font-size: .95rem; }
+    .ds-btn-cart { flex: none; }
+    .ds-item-list { grid-template-columns: 1fr 1fr; }
 }
-@@media (max-width: 520px) {
-    .ds-action-btns { flex-direction: column; }
+@@media (max-width: 480px) {
+    .ds-item-list { grid-template-columns: 1fr; }
 }
 </style>
 
