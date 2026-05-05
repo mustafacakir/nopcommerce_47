@@ -158,9 +158,16 @@
     .bh-topbar__social { display: flex; align-items: center; gap: 12px; }
 
     /* Header links topbar'a taşındığında */
-    .bh-topbar .header-links-wrapper { display: flex; align-items: center; }
-    .bh-topbar .admin-header-links { display: flex; align-items: center; gap: 4px; }
-    .bh-topbar .header-links ul { display: flex; align-items: center; gap: 0; margin: 0; padding: 0; list-style: none; }
+    .bh-topbar .header-links-wrapper {
+        display: flex !important; align-items: center;
+        flex-basis: auto !important; width: auto !important;
+        visibility: visible !important; overflow: visible !important;
+    }
+    .bh-topbar .admin-header-links { display: flex !important; align-items: center; gap: 4px; }
+    .bh-topbar .header-links { display: flex !important; margin: 0 !important; }
+    .bh-topbar .header-links ul { display: flex !important; align-items: center; gap: 0; margin: 0 !important; padding: 0; list-style: none; font-size: inherit !important; white-space: normal !important; }
+    .bh-topbar .header-links li { display: flex !important; }
+    .bh-topbar .header-links-wrapper { flex-wrap: wrap; }
     .bh-topbar .header-links ul li a,
     .bh-topbar .admin-header-links a {
         display: inline-flex; align-items: center; gap: 5px;
@@ -238,15 +245,54 @@
     .bh-mobile-btns { display: none; }
 
     @@media (max-width: 768px) {
+        /* Topbar: tek satır, tümü ortada */
         .bh-topbar__inner {
-            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0;
+            padding: 0 12px;
+        }
+        .bh-topbar__left {
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 10px 16px;
+            flex-wrap: wrap;
+            gap: 0;
+            width: 100%;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 4px 0;
         }
-        .bh-topbar__left { justify-content: center; flex-wrap: wrap; gap: 12px; }
-        .bh-topbar__right { justify-content: center; }
+        /* Telefon/e-posta linkleri — topbar item'larla eşit padding */
+        .bh-topbar__item {
+            padding: 4px 10px;
+            font-size: 12px;
+        }
+        .bh-topbar__right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0;
+            width: 100%;
+            padding: 4px 0;
+        }
+        /* Social ikonlar sağda, linkler solda — hepsi aynı satırda */
+        .bh-topbar__social { gap: 8px; }
+        .bh-topbar .header-links-wrapper { display: flex !important; }
+        .bh-topbar .header-links { display: flex !important; }
+        .bh-topbar .header-links ul { display: flex !important; flex-wrap: wrap; justify-content: center; }
+        .bh-topbar .header-links ul li { display: flex !important; }
+        .bh-topbar .header-links ul li a,
+        .bh-topbar .admin-header-links a { font-size: 12px; padding: 4px 8px; }
+        /* Sosyal medya ile linkler arası ayraç */
+        .bh-topbar .header-links-wrapper::before {
+            display: flex;
+            align-self: center;
+            width: 1px; height: 14px;
+            background: rgba(255,255,255,0.65);
+            margin-left: 12px; margin-right: 8px;
+        }
+
         .header-lower { min-height: 0 !important; padding: 0 !important; }
         .search-cart-wrapper .bh-donate-btn { display: none !important; }
         .bh-mobile-btns {
@@ -271,9 +317,25 @@
 <script>
     (function () {
         function moveHeaderLinks() {
-            var linksWrap = document.querySelector('.header-links-wrapper');
             var topbarRight = document.querySelector('.bh-topbar__right');
-            if (!linksWrap || !topbarRight) return;
+            if (!topbarRight) return;
+
+            var linksWrap = document.querySelector('.header-links-wrapper');
+            if (!linksWrap) return;
+
+            // Tema'nın nav-panel class'ını ve close butonunu temizle
+            var headerLinks = linksWrap.querySelector('.header-links');
+            if (headerLinks) {
+                headerLinks.classList.remove('nav-panel');
+                var closeBtn = headerLinks.querySelector('.close-button');
+                if (closeBtn) closeBtn.remove();
+                // Wishlist ve cart li'lerini kaldır
+                headerLinks.querySelectorAll('.ico-wishlist, .ico-cart').forEach(function(a) {
+                    var li = a.closest('li');
+                    if (li) li.remove();
+                });
+            }
+
             topbarRight.appendChild(linksWrap);
         }
 
@@ -294,10 +356,8 @@
             injectButtons();
         }
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
+        // window.load: tema JS'i DOMContentLoaded'da nav-panel class'ı ekliyor;
+        // ondan sonra çalışmak için load eventini kullanıyoruz
+        window.addEventListener('load', init);
     })();
 </script>
