@@ -1,11 +1,11 @@
-{
-    "Group": "Misc",
-    "FriendlyName": "Donation Receipt",
+﻿{
+    "Group": "Dernek",
+    "FriendlyName": "Donation Receipt [Dernek]",
     "SystemName": "Misc.DonationReceipt",
     "Version": "1.0.0",
     "SupportedVersions": [ "4.70" ],
     "Author": "Pekin Teknoloji",
     "DisplayOrder": 1,
     "FileName": "Nop.Plugin.Misc.DonationReceipt.dll",
-    "Description": "Sends an HTML donation receipt email to the donor after order placement"
+    "Description": "Sends an HTML donation receipt email to the donor after order placement | Dernek"
 }

@@ -1,6 +1,6 @@
 ﻿{
-    "Group":  "Widgets",
-    "FriendlyName":  "Volunteer CTA",
+    "Group": "Dernek",
+    "FriendlyName": "Volunteer CTA [Dernek]",
     "SystemName":  "Widgets.VolunteerCta",
     "Version":  "1.0",
     "SupportedVersions":  [
@@ -9,7 +9,7 @@
     "Author":  "Pekin Teknoloji",
     "DisplayOrder":  11,
     "FileName":  "Nop.Plugin.Widgets.VolunteerCta.dll",
-    "Description":  "Gönüllü ol çağrısı alanı",
+    "Description": "Gönüllü ol çağrısı alanı | Dernek",
     "LimitedToStores":  [
                             31
                         ]

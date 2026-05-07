@@ -9,7 +9,7 @@
   "FileName": "Nop.Plugin.Payments.PaytrIframe.dll",
   "Description": "PayTR avantajları ile web sitenizi alışverişe açın, Ödemelerinizi güvenle alın.",
   "LimitedToStores": [
-    39
+    40
   ],
   "LimitedToCustomerRoles": [],
   "DependsOnSystemNames": [],

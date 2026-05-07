@@ -1,23 +1,16 @@
 ﻿{
-    "Group":  "Widgets",
-    "FriendlyName":  "Donation Catalog",
+    "Group": "Dernek",
+    "FriendlyName": "Donation Catalog [Dernek]",
+    "SystemName":  "Widgets.DonationCatalog",
+    "Version":  "1.0.0",
     "SupportedVersions":  [
                               "4.70"
                           ],
     "Author":  "Pekin Teknoloji",
     "DisplayOrder":  4,
     "FileName":  "Nop.Plugin.Widgets.DonationCatalog.dll",
-    "Description":  "Displays a category-tabbed donation product catalog on the homepage",
+    "Description": "Displays a category-tabbed donation product catalog on the homepage | Dernek",
     "LimitedToStores":  [
-                            31,
-                            1
-                        ],
-    "LimitedToCustomerRoles":  [
-
-                               ],
-    "DependsOnSystemNames":  [
-
-                             ],
-    "SystemName":  "Widgets.DonationCatalog",
-    "Version":  "1.0.0"
+                            31
+                        ]
 }

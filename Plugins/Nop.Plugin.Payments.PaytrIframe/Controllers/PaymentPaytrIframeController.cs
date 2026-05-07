@@ -377,6 +377,15 @@ namespace Nop.Plugin.Payments.PaytrIframe.Controllers
             var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
             var paytrPaymentSettings = await _settingService.LoadSettingAsync<PaytrIframePaymentSettings>(storeScope);
 
+            if (string.IsNullOrWhiteSpace(paytrPaymentSettings.MerchantId) ||
+                string.IsNullOrWhiteSpace(paytrPaymentSettings.MerchantKey) ||
+                string.IsNullOrWhiteSpace(paytrPaymentSettings.MerchantSalt))
+            {
+                model.status = false;
+                model.message = "PayTR ödeme eklentisi henüz yapılandırılmamış. Lütfen yöneticinizle iletişime geçin.";
+                return View("~/Plugins/Payments.PaytrIframe/Views/Payment.cshtml", model);
+            }
+
             NameValueCollection data = new NameValueCollection();
 
             //merchant
