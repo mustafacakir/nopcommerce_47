@@ -86,3 +86,11 @@ Presentation/Nop.Web/Plugins/Widgets.DonationCatalog/runtimes/
 
 # Store-specific generated theme CSS (nopCommerce theme customizer output)
 Presentation/Nop.Web/Themes/Voyage/Content/css/theme.custom-*.css
+
+# Sensitive config files (contain DB credentials)
+Presentation/Nop.Web/App_Data/appsettings.json
+Presentation/Nop.Web/App_Data/appsettings.Development.json
+
+# Third-party plugin output directories (not our code)
+Presentation/Nop.Web/Plugins/Misc.SimpleCheckout/
+Presentation/Nop.Web/Plugins/SevenSpikes.Nop.Plugins.RichBlog/Lucene/
