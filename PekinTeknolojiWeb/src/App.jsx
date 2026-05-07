@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Routes, Route, useNavigate, useLocation, useParams, Link } from 'react-router-dom';
+import { MODULE_PAGES } from './moduleData.js';
 import { 
   ShoppingBag,
   Globe,
@@ -32,7 +34,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://test.pekinteknoloji.com';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://www.pekinteknoloji.com';
 
 const Logo = ({ size = 'md', light = false }) => (
   <div className={`brand-logo brand-logo--${size}`}>
@@ -347,7 +349,7 @@ const THEMES_DATA = [
 ];
 
 const IntegrationsStrip = () => {
-  const items = ['Trendyol', 'Hepsiburada', 'n11', 'iyzico', 'PayTR',
+  const items = ['Trendyol', 'Hepsiburada', 'n11', 'Güvenli Ödeme',
       'MNG Kargo', 'Yurtiçi Kargo', 'Aras Kargo', 'Sürat Kargo'];
   return (
     <div className="integrations-strip">
@@ -451,7 +453,7 @@ const FEATURE_TABS = [
   {
     icon: <ShieldCheck size={22} />,
     title: 'Güvenli Ödeme',
-    desc: 'iyzico, PayTR ve tüm sanal POS\'larla entegre. 3D Secure ve taksit seçenekleriyle müşteri güveni kazanın.',
+    desc: 'Tüm sanal POS sağlayıcılarıyla entegre. 3D Secure ve taksit seçenekleriyle müşteri güveni kazanın.',
     color: '#10B981',
     visual: (
       <div className="feature-visual-payment">
@@ -612,6 +614,44 @@ const BLOG_POSTS = [
       { type: 'p', text: 'Pekin Teknoloji, her sektöre uygun premium temalar sunmaktadır. Tüm temalar mobil uyumlu, hızlı yüklemeli ve kapsamlı özelleştirme seçenekleriyle donatılmıştır. Demo mağazalarımızı inceleyerek mağazanız için en uygun tasarımı seçebilirsiniz.' },
     ],
   },
+  {
+    slug: 'dernekler-icin-online-bagis',
+    tag: 'Dernek', color: '#16a34a',
+    title: 'Derneğiniz İçin Online Bağış Platformu Nasıl Kurulur?',
+    desc: 'Bağışçılarınıza güvenli ve kolay bir bağış deneyimi sunmak için bilmeniz gerekenler.',
+    readTime: '5 dk',
+    img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&q=80',
+    content: [
+      { type: 'p', text: 'Türkiye\'de sivil toplum kuruluşlarının dijitalleşmesi hız kazandı. Bağışçılar artık kapıdan kapıya bağış toplanmasını beklemiyor; güvenilir bir web sayfası üzerinden, istedikleri anda, istedikleri miktarda bağış yapmak istiyor.' },
+      { type: 'h2', text: 'Online Bağış Platformunun Temelleri' },
+      { type: 'p', text: 'İyi bir bağış platformu üç temel unsuru bir araya getirir: güvenli ödeme altyapısı, bağışın nereye gittiğini gösteren şeffaf raporlama ve bağışçıyla kurulan düzenli iletişim. Bu üçünü bir arada sağlayan platformlar, bağışçı sadakatini belirgin biçimde artırır.' },
+      { type: 'h2', text: 'Güvenli Ödeme Entegrasyonu' },
+      { type: 'p', text: 'Bağışçıların en sık sorduğu soru "param gerçekten derneğe ulaşıyor mu?" sorusudur. Lisanslı ödeme aracıları üzerinden alınan bağışlar hem yasal düzenlemelere uygun hem de güvenlidir. Makbuz otomasyonu da bu güveni pekiştirir.' },
+      { type: 'h2', text: 'Kampanya Sayfası Tasarımı' },
+      { type: 'p', text: 'Her kampanyanın net bir hedefi, ilerleme çubuğu ve somut bir hikayesi olmalıdır. "Su kuyusu açıyoruz, 50.000 TL toplamak istiyoruz" gibi somut hedefler, soyut çağrılara kıyasla çok daha yüksek dönüşüm sağlar. Görseller ve güncel ilerleme bilgisi bağışçıyı harekete geçirir.' },
+      { type: 'h2', text: 'Düzenli Bağış Sistemi' },
+      { type: 'p', text: 'Tek seferlik bağış yerine aylık otomatik bağış talimatı kuran bağışçılar, derneğin en değerli kaynağıdır. Düzenli bağış modülü; bağışçıya kolaylık, derneğe ise öngörülebilir gelir sağlar. Bu sistemi kurmak artık teknik bilgi gerektirmiyor.' },
+      { type: 'p', text: 'Pekin Teknoloji dernek platformu; kampanya yönetimi, otomatik makbuz, WhatsApp bildirimleri ve şeffaf raporlama ile aylık sabit ücretle sunulmaktadır. Ücretsiz demo için bizimle iletişime geçin.' },
+    ],
+  },
+  {
+    slug: 'kurban-organizasyonu-dijital',
+    tag: 'Dernek', color: '#b45309',
+    title: 'Kurban Organizasyonunu Dijitale Taşımak: Adım Adım Rehber',
+    desc: 'Online sipariş, hisse takibi ve kesim bildirimini tek platformdan nasıl yönetirsiniz?',
+    readTime: '4 dk',
+    img: 'https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=600&q=80',
+    content: [
+      { type: 'p', text: 'Kurban organizasyonu, dini ve kültürel kuruluşların en yoğun dönemlerinden birini oluşturur. Sipariş kağıtları, para tahsilatı, hisse takibi ve kesim koordinasyonu — tüm bu süreçler dijital bir platformla hem hatasız hem de çok daha hızlı yönetilebilir.' },
+      { type: 'h2', text: 'Online Sipariş ve Ön Ödeme' },
+      { type: 'p', text: 'Bağışçılar kurban hisselerini web siteniz üzerinden seçip ödeyebilir. Büyükbaş veya küçükbaş seçimi, hisse adedi ve kesim yeri tercihi — hepsi formda toplanır. Ön ödeme alındığında otomatik makbuz bağışçıya iletilir.' },
+      { type: 'h2', text: 'Hisse Takip Sistemi' },
+      { type: 'p', text: 'Her bağışçıya bir hisse kodu atanır. Kurban kesildiğinde bağışçı otomatik SMS veya WhatsApp bildirimi alır. Böylece "kurbanım kesildi mi?" soruları ortadan kalkar, ekip üzerindeki yük azalır.' },
+      { type: 'h2', text: 'Raporlama ve Şeffaflık' },
+      { type: 'p', text: 'Kaç hisse satıldı, hangi kesimhanede kaç kurban kesildi, toplanan bağış miktarı — tüm bu veriler anlık olarak panelde görünür. Yönetim kuruluna ve bağışçılara şeffaf rapor paylaşımı tek tıkla yapılır.' },
+      { type: 'p', text: 'Pekin Teknoloji kurban organizasyon modülü, küçük derneklerden büyük vakıflara ölçeklenen bir altyapı sunar. Kurulum birkaç gün sürer, kurban dönemi öncesinde yayına alabilirsiniz.' },
+    ],
+  },
 ];
 
 const BlogSection = ({ onNavigate }) => (
@@ -644,17 +684,38 @@ const BlogSection = ({ onNavigate }) => (
   </section>
 );
 
-const FAQ_ITEMS = [
-  { q: 'Mağaza açmak için teknik bilgi gerekiyor mu?', a: 'Hayır. Kurulum ve teknik ayarları biz yapıyoruz. Siz sadece ürünlerinizi yükleyin ve satmaya başlayın.' },
-  { q: 'Hangi ödeme sistemleri destekleniyor?', a: 'iyzico, PayTR, Garanti BBVA Sanal POS, Yapı Kredi, Akbank ve tüm sanal POS sağlayıcılarıyla entegrasyon desteği sunuyoruz.' },
-  { q: 'Trendyol ve Hepsiburada entegrasyonu nasıl çalışıyor?', a: 'Ürünlerinizi tek bir panelden tüm pazaryerlerine aktarın, sipariş ve stok yönetimini merkezi olarak yapın.' },
-  { q: 'Kaç farklı tema var, özelleştirebilir miyim?', a: 'Premium temalar arasından seçim yapabilirsiniz. Renk, font ve layout tamamen markanıza göre özelleştirilebilir.' },
-  { q: 'Teknik destek ne zaman ulaşılabilir?', a: '7/24 teknik destek ekibimiz her an yanınızda. Acil durumlarda maksimum 2 saat içinde müdahale garantisi veriyoruz.' },
-  { q: 'Mevcut mağazamı taşıyabilir miyim?', a: 'Evet. Ürünlerinizi, müşteri verilerinizi ve sipariş geçmişinizi mevcut altyapınızdan aktarıyoruz.' },
+const FAQ_SECTIONS = [
+  {
+    heading: 'Dernek & STK',
+    items: [
+      { q: 'Dernek platformu kurmak için ne kadar süre gerekiyor?', a: 'Standart kurulum 1 iş günü sürer. İçerik ve ödeme entegrasyonlarını birlikte tamamladıktan sonra aynı gün yayına alabilirsiniz.' },
+      { q: 'Bağış ödemeleri doğrudan derneğin hesabına mı geçiyor?', a: 'Evet. Güvenli ödeme altyapısı üzerinden gelen bağışlar, ödeme aracısının standart settlement süreçleriyle doğrudan derneğinizin banka hesabına aktarılır.' },
+      { q: 'Kurban organizasyonunu dijital platformdan nasıl yönetebilirim?', a: 'Kurban modülü ile online hisse satışı, otomatik makbuz, hisse kodu atama ve kesim bildirimi tek panelden yönetilir. Bağışçılar WhatsApp veya SMS ile bilgilendirilir.' },
+      { q: 'Düzenli bağış talimatı nasıl çalışıyor?', a: 'Bağışçı istediği tutarı ve sıklığı (aylık vb.) seçer, kartını kaydettirir. Belirlenen günlerde otomatik olarak çekim yapılır ve makbuz iletilir. İptal her zaman bağışçının elindedir.' },
+      { q: 'Hangi ödeme sistemleri destekleniyor?', a: 'Tüm banka sanal POS sağlayıcılarıyla entegrasyon desteği sunuyoruz. 3D Secure ve taksit seçenekleri standarttır.' },
+    ],
+  },
+  {
+    heading: 'E-Ticaret Mağazası',
+    items: [
+      { q: 'Mağaza açmak için teknik bilgi gerekiyor mu?', a: 'Hayır. Kurulum ve teknik ayarları biz yapıyoruz. Siz sadece ürünlerinizi yükleyin ve satmaya başlayın.' },
+      { q: 'Trendyol ve Hepsiburada entegrasyonu nasıl çalışıyor?', a: 'Ürünlerinizi tek bir panelden tüm pazaryerlerine aktarın, sipariş ve stok yönetimini merkezi olarak yapın.' },
+      { q: 'Mevcut mağazamı taşıyabilir miyim?', a: 'Evet. Ürünlerinizi, müşteri verilerinizi ve sipariş geçmişinizi mevcut altyapınızdan aktarıyoruz.' },
+    ],
+  },
+  {
+    heading: 'Genel',
+    items: [
+      { q: 'Aylık ücrete neler dahil?', a: 'Sunucu, SSL sertifikası, yazılım lisansı, güncellemeler ve teknik destek aylık ücrete dahildir. Ek kurulum ücreti alınmaz.' },
+      { q: 'Sözleşme süresi var mı?', a: 'Hayır. Aylık abonelik olarak çalışıyoruz; istediğiniz zaman iptal edebilirsiniz. Yıllık ödeme tercihinde indirim uygulanır.' },
+      { q: 'Destek nasıl sağlanıyor?', a: 'E-posta, telefon ve WhatsApp üzerinden Türkçe teknik destek sunuyoruz. Acil durumlarda aynı gün müdahale garantisi veriyoruz.' },
+    ],
+  },
 ];
 
 const FAQSection = () => {
   const [open, setOpen] = useState(null);
+  let globalIndex = 0;
   return (
     <section className="faq-section section-padding bg-soft">
       <div className="container">
@@ -662,19 +723,27 @@ const FAQSection = () => {
           <span className="text-gradient">SSS</span>
           <h2>Sıkça Sorulan Sorular</h2>
         </div>
-        <div className="faq-list">
-          {FAQ_ITEMS.map((item, i) => (
-            <div key={i} className={`faq-item ${open === i ? 'open' : ''}`}>
-              <button className="faq-question" onClick={() => setOpen(open === i ? null : i)}>
-                <span>{item.q}</span>
-                <ChevronDown size={20} className="faq-chevron" />
-              </button>
-              <div className="faq-answer">
-                <p>{item.a}</p>
-              </div>
+        {FAQ_SECTIONS.map((section) => (
+          <div key={section.heading} className="faq-group">
+            <h3 className="faq-group-heading">{section.heading}</h3>
+            <div className="faq-list">
+              {section.items.map((item) => {
+                const idx = globalIndex++;
+                return (
+                  <div key={idx} className={`faq-item ${open === idx ? 'open' : ''}`}>
+                    <button className="faq-question" onClick={() => setOpen(open === idx ? null : idx)}>
+                      <span>{item.q}</span>
+                      <ChevronDown size={20} className="faq-chevron" />
+                    </button>
+                    <div className="faq-answer">
+                      <p>{item.a}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -690,14 +759,37 @@ const NAV_DROPDOWN = {
         { icon: '💻', label: 'Özel Yazılım', desc: 'ERP, CRM ve iş akışı çözümleri' },
         { icon: '🎯', label: 'Teknoloji Danışmanlığı', desc: 'Dijital dönüşüm planlaması' },
       ]
+    }
+  ]
+};
+
+const DERNEK_NAV_DROPDOWN = {
+  cols: [
+    {
+      heading: 'Kampanya & Bağış',
+      items: [
+        { icon: '💰', label: 'Bağış Kampanyası', desc: 'Hedefli kampanya sayfaları, gerçek zamanlı sayaç', slug: 'bagis-kampanyasi' },
+        { icon: '🔁', label: 'Düzenli Bağış', desc: 'Aylık otomatik ödeme talimatı, kesintisiz gelir', slug: 'duzenli-bagis' },
+        { icon: '🐑', label: 'Kurban Organizasyonu', desc: 'Online sipariş, hisse takibi, kesim bildirimi', slug: 'kurban-organizasyonu' },
+        { icon: '💧', label: 'Su Kuyusu', desc: 'Proje bazlı bağış toplama ve ilerleme takibi', slug: 'su-kuyusu' },
+      ]
     },
     {
-      heading: 'E-Ticaret',
+      heading: 'Bağışçı & Topluluk',
       items: [
-        { icon: '🚀', label: 'Mağaza Kurulum', desc: 'Domain, SSL, ödeme ve kargo dahil' },
-        { icon: '🎨', label: 'Tema Özelleştirme', desc: 'Premium temalar, markanıza göre' },
-        { icon: '🔗', label: 'Pazaryeri Entegrasyonu', desc: 'Trendyol, Hepsiburada, n11' },
-        { icon: '🛠️', label: 'Teknik Destek & Bakım', desc: '7/24 destek ekibi' },
+        { icon: '👤', label: 'Bağışçı Yönetimi', desc: 'CRM, profil, segmentasyon, otomatik iletişim', slug: 'bagisci-yonetimi' },
+        { icon: '📅', label: 'Etkinlik Yönetimi', desc: 'Online kayıt, kontenjan ve hatırlatma', slug: 'etkinlik-yonetimi' },
+        { icon: '👥', label: 'Gönüllü Koordinasyonu', desc: 'Başvuru, görev atama ve iletişim araçları', slug: 'gonullu-koordinasyonu' },
+        { icon: '📱', label: 'WhatsApp Bildirimleri', desc: 'Bağış onayı ve makbuz otomatik iletimi', slug: 'whatsapp-bildirimleri' },
+      ]
+    },
+    {
+      heading: 'Yönetim',
+      items: [
+        { icon: '📄', label: 'Dijital Makbuz', desc: 'Otomatik PDF makbuz, e-posta & WhatsApp iletimi', slug: 'dijital-makbuz' },
+        { icon: '📊', label: 'Şeffaf Raporlama', desc: 'Kampanya performansı ve harcama takibi', slug: 'raporlama' },
+        { icon: '🌐', label: 'Çoklu Dil & Para Birimi', desc: '₺, $, € ve TR/EN dil desteği', slug: 'coklu-dil' },
+        { icon: '🔗', label: 'Sosyal Medya Paylaşım', desc: 'Kampanyayı tek tıkla sosyal medyada paylaş', slug: 'sosyal-paylasim' },
       ]
     }
   ]
@@ -708,13 +800,16 @@ const Navbar = ({ onConsult }) => {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dernekOpen, setDernekOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = React.useRef(null);
+  const dernekRef = React.useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     const handleClick = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setDropdownOpen(false);
+      if (dernekRef.current && !dernekRef.current.contains(e.target)) setDernekOpen(false);
     };
     window.addEventListener('scroll', handleScroll);
     document.addEventListener('mousedown', handleClick);
@@ -729,9 +824,10 @@ const Navbar = ({ onConsult }) => {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
+  const closeAll = () => { setDropdownOpen(false); setDernekOpen(false); setMobileOpen(false); };
+
   const goSection = (id) => {
-    setDropdownOpen(false);
-    setMobileOpen(false);
+    closeAll();
     if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 200);
@@ -740,9 +836,19 @@ const Navbar = ({ onConsult }) => {
     }
   };
 
+  const goDernek = (sectionId) => {
+    closeAll();
+    if (location.pathname !== '/dernekler') {
+      navigate('/dernekler');
+      if (sectionId) setTimeout(() => document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' }), 300);
+    } else if (sectionId) {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
-      {dropdownOpen && <div className="nav-backdrop" onClick={() => setDropdownOpen(false)} />}
+      {(dropdownOpen || dernekOpen) && <div className="nav-backdrop" onClick={closeAll} />}
       {mobileOpen && <div className="nav-mobile-backdrop" onClick={() => setMobileOpen(false)} />}
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
@@ -752,12 +858,55 @@ const Navbar = ({ onConsult }) => {
 
           {/* Desktop menü */}
           <div className="nav-links">
-            <div className="nav-dropdown-wrap" ref={dropdownRef}>
-              <button
-                className={`nav-dropdown-trigger ${dropdownOpen ? 'active' : ''}`}
-                onClick={() => setDropdownOpen(v => !v)}
-              >
-                Hizmetler <ChevronDown size={15} className={`nav-trigger-chevron ${dropdownOpen ? 'open' : ''}`} />
+
+            <div className="nav-dropdown-wrap" ref={dernekRef}
+              onMouseEnter={() => { setDropdownOpen(false); setDernekOpen(true); }}
+              onMouseLeave={() => setDernekOpen(false)}
+            >
+              <button className={`nav-dropdown-trigger ${dernekOpen ? 'active' : ''}`}>
+                Dernek & STK <ChevronDown size={15} className={`nav-trigger-chevron ${dernekOpen ? 'open' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {dernekOpen && (
+                  <motion.div
+                    className="nav-dropdown nav-dropdown--wide"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.18 }}
+                  >
+                    {DERNEK_NAV_DROPDOWN.cols.map(col => (
+                      <div key={col.heading} className="nav-dropdown-col">
+                        <span className="nav-dropdown-heading">{col.heading}</span>
+                        {col.items.map(item => (
+                          <Link key={item.label} to={`/dernekler/${item.slug}`} className="nav-dropdown-item" onClick={closeAll}>
+                            <span className="nav-item-icon">{item.icon}</span>
+                            <div>
+                              <div className="nav-item-label">{item.label}</div>
+                              <div className="nav-item-desc">{item.desc}</div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    ))}
+                    <div className="nav-dropdown-footer">
+                      <button className="nav-dropdown-cta" onClick={() => goDernek(null)}>
+                        Tüm Özellikleri Gör <ArrowRight size={13} />
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <Link to="/eticaret" onClick={closeAll}>E-Ticaret</Link>
+
+            <div className="nav-dropdown-wrap" ref={dropdownRef}
+              onMouseEnter={() => { setDernekOpen(false); setDropdownOpen(true); }}
+              onMouseLeave={() => setDropdownOpen(false)}
+            >
+              <button className={`nav-dropdown-trigger ${dropdownOpen ? 'active' : ''}`}>
+                Tüm Hizmetlerimiz <ChevronDown size={15} className={`nav-trigger-chevron ${dropdownOpen ? 'open' : ''}`} />
               </button>
               <AnimatePresence>
                 {dropdownOpen && (
@@ -787,12 +936,10 @@ const Navbar = ({ onConsult }) => {
               </AnimatePresence>
             </div>
 
-            <Link to="/eticaret" onClick={() => setDropdownOpen(false)}>E-Ticaret</Link>
-            <Link to="/dernekler" onClick={() => setDropdownOpen(false)}>Dernekler İçin</Link>
             <a href="#" onClick={(e) => { e.preventDefault(); goSection('contact'); }}>İletişim</a>
 
             <div className="nav-cta-group">
-              <button className="btn-nav" onClick={() => { setDropdownOpen(false); onConsult(); }}>Ücretsiz Danışmanlık Al</button>
+              <button className="btn-nav" onClick={() => { closeAll(); onConsult(); }}>Demo Talep Et</button>
             </div>
           </div>
 
@@ -812,11 +959,11 @@ const Navbar = ({ onConsult }) => {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
             >
-              <button className="nav-mobile-item" onClick={() => goSection('services')}>Hizmetler</button>
-              <Link className="nav-mobile-item" to="/eticaret" onClick={() => setMobileOpen(false)}>E-Ticaret</Link>
-              <Link className="nav-mobile-item" to="/dernekler" onClick={() => setMobileOpen(false)}>Dernekler İçin</Link>
+              <Link className="nav-mobile-item" to="/dernekler" onClick={closeAll}>Dernek & STK</Link>
+              <Link className="nav-mobile-item" to="/eticaret" onClick={closeAll}>E-Ticaret</Link>
+              <button className="nav-mobile-item" onClick={() => goSection('services')}>Tüm Hizmetlerimiz</button>
               <button className="nav-mobile-item" onClick={() => goSection('contact')}>İletişim</button>
-              <button className="btn-nav nav-mobile-cta" onClick={() => { setMobileOpen(false); onConsult(); }}>Ücretsiz Danışmanlık Al</button>
+              <button className="btn-nav nav-mobile-cta" onClick={() => { setMobileOpen(false); onConsult(); }}>Demo Talep Et</button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -945,9 +1092,8 @@ const ContactInlineForm = () => {
 };
 
 const ConsultationModal = ({ isOpen, onClose }) => {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [sent, setSent] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -959,12 +1105,12 @@ const ConsultationModal = ({ isOpen, onClose }) => {
       const res = await fetch(`${API_BASE}/api/fastregister/consultation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, subject: 'demo' }),
       });
       const data = await res.json();
       if (data.success) {
         setSent(true);
-        setTimeout(() => { setSent(false); onClose(); setFormData({ name: '', email: '', phone: '', subject: '', message: '' }); }, 2500);
+        setTimeout(() => { setSent(false); onClose(); setFormData({ name: '', email: '', phone: '', message: '' }); }, 2500);
       } else {
         setError(data.message || 'Bir hata oluştu.');
       }
@@ -989,8 +1135,8 @@ const ConsultationModal = ({ isOpen, onClose }) => {
         >
           <button className="close-btn" onClick={onClose}><X size={20} /></button>
           <div className="modal-header">
-            <h2>Ücretsiz Danışmanlık Alın</h2>
-            <p>Projenizi anlatın, size özel çözüm önerelim.</p>
+            <h2>Demo Talep Et</h2>
+            <p>Bilgilerinizi bırakın, en kısa sürede dönüş yapalım.</p>
           </div>
           {sent ? (
             <div style={{ textAlign: 'center', padding: '2rem 0' }}>
@@ -1014,23 +1160,12 @@ const ConsultationModal = ({ isOpen, onClose }) => {
                 <input type="email" required placeholder="ornek@mail.com" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
               </div>
               <div className="form-group">
-                <label>Konu</label>
-                <select required value={formData.subject} onChange={e => setFormData({...formData, subject: e.target.value})} style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1.5px solid #E2E8F0', fontSize: '0.95rem', fontFamily: 'inherit', background: 'white', color: formData.subject ? '#0F172A' : '#94A3B8' }}>
-                  <option value="" disabled>Hizmet seçin...</option>
-                  <option value="web">Kurumsal Web Sitesi</option>
-                  <option value="mobile">Mobil Uygulama</option>
-                  <option value="ecommerce">E-Ticaret</option>
-                  <option value="software">Özel Yazılım</option>
-                  <option value="consulting">Danışmanlık</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Mesajınız</label>
-                <textarea required placeholder="Projeniz hakkında kısaca bilgi verin..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} rows={3} style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1.5px solid #E2E8F0', fontSize: '0.95rem', fontFamily: 'inherit', resize: 'vertical' }} />
+                <label>Mesaj <span style={{ color: '#9ca3af', fontWeight: 400 }}>(opsiyonel)</span></label>
+                <textarea placeholder="Dernek platformu, e-ticaret veya başka bir konu hakkında bilgi alabilirsiniz..." value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} rows={3} style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1.5px solid #E2E8F0', fontSize: '0.95rem', fontFamily: 'inherit', resize: 'vertical' }} />
               </div>
               {error && <p style={{ color: '#B91C1C', fontSize: '0.875rem', marginTop: '0.5rem' }}>{error}</p>}
               <button type="submit" className="btn-primary btn-full mt-4" disabled={loading}>
-                {loading ? 'Gönderiliyor...' : <><span>Danışmanlık Talebini Gönder</span> <ArrowRight size={18} /></>}
+                {loading ? 'Gönderiliyor...' : <><span>Talebi Gönder</span> <ArrowRight size={18} /></>}
               </button>
             </form>
           )}
@@ -1199,7 +1334,7 @@ const RegistrationModal = ({ isOpen, onClose }) => {
 const EC_PACKAGES = [
   {
     name: 'Başlangıç',
-    price: '1.490',
+    price: '2.999',
     desc: 'E-ticarete ilk adımını atmak isteyen küçük işletmeler için.',
     features: [
       { text: '1 Yıllık Alan Adı', ok: true },
@@ -1207,7 +1342,7 @@ const EC_PACKAGES = [
       { text: 'Mobil uyumlu mağaza', ok: true },
       { text: '3 premium tema', ok: true },
       { text: 'Temel SEO ayarları', ok: true },
-      { text: 'Sanal POS (iyzico)', ok: true },
+      { text: 'Güvenli ödeme (Sanal POS)', ok: true },
       { text: '1 kargo entegrasyonu', ok: true },
       { text: 'Manuel sipariş oluşturma', ok: true }, 
       { text: 'Kampanya & kupon yönetimi', ok: true },
@@ -1218,7 +1353,7 @@ const EC_PACKAGES = [
   },
   {
     name: 'Profesyonel',
-    price: '2.990',
+    price: '4.999',
     popular: true,
     desc: 'Büyüyen markalar için pazaryeri entegrasyonu ve otomasyon gücü.',
     features: [
@@ -1227,7 +1362,7 @@ const EC_PACKAGES = [
       { text: 'Mobil uyumlu mağaza', ok: true },
       { text: 'Premium temalar', ok: true },
       { text: 'Gelişmiş SEO & blog modülü', ok: true },
-      { text: 'Sanal POS (iyzico, paytr)', ok: true },
+      { text: 'Güvenli ödeme (Sanal POS)', ok: true },
       { text: '1 kargo entegrasyonu', ok: true },
       { text: 'Manuel sipariş oluşturma', ok: true },
       { text: 'Terk edilmiş sepet otomasyonu', ok: true },
@@ -1238,7 +1373,7 @@ const EC_PACKAGES = [
   },
   {
     name: 'Kurumsal',
-    price: '4.990',
+    price: '6.999',
     desc: 'Sınırsız ölçek, özel geliştirme ve maksimum performans.',
     features: [
       { text: '1 Yıllık Alan Adı', ok: true },
@@ -1246,7 +1381,7 @@ const EC_PACKAGES = [
       { text: 'Mobil uyumlu mağaza', ok: true },
       { text: 'Özel tema tasarımı', ok: true },
       { text: 'Tam SEO + içerik yönetimi', ok: true },
-      { text: 'Sanal POS (iyzico, paytr)', ok: true },
+      { text: 'Güvenli ödeme (Sanal POS)', ok: true },
       { text: '2 kargo entegrasyonu', ok: true },
       { text: 'Manuel sipariş oluşturma', ok: true },
       { text: 'Terk edilmiş sepet otomasyonu', ok: true },
@@ -1270,7 +1405,7 @@ const EC_INTEGRATIONS = [
   { name: 'Trendyol', emoji: '🛍️' },
   { name: 'Hepsiburada', emoji: '🛒' },
   { name: 'n11', emoji: '🏪' },
-  { name: 'iyzico', emoji: '💳' },
+  { name: 'Güvenli Ödeme', emoji: '💳' },
   { name: 'Yurtiçi Kargo', emoji: '🚚' },
   { name: 'Aras Kargo', emoji: '📬' },
   { name: 'MNG Kargo', emoji: '🚛' },
@@ -1282,6 +1417,11 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
 
   return (
   <div className="ecommerce-page">
+    <SeoHead
+      title="E-Ticaret Mağazası Kur | Trendyol & Pazaryeri Entegrasyonu | Pekin Teknoloji"
+      description="Premium temalar, Trendyol/Hepsiburada/n11 entegrasyonu, güvenli ödeme. Aylık sabit ücret, kurulum dahil."
+      canonical="/eticaret"
+    />
 
     <section className="ec-hero">
       <div className="ec-hero-bg" />
@@ -1289,7 +1429,7 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="ec-hero-content">
           <span className="ec-badge"><span className="ec-badge-dot" />Güçlü E-Ticaret Altyapısı</span>
           <h1 className="ec-hero-title">E-ticarette<br /><span className="text-gradient">güçlü altyapı,</span><br />tam entegrasyon</h1>
-          <p className="ec-hero-sub">E-ticaret sitenizi kurun, tüm pazaryerlerine bağlayın. Sipariş, stok ve kargo yönetimi tek panelden. 14 gün ücretsiz deneyin.</p>
+          <p className="ec-hero-sub">E-ticaret sitenizi kurun, tüm pazaryerlerine bağlayın. Sipariş, stok ve kargo yönetimi tek panelden. Kurulum dahil, aylık sabit ücret.</p>
           <div className="ec-hero-btns">
             <button className="btn-primary" onClick={onRegister}>Ücretsiz 14 Gün Deneyin <ArrowRight size={18} /></button>
             <button className="btn-ghost" onClick={() => document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' })}>Paketleri İncele</button>
@@ -1343,7 +1483,7 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
         <div className="section-header">
           <span className="section-label">Paket Seçenekleri</span>
           <h2>İhtiyacınıza uygun paketi seçin</h2>
-          <p className="section-desc">14 gün ücretsiz deneyin, kredi kartı gerekmez.</p>
+          <p className="section-desc">Sunucu, SSL, lisans ve teknik destek aylık ücrete dahil. Gizli maliyet yok.</p>
         </div>
         <div className="ec-packages-grid">
           {EC_PACKAGES.map((pkg, i) => (
@@ -1442,7 +1582,7 @@ const EcommercePage = ({ onRegister, onThemeSelect, themesData = THEMES_DATA }) 
       <div className="container">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="ec-cta-card">
           <h2>Hemen başlamak için hazır mısınız?</h2>
-          <p>14 gün ücretsiz, kredi kartı gerekmez. Dakikalar içinde mağazanız hazır.</p>
+          <p>Kurulum, SSL, sunucu ve teknik destek dahil. Aynı gün yayına alın.</p>
           <button className="btn-primary btn-lg" onClick={onRegister}>Ücretsiz Mağazamı Kur <ArrowRight size={18} /></button>
         </motion.div>
       </div>
@@ -2017,6 +2157,213 @@ const MagazaAcPageWithCaptcha = () => (
   </GoogleReCaptchaProvider>
 );
 
+const SITE_URL = 'https://www.pekinteknoloji.com';
+
+const SeoHead = ({ title, description, canonical, noindex = false }) => (
+  <Helmet>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={`${SITE_URL}${canonical}`} />}
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Pekin Teknoloji" />
+    {canonical && <meta property="og:url" content={`${SITE_URL}${canonical}`} />}
+    <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
+  </Helmet>
+);
+
+const ModuleDetailPage = ({ onConsult }) => {
+  const { moduleSlug } = useParams();
+  const navigate = useNavigate();
+  const mod = MODULE_PAGES.find(m => m.slug === moduleSlug);
+
+  useEffect(() => {
+    if (!mod) navigate('/dernekler', { replace: true });
+  }, [mod, navigate]);
+
+  if (!mod) return null;
+
+  const relatedMods = MODULE_PAGES.filter(m => mod.relatedSlugs.includes(m.slug));
+
+  return (
+    <div className="module-detail-page">
+      <SeoHead
+        title={mod.metaTitle}
+        description={mod.metaDesc}
+        canonical={`/dernekler/${mod.slug}`}
+      />
+
+      {/* Breadcrumb */}
+      <div className="md-breadcrumb">
+        <div className="container">
+          <Link to="/">Ana Sayfa</Link>
+          <span>/</span>
+          <Link to="/dernekler">Dernek & STK</Link>
+          <span>/</span>
+          <span>{mod.heroTitle}</span>
+        </div>
+      </div>
+
+      {/* Hero */}
+      <section className="md-hero" style={{ '--accent': mod.accentColor }}>
+        <div className="container">
+          <div className="md-hero-inner">
+            <div className="md-hero-text">
+              <span className="md-badge" style={{ background: `${mod.accentColor}18`, color: mod.accentColor }}>{mod.badge}</span>
+              <h1>{mod.heroTitle}</h1>
+              <p>{mod.heroDesc}</p>
+              <div className="md-hero-stats">
+                {mod.stats.map(s => (
+                  <div key={s.label} className="md-stat">
+                    <span className="md-stat-num" style={{ color: mod.accentColor }}>{s.num}</span>
+                    <span className="md-stat-label">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="md-hero-cta">
+                <button className="btn-primary" onClick={onConsult} style={{ background: mod.accentColor }}>Demo Talep Et</button>
+                <Link to="/dernekler" className="btn-ghost">Tüm Özelliklere Dön</Link>
+              </div>
+            </div>
+            <div className="md-hero-visual">
+              <div className="md-icon-big">{mod.icon}</div>
+              <div className="md-plan-badge">
+                <span>Plan:</span> <strong>{mod.plan}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Faydalar */}
+      <section className="md-benefits">
+        <div className="container">
+          <div className="md-benefits-grid">
+            {mod.benefits.map(b => (
+              <div key={b.title} className="md-benefit-card">
+                <span className="md-benefit-icon">{b.icon}</span>
+                <h3>{b.title}</h3>
+                <p>{b.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Nasıl Çalışır */}
+      <section className="md-how">
+        <div className="container">
+          <h2>Nasıl Çalışır?</h2>
+          <div className="md-how-grid">
+            {mod.howItWorks.map((s, i) => (
+              <div key={s.step} className="md-how-card">
+                <div className="md-how-step" style={{ background: mod.accentColor }}>{s.step}</div>
+                <h3>{s.title}</h3>
+                <p>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Özellikler */}
+      <section className="md-features">
+        <div className="container">
+          <div className="md-features-inner">
+            <div className="md-features-text">
+              <h2>Tüm Özellikler</h2>
+              <ul className="md-feature-list">
+                {mod.features.map((f, i) => (
+                  <li key={i}><span style={{ color: mod.accentColor }}>✓</span> {f}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="md-features-seo">
+              {mod.seoContent.map((p, i) => <p key={i}>{p}</p>)}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="md-faq">
+        <div className="container">
+          <h2>Sık Sorulan Sorular</h2>
+          <div className="md-faq-list">
+            {mod.faq.map((item, i) => (
+              <ModuleFaqItem key={i} q={item.q} a={item.a} accentColor={mod.accentColor} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* İlgili Modüller */}
+      {relatedMods.length > 0 && (
+        <section className="md-related">
+          <div className="container">
+            <h2>İlgili Modüller</h2>
+            <div className="md-related-grid">
+              {relatedMods.map(r => (
+                <Link key={r.slug} to={`/dernekler/${r.slug}`} className="md-related-card">
+                  <span className="md-related-icon">{r.icon}</span>
+                  <div>
+                    <div className="md-related-title">{r.heroTitle}</div>
+                    <div className="md-related-desc">{r.heroDesc.slice(0, 80)}…</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CTA */}
+      <section className="md-cta" style={{ background: `linear-gradient(135deg, ${mod.accentColor}18, ${mod.accentColor}08)` }}>
+        <div className="container">
+          <div className="md-cta-box">
+            <h2>Bu modülü kullanmaya hazır mısınız?</h2>
+            <p>Ücretsiz demo ile platformu kendi gözlerinizle görün. Kurulum sonrası 30 gün tam destek.</p>
+            <button className="btn-primary" onClick={onConsult} style={{ background: mod.accentColor }}>
+              Demo Talep Et <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+const ModuleFaqItem = ({ q, a, accentColor }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`md-faq-item ${open ? 'open' : ''}`}>
+      <button className="md-faq-q" onClick={() => setOpen(v => !v)}>
+        <span>{q}</span>
+        <ChevronDown size={18} className={`md-faq-chevron ${open ? 'open' : ''}`} style={open ? { color: accentColor } : {}} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md-faq-a"
+          >
+            <p>{a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [pathname]);
@@ -2030,6 +2377,11 @@ const BlogDetailPage = () => {
   if (!post) { navigate('/blog'); return null; }
   return (
     <div className="blog-detail-page pt-32 pb-20">
+      <SeoHead
+        title={`${post.title} | Pekin Teknoloji Blog`}
+        description={post.desc}
+        canonical={`/blog/${post.slug}`}
+      />
       <div className="container" style={{ maxWidth: 780 }}>
         <button className="btn-ghost mb-8" onClick={() => navigate('/blog')} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: '2rem' }}>
           ← Blog'a Dön
@@ -2051,11 +2403,16 @@ const BlogListPage = () => {
   const navigate = useNavigate();
   return (
     <div className="pt-32 pb-20">
+      <SeoHead
+        title="E-Ticaret & Dernek Blog | SEO, Pazaryeri ve Dijital Pazarlama | Pekin Teknoloji"
+        description="E-ticaret SEO rehberi, Trendyol entegrasyonu, dernek dijitalleşmesi ve daha fazlası. Pekin Teknoloji blog yazıları."
+        canonical="/blog"
+      />
       <div className="container">
         <div className="section-header">
           <span className="text-gradient">Blog</span>
-          <h2>E-Ticaret Rehberi</h2>
-          <p className="section-desc">Mağazanızı büyütmek için ipuçları ve stratejiler.</p>
+          <h2>Rehber & Makaleler</h2>
+          <p className="section-desc">Dernek dijitalleşmesi, e-ticaret ve teknoloji üzerine yazılar.</p>
         </div>
         <div className="blog-grid">
           {BLOG_POSTS.map((post, i) => (
@@ -2082,7 +2439,165 @@ const BlogListPage = () => {
 
 const FAQPage = () => (
   <div className="pt-32 pb-20">
+    <SeoHead
+      title="Sık Sorulan Sorular | E-Ticaret & Dernek Platform | Pekin Teknoloji"
+      description="E-ticaret mağazası kurulum, fiyatlandırma, ödeme entegrasyonu ve dernek bağış platformu hakkında sık sorulan sorular ve cevapları."
+      canonical="/sss"
+    />
     <FAQSection />
+  </div>
+);
+
+const HakkimizdaPage = () => (
+  <div className="pt-32 pb-20">
+    <SeoHead
+      title="Hakkımızda | Pekin Teknoloji"
+      description="Pekin Teknoloji; dernek, vakıf ve işletmeler için dijital çözümler geliştiren İstanbul merkezli bir yazılım şirketidir. Bağış platformu, e-ticaret ve özel yazılım."
+      canonical="/hakkimizda"
+    />
+    <div className="container">
+      <div style={{ maxWidth: 800, margin: '0 auto' }}>
+
+        <div style={{ marginBottom: '3rem' }}>
+          <span className="text-gradient" style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Hakkımızda</span>
+          <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 800, color: '#111827', marginTop: '0.5rem', marginBottom: '1.25rem', lineHeight: 1.2 }}>
+            Dernekten e-ticarete,<br />dijital altyapıyı biz kuruyoruz
+          </h1>
+          <p style={{ fontSize: '1.05rem', color: '#475569', lineHeight: 1.8, maxWidth: 640 }}>
+            Pekin Teknoloji, sivil toplum kuruluşları ve işletmelerin dijital dönüşümünü kolaylaştırmak için kurulmuş İstanbul merkezli bir yazılım şirketidir. 12 yılı aşkın yazılım geliştirme deneyimimizle kurulum, altyapı ve desteğin tamamını üstleniyor; müşterilerimizin teknolojiyle değil işleriyle ilgilenmesini sağlıyoruz.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem', marginBottom: '3rem' }}>
+          {[
+            { icon: '🚀', title: 'Aynı gün yayında', desc: 'Teknik kurulumun tamamını biz yapıyoruz. Siz içeriğinize odaklanın.' },
+            { icon: '💰', title: 'Aylık sabit ücret', desc: 'Sunucu, SSL, lisans ve destek tek faturada. Sürpriz maliyet yok.' },
+            { icon: '🤝', title: 'Hızlı Destek', desc: 'Telefon ve WhatsApp ile doğrudan iletişim.' },
+          ].map(v => (
+            <div key={v.title} style={{ background: '#f8fafc', borderRadius: 14, padding: '1.5rem', border: '1px solid #e5e7eb' }}>
+              <span style={{ fontSize: '1.75rem', display: 'block', marginBottom: '0.75rem' }}>{v.icon}</span>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#111827', marginBottom: '0.4rem' }}>{v.title}</h3>
+              <p style={{ fontSize: '0.85rem', color: '#6b7280', lineHeight: 1.6, margin: 0 }}>{v.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '3rem' }}>
+          <div style={{ background: '#f0fdf4', borderRadius: 14, padding: '1.75rem', border: '1px solid #bbf7d0' }}>
+            <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#15803d', marginBottom: '0.75rem' }}>Dernek & STK Platformu</h2>
+            <p style={{ color: '#374151', lineHeight: 1.75, fontSize: '0.9rem', margin: 0 }}>
+              Bağış kampanyası, kurban organizasyonu, su kuyusu, düzenli bağış, gönüllü koordinasyonu ve bağışçı yönetimi tek platformda. Ödeme altyapısı, otomatik makbuz ve WhatsApp bildirimleri dahil.
+            </p>
+          </div>
+          <div style={{ background: '#eff6ff', borderRadius: 14, padding: '1.75rem', border: '1px solid #bfdbfe' }}>
+            <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#1d4ed8', marginBottom: '0.75rem' }}>E-Ticaret Mağazası</h2>
+            <p style={{ color: '#374151', lineHeight: 1.75, fontSize: '0.9rem', margin: 0 }}>
+              Trendyol, Hepsiburada ve n11 pazaryeri entegrasyonu, kargo entegrasyonları, güvenli ödeme altyapısı. Kurulumdan yayına kadar teknik süreçlerin tamamı bizde.
+            </p>
+          </div>
+          <div style={{ gridColumn: '1 / -1', background: '#faf5ff', borderRadius: 14, padding: '1.75rem', border: '1px solid #e9d5ff' }}>
+            <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#7c3aed', marginBottom: '1.25rem' }}>Diğer Hizmetlerimiz</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+              {[
+                { icon: '🌐', label: 'Kurumsal Web Sitesi', desc: 'Hızlı, SEO uyumlu kurumsal siteler' },
+                { icon: '📱', label: 'Mobil Uygulama', desc: 'iOS & Android uygulamaları' },
+                { icon: '💻', label: 'Özel Yazılım', desc: 'ERP, CRM ve iş akışı çözümleri' },
+                { icon: '🎯', label: 'Teknoloji Danışmanlığı', desc: 'Dijital dönüşüm planlaması' },
+              ].map(item => (
+                <div key={item.label} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                  <span style={{ fontSize: '1.25rem', lineHeight: 1 }}>{item.icon}</span>
+                  <div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827', marginBottom: '0.2rem' }}>{item.label}</div>
+                    <div style={{ fontSize: '0.8rem', color: '#6b7280', lineHeight: 1.5 }}>{item.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ background: '#f8fafc', borderRadius: 14, padding: '1.75rem', border: '1px solid #e5e7eb', display: 'flex', gap: '2rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#111827', marginBottom: '0.5rem' }}>Bize Ulaşın</h2>
+            <p style={{ color: '#6b7280', fontSize: '0.875rem', margin: '0 0 0.25rem' }}>Selanik Pasajı No:5, Beyoğlu / İstanbul</p>
+            <a href="mailto:bilgi@pekinteknoloji.com" style={{ color: '#2563eb', fontSize: '0.875rem', display: 'block' }}>bilgi@pekinteknoloji.com</a>
+            <a href="tel:+905415740545" style={{ color: '#2563eb', fontSize: '0.875rem' }}>0541 574 05 45</a>
+          </div>
+          <a href="https://wa.me/905415740545" target="_blank" rel="noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#25D366', color: 'white', padding: '10px 20px', borderRadius: 99, fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none' }}>
+            WhatsApp ile Yaz
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+);
+
+const KVKKPage = () => (
+  <div className="pt-32 pb-20">
+    <SeoHead
+      title="KVKK Aydınlatma Metni | Pekin Teknoloji"
+      description="Pekin Teknoloji kişisel verilerin korunması kanunu (KVKK) kapsamındaki aydınlatma metni."
+      canonical="/kvkk"
+    />
+    <div className="container">
+      <div style={{ maxWidth: 760, margin: '0 auto' }}>
+        <div className="section-header" style={{ textAlign: 'left', marginBottom: '2.5rem' }}>
+          <span className="text-gradient">Gizlilik</span>
+          <h1 style={{ fontSize: '2rem', fontWeight: 800, marginTop: '0.5rem', marginBottom: '0.5rem' }}>KVKK Aydınlatma Metni</h1>
+          <p style={{ color: '#64748b', fontSize: '0.9rem' }}>Son güncelleme: Ocak 2026</p>
+        </div>
+
+        <div style={{ display: 'grid', gap: '1.75rem', color: '#374151', lineHeight: 1.8, fontSize: '0.97rem' }}>
+          <section>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>1. Veri Sorumlusu</h2>
+            <p>
+              6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca kişisel verileriniz; veri sorumlusu sıfatıyla <strong>Pekin Teknoloji</strong> (Selanik Pasajı No:5, Beyoğlu / İstanbul — bilgi@pekinteknoloji.com) tarafından aşağıda açıklanan kapsamda işlenmektedir.
+            </p>
+          </section>
+
+          <section>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>2. İşlenen Kişisel Veriler</h2>
+            <p>
+              Platformumuz aracılığıyla ad-soyad, e-posta adresi, telefon numarası, fatura adresi ve ödeme işlemlerine ilişkin bilgiler işlenmektedir. Ödeme bilgileri lisanslı ödeme aracısı tarafından PCI-DSS standartlarında saklanmakta; Pekin Teknoloji kartın tamamına erişim sağlamamaktadır.
+            </p>
+          </section>
+
+          <section>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>3. İşleme Amaçları</h2>
+            <ul style={{ paddingLeft: '1.25rem' }}>
+              <li>Bağış ve sipariş işlemlerinin tamamlanması</li>
+              <li>Yasal yükümlülük kapsamında makbuz ve fatura düzenlenmesi</li>
+              <li>Müşteri hizmetleri ve teknik destek sağlanması</li>
+              <li>Açık rızanız doğrultusunda elektronik ileti gönderilmesi</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>4. Aktarım</h2>
+            <p>
+              Kişisel verileriniz; ödeme kuruluşları, kargo firmaları ve yasal yükümlülük halleri dışında üçüncü kişilerle paylaşılmamaktadır. Yurt dışı aktarım, ilgili kişinin açık rızası olmaksızın yapılmamaktadır.
+            </p>
+          </section>
+
+          <section>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem', color: '#111827' }}>5. Haklarınız</h2>
+            <p>KVKK'nın 11. maddesi kapsamında;</p>
+            <ul style={{ paddingLeft: '1.25rem' }}>
+              <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme</li>
+              <li>İşlenmişse buna ilişkin bilgi talep etme</li>
+              <li>Eksik veya yanlış işlenmiş verilerin düzeltilmesini isteme</li>
+              <li>Kişisel verilerin silinmesini veya yok edilmesini isteme</li>
+              <li>İşlemenin otomatik sistemler vasıtasıyla yapılması halinde aleyhte sonuca itiraz etme</li>
+            </ul>
+            <p style={{ marginTop: '0.75rem' }}>
+              Haklarınızı kullanmak için <a href="mailto:bilgi@pekinteknoloji.com?subject=KVKK Bilgi Talebi" style={{ color: '#2563eb' }}>bilgi@pekinteknoloji.com</a> adresine yazabilirsiniz. Talepler 30 gün içinde yanıtlanır.
+            </p>
+          </section>
+        </div>
+      </div>
+    </div>
   </div>
 );
 
@@ -2116,49 +2631,71 @@ const DERNEK_FEATURES = [
 const DERNEK_PACKAGES = [
   {
     name: 'Başlangıç',
-    price: '1.499',
+    price: '2.999',
     period: 'ay',
     desc: 'Dijitale ilk adımını atan küçük dernek ve vakıflar için.',
     features: [
       { text: 'Bağış kampanya modülü', ok: true },
-      { text: 'Güvenli ödeme (iyzico / PayTR)', ok: true },
       { text: 'Otomatik bağış makbuzu', ok: true },
-      { text: 'Kampanya yönetimi & hedef takibi', ok: true },
       { text: 'Mobil uyumlu site + SSL + hosting', ok: true },
       { text: 'Türkçe & İngilizce dil desteği', ok: true },
+      { text: 'Kampanya yönetimi & hedef takibi', ok: false },
+      { text: 'Kumbara modülü', ok: false },
       { text: 'Düzenli bağış talimatı (otomatik)', ok: false },
       { text: 'Gönüllülük modülü', ok: false },
       { text: 'Etkinlik & aktivite yönetimi', ok: false },
       { text: 'Çoklu para birimi', ok: false },
-      { text: '7/24 öncelikli destek', ok: false },
     ],
   },
   {
     name: 'Dernek Paneli',
-    price: '2.499',
+    price: '4.999',
     period: 'ay',
     popular: true,
     desc: 'Aktif kampanyalar yürüten, büyüyen dernek ve vakıflar için.',
     features: [
       { text: 'Bağış kampanya modülü', ok: true },
-      { text: 'Güvenli ödeme (iyzico / PayTR)', ok: true },
       { text: 'Otomatik bağış makbuzu', ok: true },
-      { text: 'Kampanya yönetimi & hedef takibi', ok: true },
       { text: 'Mobil uyumlu site + SSL + hosting', ok: true },
       { text: 'Çoklu dil desteği (TR, EN + daha fazlası)', ok: true },
+      { text: 'Kampanya yönetimi & hedef takibi', ok: true },
+      { text: 'Kumbara modülü', ok: true },
       { text: 'Düzenli bağış talimatı (otomatik)', ok: true },
       { text: 'Gönüllülük modülü', ok: true },
       { text: 'Etkinlik & aktivite yönetimi', ok: true },
       { text: 'Çoklu para birimi (₺, $, €)', ok: true },
-      { text: '7/24 öncelikli destek', ok: true },
     ],
   },
 ];
 
-const DERNEK_TESTIMONIALS = [
-  { name: 'Mehmet Y.', role: 'Dernek Başkanı', text: 'Kampanyamızı başlatmak 1 günden az sürdü. İlk ayda hedefimizin %120\'sine ulaştık.' },
-  { name: 'Ayşe K.', role: 'Vakıf Koordinatörü', text: 'Düzenli bağış talimatı sayesinde gelirlerimiz öngörülebilir hale geldi. Kampanya yönetmek artık çok daha kolay.' },
-  { name: 'Hasan T.', role: 'STK Yöneticisi', text: 'Şeffaf raporlama sayesinde bağışçılarımızın güveni arttı. Düzenli bağış oranımız %40 yükseldi.' },
+
+const HOWIT_WORKS = [
+  { step: '01', icon: '🚀', title: 'Kayıt & Kurulum', desc: 'Formu doldurun, 1 iş günü içinde alan adı, SSL ve hosting dahil siteniz hazır.' },
+  { step: '02', icon: '🎯', title: 'Kampanya Oluşturun', desc: 'Hedef tutar ve açıklamayı girin; kampanya sayfanız anında yayında, paylaşıma hazır.' },
+  { step: '03', icon: '💳', title: 'Bağışları Tahsil Edin', desc: 'Güvenli ödeme altyapısı bağışları işler, otomatik makbuz ve WhatsApp bildirimi gönderilir.' },
+  { step: '04', icon: '📊', title: 'Raporlayın & Büyüyün', desc: 'Gerçek zamanlı raporlarla performansı takip edin, şeffaf hesap yönetimiyle bağışçı güveni kazanın.' },
+];
+
+const NGO_MODULES = [
+  { icon: '💰', title: 'Bağış Kampanyası', desc: 'Hedefli kampanya sayfaları, gerçek zamanlı sayaç, sosyal paylaşım butonu ve QR kod desteği.', plan: 'Başlangıç', slug: 'bagis-kampanyasi' },
+  { icon: '🔁', title: 'Düzenli Bağış', desc: 'Aylık otomatik ödeme talimatı. Müdahale gerektirmez; kesintisiz gelir akışı sağlar.', plan: 'Başlangıç', slug: 'duzenli-bagis' },
+  { icon: '🐑', title: 'Kurban Organizasyonu', desc: 'Online sipariş ve hisse takibi. Kesim bildirimi, vekalet belgesi otomatik gönderilir.', plan: 'Başlangıç', slug: 'kurban-organizasyonu' },
+  { icon: '💧', title: 'Su Kuyusu', desc: 'Proje bazlı bağış toplama. Hedef takibi, sahadan fotoğraf güncellemesi, bağışçı adına açma.', plan: 'Başlangıç', slug: 'su-kuyusu' },
+  { icon: '👤', title: 'Bağışçı Yönetimi', desc: 'CRM, bağışçı profili, segmentasyon ve otomatik teşekkür iletişimiyle sadakati artırın.', plan: 'Dernek Paneli', slug: 'bagisci-yonetimi' },
+  { icon: '📄', title: 'Dijital Makbuz', desc: 'Her bağış sonrası otomatik PDF makbuz. E-posta ve WhatsApp ile anında iletim.', plan: 'Başlangıç', slug: 'dijital-makbuz' },
+  { icon: '📅', title: 'Etkinlik Yönetimi', desc: 'Online kayıt, kontenjan takibi ve otomatik katılımcı hatırlatması — tek ekrandan.', plan: 'Dernek Paneli', slug: 'etkinlik-yonetimi' },
+  { icon: '👥', title: 'Gönüllü Koordinasyonu', desc: 'Gönüllü başvuruları, görev atama ve iletişim araçları tek platformda.', plan: 'Dernek Paneli', slug: 'gonullu-koordinasyonu' },
+  { icon: '📊', title: 'Şeffaf Raporlama', desc: 'Bağış özeti, kampanya performansı, harcama takibi. Kamuoyuna açık rapor sayfası.', plan: 'Tüm Planlar', slug: 'raporlama' },
+  { icon: '🌐', title: 'Çoklu Dil & Para Birimi', desc: 'Türkçe, İngilizce ve daha fazlası. ₺, $, € desteğiyle yurt dışı bağışçılara ulaşın.', plan: 'Dernek Paneli', slug: 'coklu-dil' },
+  { icon: '📱', title: 'WhatsApp Bildirimleri', desc: 'Bağış onayı, kampanya güncellemesi ve makbuz otomatik olarak WhatsApp ile iletilir.', plan: 'Tüm Planlar', slug: 'whatsapp-bildirimleri' },
+  { icon: '🔗', title: 'Sosyal Medya & Paylaşım', desc: 'Kampanya sayfanızı tek tıkla Instagram, Twitter ve Facebook\'ta paylaşın.', plan: 'Tüm Planlar', slug: 'sosyal-paylasim' },
+];
+
+const NGO_AUDIENCE = [
+  { icon: '🏛️', title: 'Dernekler', desc: 'Bağış ve üyelik yönetimini dijitale taşıyın. Yönetim kurulu raporlamasını kolaylaştırın.' },
+  { icon: '🤝', title: 'Vakıflar', desc: 'Hibe ve bağış kampanyalarını profesyonelce yönetin. Şeffaf harcama raporları paylaşın.' },
+  { icon: '📚', title: 'Eğitim STK\'ları', desc: 'Burs kampanyaları, etkinlik kayıtları ve bağışçı ilişkileri tek platformdan.' },
+  { icon: '🕌', title: 'Dini & Kültürel Kuruluşlar', desc: 'Yardım kampanyaları, kurban organizasyonu ve üye takibini kolaylıkla yönetin.' },
 ];
 
 const DerneklerPage = ({ onConsult }) => {
@@ -2166,6 +2703,11 @@ const DerneklerPage = ({ onConsult }) => {
 
   return (
     <div className="dernekler-page">
+      <SeoHead
+        title="Dernek & Vakıf Dijital Bağış Platformu | Pekin Teknoloji"
+        description="Bağış kampanyası, kurban organizasyonu, su kuyusu, gönüllü koordinasyonu ve bağışçı yönetimi tek platformda. Dernek & vakıflar için aylık 2.999₺'den başlayan fiyatlarla, Aynı gün kurulum."
+        canonical="/dernekler"
+      />
 
       {/* Hero */}
       <section className="dk-hero">
@@ -2173,16 +2715,16 @@ const DerneklerPage = ({ onConsult }) => {
         <div className="container">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="dk-hero-content">
             <span className="ec-badge"><span className="ec-badge-dot" />Sivil Toplum & Dernek Çözümleri</span>
-            <h1 className="dk-hero-title">Dernekler için<br /><span className="text-gradient-green">dijital bağış</span><br />platformu</h1>
-            <p className="dk-hero-sub">Bağış kampanyaları, gönüllü koordinasyonu ve şeffaf raporlamayı tek platformdan yönetin. Kurulum 1 gün, teknik bilgi gerektirmez.</p>
+            <h1 className="dk-hero-title">Dernek & STK'lar için<br /><span className="text-gradient-green">dijital bağış</span><br />platformu</h1>
+            <p className="dk-hero-sub">Bağış kampanyaları, gönüllü koordinasyonu ve şeffaf raporlamayı tek platformdan yönetin. Kurulum 1 gün,anasa teknik bilgi gerektirmez.</p>
             <div className="dk-hero-btns">
-              <button className="btn-primary" onClick={onConsult}>Ücretsiz Demo İsteyin <ArrowRight size={18} /></button>
+              <button className="btn-primary" onClick={onConsult}>Demo Talep Et <ArrowRight size={18} /></button>
               <button className="btn-ghost" onClick={() => document.getElementById('dk-packages')?.scrollIntoView({ behavior: 'smooth' })}>Paketleri İncele</button>
             </div>
             <div className="dk-hero-stats">
               <div className="dk-stat"><span className="dk-stat-num">1 gün</span><span className="dk-stat-label">Kurulum süresi</span></div>
               <div className="dk-stat-sep" />
-              <div className="dk-stat"><span className="dk-stat-num">1.499 ₺/ay</span><span className="dk-stat-label">Başlangıç fiyatı</span></div>
+              <div className="dk-stat"><span className="dk-stat-num">2.999 ₺/ay</span><span className="dk-stat-label">Başlangıç fiyatı</span></div>
               <div className="dk-stat-sep" />
               <div className="dk-stat"><span className="dk-stat-num">7/24</span><span className="dk-stat-label">Teknik destek</span></div>
             </div>
@@ -2190,19 +2732,67 @@ const DerneklerPage = ({ onConsult }) => {
         </div>
       </section>
 
-      {/* Özellikler */}
-      <section className="dk-features">
+      {/* Nasıl Çalışır */}
+      <section className="dk-how">
         <div className="container">
           <div className="section-header">
-            <span className="section-label">Platform Özellikleri</span>
-            <h2>Derneğinizin ihtiyacı olan her şey</h2>
+            <span className="section-label">Adım Adım</span>
+            <h2>Nasıl Çalışır?</h2>
+            <p className="section-desc">Kurulumdan ilk bağışa — sadece birkaç adım.</p>
           </div>
-          <div className="dk-features-grid">
-            {DERNEK_FEATURES.map((f, i) => (
-              <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="dk-feature-card">
-                <span className="dk-feature-icon">{f.icon}</span>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
+          <div className="dk-how-grid">
+            {HOWIT_WORKS.map((step, i) => (
+              <motion.div key={step.step} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="dk-how-card">
+                <div className="dk-how-step">{step.step}</div>
+                <div className="dk-how-icon">{step.icon}</div>
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
+                {i < HOWIT_WORKS.length - 1 && <div className="dk-how-arrow">→</div>}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Kimler İçin */}
+      <section className="dk-audience">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-label">Kimler Kullanıyor?</span>
+            <h2>Her türlü sivil toplum kuruluşu için</h2>
+          </div>
+          <div className="dk-audience-grid">
+            {NGO_AUDIENCE.map((a, i) => (
+              <motion.div key={a.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="dk-audience-card">
+                <span className="dk-audience-icon">{a.icon}</span>
+                <h3>{a.title}</h3>
+                <p>{a.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Modüller */}
+      <section className="dk-modules">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-label">Platform Modülleri</span>
+            <h2>İhtiyacınız olan her araç hazır</h2>
+            <p className="section-desc">Bağıştan raporlamaya, etkinlikten gönüllü yönetimine — hepsi tek çatı altında.</p>
+          </div>
+          <div className="dk-modules-grid">
+            {NGO_MODULES.map((m, i) => (
+              <motion.div key={m.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }}>
+                <Link to={`/dernekler/${m.slug}`} className="dk-module-card dk-module-card--link">
+                  <div className="dk-module-top">
+                    <span className="dk-module-icon">{m.icon}</span>
+                    <span className={`dk-module-plan dk-module-plan--${m.plan === 'Dernek Paneli' ? 'pro' : m.plan === 'Başlangıç' ? 'starter' : 'all'}`}>{m.plan}</span>
+                  </div>
+                  <h3>{m.title}</h3>
+                  <p>{m.desc}</p>
+                  <span className="dk-module-arrow">Detayları gör →</span>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -2235,7 +2825,7 @@ const DerneklerPage = ({ onConsult }) => {
                   ))}
                 </ul>
                 <button className={`dk-pkg-btn ${pkg.popular ? 'dk-pkg-btn--primary' : 'dk-pkg-btn--ghost'}`} onClick={onConsult}>
-                  Demo İste
+                  Demo Talep Et
                 </button>
               </div>
             ))}
@@ -2243,29 +2833,6 @@ const DerneklerPage = ({ onConsult }) => {
         </div>
       </section>
 
-      {/* Referanslar */}
-      <section className="dk-testimonials">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-label">Kullanıcı Yorumları</span>
-            <h2>Onlar memnun, siz de olun</h2>
-          </div>
-          <div className="dk-testimonials-grid">
-            {DERNEK_TESTIMONIALS.map((t) => (
-              <div key={t.name} className="dk-testimonial-card">
-                <p className="dk-testimonial-text">"{t.text}"</p>
-                <div className="dk-testimonial-author">
-                  <div className="dk-testimonial-avatar">{t.name[0]}</div>
-                  <div>
-                    <div className="dk-testimonial-name">{t.name}</div>
-                    <div className="dk-testimonial-role">{t.role}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA */}
       <section className="dk-cta">
@@ -2274,7 +2841,7 @@ const DerneklerPage = ({ onConsult }) => {
             <h2>Derneğinizi dijitale taşımaya hazır mısınız?</h2>
             <p>Ücretsiz demo ile platformu kendi gözlerinizle görün. Kurulum sonrası 30 gün tam destek.</p>
             <div className="dk-cta-btns">
-              <button className="btn-primary" onClick={onConsult}>Ücretsiz Demo İste <ArrowRight size={18} /></button>
+              <button className="btn-primary" onClick={onConsult}>Demo Talep Et <ArrowRight size={18} /></button>
               <a href="mailto:bilgi@pekinteknoloji.com" className="btn-ghost">Bize Yazın</a>
             </div>
           </motion.div>
@@ -2337,83 +2904,173 @@ const AgencyServices = ({ onConsult }) => (
 
   const HomePage = () => (
     <>
-      {/* Hero Section - Split */}
-      <section className="hero hero-split">
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="hero-text"
-        >
-          <span className="badge">Hazır E-Ticaret Altyapısı</span>
-          <h1>E-Ticaret Mağazanızı <br /> <span className="text-gradient">Birlikte Kuralım</span></h1>
-          <p className="hero-description">
-            Güçlü e-ticaret altyapısıyla mağazanızı kurun.
-            Ödeme sistemleri, pazaryeri ve kargo entegrasyonları tek pakette.
-          </p>
-          <div className="hero-btns">
-            <button className="btn-primary" onClick={() => navigate('/magaza-ac')}>
-              Ücretsiz E-Ticaret Siteni Aç <ArrowRight size={20} />
-            </button>
-          </div>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="hero-visual"
-        >
-          <div className="browser-mockup">
-            <div className="browser-bar">
-              <span className="browser-dot red" />
-              <span className="browser-dot yellow" />
-              <span className="browser-dot green" />
-              <span className="browser-url">magazam.pekinteknoloji.com</span>
+      <SeoHead
+        title="Dernek & STK Dijital Platform | E-Ticaret Çözümleri | Pekin Teknoloji"
+        description="Bağış kampanyası, kurban organizasyonu, su kuyusu, gönüllü koordinasyonu ve bağışçı yönetimi tek platformda. Dernek & STK dijital çözümleri ve e-ticaret mağazası. Aylık sabit ücret, Aynı gün yayında."
+        canonical="/"
+      />
+
+      {/* Hero */}
+      <section className="home-hero">
+        <div className="home-hero-bg" />
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+            className="home-hero-content"
+          >
+            <h1 className="home-hero-title">
+              Dernek ve Vakıflar için<br />
+              <span className="text-gradient-green">hazır dijital altyapı</span>
+            </h1>
+            <p className="home-hero-sub">
+              Bağış toplamak, kurban organize etmek, su kuyusu açmak —
+              tüm bunları tek platformdan, aylık sabit ücretle yönetin.
+            </p>
+            <div className="home-hero-btns">
+              <button className="btn-primary" onClick={() => setConsultModalOpen(true)}>
+                Demo Talep Et <ArrowRight size={17} />
+              </button>
+              <Link to="/dernekler" className="btn-ghost">Dernek Çözümleri</Link>
             </div>
-            <img src={THEMES_DATA[0].mainImage} alt="E-ticaret mağaza örneği" className="browser-screenshot" />
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </section>
 
-      <IntegrationsStrip />
-
-      <EcommerceTeaser onGoEcommerce={() => navigate('/eticaret')} />
-
-      <AnimatedFeaturesSection />
-
-      <AgencyServices onConsult={() => setConsultModalOpen(true)} />
-
-      <BlogSection onNavigate={(type, slug) => navigate(type === 'blog' ? `/blog/${slug}` : `/${type}`)} />
-
-      <FAQSection />
-
-      {/* Contact Section */}
-      <section id="contact" className="contact-section section-padding bg-soft">
+      {/* Neden biz */}
+      <section className="home-why">
         <div className="container">
-          <div className="contact-header">
-            <h2>Bize Ulaşın</h2>
-            <p>Projenizi konuşalım. En geç 1 iş günü içinde dönüş yapıyoruz.</p>
+          <div className="home-why-grid">
+            {[
+              { icon: '🚀', label: 'Aynı gün kurulum', sub: 'Teknik altyapının tamamı bizde' },
+              { icon: '💰', label: 'Aylık sabit ücret', sub: 'Sunucu, SSL, alan adı dahil' },
+              { icon: '🤝', label: 'Hızlı Destek', sub: 'Telefon ve WhatsApp ile destek' },
+              { icon: '🔒', label: 'Güvenli ödeme', sub: '3D Secure, 256 bit şifreleme' },
+            ].map(item => (
+              <div key={item.label} className="home-why-item">
+                <span className="home-why-icon">{item.icon}</span>
+                <div>
+                  <div className="home-why-label">{item.label}</div>
+                  <div className="home-why-sub">{item.sub}</div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="contact-info-row">
-            <a href="tel:+905415740545" className="contact-info-pill">
-              <Phone size={16} /> 0541 574 05 45
-            </a>
-            <a href="mailto:bilgi@pekinteknoloji.com" className="contact-info-pill">
-              <Mail size={16} /> bilgi@pekinteknoloji.com
-            </a>
+        </div>
+      </section>
+
+      {/* İki ürün kartı */}
+      <section className="home-products">
+        <div className="container">
+          <div className="home-products-grid">
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+              className="home-product-card home-product-card--ngo"
+            >
+              <div className="home-product-badge">Dernek & STK</div>
+              <h2 className="home-product-title">Dijital Bağış Platformu</h2>
+              <p className="home-product-desc">
+                Bağış kampanyası, kurban organizasyonu, su kuyusu, gönüllü koordinasyonu ve
+                bağışçı yönetimi tek platformda.
+              </p>
+              <ul className="home-product-features">
+                <li><Check size={15} /> Bağış kampanyası & kurban organizasyonu</li>
+                <li><Check size={15} /> Su kuyusu & proje bazlı bağış</li>
+                <li><Check size={15} /> Bağışçı CRM & dijital makbuz</li>
+                <li><Check size={15} /> WhatsApp bildirimleri & raporlama</li>
+              </ul>
+              <div className="home-product-footer">
+                <span className="home-product-price">2.999 ₺<span>/ay</span>'dan başlayan</span>
+                <div className="home-product-btns">
+                  <Link to="/dernekler" className="btn-primary">Detayları Gör</Link>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="home-product-card home-product-card--ec"
+            >
+              <div className="home-product-badge home-product-badge--ec">E-Ticaret</div>
+              <h2 className="home-product-title">Online Mağaza Kurulumu</h2>
+              <p className="home-product-desc">
+                Profesyonel e-ticaret mağazanızı kurun.
+                Pazaryeri entegrasyonları, kargo ve ödeme sistemleri dahil.
+              </p>
+              <ul className="home-product-features">
+                <li><Check size={15} /> Trendyol, Hepsiburada, Amazon pazaryeri entegrasyonu</li>
+                <li><Check size={15} /> Çoklu dil & çoklu para birimi desteği</li>
+                <li><Check size={15} /> Güvenli ödeme & sanal pos entegrasyonu</li>
+                <li><Check size={15} /> MNG, Yurtiçi, Aras kargo entegrasyonu</li>
+              </ul>
+              <div className="home-product-footer">
+                <span className="home-product-price">2.999 ₺/ay'dan başlayan</span>
+                <div className="home-product-btns">
+                  <button className="btn-primary" onClick={() => navigate('/magaza-ac')}>Ücretsiz Mağazanı Aç</button>
+                  <Link to="/eticaret" className="btn-ghost">Detayları Gör</Link>
+                </div>
+              </div>
+            </motion.div>
+
           </div>
-          <div style={{ borderRadius: 16, overflow: 'hidden', margin: '1.5rem 0', height: 280, boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
+        </div>
+      </section>
+
+      {/* İletişim */}
+      <section id="contact" className="home-contact">
+        <div className="container">
+          <div className="home-contact-grid">
+            <div className="home-contact-left">
+              <h2>Projenizi konuşalım</h2>
+              <p>Dernek platformu, e-ticaret mağazası veya özel yazılım çözümleri için demo oluşturalım. </p>
+              <button className="btn-primary" onClick={() => setConsultModalOpen(true)}>
+                Demo Talep Et <ArrowRight size={16} />
+              </button>
+            </div>
+            <div className="home-contact-right">
+              <a href="tel:+905415740545" className="home-contact-item">
+                <span className="home-contact-icon"><Phone size={18} /></span>
+                <div>
+                  <span className="home-contact-label">Telefon</span>
+                  <span className="home-contact-val">0541 574 05 45</span>
+                </div>
+              </a>
+              <a href="mailto:bilgi@pekinteknoloji.com" className="home-contact-item">
+                <span className="home-contact-icon"><Mail size={18} /></span>
+                <div>
+                  <span className="home-contact-label">E-posta</span>
+                  <span className="home-contact-val">bilgi@pekinteknoloji.com</span>
+                </div>
+              </a>
+              <div className="home-contact-item">
+                <span className="home-contact-icon"><MapPin size={18} /></span>
+                <div>
+                  <span className="home-contact-label">Ofis</span>
+                  <span className="home-contact-val">Selanik Pasajı No:5, Beyoğlu / İstanbul</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{ marginTop: '2rem', borderRadius: 14, overflow: 'hidden', border: '1px solid #e5e7eb' }}>
             <iframe
-              title="Pekin Teknoloji Konum"
-              src="https://maps.google.com/maps?q=Selanik+Pasa%C4%B1+No:5+Beyo%C4%9Flu+%C4%B0stanbul&output=embed&hl=tr"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010.125381868162!2d28.972941076824092!3d41.02251277134843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab92a1cecd6bf%3A0x8351af3e6098b28e!2sPekin%20Teknoloji!5e0!3m2!1sen!2str!4v1778136373665!5m2!1sen!2str"
               width="100%"
-              height="280"
+              height="320"
               style={{ border: 0, display: 'block' }}
-              allowFullScreen
+              allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              title="Pekin Teknoloji Ofis Konumu"
             />
           </div>
-          <ContactInlineForm />
         </div>
       </section>
     </>
@@ -2431,9 +3088,12 @@ const AgencyServices = ({ onConsult }) => (
         <Route path="/" element={<HomePage />} />
         <Route path="/eticaret" element={<EcommercePage onRegister={() => navigate('/magaza-ac')} onThemeSelect={setSelectedTheme} themesData={THEMES_DATA} />} />
         <Route path="/dernekler" element={<DerneklerPage onConsult={() => setConsultModalOpen(true)} />} />
+        <Route path="/dernekler/:moduleSlug" element={<ModuleDetailPage onConsult={() => setConsultModalOpen(true)} />} />
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogDetailPage />} />
         <Route path="/sss" element={<FAQPage />} />
+        <Route path="/hakkimizda" element={<HakkimizdaPage />} />
+        <Route path="/kvkk" element={<KVKKPage />} />
         <Route path="/magaza-ac" element={<MagazaAcPageWithCaptcha />} />
         <Route path="/hesabim" element={<HesabimPage />} />
         <Route path="/odeme" element={<OdemePage />} />
@@ -2451,17 +3111,19 @@ const AgencyServices = ({ onConsult }) => (
             
             <div className="f-col">
               <h4>Hizmetlerimiz</h4>
-              <Link to="/" onClick={() => setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100)}>Mağaza Kurulum</Link>
-              <Link to="/" onClick={() => setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100)}>Tema Özelleştirme</Link>
-              <Link to="/" onClick={() => setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100)}>Pazaryeri Entegrasyonu</Link>
-              <Link to="/" onClick={() => setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100)}>Teknik Destek</Link>
+              <Link to="/dernekler/bagis-kampanyasi">Bağış Kampanyası</Link>
+              <Link to="/dernekler/kurban-organizasyonu">Kurban Organizasyonu</Link>
+              <Link to="/dernekler/su-kuyusu">Su Kuyusu & Proje Bağışı</Link>
+              <Link to="/dernekler/bagisci-yonetimi">Bağışçı Yönetimi</Link>
+              <Link to="/eticaret">E-Ticaret Mağazası</Link>
             </div>
 
             <div className="f-col">
               <h4>Kurumsal</h4>
               <Link to="/">Anasayfa</Link>
+              <Link to="/hakkimizda">Hakkımızda</Link>
               <Link to="/eticaret">E-Ticaret Platform</Link>
-              <Link to="/dernekler">Dernekler İçin</Link>
+              <Link to="/dernekler">Dernek & STK</Link>
               <Link to="/blog">Blog</Link>
               <Link to="/sss">SSS</Link>
             </div>
@@ -2470,7 +3132,7 @@ const AgencyServices = ({ onConsult }) => (
               <h4>Destek</h4>
               <Link to="/" onClick={() => setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 100)}>İletişim</Link>
               <a href="mailto:bilgi@pekinteknoloji.com">Bize Yazın</a>
-              <a href="mailto:bilgi@pekinteknoloji.com?subject=KVKK%20Bilgi%20Talebi">KVKK</a>
+              <Link to="/kvkk">KVKK</Link>
             </div>
           </div>
           
@@ -2483,6 +3145,18 @@ const AgencyServices = ({ onConsult }) => (
           </div>
         </div>
       </footer>}
+
+      <a
+        href="https://wa.me/905415740545"
+        className="whatsapp-float"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="WhatsApp ile iletişime geç"
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+      </a>
 
       {!isFullscreen && <ConsultationModal
         isOpen={isConsultModalOpen}

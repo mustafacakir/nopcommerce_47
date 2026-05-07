@@ -1,43 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Ana sayfalar -->
   <url>
-    <loc>https://pekinteknoloji.com/</loc>
+    <loc>https://www.pekinteknoloji.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://pekinteknoloji.com/eticaret</loc>
+    <loc>https://www.pekinteknoloji.com/eticaret</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://pekinteknoloji.com/fiyatlar</loc>
+    <loc>https://www.pekinteknoloji.com/dernekler</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- Dernek modül sayfaları -->
   <url>
-    <loc>https://pekinteknoloji.com/blog</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://www.pekinteknoloji.com/dernekler/kurban-organizasyonu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/su-kuyusu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/bagisci-yonetimi</loc>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pekinteknoloji.com/blog/eticarette-seo</loc>
+    <loc>https://www.pekinteknoloji.com/dernekler/bagis-kampanyasi</loc>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/duzenli-bagis</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/dijital-makbuz</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/etkinlik-yonetimi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/gonullu-koordinasyonu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/whatsapp-bildirimleri</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/raporlama</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/coklu-dil</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/dernekler/sosyal-paylasim</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog -->
+  <url>
+    <loc>https://www.pekinteknoloji.com/blog</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pekinteknoloji.com/blog/trendyol-entegrasyonu</loc>
+    <loc>https://www.pekinteknoloji.com/blog/eticarette-seo</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://pekinteknoloji.com/blog/dogru-tema-secimi</loc>
+    <loc>https://www.pekinteknoloji.com/blog/trendyol-entegrasyonu</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://pekinteknoloji.com/sss</loc>
+    <loc>https://www.pekinteknoloji.com/blog/dogru-tema-secimi</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
+
+  <!-- Diğer -->
+  <url>
+    <loc>https://www.pekinteknoloji.com/sss</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/hakkimizda</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/kvkk</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/blog/dernekler-icin-online-bagis</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.pekinteknoloji.com/blog/kurban-organizasyonu-dijital</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
 </urlset>

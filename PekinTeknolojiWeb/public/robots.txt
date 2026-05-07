@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /magaza-ac
+Disallow: /hesabim
+Disallow: /odeme
 
-Sitemap: https://pekinteknoloji.com/sitemap.xml
+Sitemap: https://www.pekinteknoloji.com/sitemap.xml
