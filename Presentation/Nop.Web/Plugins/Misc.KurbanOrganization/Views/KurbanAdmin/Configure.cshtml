@@ -1,0 +1,69 @@
+@model Nop.Plugin.Misc.KurbanOrganization.Models.KurbanConfigureModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Kurban Organizasyon Ayarları";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">Kurban Organizasyon Ayarları</h1>
+</div>
+
+<div class="content">
+    @if (ViewBag.Saved == true)
+    {
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            Ayarlar kaydedildi.
+        </div>
+    }
+
+    <div class="card card-default">
+        <div class="card-body">
+            <form method="post" action="@Url.Action("Configure")">
+                <div class="mb-3">
+                    <label class="form-label">Kurban Kategori ID</label>
+                    <input type="number" name="KurbanCategoryId" value="@Model.KurbanCategoryId" class="form-control" />
+                    <small class="form-text text-muted">Kurban ürünlerinin bulunduğu kategori ID'sini girin.</small>
+                </div>
+
+                <hr />
+                <h5>WhatsApp Business API</h5>
+
+                <div class="mb-3">
+                    <label class="form-label">Access Token</label>
+                    <input type="text" name="WhatsAppAccessToken" value="@Model.WhatsAppAccessToken" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Phone Number ID</label>
+                    <input type="text" name="WhatsAppPhoneNumberId" value="@Model.WhatsAppPhoneNumberId" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Kesim Bildirim Şablonu</label>
+                    <input type="text" name="KesimTemplateName" value="@Model.KesimTemplateName" class="form-control" />
+                    <small class="form-text text-muted">Meta Business'ta oluşturduğunuz şablon adı (örn: kurban_kesildi)</small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Şablon Dili</label>
+                    <input type="text" name="TemplateLanguage" value="@Model.TemplateLanguage" class="form-control" />
+                    <small class="form-text text-muted">Örn: tr, en_US</small>
+                </div>
+
+                <hr />
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" name="Enabled" value="true" id="Enabled"
+                           @(Model.Enabled ? "checked" : "")>
+                    <label class="form-check-label" for="Enabled">
+                        Eklenti Aktif
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+            </form>
+        </div>
+    </div>
+</div>

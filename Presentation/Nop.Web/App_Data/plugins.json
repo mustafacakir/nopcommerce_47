@@ -4,6 +4,10 @@
   ],
   "InstalledPlugins": [
     {
+      "SystemName": "Misc.SimpleCheckout",
+      "Version": "1.0.0"
+    },
+    {
       "SystemName": "Payments.PayPalCommerce",
       "Version": "4.70.6"
     },
@@ -222,6 +226,10 @@
     {
       "SystemName": "Widgets.CampaignProgress",
       "Version": "1.00"
+    },
+    {
+      "SystemName": "Misc.KurbanOrganization",
+      "Version": "1.0.0"
     }
   ],
   "PluginNamesToUninstall": [],

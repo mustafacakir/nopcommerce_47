@@ -1,6 +1,6 @@
-{
-    "Group":  "Widgets",
-    "FriendlyName":  "Donation Grid",
+﻿{
+    "Group": "Dernek",
+    "FriendlyName": "Donation Grid [Dernek]",
     "SystemName":  "Widgets.DonationGrid",
     "Version":  "1.0.0",
     "SupportedVersions":  [
@@ -9,5 +9,5 @@
     "Author":  "Pekin Teknoloji",
     "DisplayOrder":  5,
     "FileName":  "Nop.Plugin.Widgets.DonationGrid.dll",
-    "Description":  "Displays a sidebar-category donation product grid on category pages"
+    "Description": "Displays a sidebar-category donation product grid on category pages | Dernek"
 }

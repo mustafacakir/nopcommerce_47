@@ -1,6 +1,6 @@
 ﻿{
-    "Group":  "Widgets",
-    "FriendlyName":  "Campaign Progress",
+    "Group": "Dernek",
+    "FriendlyName": "Campaign Progress [Dernek]",
     "SystemName":  "Widgets.CampaignProgress",
     "Version":  "1.00",
     "SupportedVersions":  [
@@ -9,7 +9,7 @@
     "Author":  "pekinteknoloji",
     "DisplayOrder":  7,
     "FileName":  "Nop.Plugin.Widgets.CampaignProgress.dll",
-    "Description":  "Homepage campaign goal progress bar",
+    "Description": "Homepage campaign goal progress bar | Dernek",
     "LimitedToStores":  [
                             39
                         ]

@@ -1,0 +1,93 @@
+@model IList<Nop.Plugin.Misc.WhatsAppNotification.Models.OrderWhatsAppModel>
+
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Siparişlere WhatsApp Gönder";
+
+    int selectedDays = ViewBag.Days;
+
+    string Sel(int val) => selectedDays == val ? " selected=\"selected\"" : "";
+
+    string selectHtml = "<select name=\"days\" class=\"form-select\">"
+        + "<option value=\"1\"" + Sel(1) + ">Bugün</option>"
+        + "<option value=\"3\"" + Sel(3) + ">Son 3 gün</option>"
+        + "<option value=\"7\"" + Sel(7) + ">Son 7 gün</option>"
+        + "<option value=\"30\"" + Sel(30) + ">Son 30 gün</option>"
+        + "</select>";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">Siparişlere WhatsApp Gönder</h1>
+</div>
+
+<div class="content">
+    <div class="card card-default mb-3">
+        <div class="card-body">
+            <form method="get" action="@Url.Action("Orders")">
+                <div class="row align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label">Son kaç günün siparişleri</label>
+                        @Html.Raw(selectHtml)
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary">Filtrele</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card card-default">
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Sipariş #</th>
+                        <th>Müşteri</th>
+                        <th>Telefon</th>
+                        <th>Tutar</th>
+                        <th>Tarih</th>
+                        <th>WhatsApp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var mesaj = "Sayın " + item.MusteriAd + ",\n\n"
+                            + "#" + item.CustomOrderNumber + " numaralı siparişiniz alınmıştır.\n"
+                            + "Tutar: " + item.OrderTotal + "\n\n"
+                            + "Teşekkür ederiz.";
+                        var waLink = string.IsNullOrEmpty(item.WhatsAppPhone)
+                            ? "#"
+                            : "https://wa.me/" + item.WhatsAppPhone + "?text=" + Uri.EscapeDataString(mesaj);
+
+                        <tr>
+                            <td>
+                                <a href="/Admin/Order/Edit/@item.OrderId" target="_blank">#@item.CustomOrderNumber</a>
+                            </td>
+                            <td>@item.MusteriAd</td>
+                            <td>@item.MusteriTelefon</td>
+                            <td>@item.OrderTotal</td>
+                            <td>@item.CreatedOn</td>
+                            <td>
+                                @if (string.IsNullOrEmpty(item.WhatsAppPhone))
+                                {
+                                    <span class="text-muted">Telefon yok</span>
+                                }
+                                else
+                                {
+                                    <a href="@waLink" target="_blank" class="btn btn-sm btn-success">📱 Gönder</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <p class="text-center text-muted mt-3">Bu dönemde sipariş bulunamadı.</p>
+            }
+        </div>
+    </div>
+</div>

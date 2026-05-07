@@ -13,6 +13,9 @@
     <None Remove="Views\Configure.cshtml" />
     <None Remove="Views\_ViewImports.cshtml" />
     <None Remove="Views\Components\VolunteerCta\Default.cshtml" />
+    <None Remove="Views\GonulluBasvuru\Form.cshtml" />
+    <None Remove="Views\GonulluBasvuru\Tesekkur.cshtml" />
+    <None Remove="Views\GonulluAdmin\List.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,10 +23,13 @@
     <Content Include="Views\Configure.cshtml"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></Content>
     <Content Include="Views\_ViewImports.cshtml"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></Content>
     <Content Include="Views\Components\VolunteerCta\Default.cshtml"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></Content>
+    <Content Include="Views\GonulluBasvuru\Form.cshtml"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></Content>
+    <Content Include="Views\GonulluBasvuru\Tesekkur.cshtml"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></Content>
+    <Content Include="Views\GonulluAdmin\List.cshtml"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></Content>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj" />
     <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" />
   </ItemGroup>
 

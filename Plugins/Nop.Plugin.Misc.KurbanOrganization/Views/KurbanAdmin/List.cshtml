@@ -1,0 +1,95 @@
+@model IList<Nop.Plugin.Misc.KurbanOrganization.Models.KurbanHisseModel>
+
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Kurban Hisseleri";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        Kurban Hisseleri
+    </h1>
+</div>
+
+<div class="content">
+    <div class="card card-default">
+        <div class="card-body">
+            <form method="get" action="@Url.Action("List")">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Kesim Durumu</label>
+                        <select name="kesildi" class="form-select">
+                            <option value="">Tümü</option>
+                            <option value="false" @(ViewBag.FilterKesildi == false ? "selected" : "")>Kesilmedi</option>
+                            <option value="true" @(ViewBag.FilterKesildi == true ? "selected" : "")>Kesildi</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary">Filtrele</button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Hisse Kodu</th>
+                        <th>Sipariş #</th>
+                        <th>Kurban Türü</th>
+                        <th>Hisse Sayısı</th>
+                        <th>Müşteri Adı</th>
+                        <th>Telefon</th>
+                        <th>Kesildi</th>
+                        <th>Kesim Tarihi</th>
+                        <th>Bildirim</th>
+                        <th>Kayıt Tarihi</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>@item.HisseKodu</strong></td>
+                            <td>@item.OrderId</td>
+                            <td>@item.KurbanTuru</td>
+                            <td>@item.HisseSayisi</td>
+                            <td>@item.MusteriAd</td>
+                            <td>@item.MusteriTelefon</td>
+                            <td>
+                                @if (item.Kesildi)
+                                {
+                                    <span class="badge bg-success">Kesildi</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Bekliyor</span>
+                                }
+                            </td>
+                            <td>@item.KesimTarihi</td>
+                            <td>
+                                @if (item.BildirimGonderildi)
+                                {
+                                    <span class="badge bg-success">Gönderildi</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Gönderilmedi</span>
+                                }
+                            </td>
+                            <td>@item.CreatedOn</td>
+                            <td>
+                                <a href="@Url.Action("Detail", new { id = item.Id })" class="btn btn-sm btn-info">Detay</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <p class="text-center text-muted mt-3">Kayıt bulunamadı.</p>
+            }
+        </div>
+    </div>
+</div>

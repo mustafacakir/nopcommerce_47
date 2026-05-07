@@ -1,0 +1,11 @@
+{
+    "Group": "Misc",
+    "FriendlyName": "Simple Checkout",
+    "SystemName": "Misc.SimpleCheckout",
+    "Version": "1.0.0",
+    "SupportedVersions": [ "4.70" ],
+    "Author": "Pekin Teknoloji",
+    "DisplayOrder": 1,
+    "FileName": "Nop.Plugin.Misc.SimpleCheckout.dll",
+    "Description": "Simplified single-page checkout for donation/NGO stores"
+}

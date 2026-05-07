@@ -1,6 +1,7 @@
 using Nop.Core.Domain.Orders;
 using Nop.Core.Events;
 using Nop.Plugin.Misc.WhatsAppNotification.Services;
+using Nop.Services.Events;
 using Nop.Services.Configuration;
 using Nop.Services.Customers;
 using Nop.Services.Stores;

@@ -1,0 +1,11 @@
+﻿{
+    "Group": "Dernek",
+    "FriendlyName": "Kurban Organizasyon Yönetimi [Dernek]",
+    "SystemName": "Misc.KurbanOrganization",
+    "Version": "1.0.0",
+    "SupportedVersions": [ "4.70" ],
+    "Author": "Pekin Teknoloji",
+    "DisplayOrder": 1,
+    "FileName": "Nop.Plugin.Misc.KurbanOrganization.dll",
+    "Description": "Kurban hissesi takibi, kesim durumu yönetimi ve WhatsApp kesim bildirimi | Dernek"
+}

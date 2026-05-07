@@ -1,6 +1,6 @@
 ﻿{
-    "Group":  "Widgets",
-    "FriendlyName":  "Recent Donations Feed",
+    "Group": "Dernek",
+    "FriendlyName": "Recent Donations Feed [Dernek]",
     "SystemName":  "Widgets.RecentDonations",
     "Version":  "1.0",
     "SupportedVersions":  [
@@ -9,7 +9,7 @@
     "Author":  "Pekin Teknoloji",
     "DisplayOrder":  8,
     "FileName":  "Nop.Plugin.Widgets.RecentDonations.dll",
-    "Description":  "Son bağışları kayan bant olarak ana sayfada gösterir",
+    "Description": "Son bağışları kayan bant olarak ana sayfada gösterir | Dernek",
     "LimitedToStores":  [
                             31
                         ]

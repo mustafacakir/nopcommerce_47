@@ -1,0 +1,140 @@
+@model Nop.Plugin.Misc.SimpleCheckout.Models.SimpleCheckoutModel
+@{
+    Layout = "_ColumnsOne";
+}
+
+<div class="page checkout-page">
+    <div class="page-title">
+        <h1>Ödeme</h1>
+    </div>
+    <div class="page-body">
+
+        <div class="sc-wrap">
+
+            <!-- Sol: Form -->
+            <div class="sc-form-card">
+                <h2 class="sc-section-title">Kişisel Bilgiler</h2>
+
+                @if (Model.Errors.Any())
+                {
+                    <div class="message-error">
+                        <ul>
+                            @foreach (var err in Model.Errors)
+                            {
+                                <li>@err</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <form asp-controller="SimpleCheckout" asp-action="PlaceOrder" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="sc-row">
+                        <div class="sc-field">
+                            <label>Ad <span class="required">*</span></label>
+                            <input asp-for="FirstName" class="form-control" placeholder="Adınız" />
+                            <span asp-validation-for="FirstName" class="field-validation-error"></span>
+                        </div>
+                        <div class="sc-field">
+                            <label>Soyad <span class="required">*</span></label>
+                            <input asp-for="LastName" class="form-control" placeholder="Soyadınız" />
+                            <span asp-validation-for="LastName" class="field-validation-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="sc-field">
+                        <label>E-posta <span class="required">*</span></label>
+                        <input asp-for="Email" type="email" class="form-control" placeholder="ornek@mail.com" />
+                        <span asp-validation-for="Email" class="field-validation-error"></span>
+                    </div>
+
+                    <div class="sc-field">
+                        <label>Telefon <span class="required">*</span></label>
+                        <input asp-for="Phone" type="tel" class="form-control" placeholder="+905XXXXXXXXX" />
+                        <span asp-validation-for="Phone" class="field-validation-error"></span>
+                    </div>
+
+                    <div class="sc-submit">
+                        <button type="submit" class="button-1">Güvenli Ödemeye Geç &rarr;</button>
+                        <p class="sc-submit-note">Kart bilgilerinizi bir sonraki güvenli sayfada gireceksiniz.</p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Sağ: Sipariş özeti -->
+            <div class="sc-summary-card">
+                <h2 class="sc-section-title">Sipariş Özeti</h2>
+                <table class="sc-cart-table">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td class="sc-item-name">@item.ProductName@(item.Quantity > 1 ? $" x{item.Quantity}" : "")</td>
+                            <td class="sc-item-price">@item.SubTotalFormatted</td>
+                        </tr>
+                    }
+                </table>
+                <div class="sc-total-row">
+                    <span>Toplam</span>
+                    <span class="sc-total-amount">@Model.OrderTotalFormatted</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<style>
+.sc-wrap {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    max-width: 960px;
+    margin: 0 auto;
+}
+.sc-form-card {
+    flex: 1;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 32px;
+}
+.sc-summary-card {
+    width: 280px;
+    flex-shrink: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 24px;
+}
+.sc-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f3f4f6;
+}
+.sc-row { display: flex; gap: 16px; }
+.sc-row .sc-field { flex: 1; }
+.sc-field { margin-bottom: 16px; }
+.sc-field label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: 5px; color: #374151; }
+.sc-field .form-control { width: 100%; }
+.sc-submit { margin-top: 8px; }
+.sc-submit .button-1 { width: 100%; padding: 14px; font-size: 1rem; }
+.sc-submit-note { margin: 10px 0 0; font-size: .82rem; color: #6b7280; text-align: center; }
+.sc-cart-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+.sc-cart-table tr { border-bottom: 1px solid #f3f4f6; }
+.sc-cart-table td { padding: 8px 0; font-size: .88rem; vertical-align: top; }
+.sc-item-name { color: #374151; padding-right: 12px; }
+.sc-item-price { text-align: right; font-weight: 600; white-space: nowrap; color: #111; }
+.sc-total-row { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; font-weight: 700; font-size: 1rem; }
+.sc-total-amount { color: #1a2370; font-size: 1.1rem; }
+@@media (max-width: 700px) {
+    .sc-wrap { flex-direction: column; }
+    .sc-summary-card { width: 100%; order: -1; }
+    .sc-row { flex-direction: column; gap: 0; }
+    .sc-form-card { padding: 20px; }
+}
+</style>

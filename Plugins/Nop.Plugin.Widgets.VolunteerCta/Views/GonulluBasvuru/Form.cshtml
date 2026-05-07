@@ -1,0 +1,44 @@
+@model Nop.Plugin.Widgets.VolunteerCta.Models.GonulluBasvuruModel
+@{ Layout = ""; }
+
+<section style="max-width:560px;margin:48px auto;padding:0 20px">
+    <h1 style="font-size:24px;font-weight:800;margin-bottom:8px">Gönüllü Başvurusu</h1>
+    <p style="color:#6b7280;margin-bottom:28px">Bilgilerinizi doldurun, ekibimiz sizinle iletişime geçecektir.</p>
+
+    <form method="post" asp-controller="GonulluPublic" asp-action="Form">
+        <div asp-validation-summary="ModelOnly" style="color:#e43d51;margin-bottom:16px"></div>
+
+        <div style="margin-bottom:16px">
+            <label style="display:block;font-weight:600;margin-bottom:6px">Ad *</label>
+            <input asp-for="Ad" class="form-control" placeholder="Adınız" />
+            <span asp-validation-for="Ad" style="color:#e43d51;font-size:13px"></span>
+        </div>
+
+        <div style="margin-bottom:16px">
+            <label style="display:block;font-weight:600;margin-bottom:6px">Soyad *</label>
+            <input asp-for="Soyad" class="form-control" placeholder="Soyadınız" />
+            <span asp-validation-for="Soyad" style="color:#e43d51;font-size:13px"></span>
+        </div>
+
+        <div style="margin-bottom:16px">
+            <label style="display:block;font-weight:600;margin-bottom:6px">Telefon *</label>
+            <input asp-for="Telefon" class="form-control" placeholder="05XX XXX XX XX" />
+            <span asp-validation-for="Telefon" style="color:#e43d51;font-size:13px"></span>
+        </div>
+
+        <div style="margin-bottom:16px">
+            <label style="display:block;font-weight:600;margin-bottom:6px">E-posta</label>
+            <input asp-for="Email" class="form-control" placeholder="ornek@email.com" />
+        </div>
+
+        <div style="margin-bottom:24px">
+            <label style="display:block;font-weight:600;margin-bottom:6px">Kısa Not</label>
+            <textarea asp-for="Not" class="form-control" rows="3"
+                placeholder="Nasıl katkıda bulunmak istediğinizi kısaca yazabilirsiniz..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;font-size:16px;font-weight:700">
+            Başvuruyu Gönder
+        </button>
+    </form>
+</section>

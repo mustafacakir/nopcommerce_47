@@ -27,8 +27,7 @@ public class KumbaraFormPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
 
     public Task ManageSiteMapAsync(SiteMapNode rootNode)
     {
-        var pluginNode = rootNode.ChildNodes.FirstOrDefault(n => n.SystemName == "Third party plugins")
-            ?? rootNode.ChildNodes.FirstOrDefault();
+        var salesNode = rootNode.ChildNodes.FirstOrDefault(n => n.SystemName == "Sales");
 
         var kumbaraNode = new SiteMapNode
         {
@@ -36,10 +35,10 @@ public class KumbaraFormPlugin : BasePlugin, IWidgetPlugin, IAdminMenuPlugin
             Title = "Kumbara Başvuruları",
             Url = "/Admin/KumbaraAdmin/Configure",
             Visible = true,
-            IconClass = "far fa-dot-circle",
+            IconClass = "fas fa-box",
         };
 
-        pluginNode?.ChildNodes.Add(kumbaraNode);
+        salesNode?.ChildNodes.Add(kumbaraNode);
 
         return Task.CompletedTask;
     }

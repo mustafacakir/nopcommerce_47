@@ -1,0 +1,164 @@
+@model Nop.Plugin.Misc.KurbanOrganization.Models.KurbanHisseModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Hisse Detayı";
+
+    var siparisMetni = Uri.EscapeDataString(
+        $"Sayın {Model.MusteriAd},\n\n" +
+        $"{Model.HisseKodu} kodlu kurban hisseniz başarıyla alınmıştır.\n" +
+        $"Kurban türü: {Model.KurbanTuru}\n" +
+        $"Hisse sayısı: {Model.HisseSayisi}\n\n" +
+        $"Kurban kesim tarihi hakkında tarafınıza bilgi verilecektir.\n" +
+        $"Allah'tan kurbanınızı kabul etmesini dileriz. 🤲");
+
+    var kesimMetni = Uri.EscapeDataString(
+        $"Sayın {Model.MusteriAd},\n\n" +
+        $"{Model.HisseKodu} kodlu kurbanınız hayırlı olsun! Kurbanınız başarıyla kesilmiştir.\n" +
+        $"Kurban türü: {Model.KurbanTuru}\n\n" +
+        $"Allah'tan kurbanınızı kabul etmesini dileriz. 🤲");
+
+    var waBase = string.IsNullOrEmpty(Model.WhatsAppPhone) ? "#" : $"https://wa.me/{Model.WhatsAppPhone}";
+    var waSiparis = string.IsNullOrEmpty(Model.WhatsAppPhone) ? "#" : $"{waBase}?text={siparisMetni}";
+    var waKesim = string.IsNullOrEmpty(Model.WhatsAppPhone) ? "#" : $"{waBase}?text={kesimMetni}";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        Hisse Detayı — @Model.HisseKodu
+    </h1>
+    <div class="float-right">
+        <a href="@Url.Action("List")" class="btn btn-secondary">← Listeye Dön</a>
+    </div>
+</div>
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title">Hisse Bilgileri</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr><th>Hisse Kodu</th><td><strong>@Model.HisseKodu</strong></td></tr>
+                        <tr><th>Sipariş #</th><td>@Model.OrderId</td></tr>
+                        <tr><th>Kurban Türü</th><td>@Model.KurbanTuru</td></tr>
+                        <tr><th>Hisse Sayısı</th><td>@Model.HisseSayisi</td></tr>
+                        <tr><th>Müşteri Adı</th><td>@Model.MusteriAd</td></tr>
+                        <tr><th>Telefon</th><td>@Model.MusteriTelefon</td></tr>
+                        <tr>
+                            <th>Kesim Durumu</th>
+                            <td>
+                                @if (Model.Kesildi)
+                                {
+                                    <span class="badge bg-success">Kesildi</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Bekliyor</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr><th>Kesim Tarihi</th><td>@Model.KesimTarihi</td></tr>
+                        <tr>
+                            <th>WhatsApp Bildirimi</th>
+                            <td>
+                                @if (Model.BildirimGonderildi)
+                                {
+                                    <span class="badge bg-success">Gönderildi</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Gönderilmedi</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr><th>Kayıt Tarihi</th><td>@Model.CreatedOn</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title">Manuel WhatsApp Bildirimi</h3>
+                </div>
+                <div class="card-body">
+                    @if (string.IsNullOrEmpty(Model.WhatsAppPhone))
+                    {
+                        <p class="text-muted">Müşterinin telefon numarası bulunamadı.</p>
+                    }
+                    else
+                    {
+                        <div class="d-grid gap-2">
+                            <a href="@waSiparis" target="_blank" class="btn btn-outline-success">
+                                📱 Sipariş Alındı Bildirimi Gönder
+                            </a>
+                            <a href="@waKesim" target="_blank" class="btn btn-success @(!Model.Kesildi ? "disabled" : "")">
+                                🐑 Kesim Bildirimi Gönder
+                            </a>
+                        </div>
+                        @if (!Model.Kesildi)
+                        {
+                            <small class="text-muted mt-2 d-block">Kesim bildirimi için önce "Kesildi Olarak İşaretle" yapın.</small>
+                        }
+                        <small class="text-muted mt-2 d-block">Butona tıklayınca WhatsApp açılır, mesaj hazır gelir — sadece gönder'e basın.</small>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            @if (!Model.Kesildi)
+            {
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Kesim İşlemi</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="@Url.Action("MarkAsKesildi", new { id = Model.Id })">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" name="sendWhatsApp" value="true" id="sendWhatsApp">
+                                <label class="form-check-label" for="sendWhatsApp">
+                                    Otomatik WhatsApp API bildirimi gönder
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-success"
+                                onclick="return confirm('Bu hisseyi kesildi olarak işaretlemek istediğinize emin misiniz?')">
+                                Kesildi Olarak İşaretle
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+
+            @if (Model.Kesildi && !Model.BildirimGonderildi)
+            {
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Otomatik API Bildirimi</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">API üzerinden otomatik bildirim henüz gönderilmedi.</p>
+                        <form method="post" action="@Url.Action("SendBildirim", new { id = Model.Id })">
+                            <button type="submit" class="btn btn-outline-primary"
+                                onclick="return confirm('WhatsApp API bildirimi göndermek istediğinize emin misiniz?')">
+                                API ile Bildirim Gönder
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+
+            @if (Model.Kesildi && Model.BildirimGonderildi)
+            {
+                <div class="card card-default border-success">
+                    <div class="card-body text-center text-success">
+                        <i class="fas fa-check-circle fa-3x mb-2"></i>
+                        <p>Kurban kesildi ve API bildirimi gönderildi.</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 ﻿{
-    "Group":  "Widgets",
-    "FriendlyName":  "Recurring Donation",
+    "Group": "Dernek",
+    "FriendlyName": "Recurring Donation [Dernek]",
     "SystemName":  "Widgets.RecurringDonation",
     "Version":  "1.00",
     "SupportedVersions":  [
@@ -9,7 +9,7 @@
     "Author":  "pekinteknoloji",
     "DisplayOrder":  9,
     "FileName":  "Nop.Plugin.Widgets.RecurringDonation.dll",
-    "Description":  "Monthly recurring donation section",
+    "Description": "Monthly recurring donation section | Dernek",
     "LimitedToStores":  [
                             31
                         ]

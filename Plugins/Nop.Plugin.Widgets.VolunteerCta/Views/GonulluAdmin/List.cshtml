@@ -1,0 +1,66 @@
+@model IList<Nop.Plugin.Widgets.VolunteerCta.Models.GonulluBasvuruModel>
+
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Gönüllü Başvuruları";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">Gönüllü Başvuruları</h1>
+</div>
+
+<div class="content">
+    <div class="card card-default">
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Ad Soyad</th>
+                        <th>Telefon</th>
+                        <th>E-posta</th>
+                        <th>Not</th>
+                        <th>Tarih</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var mesaj = "Merhaba " + item.Ad + " Hanım/Bey,\n\nGönüllü başvurunuzu aldık. Sizi ekibimize dahil etmek için en kısa sürede arayacağız.\n\nTeşekkürler 🙏";
+                        var waLink = string.IsNullOrEmpty(item.WhatsAppPhone)
+                            ? "#"
+                            : "https://wa.me/" + item.WhatsAppPhone + "?text=" + Uri.EscapeDataString(mesaj);
+
+                        <tr>
+                            <td><strong>@item.Ad @item.Soyad</strong></td>
+                            <td>@item.Telefon</td>
+                            <td>@item.Email</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.Not))
+                                {
+                                    <span title="@item.Not">@(item.Not.Length > 40 ? item.Not[..40] + "..." : item.Not)</span>
+                                }
+                            </td>
+                            <td>@item.CreatedOn</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.WhatsAppPhone))
+                                {
+                                    <a href="@waLink" target="_blank" class="btn btn-sm btn-success">📱 WhatsApp</a>
+                                }
+                                <form method="post" action="@Url.Action("Delete", new { id = item.Id })" style="display:inline"
+                                    onsubmit="return confirm('Bu başvuruyu silmek istediğinize emin misiniz?')">
+                                    <button type="submit" class="btn btn-sm btn-danger">Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <p class="text-center text-muted mt-3">Henüz başvuru bulunmuyor.</p>
+            }
+        </div>
+    </div>
+</div>
