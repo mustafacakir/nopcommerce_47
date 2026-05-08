@@ -1,5 +1,5 @@
 ﻿{
-  "Group": "Dernek",
+  "Group": "Widgets",
   "FriendlyName": "Kumbara Bağış Formu [Dernek]",
   "SystemName": "Widgets.KumbaraForm",
   "Version": "1.00",
@@ -9,3 +9,4 @@
   "FileName": "Nop.Plugin.Widgets.KumbaraForm.dll",
   "Description": "Kumbara bağış formu widgeti ve admin kayıt listesi. | Dernek"
 }
+

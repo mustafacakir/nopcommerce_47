@@ -1,5 +1,5 @@
 ﻿{
-    "Group": "Dernek",
+    "Group": "Widgets",
     "FriendlyName": "Campaign Progress [Dernek]",
     "SystemName":  "Widgets.CampaignProgress",
     "Version":  "1.00",
@@ -14,3 +14,4 @@
                             39
                         ]
 }
+

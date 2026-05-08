@@ -1,11 +1,11 @@
 ﻿{
-    "Group": "Dernek",
+    "Group": "Widgets",
     "FriendlyName": "Donation Section [Dernek]",
     "SystemName": "Widgets.DonationSection",
     "Version": "1.00",
     "SupportedVersions": [ "4.70" ],
     "Author": "pekinteknoloji",
-    "DisplayOrder": 2,
+    "DisplayOrder": 3,
     "FileName": "Nop.Plugin.Widgets.DonationSection.dll",
     "Description": "Left-category right-items donation widget | Dernek",
     "LimitedToStores": [ 40, 42 ]

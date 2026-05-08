@@ -1,5 +1,5 @@
 ﻿{
-    "Group": "Dernek",
+    "Group": "Widgets",
     "FriendlyName": "Donation Receipt [Dernek]",
     "SystemName": "Misc.DonationReceipt",
     "Version": "1.0.0",
@@ -9,3 +9,4 @@
     "FileName": "Nop.Plugin.Misc.DonationReceipt.dll",
     "Description": "Sends an HTML donation receipt email to the donor after order placement | Dernek"
 }
+

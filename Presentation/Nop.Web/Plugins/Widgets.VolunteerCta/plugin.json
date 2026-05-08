@@ -1,5 +1,5 @@
 ﻿{
-    "Group": "Dernek",
+    "Group": "Widgets",
     "FriendlyName": "Volunteer CTA [Dernek]",
     "SystemName":  "Widgets.VolunteerCta",
     "Version":  "1.0",
@@ -14,3 +14,4 @@
                             31
                         ]
 }
+

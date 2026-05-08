@@ -1,5 +1,5 @@
 ﻿{
-    "Group": "Dernek",
+    "Group": "Widgets",
     "FriendlyName": "Child Donation Widget [Dernek]",
     "SystemName": "Widgets.ChildDonation",
     "Version": "1.00",
@@ -10,3 +10,4 @@
     "Description": "Interactive child donation widget with category selection | Dernek",
     "LimitedToStores": [ 31 ]
 }
+

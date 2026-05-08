@@ -15,6 +15,8 @@ patch_plugin() {
         '.LimitedToStores = $l | .DisplayOrder = $o' "$f" > "$tmp" && mv "$tmp" "$f"
 }
 
+patch_plugin /app/Plugins/Widgets.HeroSlider/plugin.json          '[31]' 1
+patch_plugin /app/Plugins/Widgets.DonationSection/plugin.json      '[31]' 2
 patch_plugin /app/Plugins/Widgets.HeroBanner/plugin.json          '[31]' 1
 patch_plugin /app/Plugins/Widgets.TrustBadges/plugin.json         '[31]' 2
 patch_plugin /app/Plugins/Widgets.ImpactCounter/plugin.json       '[31]' 3

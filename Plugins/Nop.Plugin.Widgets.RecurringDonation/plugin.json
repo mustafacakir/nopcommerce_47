@@ -1,5 +1,5 @@
 ﻿{
-    "Group": "Dernek",
+    "Group": "Widgets",
     "FriendlyName": "Recurring Donation [Dernek]",
     "SystemName":  "Widgets.RecurringDonation",
     "Version":  "1.00",
@@ -14,3 +14,4 @@
                             31
                         ]
 }
+
