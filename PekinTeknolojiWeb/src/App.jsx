@@ -3004,53 +3004,37 @@ const AgencyServices = ({ onConsult }) => (
       <section className="home-hero">
         <div className="home-hero-bg" />
         <div className="container">
-          <div className="home-hero-split">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="home-hero-card home-hero-card--ngo"
-            >
-              <div className="home-hero-card-icon">🏛</div>
-              <div className="home-hero-card-badge home-hero-card-badge--ngo">Dernek & STK</div>
-              <h2 className="home-hero-card-title">Yönetim Platformu</h2>
-              <p className="home-hero-card-sub">Üye takibi, bağış kampanyaları, etkinlik ve gönüllü yönetimi tek platformda.</p>
-              <ul className="home-hero-card-list">
-                <li><Check size={14} /> Üye & bağış yönetimi</li>
-                <li><Check size={14} /> Etkinlik & gönüllü koordinasyonu</li>
-                <li><Check size={14} /> Otomatik makbuz & raporlama</li>
-              </ul>
-              <div className="home-hero-card-footer">
-                <span className="home-hero-card-price">2.999 ₺<span>/ay</span>'dan</span>
-                <Link to="/dernekler" className="btn-primary">İncele <ArrowRight size={15} /></Link>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="home-hero-card home-hero-card--ec"
-            >
-              <div className="home-hero-card-icon">🛒</div>
-              <div className="home-hero-card-badge home-hero-card-badge--ec">E-Ticaret</div>
-              <h2 className="home-hero-card-title">Mağaza Çözümü</h2>
-              <p className="home-hero-card-sub">Profesyonel online mağaza, pazaryeri entegrasyonu ve güvenli ödeme altyapısı.</p>
-              <ul className="home-hero-card-list">
-                <li><Check size={14} /> Trendyol & Hepsiburada entegrasyonu</li>
-                <li><Check size={14} /> Güvenli ödeme & kargo entegrasyonu</li>
-                <li><Check size={14} /> SEO uyumlu, aynı gün yayında</li>
-              </ul>
-              <div className="home-hero-card-footer">
-                <span className="home-hero-card-price">Fiyat için<span> iletişim</span></span>
-                <Link to="/eticaret" className="btn-primary home-hero-btn--ec">İncele <ArrowRight size={15} /></Link>
-              </div>
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="home-hero-content"
+          >
+            <p className="home-hero-eyebrow">Pekin Teknoloji</p>
+            <h1 className="home-hero-title">
+              Dernek mi kuruyorsunuz,<br />
+              <span className="text-gradient-green">mağaza mı açıyorsunuz?</span>
+            </h1>
+            <p className="home-hero-sub">
+              İkisi için de hazır çözümlerimiz var. Teknik kurulumu biz yapıyoruz,
+              siz işinize odaklanıyorsunuz.
+            </p>
+            <div className="home-hero-btns">
+              <Link to="/dernekler" className="btn-hero btn-hero--ngo">
+                🏛 Dernek & STK Platformu <ArrowRight size={16} />
+              </Link>
+              <Link to="/eticaret" className="btn-hero btn-hero--ec">
+                🛒 E-Ticaret Mağazası <ArrowRight size={16} />
+              </Link>
+            </div>
+            <button className="home-hero-demo" onClick={() => setConsultModalOpen(true)}>
+              Demo talep et — ücretsiz
+            </button>
+          </motion.div>
         </div>
       </section>
 
-      {/* Neden biz */}
+      {/* Trust bar */}
       <section className="home-why">
         <div className="container">
           <div className="home-why-grid">
@@ -3072,7 +3056,7 @@ const AgencyServices = ({ onConsult }) => (
         </div>
       </section>
 
-      {/* İki ürün kartı */}
+      {/* Ürünler */}
       <section className="home-products">
         <div className="container">
           <div className="home-products-grid">
@@ -3087,20 +3071,18 @@ const AgencyServices = ({ onConsult }) => (
               <div className="home-product-badge">Dernek & STK</div>
               <h2 className="home-product-title">Dernek & STK Yönetim Platformu</h2>
               <p className="home-product-desc">
-                Bağış kampanyası, kurban organizasyonu, su kuyusu, gönüllü koordinasyonu ve
+                Bağış kampanyası, kurban organizasyonu, gönüllü koordinasyonu ve
                 bağışçı yönetimi tek platformda.
               </p>
               <ul className="home-product-features">
-                <li><Check size={15} /> Bağış kampanyası & kurban organizasyonu</li>
-                <li><Check size={15} /> Su kuyusu & proje bazlı bağış</li>
+                <li><Check size={15} /> Üye & bağış yönetimi</li>
+                <li><Check size={15} /> Kurban, su kuyusu & proje bazlı bağış</li>
                 <li><Check size={15} /> Bağışçı CRM & dijital makbuz</li>
                 <li><Check size={15} /> WhatsApp bildirimleri & raporlama</li>
               </ul>
               <div className="home-product-footer">
                 <span className="home-product-price">2.999 ₺<span>/ay</span>'dan başlayan</span>
-                <div className="home-product-btns">
-                  <Link to="/dernekler" className="btn-primary">Detayları Gör</Link>
-                </div>
+                <Link to="/dernekler" className="btn-primary">Detayları Gör</Link>
               </div>
             </motion.div>
 
@@ -3114,19 +3096,19 @@ const AgencyServices = ({ onConsult }) => (
               <div className="home-product-badge home-product-badge--ec">E-Ticaret</div>
               <h2 className="home-product-title">Online Mağaza Kurulumu</h2>
               <p className="home-product-desc">
-                Profesyonel e-ticaret mağazanızı kurun.
-                Pazaryeri entegrasyonları, kargo ve ödeme sistemleri dahil.
+                Profesyonel e-ticaret mağazanızı kurun. Pazaryeri entegrasyonları,
+                kargo ve ödeme sistemleri dahil.
               </p>
               <ul className="home-product-features">
-                <li><Check size={15} /> Trendyol, Hepsiburada, Amazon pazaryeri entegrasyonu</li>
-                <li><Check size={15} /> Çoklu dil & çoklu para birimi desteği</li>
+                <li><Check size={15} /> Trendyol, Hepsiburada, Amazon entegrasyonu</li>
                 <li><Check size={15} /> Güvenli ödeme & sanal pos entegrasyonu</li>
                 <li><Check size={15} /> MNG, Yurtiçi, Aras kargo entegrasyonu</li>
+                <li><Check size={15} /> SEO uyumlu, aynı gün yayında</li>
               </ul>
               <div className="home-product-footer">
-                <span className="home-product-price">2.999 ₺/ay'dan başlayan</span>
+                <span className="home-product-price">2.999 ₺<span>/ay</span>'dan başlayan</span>
                 <div className="home-product-btns">
-                  <button className="btn-primary" onClick={() => navigate('/magaza-ac')}>Ücretsiz Mağazanı Aç</button>
+                  <button className="btn-primary" onClick={() => navigate('/magaza-ac')}>Ücretsiz Dene</button>
                   <Link to="/eticaret" className="btn-ghost">Detayları Gör</Link>
                 </div>
               </div>

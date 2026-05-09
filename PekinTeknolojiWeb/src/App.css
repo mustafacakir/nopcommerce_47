@@ -3711,8 +3711,9 @@ a.contact-info-pill:hover {
 
 .home-hero {
   position: relative;
-  padding: 100px 0 72px;
+  padding: 110px 0 80px;
   overflow: hidden;
+  text-align: center;
 }
 .home-hero-bg {
   position: absolute;
@@ -3720,88 +3721,74 @@ a.contact-info-pill:hover {
   background: linear-gradient(160deg, #f0fdf4 0%, #f8faff 60%, #eff6ff 100%);
   z-index: 0;
 }
-.home-hero-split {
+.home-hero-content {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  max-width: 880px;
+  max-width: 600px;
   margin: 0 auto;
 }
-.home-hero-card {
-  background: #fff;
-  border-radius: 20px;
-  padding: 36px 32px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-  border: 1.5px solid #e5e7eb;
-}
-.home-hero-card--ngo { border-top: 4px solid #16a34a; }
-.home-hero-card--ec  { border-top: 4px solid #2563eb; }
-.home-hero-card-icon { font-size: 2rem; line-height: 1; }
-.home-hero-card-badge {
-  display: inline-block;
-  font-size: 0.72rem;
+.home-hero-eyebrow {
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 999px;
-  width: fit-content;
-}
-.home-hero-card-badge--ngo { background: #dcfce7; color: #15803d; }
-.home-hero-card-badge--ec  { background: #dbeafe; color: #1d4ed8; }
-.home-hero-card-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #111827;
-  margin: 0;
-  line-height: 1.2;
-}
-.home-hero-card-sub {
-  font-size: 0.9rem;
   color: #6b7280;
-  line-height: 1.6;
-  margin: 0;
+  margin: 0 0 16px;
 }
-.home-hero-card-list {
-  list-style: none;
-  padding: 0;
-  margin: 4px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
+.home-hero-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #111827;
+  margin: 0 0 20px;
 }
-.home-hero-card-list li {
+.home-hero-sub {
+  font-size: 1.05rem;
+  color: #4b5563;
+  line-height: 1.7;
+  margin: 0 0 32px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.home-hero-btns {
   display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.btn-hero {
+  display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: 0.875rem;
-  color: #374151;
-}
-.home-hero-card-list svg { color: #16a34a; flex-shrink: 0; }
-.home-hero-card--ec .home-hero-card-list svg { color: #2563eb; }
-.home-hero-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 16px;
-  border-top: 1px solid #f3f4f6;
-}
-.home-hero-card-price {
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 700;
-  color: #111827;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: none;
+  cursor: pointer;
 }
-.home-hero-card-price span { font-size: 0.78rem; font-weight: 400; color: #6b7280; }
-.home-hero-btn--ec { background: #2563eb !important; }
+.btn-hero:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+.btn-hero--ngo { background: #16a34a; color: #fff; }
+.btn-hero--ec  { background: #2563eb; color: #fff; }
+.home-hero-demo {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 4px 0;
+  margin-top: 4px;
+}
+.home-hero-demo:hover { color: #374151; }
 @media (max-width: 640px) {
-  .home-hero { padding: 72px 0 48px; }
-  .home-hero-split { grid-template-columns: 1fr; }
+  .home-hero { padding: 80px 0 56px; }
+  .btn-hero { width: 100%; justify-content: center; }
 }
 
 /* Stats şeridi */
