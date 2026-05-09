@@ -3011,18 +3011,23 @@ const AgencyServices = ({ onConsult }) => (
             className="home-hero-content"
           >
             <h1 className="home-hero-title">
-              Dernek ve Vakıflar için<br />
-              <span className="text-gradient-green">yönetim platformu</span>
+              Dernekten e-ticarete,<br />
+              <span className="text-gradient-green">dijital çözümler</span>
             </h1>
             <p className="home-hero-sub">
-              Bağış toplamak, kurban organize etmek, su kuyusu açmak —
-              tüm bunları tek platformdan, aylık sabit ücretle yönetin.
+              Dernek & STK yönetim platformu ve profesyonel e-ticaret mağazası —
+              kurulumdan desteğe her şey tek çatı altında.
             </p>
             <div className="home-hero-btns">
-              <button className="btn-primary" onClick={() => setConsultModalOpen(true)}>
+              <Link to="/dernekler" className="btn-primary">
+                🏛 Dernek & STK Platformu
+              </Link>
+              <Link to="/eticaret" className="btn-primary" style={{ background: '#2563eb' }}>
+                🛒 E-Ticaret Mağazası
+              </Link>
+              <button className="btn-ghost" onClick={() => setConsultModalOpen(true)}>
                 Demo Talep Et <ArrowRight size={17} />
               </button>
-              <Link to="/dernekler" className="btn-ghost">Dernek Çözümleri</Link>
             </div>
           </motion.div>
         </div>
