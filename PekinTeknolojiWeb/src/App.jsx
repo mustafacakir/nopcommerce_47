@@ -3010,10 +3010,10 @@ const AgencyServices = ({ onConsult }) => (
             transition={{ duration: 0.5 }}
             className="home-hero-content"
           >
-            <h1 className="home-hero-title">
-              Dernek & STK'lar için yönetim platformu,<br />
+            <h4 className="home-hero-title">
+              Dernek & vakıflar için yönetim platformu,<br />
               <span className="text-gradient-green">işletmeler için e-ticaret mağazası.</span>
-            </h1>
+            </h4>
             <p className="home-hero-sub">
               İkisi için de hazır çözümlerimiz var. Teknik kurulumu biz yapıyoruz,
               siz işinize odaklanıyorsunuz.
@@ -3029,6 +3029,12 @@ const AgencyServices = ({ onConsult }) => (
             <button className="home-hero-demo" onClick={() => setConsultModalOpen(true)}>
               Demo talep et — ücretsiz
             </button>
+            <div className="home-hero-chips">
+              <span className="hero-chip">🏛 Dernek & STK Platformu</span>
+              <span className="hero-chip">🛒 E-Ticaret Mağazası</span>
+              <span className="hero-chip">📅 Rezervasyon Sistemi</span>
+              <span className="hero-chip">💻 Özel Yazılım Çözümleri</span>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -3061,6 +3067,7 @@ const AgencyServices = ({ onConsult }) => (
           <div className="home-products-grid">
 
             <motion.div
+              id="product-ngo"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -3090,6 +3097,7 @@ const AgencyServices = ({ onConsult }) => (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.1 }}
+              id="product-ec"
               className="home-product-card home-product-card--ec"
             >
               <div className="home-product-badge home-product-badge--ec">E-Ticaret</div>
@@ -3110,6 +3118,57 @@ const AgencyServices = ({ onConsult }) => (
                   <button className="btn-primary" onClick={() => navigate('/magaza-ac')}>Ücretsiz Dene</button>
                   <Link to="/eticaret" className="btn-ghost">Detayları Gör</Link>
                 </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              id="product-rsv"
+              className="home-product-card home-product-card--rsv"
+            >
+              <div className="home-product-badge home-product-badge--rsv">Rezervasyon</div>
+              <h2 className="home-product-title">Rezervasyon & Randevu Sistemi</h2>
+              <p className="home-product-desc">
+                Restoran, otel, klinik veya etkinlik için online rezervasyon alın.
+                Müşterileriniz 7/24 randevu oluşturabilir.
+              </p>
+              <ul className="home-product-features">
+                <li><Check size={15} /> Online randevu & rezervasyon takvimi</li>
+                <li><Check size={15} /> Otomatik SMS & e-posta hatırlatma</li>
+                <li><Check size={15} /> Kapasite & müsaitlik yönetimi</li>
+                <li><Check size={15} /> Ön ödeme & iptal politikası desteği</li>
+              </ul>
+              <div className="home-product-footer">
+                <span className="home-product-price">Fiyat için iletişime geçin</span>
+                <button className="btn-primary" onClick={() => setConsultModalOpen(true)}>Demo Talep Et</button>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              id="product-corp"
+              className="home-product-card home-product-card--corp"
+            >
+              <div className="home-product-badge home-product-badge--corp">Kurumsal</div>
+              <h2 className="home-product-title">Kurumsal Çözümlerimiz</h2>
+              <p className="home-product-desc">
+                Web sitesinden mobil uygulamaya, ERP'den özel yazılıma her ölçekte projeyi hayata geçiriyoruz.
+              </p>
+              <ul className="home-product-features">
+                <li><Check size={15} /> Kurumsal web sitesi & landing page</li>
+                <li><Check size={15} /> iOS & Android mobil uygulama</li>
+                <li><Check size={15} /> ERP / CRM & stok yönetim sistemi</li>
+                <li><Check size={15} /> Özel yazılım & API entegrasyonları</li>
+              </ul>
+              <div className="home-product-footer">
+                <span className="home-product-price">Fiyat için iletişime geçin</span>
+                <button className="btn-primary" onClick={() => setConsultModalOpen(true)}>Teklif Al</button>
               </div>
             </motion.div>
 
@@ -3172,6 +3231,15 @@ const AgencyServices = ({ onConsult }) => (
   const location = useLocation();
   const isFullscreen = location.pathname === '/magaza-ac';
 
+  const scrollToProduct = (id) => {
+    if (location.pathname === '/') {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      navigate('/');
+      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+    }
+  };
+
   return (
     <div className="app">
       <ScrollToTop />
@@ -3204,19 +3272,16 @@ const AgencyServices = ({ onConsult }) => (
             
             <div className="f-col">
               <h4>Hizmetlerimiz</h4>
-              <Link to="/dernekler/bagis-kampanyasi">Bağış Kampanyası</Link>
-              <Link to="/dernekler/kurban-organizasyonu">Kurban Organizasyonu</Link>
-              <Link to="/dernekler/su-kuyusu">Su Kuyusu & Proje Bağışı</Link>
-              <Link to="/dernekler/bagisci-yonetimi">Bağışçı Yönetimi</Link>
-              <Link to="/eticaret">E-Ticaret Mağazası</Link>
+              <a href="#product-ngo" onClick={e => { e.preventDefault(); scrollToProduct('product-ngo'); }}>Dernek & STK Platformu</a>
+              <a href="#product-ec"  onClick={e => { e.preventDefault(); scrollToProduct('product-ec');  }}>E-Ticaret Altyapısı</a>
+              <a href="#product-rsv" onClick={e => { e.preventDefault(); scrollToProduct('product-rsv'); }}>Rezervasyon Sistemi</a>
+              <a href="#product-corp" onClick={e => { e.preventDefault(); scrollToProduct('product-corp'); }}>Kurumsal Çözümlerimiz</a>
             </div>
 
             <div className="f-col">
               <h4>Kurumsal</h4>
               <Link to="/">Anasayfa</Link>
               <Link to="/hakkimizda">Hakkımızda</Link>
-              <Link to="/eticaret">E-Ticaret Platform</Link>
-              <Link to="/dernekler">Dernek & STK</Link>
               <Link to="/blog">Blog</Link>
               <Link to="/sss">SSS</Link>
             </div>

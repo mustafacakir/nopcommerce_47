@@ -699,8 +699,11 @@ h1 {
 .services-grid--3 {
   grid-template-columns: repeat(3, 1fr);
 }
+.services-grid--auto {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
 @media (max-width: 900px) {
-  .services-grid, .services-grid--3 {
+  .services-grid, .services-grid--3, .services-grid--auto {
     grid-template-columns: 1fr;
   }
 }
@@ -3826,6 +3829,23 @@ a.contact-info-pill:hover {
   border-color: #9ca3af;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
+.home-hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.hero-chip {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #4b5563;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 5px 14px;
+  backdrop-filter: blur(4px);
+}
 @media (max-width: 640px) {
   .home-hero { padding: 80px 0 56px; }
   .btn-hero { width: 100%; justify-content: center; }
@@ -3869,7 +3889,7 @@ a.contact-info-pill:hover {
 .home-products { padding: 48px 0 72px; }
 .home-products-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 28px;
 }
 .home-product-card {
@@ -3881,8 +3901,10 @@ a.contact-info-pill:hover {
   flex-direction: column;
   transition: box-shadow .2s, border-color .2s;
 }
-.home-product-card--ngo { border-top: 4px solid #16a34a; }
-.home-product-card--ec  { border-top: 4px solid #2563eb; }
+.home-product-card--ngo  { border-top: 4px solid #16a34a; }
+.home-product-card--ec   { border-top: 4px solid #2563eb; }
+.home-product-card--rsv  { border-top: 4px solid #d97706; }
+.home-product-card--corp { border-top: 4px solid #7c3aed; }
 .home-product-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.09); }
 .home-product-header {
   display: flex;
@@ -3911,7 +3933,9 @@ a.contact-info-pill:hover {
   margin-bottom: 14px;
   align-self: flex-start;
 }
-.home-product-badge--ec { color: #2563eb; background: #eff6ff; border-color: #bfdbfe; }
+.home-product-badge--ec   { color: #2563eb; background: #eff6ff; border-color: #bfdbfe; }
+.home-product-badge--rsv  { color: #d97706; background: #fffbeb; border-color: #fde68a; }
+.home-product-badge--corp { color: #7c3aed; background: #f5f3ff; border-color: #ddd6fe; }
 .home-product-title {
   font-size: 1.4rem;
   font-weight: 800;
@@ -3940,7 +3964,9 @@ a.contact-info-pill:hover {
   color: #374151;
 }
 .home-product-features li svg { color: #16a34a; flex-shrink: 0; }
-.home-product-card--ec .home-product-features li svg { color: #2563eb; }
+.home-product-card--ec   .home-product-features li svg { color: #2563eb; }
+.home-product-card--rsv  .home-product-features li svg { color: #d97706; }
+.home-product-card--corp .home-product-features li svg { color: #7c3aed; }
 .home-product-footer { margin-top: auto; }
 .home-product-price {
   display: block;
@@ -4019,7 +4045,7 @@ a.home-contact-item:hover { background: #fff; }
 }
 
 @media (max-width: 700px) {
-  .home-hero { padding: 56px 0 44px; }
+  .home-hero { padding: 104px 0 52px; }
   .home-products-grid { grid-template-columns: 1fr; }
   .home-product-card { padding: 28px 22px; }
   .home-contact-grid { grid-template-columns: 1fr; gap: 36px; }
