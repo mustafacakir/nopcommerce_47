@@ -3010,7 +3010,6 @@ const AgencyServices = ({ onConsult }) => (
             transition={{ duration: 0.5 }}
             className="home-hero-content"
           >
-            <p className="home-hero-eyebrow">Pekin Teknoloji</p>
             <h1 className="home-hero-title">
               Dernek mi kuruyorsunuz,<br />
               <span className="text-gradient-green">mağaza mı açıyorsunuz?</span>
