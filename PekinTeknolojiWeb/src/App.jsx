@@ -3004,32 +3004,49 @@ const AgencyServices = ({ onConsult }) => (
       <section className="home-hero">
         <div className="home-hero-bg" />
         <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55 }}
-            className="home-hero-content"
-          >
-            <h1 className="home-hero-title">
-              Dernekten e-ticarete,<br />
-              <span className="text-gradient-green">dijital çözümler</span>
-            </h1>
-            <p className="home-hero-sub">
-              Dernek & STK yönetim platformu ve profesyonel e-ticaret mağazası —
-              kurulumdan desteğe her şey tek çatı altında.
-            </p>
-            <div className="home-hero-btns">
-              <Link to="/dernekler" className="btn-primary">
-                🏛 Dernek & STK Platformu
-              </Link>
-              <Link to="/eticaret" className="btn-primary" style={{ background: '#2563eb' }}>
-                🛒 E-Ticaret Mağazası
-              </Link>
-              <button className="btn-ghost" onClick={() => setConsultModalOpen(true)}>
-                Demo Talep Et <ArrowRight size={17} />
-              </button>
-            </div>
-          </motion.div>
+          <div className="home-hero-split">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="home-hero-card home-hero-card--ngo"
+            >
+              <div className="home-hero-card-icon">🏛</div>
+              <div className="home-hero-card-badge home-hero-card-badge--ngo">Dernek & STK</div>
+              <h2 className="home-hero-card-title">Yönetim Platformu</h2>
+              <p className="home-hero-card-sub">Üye takibi, bağış kampanyaları, etkinlik ve gönüllü yönetimi tek platformda.</p>
+              <ul className="home-hero-card-list">
+                <li><Check size={14} /> Üye & bağış yönetimi</li>
+                <li><Check size={14} /> Etkinlik & gönüllü koordinasyonu</li>
+                <li><Check size={14} /> Otomatik makbuz & raporlama</li>
+              </ul>
+              <div className="home-hero-card-footer">
+                <span className="home-hero-card-price">2.999 ₺<span>/ay</span>'dan</span>
+                <Link to="/dernekler" className="btn-primary">İncele <ArrowRight size={15} /></Link>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="home-hero-card home-hero-card--ec"
+            >
+              <div className="home-hero-card-icon">🛒</div>
+              <div className="home-hero-card-badge home-hero-card-badge--ec">E-Ticaret</div>
+              <h2 className="home-hero-card-title">Mağaza Çözümü</h2>
+              <p className="home-hero-card-sub">Profesyonel online mağaza, pazaryeri entegrasyonu ve güvenli ödeme altyapısı.</p>
+              <ul className="home-hero-card-list">
+                <li><Check size={14} /> Trendyol & Hepsiburada entegrasyonu</li>
+                <li><Check size={14} /> Güvenli ödeme & kargo entegrasyonu</li>
+                <li><Check size={14} /> SEO uyumlu, aynı gün yayında</li>
+              </ul>
+              <div className="home-hero-card-footer">
+                <span className="home-hero-card-price">Fiyat için<span> iletişim</span></span>
+                <Link to="/eticaret" className="btn-primary home-hero-btn--ec">İncele <ArrowRight size={15} /></Link>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
