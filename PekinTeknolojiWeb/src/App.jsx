@@ -1195,14 +1195,14 @@ const ConsultationModal = ({ isOpen, onClose }) => {
       const res = await fetch(`${API_BASE}/api/fastregister/consultation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, subject: 'demo' }),
+        body: JSON.stringify({ ...formData, subject: 'Demo Talebi' }),
       });
       const data = await res.json();
       if (data.success) {
         setSent(true);
         setTimeout(() => { setSent(false); onClose(); setFormData({ name: '', email: '', phone: '', message: '' }); }, 2500);
       } else {
-        setError(data.message || 'Bir hata oluştu.');
+        setError('Bir hata oluştu, lütfen tekrar deneyin.');
       }
     } catch {
       setError('Sunucuya bağlanılamadı.');
