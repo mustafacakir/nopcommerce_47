@@ -54,7 +54,7 @@ export const MODULE_PAGES = [
     icon: "🔁",
     accentColor: "#2563eb",
     heroTitle: "Düzenli Sadaka ile Kesintisiz Hayır",
-    heroDesc: "Hayırseverleriniz bir kez talimat versin, her ay otomatik olarak sadakaları ulaşsın. Sadaka-i cariyah niyetiyle kurulan bu sistem hayırseveri ve derneği buluşturur.",
+    heroDesc: "Hayırseverleriniz bir kez talimat versin, her ay otomatik olarak sadakaları ulaşsın. Sadaka-i cariye niyetiyle kurulan bu sistem hayırseveri ve derneği buluşturur.",
     plan: "Başlangıç",
     stats: [
       { num: "Öngörülebilir", label: "gelir akışı" },
@@ -553,7 +553,7 @@ export const MODULE_PAGES = [
     seoContent: [
       "Su kuyusu açmak İslam'ın en değerli sadaka-i cariyah örneklerinden biridir; hayırsever vefat etse dahi o kuyudan su içen her can için sevap akmaya devam eder. Dijital platform aracılığıyla yürütülen su kuyusu kampanyaları, hem daha geniş bir hayırsever kitlesine ulaşmayı hem de şeffaf ilerleme raporlaması yapmayı mümkün kılar.",
       "Pekin Teknoloji su kuyusu modülü proje sayfası oluşturmayı son derece kolaylaştırır. Hedef tutar, proje görseli ve açıklaması girildikten sonra kampanya sayfası dakikalar içinde yayına alınabilir. Sadaka toplandıkça ilerleme çubuğu otomatik güncellenir.",
-      "Hayırsever adına kuyu açma özelliği, özellikle vefat edenler adına yapılan sadaka-i cariyah bağışlarında tercih edilmektedir. Bu anlamlı uygulama hayırseverin gönlünü huzura kavuşturur ve kurumunuza olan güveni pekiştirir.",
+      "Hayırsever adına kuyu açma özelliği, özellikle vefat edenler adına yapılan sadaka-i cariye bağışlarında tercih edilmektedir. Bu anlamlı uygulama hayırseverin gönlünü huzura kavuşturur ve kurumunuza olan güveni pekiştirir.",
     ],
     faq: [
       { q: "Kac farkli proje tipi tanimlanabilir?", a: "Su kuyusu, okul, gida paketi, ambulans gibi istediginiz sayida proje tipi olusturabilirsiniz. Her tip icin ayri gorsel ve aciklama girilebilir." },

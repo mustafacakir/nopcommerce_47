@@ -630,7 +630,7 @@ const BLOG_POSTS = [
       { type: 'h2', text: 'Kampanya Sayfası Tasarımı' },
       { type: 'p', text: 'Her hayır projesinin net bir hedefi, ilerleme çubuğu ve somut bir hikayesi olmalıdır. "Su kuyusu açıyoruz, 50.000 TL toplamak istiyoruz" gibi somut hedefler hayırseverleri harekete geçirir. Projenin nereye ulaştığını anlık görmek, sadakasının karşılık bulduğunun en güzel göstergesidir.' },
       { type: 'h2', text: 'Düzenli Sadaka Sistemi' },
-      { type: 'p', text: 'Tek seferlik sadaka yerine aylık otomatik sadaka talimatı kuran hayırseverler, derneğin en değerli dayanağıdır. Düzenli sadaka; hayırsevere kolaylık, derneğe ise istikrarlı hayır kaynağı sağlar. Sadaka-i cariyah niyetiyle kurulan bu sistem, hayırseverin her ay sevap kazanmaya devam etmesine vesile olur.' },
+      { type: 'p', text: 'Tek seferlik sadaka yerine aylık otomatik sadaka talimatı kuran hayırseverler, derneğin en değerli dayanağıdır. Düzenli sadaka; hayırsevere kolaylık, derneğe ise istikrarlı hayır kaynağı sağlar. Sadaka-i cariye niyetiyle kurulan bu sistem, hayırseverin her ay sevap kazanmaya devam etmesine vesile olur.' },
       { type: 'p', text: 'Pekin Teknoloji dernek platformu; sadaka kampanyası yönetimi, otomatik makbuz, WhatsApp bildirimleri ve şeffaf raporlama ile aylık sabit ücretle sunulmaktadır. Demo talep etmek için bizimle iletişime geçin.' },
     ],
   },
@@ -670,7 +670,7 @@ const BLOG_POSTS = [
       { type: 'h2', text: 'Kampanya Sayfası ve İlerleme Çubuğu' },
       { type: 'p', text: '"500 hayırsever destek verdi, hedefe %78 ulaşıldı" gibi gerçek zamanlı göstergeler hayırseveri harekete geçirir. Projenin tamamlanmaya yaklaştığını görmek, sadakanın bir hayra vesile olduğunu hissettiren en güçlü unsurdur.' },
       { type: 'h2', text: 'Düzenli Sadaka ile Sürekli Hayır' },
-      { type: 'p', text: 'Aylık otomatik sadaka talimatı kuran hayırseverler, derneğin en değerli dayanağıdır. Düzenli sadaka, kesintisiz hayır anlamına gelir. Sisteminiz bu seçeneği kolayca sunduğunda hayırseverlerin önemli bir kısmı sadaka-i cariyah niyetiyle bu yolu tercih eder.' },
+      { type: 'p', text: 'Aylık otomatik sadaka talimatı kuran hayırseverler, derneğin en değerli dayanağıdır. Düzenli sadaka, kesintisiz hayır anlamına gelir. Sisteminiz bu seçeneği kolayca sunduğunda hayırseverlerin önemli bir kısmı sadaka-i cariye niyetiyle bu yolu tercih eder.' },
       { type: 'p', text: 'Pekin Teknoloji dernek sadaka sistemi; kampanya yönetimi, otomatik makbuz, düzenli sadaka ve WhatsApp bildirimleri ile aylık sabit ücretle sunulmaktadır. Teknik kurulumun tamamı bizde, siz sadece hayır faaliyetlerinize odaklanırsınız.' },
     ],
   },
@@ -724,15 +724,15 @@ const BLOG_POSTS = [
     slug: 'su-kuyusu-bagis-platformu',
     tag: 'Dernek', color: '#0284c7',
     title: 'Su Kuyusu Sadaka Platformu: Proje Bazlı Hayır Nasıl Yönetilir?',
-    desc: 'Sadaka-i cariyah niyetiyle açılan su kuyusu projelerini şeffaf, eksiksiz ve dijital olarak nasıl yönetirsiniz?',
+    desc: 'Sadaka-i cariye niyetiyle açılan su kuyusu projelerini şeffaf, eksiksiz ve dijital olarak nasıl yönetirsiniz?',
     readTime: '5 dk',
     img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
     content: [
-      { type: 'p', text: 'Su kuyusu açmak, İslam\'da en değerli sadaka-i cariyah örneklerinden biridir. Hayırsever vefat etse dahi o kuyudan su içen her can için sevap akmaya devam eder. Dernek ve vakıflar bu köklü hayır geleneğini dijital bir platformla daha şeffaf, daha geniş bir kitleye ve daha sistematik biçimde ulaştırabilir.' },
+      { type: 'p', text: 'Su kuyusu açmak, İslam\'da en değerli sadaka-i cariye örneklerinden biridir. Hayırsever vefat etse dahi o kuyudan su içen her can için sevap akmaya devam eder. Dernek ve vakıflar bu köklü hayır geleneğini dijital bir platformla daha şeffaf, daha geniş bir kitleye ve daha sistematik biçimde ulaştırabilir.' },
       { type: 'h2', text: 'Proje Bazlı Sadaka Modeli' },
       { type: 'p', text: 'Su kuyusu kampanyaları genel sadakadan farklı çalışır: her kuyunun belirli bir maliyeti ve coğrafi hedefi vardır. Hayırsever hangi ülkede, hangi köyde kuyu açılacağını görür; kampanya sayfasındaki ilerleme çubuğu hedefin ne kadarına ulaşıldığını anlık gösterir. Bu şeffaflık "sadakam gerçekten işe yaradı mı?" sorusunu sormadan önce yanıtlar.' },
       { type: 'h2', text: 'Tekil ve Ortaklaşa Sadaka Seçenekleri' },
-      { type: 'p', text: 'Bazı hayırseverler kuyunun tamamını tek başına finanse etmek ister; bazıları küçük tutarlarla katılarak sevaba ortak olur. İyi bir su kuyusu sadaka platformu her iki seçeneği destekler. Kuyuya isim verme imkânı sunmak ise kalıcı bir sadaka-i cariyah bağı kurar.' },
+      { type: 'p', text: 'Bazı hayırseverler kuyunun tamamını tek başına finanse etmek ister; bazıları küçük tutarlarla katılarak sevaba ortak olur. İyi bir su kuyusu sadaka platformu her iki seçeneği destekler. Kuyuya isim verme imkânı sunmak ise kalıcı bir sadaka-i cariye bağı kurar.' },
       { type: 'h2', text: 'Proje Tamamlanma Müjdesi' },
       { type: 'p', text: 'Kuyu açıldığında hayırsevere fotoğraf, koordinat ve teşekkür mesajı içeren otomatik bildirim gönderilmesi, sadaka deneyiminin en kıymetli anıdır. "Kuyum açıldı, Allah kabul etsin" haberini WhatsApp üzerinden anında almak hayırseverin gönlünü huzura kavuşturur ve derneğe duyduğu güveni pekiştirir.' },
       { type: 'h2', text: 'Çoklu Proje Yönetimi' },
@@ -2794,8 +2794,8 @@ const DerneklerPage = ({ onConsult }) => {
   return (
     <div className="dernekler-page">
       <SeoHead
-        title="Dernek & Vakıf Dijital Bağış Platformu | Pekin Teknoloji"
-        description="Bağış kampanyası, kurban organizasyonu, su kuyusu, gönüllü koordinasyonu ve bağışçı yönetimi tek platformda. Dernek & vakıflar için aylık 2.999₺'den başlayan fiyatlarla, Aynı gün kurulum."
+        title="Dernek & STK Yönetim Platformu | Pekin Teknoloji"
+        description="Üye takibi, bağış kampanyaları, gönüllü koordinasyonu, etkinlik yönetimi ve şeffaf raporlama tek platformda. Dernek & STK'lar için aylık 2.999₺'den başlayan fiyatlarla, aynı gün kurulum."
         canonical="/dernekler"
       />
 
@@ -2804,9 +2804,9 @@ const DerneklerPage = ({ onConsult }) => {
         <div className="dk-hero-bg" />
         <div className="container">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="dk-hero-content">
-            <span className="ec-badge"><span className="ec-badge-dot" />Sivil Toplum & Dernek Çözümleri</span>
-            <h1 className="dk-hero-title">Dernek & STK'lar için<br /><span className="text-gradient-green">dijital bağış</span><br />platformu</h1>
-            <p className="dk-hero-sub">Bağış kampanyaları, gönüllü koordinasyonu ve şeffaf raporlamayı tek platformdan yönetin. Kurulum 1 gün,anasa teknik bilgi gerektirmez.</p>
+            <span className="ec-badge"><span className="ec-badge-dot" />STK & Dernek Yönetim Platformu</span>
+            <h1 className="dk-hero-title">Dernek & STK'lar için<br /><span className="text-gradient-green">yönetim</span><br />platformu</h1>
+            <p className="dk-hero-sub">Üye takibi, bağış kampanyaları, gönüllü koordinasyonu ve şeffaf raporlamayı tek platformdan yönetin. Kurulum 1 gün, teknik bilgi gerektirmez.</p>
             <div className="dk-hero-btns">
               <button className="btn-primary" onClick={onConsult}>Demo Talep Et <ArrowRight size={18} /></button>
               <button className="btn-ghost" onClick={() => document.getElementById('dk-packages')?.scrollIntoView({ behavior: 'smooth' })}>Paketleri İncele</button>
@@ -2995,8 +2995,8 @@ const AgencyServices = ({ onConsult }) => (
   const HomePage = () => (
     <>
       <SeoHead
-        title="Dernek & STK Dijital Platform | E-Ticaret Çözümleri | Pekin Teknoloji"
-        description="Bağış kampanyası, kurban organizasyonu, su kuyusu, gönüllü koordinasyonu ve bağışçı yönetimi tek platformda. Dernek & STK dijital çözümleri ve e-ticaret mağazası. Aylık sabit ücret, Aynı gün yayında."
+        title="Dernek & STK Yönetim Platformu | E-Ticaret Çözümleri | Pekin Teknoloji"
+        description="Üye takibi, bağış kampanyaları, gönüllü koordinasyonu ve şeffaf raporlama tek platformda. Dernek & STK yönetim yazılımı ve e-ticaret mağazası. Aylık sabit ücret, aynı gün yayında."
         canonical="/"
       />
 
@@ -3012,7 +3012,7 @@ const AgencyServices = ({ onConsult }) => (
           >
             <h1 className="home-hero-title">
               Dernek ve Vakıflar için<br />
-              <span className="text-gradient-green">hazır dijital altyapı</span>
+              <span className="text-gradient-green">yönetim platformu</span>
             </h1>
             <p className="home-hero-sub">
               Bağış toplamak, kurban organize etmek, su kuyusu açmak —
@@ -3063,7 +3063,7 @@ const AgencyServices = ({ onConsult }) => (
               className="home-product-card home-product-card--ngo"
             >
               <div className="home-product-badge">Dernek & STK</div>
-              <h2 className="home-product-title">Dijital Bağış Platformu</h2>
+              <h2 className="home-product-title">Dernek & STK Yönetim Platformu</h2>
               <p className="home-product-desc">
                 Bağış kampanyası, kurban organizasyonu, su kuyusu, gönüllü koordinasyonu ve
                 bağışçı yönetimi tek platformda.
