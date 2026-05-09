@@ -119,26 +119,6 @@ public partial class NopStartup : INopStartup
         // PEKIN_CUSTOM: StoreOwner filter - listing'lerde DB seviyesinde filtreleme, create/edit'te otomatik store ataması
         services.AddScoped<StoreOwnerFilter>();
 
-        // PEKIN_CUSTOM: CORS - PekinTeknolojiWeb (React) sitesinden gelen isteklere izin ver
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowMarketingSite", policy =>
-            {
-                policy.WithOrigins(
-                        "https://pekinteknoloji.com",
-                        "https://www.pekinteknoloji.com",
-                        "https://test.pekinteknoloji.com",
-                        "http://localhost:5173",
-                        "http://localhost:5174",
-                        "http://localhost:5175",
-                        "http://localhost:5176",
-                        "http://localhost:5177"
-                    )
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
-        });
     }
 
     /// <summary>
@@ -147,9 +127,6 @@ public partial class NopStartup : INopStartup
     /// <param name="application">Builder for configuring an application's request pipeline</param>
     public void Configure(IApplicationBuilder application)
     {
-        // PEKIN_CUSTOM: CORS middleware
-        application.UseCors("AllowMarketingSite");
-
         // PEKIN_CUSTOM: Per-store log context ve metrics (Loki + Prometheus)
         application.UseMiddleware<StoreMetricsMiddleware>();
     }

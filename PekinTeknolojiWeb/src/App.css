@@ -1435,6 +1435,12 @@ a.contact-info-pill:hover {
   transform: scale(1.1);
   box-shadow: 0 4px 12px rgba(214,36,159,.45);
 }
+.social-link--linkedin {
+  background: #0077b5 !important;
+}
+.social-link--linkedin:hover {
+  box-shadow: 0 4px 12px rgba(0,119,181,.45) !important;
+}
 
 .social-links span {
   font-weight: 600;
