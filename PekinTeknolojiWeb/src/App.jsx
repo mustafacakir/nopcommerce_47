@@ -34,7 +34,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import './App.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://www.pekinteknoloji.com';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
 const Logo = ({ size = 'md', light = false }) => (
   <div className={`brand-logo brand-logo--${size}`}>
