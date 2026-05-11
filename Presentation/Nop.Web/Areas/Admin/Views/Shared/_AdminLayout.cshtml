@@ -296,5 +296,15 @@
             a[href="/Admin/Order/ShipmentList"] { display: none !important; }
         </style>
     }
+    @if (await customerService.IsInCustomerRoleAsync(layoutCustomer, "StoreOwner"))
+    {
+        <style>
+            /* Sol menüde StoreOwner için gizlenecek öğeler */
+            li:has(a[href="/Admin/PluginManager/StoreWidgets"]) { display: none !important; }
+            li:has(a[href="/Admin/GonulluAdmin/List"])          { display: none !important; }
+            li:has(a[href="/Admin/CampaignAdmin/List"])         { display: none !important; }
+            li:has(a[href="/Admin/HeroSliderAdmin/List"])       { display: none !important; }
+        </style>
+    }
 </body>
 </html>
