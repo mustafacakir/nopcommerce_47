@@ -2,84 +2,42 @@
 @{ Layout = ""; }
 
 <section class="ah-section">
-    <div class="ah-container">
+    <div class="ah-hero-inner">
 
-        <!-- Sol: metin -->
-        <div class="ah-content">
+        @if (!string.IsNullOrEmpty(Model.BadgeText))
+        {
+            <span class="ah-badge">@Model.BadgeText</span>
+        }
 
-            @if (!string.IsNullOrEmpty(Model.BadgeText))
+        <h1 class="ah-title">
+            @if (!string.IsNullOrEmpty(Model.TitleLine1))
             {
-                <span class="ah-badge">@Model.BadgeText</span>
+                <span class="ah-title__line">@Model.TitleLine1</span>
             }
-
-            <h1 class="ah-title">
-                @if (!string.IsNullOrEmpty(Model.TitleLine1))
-                {
-                    <span class="ah-title__line">@Model.TitleLine1</span>
-                }
-                @if (!string.IsNullOrEmpty(Model.TitleAccent))
-                {
-                    <span class="ah-title__line ah-title__line--accent">@Model.TitleAccent</span>
-                }
-                @if (!string.IsNullOrEmpty(Model.TitleLine2))
-                {
-                    <span class="ah-title__line">@Model.TitleLine2</span>
-                }
-            </h1>
-
-            @if (!string.IsNullOrEmpty(Model.Description))
+            @if (!string.IsNullOrEmpty(Model.TitleAccent))
             {
-                <p class="ah-desc">@Model.Description</p>
+                <span class="ah-title__line ah-title__line--accent">@Model.TitleAccent</span>
             }
+            @if (!string.IsNullOrEmpty(Model.TitleLine2))
+            {
+                <span class="ah-title__line">@Model.TitleLine2</span>
+            }
+        </h1>
 
-            <div class="ah-actions">
-                @if (!string.IsNullOrEmpty(Model.Button1Text))
-                {
-                    <a href="@Model.Button1Url" class="ah-btn ah-btn--primary">@Model.Button1Text</a>
-                }
-                @if (!string.IsNullOrEmpty(Model.Button2Text))
-                {
-                    <a href="@Model.Button2Url" class="ah-btn ah-btn--outline">@Model.Button2Text</a>
-                }
-            </div>
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <p class="ah-desc">@Model.Description</p>
+        }
 
-        </div>
-
-        <!-- Sağ: 4 görselli mozaik -->
-        <div class="ah-mosaic">
-
-            <!-- Sol kolon: büyük (üst) + küçük (alt) -->
-            <div class="ah-mosaic__col">
-                <div class="ah-mosaic__cell ah-mosaic__cell--lg">
-                    @if (!string.IsNullOrEmpty(Model.Image1Url))
-                    {
-                        <img src="@Model.Image1Url" alt="aksesuar" loading="lazy" />
-                    }
-                </div>
-                <div class="ah-mosaic__cell ah-mosaic__cell--sm">
-                    @if (!string.IsNullOrEmpty(Model.Image3Url))
-                    {
-                        <img src="@Model.Image3Url" alt="aksesuar" loading="lazy" />
-                    }
-                </div>
-            </div>
-
-            <!-- Sağ kolon: 2 eşit -->
-            <div class="ah-mosaic__col">
-                <div class="ah-mosaic__cell">
-                    @if (!string.IsNullOrEmpty(Model.Image2Url))
-                    {
-                        <img src="@Model.Image2Url" alt="aksesuar" loading="lazy" />
-                    }
-                </div>
-                <div class="ah-mosaic__cell">
-                    @if (!string.IsNullOrEmpty(Model.Image4Url))
-                    {
-                        <img src="@Model.Image4Url" alt="aksesuar" loading="lazy" />
-                    }
-                </div>
-            </div>
-
+        <div class="ah-actions">
+            @if (!string.IsNullOrEmpty(Model.Button1Text))
+            {
+                <a href="@Model.Button1Url" class="ah-btn ah-btn--primary">@Model.Button1Text</a>
+            }
+            @if (!string.IsNullOrEmpty(Model.Button2Text))
+            {
+                <a href="@Model.Button2Url" class="ah-btn ah-btn--outline">@Model.Button2Text</a>
+            }
         </div>
 
     </div>
@@ -87,143 +45,134 @@
 
 <style>
     .ah-section {
-        background: #FAF7F2;
-        padding: 72px 24px;
+        background: linear-gradient(150deg, #2C1508 0%, #5A2D14 55%, #7A4528 100%);
+        padding: 88px 24px 100px;
+        position: relative;
+        overflow: hidden;
+        font-family: 'Poppins', 'Segoe UI', sans-serif;
+        text-align: center;
     }
 
-    .ah-container {
-        max-width: 1180px;
+    .ah-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle at 20% 50%, rgba(196,168,130,0.08) 0%, transparent 50%),
+                          radial-gradient(circle at 80% 20%, rgba(196,168,130,0.06) 0%, transparent 40%);
+        pointer-events: none;
+    }
+
+    .ah-section::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: #FAF0E6;
+        clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    .ah-hero-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 780px;
         margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 64px;
-        align-items: center;
     }
 
     /* ── Badge ── */
     .ah-badge {
-        display: inline-block;
-        background: #FDF0E6;
-        color: #C96A2A;
-        font-size: 12px;
-        font-weight: 700;
-        padding: 6px 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(196,168,130,0.15);
+        border: 1px solid rgba(196,168,130,0.35);
+        color: #C4A882;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        padding: 7px 20px;
         border-radius: 20px;
-        margin-bottom: 28px;
-        letter-spacing: 0.3px;
+        margin-bottom: 32px;
     }
 
     /* ── Başlık ── */
     .ah-title {
         display: flex;
         flex-direction: column;
-        font-size: clamp(34px, 4vw, 54px);
+        font-size: clamp(36px, 5vw, 64px);
         font-weight: 800;
         line-height: 1.1;
         margin: 0 0 20px;
-        letter-spacing: -0.5px;
+        letter-spacing: -1px;
     }
     .ah-title__line {
-        color: #1A1A1A;
+        color: #FAF0E6;
     }
     .ah-title__line--accent {
-        color: #C96A2A;
+        color: #C4A882;
     }
 
     /* ── Açıklama ── */
     .ah-desc {
-        font-size: 15px;
-        color: #666;
-        line-height: 1.7;
-        margin: 0 0 36px;
-        max-width: 440px;
+        font-size: clamp(15px, 2vw, 18px);
+        color: rgba(250,240,230,0.72);
+        line-height: 1.75;
+        margin: 0 auto 44px;
+        max-width: 520px;
     }
 
     /* ── Butonlar ── */
     .ah-actions {
         display: flex;
-        gap: 14px;
+        gap: 12px;
         flex-wrap: wrap;
+        justify-content: center;
     }
     .ah-btn {
         display: inline-flex;
         align-items: center;
-        padding: 13px 28px;
-        border-radius: 8px;
-        font-size: 14px;
+        gap: 8px;
+        padding: 16px 44px;
+        border-radius: 50px;
+        font-size: 15px;
         font-weight: 700;
         text-decoration: none;
-        transition: transform 0.18s, box-shadow 0.18s;
+        transition: transform .2s, box-shadow .2s, background .2s, border-color .2s;
         white-space: nowrap;
     }
     .ah-btn--primary {
-        background: #1A1A1A;
-        color: #FAF7F2;
+        background: #C4A882;
+        color: #2C1508;
+        box-shadow: 0 4px 20px rgba(196,168,130,0.35);
     }
     .ah-btn--primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.18);
-        color: #FAF7F2;
+        background: #D4B896;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 28px rgba(196,168,130,0.45);
+        color: #2C1508;
+        text-decoration: none;
     }
     .ah-btn--outline {
         background: transparent;
-        color: #1A1A1A;
-        border: 1.5px solid #1A1A1A;
+        color: rgba(250,240,230,0.85);
+        border: 1.5px solid rgba(250,240,230,0.3);
     }
     .ah-btn--outline:hover {
-        background: #1A1A1A;
-        color: #FAF7F2;
-    }
-
-    /* ── Mozaik ── */
-    .ah-mosaic {
-        display: flex;
-        gap: 12px;
-        height: 480px;
-        padding-top: 32px;
-        box-sizing: border-box;
-    }
-    .ah-mosaic__col {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-    .ah-mosaic__cell {
-        flex: 1;
-        border-radius: 20px;
-        overflow: hidden;
-        background: #EDE8E0;
-        min-height: 0;
-    }
-    /* Sol kolon: üst görsel daha büyük */
-    .ah-mosaic__cell--lg { flex: 1.7; }
-    .ah-mosaic__cell--sm { flex: 1; }
-
-    .ah-mosaic__cell img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.4s ease;
-    }
-    .ah-mosaic__cell:hover img {
-        transform: scale(1.04);
+        border-color: rgba(250,240,230,0.7);
+        color: #FAF0E6;
+        transform: translateY(-3px);
+        text-decoration: none;
     }
 
     /* ── Responsive ── */
-    @@media (max-width: 900px) {
-        .ah-container {
-            gap: 40px;
-        }
-    }
     @@media (max-width: 767px) {
-        .ah-section { padding: 48px 20px; }
-        .ah-container {
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-        .ah-mosaic { order: -1; }
-        .ah-title { font-size: 32px; }
+        .ah-section { padding: 64px 20px 80px; }
+        .ah-btn { padding: 13px 28px; }
+    }
+    @@media (max-width: 480px) {
+        .ah-actions { flex-direction: column; align-items: center; }
+        .ah-btn { width: 100%; justify-content: center; }
     }
 </style>

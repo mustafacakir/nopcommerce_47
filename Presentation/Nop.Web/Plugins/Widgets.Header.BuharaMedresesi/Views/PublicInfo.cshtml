@@ -59,20 +59,17 @@
                     </a>
                 }
             </div>
+            <div class="bh-topbar__divider"></div>
+            @await Component.InvokeAsync("LanguageSelector")
         </div>
     </div>
 </div>
 
-<!-- Mobil buton barı -->
-<div class="bh-mobile-btns">
-    <a href="@Model.DonateUrl" class="bh-donate-btn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        @Model.DonateText
-    </a>
-</div>
-
 <!-- Bağış Yap butonu header-lower'a enjekte et -->
 <style>
+    /* Voyage default üst bar'ı gizle */
+    .header-upper { display: none !important; }
+
     /* Header-lower içeriği container hizasında */
     .header-lower {
         max-width: 1180px;
@@ -80,14 +77,6 @@
         padding: 12px 24px;
         min-height: 80px;
     }
-
-    /* header-upper gizle (içeriği topbar'a taşındı) */
-    .header-upper { display: none !important; }
-
-    /* Wishlist gizle */
-    .bh-topbar .ico-wishlist,
-    .bh-topbar .ico-wishlist ~ * { display: none !important; }
-    .bh-topbar .header-links ul li:has(.ico-wishlist) { display: none !important; }
 
     /* Arama inputunu gizle */
     .search-box.store-search-box { display: none !important; }
@@ -129,7 +118,7 @@
 
     /* ── Üst bar ── */
     .bh-topbar {
-        background: #1a2370;
+        background: #2abfbf;
         color: #fff;
         font-family: 'Poppins', sans-serif;
         font-size: 13px;
@@ -154,41 +143,8 @@
     .bh-topbar__item:hover { color: #fff; opacity: 0.85; }
     .bh-topbar__item svg { flex-shrink: 0; }
 
-    .bh-topbar__right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .bh-topbar__right { display: flex; align-items: center; gap: 14px; }
     .bh-topbar__social { display: flex; align-items: center; gap: 12px; }
-
-    /* Header links topbar'a taşındığında */
-    .bh-topbar .header-links-wrapper {
-        display: flex !important; align-items: center;
-        flex-basis: auto !important; width: auto !important;
-        visibility: visible !important; overflow: visible !important;
-    }
-    .bh-topbar .admin-header-links { display: flex !important; align-items: center; gap: 4px; }
-    .bh-topbar .header-links { display: flex !important; margin: 0 !important; }
-    .bh-topbar .header-links ul { display: flex !important; align-items: center; gap: 0; margin: 0 !important; padding: 0; list-style: none; font-size: inherit !important; white-space: normal !important; }
-    .bh-topbar .header-links li { display: flex !important; }
-    .bh-topbar .header-links-wrapper { flex-wrap: wrap; }
-    .bh-topbar .header-links ul li a,
-    .bh-topbar .admin-header-links a {
-        display: inline-flex; align-items: center; gap: 5px;
-        color: #fff !important;
-        font-size: 12px; font-weight: 700;
-        text-decoration: none !important;
-        padding: 4px 10px;
-        border-radius: 4px;
-        transition: color 0.15s, background 0.15s;
-        white-space: nowrap;
-        vertical-align: middle;
-    }
-    .bh-topbar .header-links ul li a:hover,
-    .bh-topbar .admin-header-links a:hover { background: rgba(255,255,255,0.1); }
-    .bh-topbar .header-links-wrapper::before {
-        content: '';
-        display: block;
-        width: 1px; height: 16px;
-        background: rgba(255,255,255,0.3);
-        margin-right: 6px;
-    }
     .bh-topbar__soc {
         color: #fff;
         display: flex; align-items: center;
@@ -239,125 +195,57 @@
     }
     .bh-donate-btn:hover { background: #d04e00; transform: translateY(-1px); }
     .bh-donate-btn svg { flex-shrink: 0; }
-    .search-cart-wrapper { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
 
-    /* Mobil buton barı */
-    .bh-mobile-btns { display: none; }
+    /* Giriş Yap butonu */
+    .bh-login-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: transparent;
+        color: #1a2370 !important;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 9px 20px;
+        border-radius: 50px;
+        border: 1.5px solid #1a2370;
+        text-decoration: none !important;
+        white-space: nowrap;
+        font-family: 'Poppins', sans-serif;
+        transition: background 0.2s, color 0.2s;
+        margin-left: 8px;
+    }
+    .bh-login-btn:hover { background: #1a2370; color: #fff !important; }
 
     @@media (max-width: 768px) {
-        /* Topbar: tek satır, tümü ortada */
-        .bh-topbar__inner {
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0;
-            padding: 0 12px;
-        }
-        .bh-topbar__left {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 0;
-            width: 100%;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 4px 0;
-        }
-        /* Telefon/e-posta linkleri — topbar item'larla eşit padding */
-        .bh-topbar__item {
-            padding: 4px 10px;
-            font-size: 12px;
-        }
-        .bh-topbar__right {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 0;
-            width: 100%;
-            padding: 4px 0;
-        }
-        /* Social ikonlar sağda, linkler solda — hepsi aynı satırda */
-        .bh-topbar__social { gap: 8px; }
-        .bh-topbar .header-links-wrapper { display: flex !important; }
-        .bh-topbar .header-links { display: flex !important; }
-        .bh-topbar .header-links ul { display: flex !important; flex-wrap: wrap; justify-content: center; }
-        .bh-topbar .header-links ul li { display: flex !important; }
-        .bh-topbar .header-links ul li a,
-        .bh-topbar .admin-header-links a { font-size: 12px; padding: 4px 8px; }
-        /* Sosyal medya ile linkler arası ayraç */
-        .bh-topbar .header-links-wrapper::before {
-            display: flex;
-            align-self: center;
-            width: 1px; height: 14px;
-            background: rgba(255,255,255,0.65);
-            margin-left: 12px; margin-right: 8px;
-        }
-
-        .header-lower { min-height: 0 !important; padding: 0 !important; }
-        .search-cart-wrapper .bh-donate-btn { display: none !important; }
-        .bh-mobile-btns {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            background: #fff;
-            border-top: 1px solid #eee;
-            flex-wrap: wrap;
-        }
-        .bh-mobile-btns .bh-donate-btn {
-            margin-left: 0;
-            flex: 1;
-            justify-content: center;
-            min-width: 120px;
-        }
+        .bh-topbar__left { display: none; }
+        .bh-topbar__inner { justify-content: flex-end; }
     }
 </style>
 
 <script>
     (function () {
-        function moveHeaderLinks() {
-            var topbarRight = document.querySelector('.bh-topbar__right');
-            if (!topbarRight) return;
-
-            var linksWrap = document.querySelector('.header-links-wrapper');
-            if (!linksWrap) return;
-
-            // Tema'nın nav-panel class'ını ve close butonunu temizle
-            var headerLinks = linksWrap.querySelector('.header-links');
-            if (headerLinks) {
-                headerLinks.classList.remove('nav-panel');
-                var closeBtn = headerLinks.querySelector('.close-button');
-                if (closeBtn) closeBtn.remove();
-                // Wishlist ve cart li'lerini kaldır
-                headerLinks.querySelectorAll('.ico-wishlist, .ico-cart').forEach(function(a) {
-                    var li = a.closest('li');
-                    if (li) li.remove();
-                });
-            }
-
-            topbarRight.appendChild(linksWrap);
-        }
-
         function injectButtons() {
             var wrap = document.querySelector('.search-cart-wrapper');
             if (!wrap) return;
+
+            var loginBtn = document.createElement('a');
+            loginBtn.href = '/login';
+            loginBtn.className = 'bh-login-btn';
+            loginBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Giriş Yap';
 
             var donateBtn = document.createElement('a');
             donateBtn.href = '@Model.DonateUrl';
             donateBtn.className = 'bh-donate-btn';
             donateBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>@Model.DonateText';
 
+            wrap.appendChild(loginBtn);
             wrap.appendChild(donateBtn);
         }
 
-        function init() {
-            moveHeaderLinks();
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', injectButtons);
+        } else {
             injectButtons();
         }
-
-        // window.load: tema JS'i DOMContentLoaded'da nav-panel class'ı ekliyor;
-        // ondan sonra çalışmak için load eventini kullanıyoruz
-        window.addEventListener('load', init);
     })();
 </script>

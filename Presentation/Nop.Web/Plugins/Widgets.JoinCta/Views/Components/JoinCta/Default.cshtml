@@ -80,8 +80,8 @@
 </section>
 
 <style>
-.jc-section { padding: 60px 20px; width: 100%; box-sizing: border-box; }
-.jc-container { max-width: 100%; margin: 0; }
+.jc-section { padding: 60px 20px; }
+.jc-container { max-width: 1100px; margin: 0 auto; }
 
 .jc-title {
     text-align: center;
@@ -95,7 +95,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    align-items: start;
+    align-items: stretch;
 }
 
 /* Havale kartı */
@@ -117,10 +117,10 @@
 }
 .jc-bank-head-ico {
     width: 36px; height: 36px;
-    background: #eff6ff;
+    background: #e6f9f9;
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    color: #3b82f6; flex-shrink: 0;
+    color: #2ABFBF; flex-shrink: 0;
 }
 .jc-bank-list { padding: 8px 0; }
 .jc-bank-row {
@@ -157,7 +157,7 @@
     color: #6b7280;
     transition: background .15s, color .15s;
 }
-.jc-copy-btn:hover { background: #dbeafe; color: #2563eb; }
+.jc-copy-btn:hover { background: #ccf0f0; color: #2ABFBF; }
 .jc-copy-btn.jc-copied { background: #dcfce7; color: #16a34a; }
 
 /* Sağ sütun */
@@ -180,17 +180,17 @@
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
 }
-.jc-cta-ico-donate  { background: #eff6ff; color: #3b82f6; }
-.jc-cta-ico-contact { background: #f0f9ff; color: #0ea5e9; }
+.jc-cta-ico-donate  { background: #e6f9f9; color: #2ABFBF; }
+.jc-cta-ico-contact { background: #e6f9f9; color: #2ABFBF; }
 
 .jc-cta-title { font-size: .95rem; font-weight: 700; color: #111827; margin: 0; }
 .jc-cta-desc  { font-size: .82rem; color: #6b7280; line-height: 1.55; margin: 0; flex: 1; }
 .jc-cta-link  {
-    font-size: .82rem; font-weight: 700; color: #2563eb;
+    font-size: .82rem; font-weight: 700; color: #2ABFBF;
     text-decoration: none; display: inline-flex; align-items: center; gap: 3px;
     margin-top: auto;
 }
-.jc-cta-link:hover { color: #1d4ed8; }
+.jc-cta-link:hover { color: #1FAAA0; }
 
 /* E-bülten */
 .jc-newsletter {
@@ -229,7 +229,7 @@
 }
 .jc-nl-btn {
     flex-shrink: 0;
-    background: #60a5fa;
+    background: #2ABFBF;
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -239,7 +239,7 @@
     display: flex; align-items: center; gap: 4px;
     transition: background .15s;
 }
-.jc-nl-btn:hover { background: #3b82f6; }
+.jc-nl-btn:hover { background: #1FAAA0; }
 .jc-nl-note { font-size: .75rem; color: #9ca3af; margin: 0; }
 
 @@media (max-width: 860px) {

@@ -9,7 +9,7 @@
   "FileName": "Nop.Plugin.Widgets.ImpactCounter.dll",
   "Description": "Homepage impact statistics counter",
   "LimitedToStores": [
-    39
+    37
   ],
   "LimitedToCustomerRoles": [],
   "DependsOnSystemNames": [],

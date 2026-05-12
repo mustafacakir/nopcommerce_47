@@ -10,6 +10,7 @@ using Nop.Services.Common;
 using Nop.Services.Customers;
 using Nop.Services.Directory;
 using Nop.Services.Logging;
+using Nop.Services.Configuration;
 using Nop.Services.Orders;
 using Nop.Services.Payments;
 using Nop.Web.Controllers;
@@ -35,6 +36,7 @@ public class SimpleCheckoutController : BasePublicController
     private readonly IPriceFormatter _priceFormatter;
     private readonly ILogger _logger;
     private readonly IWebHelper _webHelper;
+    private readonly ISettingService _settingService;
 
     public SimpleCheckoutController(
         IWorkContext workContext,
@@ -51,7 +53,8 @@ public class SimpleCheckoutController : BasePublicController
         IPaymentPluginManager paymentPluginManager,
         IPriceFormatter priceFormatter,
         ILogger logger,
-        IWebHelper webHelper)
+        IWebHelper webHelper,
+        ISettingService settingService)
     {
         _workContext = workContext;
         _storeContext = storeContext;
@@ -68,6 +71,7 @@ public class SimpleCheckoutController : BasePublicController
         _priceFormatter = priceFormatter;
         _logger = logger;
         _webHelper = webHelper;
+        _settingService = settingService;
     }
 
     [HttpGet]
@@ -80,12 +84,15 @@ public class SimpleCheckoutController : BasePublicController
         if (!cart.Any())
             return RedirectToRoute("ShoppingCart");
 
+        var (useEft, eftDescription) = await IsEftModeAsync(customer, store);
         var model = new SimpleCheckoutModel
         {
-            FirstName = customer.FirstName ?? string.Empty,
-            LastName  = customer.LastName  ?? string.Empty,
-            Phone     = customer.Phone     ?? string.Empty,
-            Email     = IsRealEmail(customer.Email) ? customer.Email : string.Empty
+            FirstName      = customer.FirstName ?? string.Empty,
+            LastName       = customer.LastName  ?? string.Empty,
+            Phone          = customer.Phone     ?? string.Empty,
+            Email          = IsRealEmail(customer.Email) ? customer.Email : string.Empty,
+            UseEft         = useEft,
+            EftDescription = eftDescription
         };
 
         await PrepareCartAsync(model, customer, store, cart);
@@ -142,9 +149,10 @@ public class SimpleCheckoutController : BasePublicController
             customer.ShippingAddressId = address.Id;
             await _customerService.UpdateCustomerAsync(customer);
 
-            // Select first active payment method
+            // PayTR varsa önce onu kullan, yoksa EFT/havale'ye (CheckMoneyOrder) düş
             var paymentMethods = await _paymentPluginManager.LoadActivePluginsAsync(customer, store.Id);
-            var paymentMethod  = paymentMethods.FirstOrDefault();
+            var paymentMethod  = paymentMethods.FirstOrDefault(p => p.PluginDescriptor.SystemName == "Payments.PaytrIframe")
+                              ?? paymentMethods.FirstOrDefault(p => p.PluginDescriptor.SystemName == "Payments.CheckMoneyOrder");
             if (paymentMethod == null)
                 throw new Exception("Bu mağaza için aktif ödeme yöntemi bulunamadı.");
 
@@ -183,8 +191,23 @@ public class SimpleCheckoutController : BasePublicController
             model.Errors.Add(ex.Message);
         }
 
+        (model.UseEft, model.EftDescription) = await IsEftModeAsync(customer, store);
         await PrepareCartAsync(model, customer, store, cart);
         return View("~/Plugins/Misc.SimpleCheckout/Views/Index.cshtml", model);
+    }
+
+    private async Task<(bool UseEft, string EftDescription)> IsEftModeAsync(Customer customer, Nop.Core.Domain.Stores.Store store)
+    {
+        var methods = await _paymentPluginManager.LoadActivePluginsAsync(customer, store.Id);
+        var hasPaytr = methods.Any(p => p.PluginDescriptor.SystemName == "Payments.PaytrIframe");
+        var hasEft   = methods.Any(p => p.PluginDescriptor.SystemName == "Payments.CheckMoneyOrder");
+        if (!hasPaytr && hasEft)
+        {
+            var description = await _settingService.GetSettingByKeyAsync<string>(
+                "checkmoneyorderpaymentsettings.descriptiontext", storeId: store.Id);
+            return (true, description);
+        }
+        return (false, null);
     }
 
     private async Task PrepareCartAsync(SimpleCheckoutModel model, Customer customer, Nop.Core.Domain.Stores.Store store, IList<ShoppingCartItem> cart)

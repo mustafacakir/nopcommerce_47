@@ -13,6 +13,12 @@
 
             <!-- Sol: Form -->
             <div class="sc-form-card">
+
+                @if (Model.UseEft && !string.IsNullOrEmpty(Model.EftDescription))
+                {
+                    <div class="sc-eft-info">@Html.Raw(Model.EftDescription)</div>
+                }
+
                 <h2 class="sc-section-title">Kişisel Bilgiler</h2>
 
                 @if (Model.Errors.Any())
@@ -56,8 +62,15 @@
                     </div>
 
                     <div class="sc-submit">
-                        <button type="submit" class="button-1">Güvenli Ödemeye Geç &rarr;</button>
-                        <p class="sc-submit-note">Kart bilgilerinizi bir sonraki güvenli sayfada gireceksiniz.</p>
+                        @if (Model.UseEft)
+                        {
+                            <button type="submit" class="button-1">Ödemeyi Tamamla &rarr;</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="button-1">Güvenli Ödemeye Geç &rarr;</button>
+                            <p class="sc-submit-note">Kart bilgilerinizi bir sonraki güvenli sayfada gireceksiniz.</p>
+                        }
                     </div>
                 </form>
             </div>
@@ -121,6 +134,16 @@
 .sc-field { margin-bottom: 16px; }
 .sc-field label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: 5px; color: #374151; }
 .sc-field .form-control { width: 100%; }
+.sc-eft-info {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+    font-size: .88rem;
+    color: #374151;
+    line-height: 1.6;
+}
 .sc-submit { margin-top: 8px; }
 .sc-submit .button-1 { width: 100%; padding: 14px; font-size: 1rem; }
 .sc-submit-note { margin: 10px 0 0; font-size: .82rem; color: #6b7280; text-align: center; }

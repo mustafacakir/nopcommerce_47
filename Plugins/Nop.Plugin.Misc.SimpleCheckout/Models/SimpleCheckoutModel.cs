@@ -20,6 +20,8 @@ public class SimpleCheckoutModel
     public List<CartItemModel> CartItems { get; set; } = new();
     public string OrderTotalFormatted { get; set; }
     public List<string> Errors { get; set; } = new();
+    public bool UseEft { get; set; }
+    public string EftDescription { get; set; }
 }
 
 public class CartItemModel
