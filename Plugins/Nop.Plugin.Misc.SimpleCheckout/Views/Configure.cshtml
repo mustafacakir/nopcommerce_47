@@ -24,6 +24,15 @@
                             <span class="form-text text-muted">Virgülle ayrılmış Store ID'leri. Bu mağazalarda OPC → /checkout/bagis'e yönlendirilir.</span>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label>EFT / Havale Açıklaması</label>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea asp-for="EftDescription" class="form-control" rows="6" placeholder="EFT/havale ile ödeme yapılacak mağazalarda checkout sayfasında gösterilecek metin (HTML destekler)"></textarea>
+                            <span class="form-text text-muted">PayTR aktif değil, EFT/havale aktifse bu metin ödeme sayfasında gösterilir.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="form-group row">

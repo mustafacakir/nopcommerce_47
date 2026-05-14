@@ -203,9 +203,8 @@ public class SimpleCheckoutController : BasePublicController
         var hasEft   = methods.Any(p => p.PluginDescriptor.SystemName == "Payments.CheckMoneyOrder");
         if (!hasPaytr && hasEft)
         {
-            var description = await _settingService.GetSettingByKeyAsync<string>(
-                "checkmoneyorderpaymentsettings.descriptiontext", storeId: store.Id);
-            return (true, description);
+            var settings = await _settingService.LoadSettingAsync<SimpleCheckoutSettings>();
+            return (true, settings.EftDescription);
         }
         return (false, null);
     }

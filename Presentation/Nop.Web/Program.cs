@@ -2,9 +2,6 @@
 using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
 using Nop.Web.Framework.Infrastructure.Extensions;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 
 namespace Nop.Web;
 
@@ -49,30 +46,11 @@ public partial class Program
             opts.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
         });
 
-        // PEKIN_CUSTOM: OpenTelemetry metrikleri Prometheus için eklendi
-        builder.Services.AddMetrics(); // IMeterFactory'yi DI'a kayıt et
-        //add OpenTelemetry
-        builder.Services.AddOpenTelemetry()
-            .ConfigureResource(r => r.AddService("nopcommerce"))
-            .WithMetrics(metrics => metrics
-                .AddAspNetCoreInstrumentation()
-                .AddHttpClientInstrumentation()
-                .AddRuntimeInstrumentation()
-                .AddMeter("nopcommerce.stores")   // per-store custom metrics
-                .AddPrometheusExporter())
-            .WithTracing(tracing => tracing
-                .AddAspNetCoreInstrumentation()
-                .AddHttpClientInstrumentation());
-
         var app = builder.Build();
 
         //configure the application HTTP request pipeline
         app.ConfigureRequestPipeline();
         await app.StartEngineAsync();
-
-        // PEKIN_CUSTOM: /metrics endpoint Prometheus scraping için açıldı
-        //expose Prometheus metrics endpoint
-        app.MapPrometheusScrapingEndpoint("/metrics");
 
         await app.RunAsync();
     }

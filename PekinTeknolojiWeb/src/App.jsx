@@ -637,7 +637,7 @@ const BLOG_POSTS = [
   {
     slug: 'kurban-organizasyonu-dijital',
     tag: 'Dernek', color: '#b45309',
-    title: 'Kurban İbadetini Dijitalde Yönetmek: Adım Adım Rehber',
+    title: 'Kurban Bağışlarını Dijitalde Yönetmek: Adım Adım Rehber',
     desc: 'Hisse talebi, ödeme, takip ve kesim bildirimini tek platformdan nasıl yönetirsiniz?',
     readTime: '4 dk',
     img: 'https://images.unsplash.com/photo-1484557985045-edf25e08da73?w=600&q=80',

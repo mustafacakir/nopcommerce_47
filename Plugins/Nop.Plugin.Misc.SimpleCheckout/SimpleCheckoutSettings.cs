@@ -4,8 +4,10 @@ namespace Nop.Plugin.Misc.SimpleCheckout;
 
 public class SimpleCheckoutSettings : ISettings
 {
-    /// <summary>
-    /// Comma-separated store IDs that use simple checkout (empty = all stores)
-    /// </summary>
     public string DonationStoreIds { get; set; } = "";
+
+    /// <summary>
+    /// EFT/havale modunda gösterilecek açıklama metni (HTML destekler)
+    /// </summary>
+    public string EftDescription { get; set; } = "";
 }
