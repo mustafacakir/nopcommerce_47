@@ -1,9 +1,6 @@
 # --- Build stage ---
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 WORKDIR /src
-# Git reposunun yapısına göre kaynak dosyaları kopyala
-# Server: Presentation/ doğrudan kök dizinde
-# Local dev: publish_folder kullanılır (aşağıdaki COPY --from=build ile override edilir)
 COPY . .
 RUN if [ -f "Presentation/Nop.Web/Nop.Web.csproj" ]; then \
       dotnet publish Presentation/Nop.Web/Nop.Web.csproj -c Release -o /app/publish; \
