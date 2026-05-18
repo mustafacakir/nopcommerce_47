@@ -20,7 +20,7 @@
 
     //page title
     string adminPageTitle = !string.IsNullOrWhiteSpace(ViewBag.PageTitle) ? ViewBag.PageTitle + " / " : "";
-    adminPageTitle += T("Admin.PageTitle").Text;
+    adminPageTitle += "Pekin Teknoloji - Admin";
 
     //has "Manage Maintenance" permission?
     var canManageMaintenance = await permissionService.AuthorizeAsync(StandardPermissionProvider.ManageMaintenance);

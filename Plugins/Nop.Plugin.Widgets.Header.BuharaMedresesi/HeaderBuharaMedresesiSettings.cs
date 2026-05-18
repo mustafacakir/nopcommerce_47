@@ -5,8 +5,10 @@ namespace Nop.Plugin.Widgets.Header.BuharaMedresesi;
 public class HeaderBuharaMedresesiSettings : ISettings
 {
     public string Phone        { get; set; } = "+90 212 664 85 71";
+    public string Phone2       { get; set; } = "";
     public string Email        { get; set; } = "info@buharamedresesi.org.tr";
     public string InstagramUrl { get; set; } = "#";
+    public string InstagramUrl2 { get; set; } = "";
     public string TwitterUrl   { get; set; } = "#";
     public string YoutubeUrl   { get; set; } = "#";
     public string FacebookUrl  { get; set; } = "#";

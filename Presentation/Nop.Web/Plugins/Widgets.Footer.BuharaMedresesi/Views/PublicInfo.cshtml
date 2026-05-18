@@ -141,6 +141,7 @@
     <div class="bf-bottom">
         <div class="bf-bottom__inner">
             <span class="bf-copy">@Model.CopyrightText</span>
+            <span class="bf-pekin">Bu site <a href="https://pekinteknoloji.com" target="_blank" rel="noopener">Pekin Teknoloji</a> tarafından hazırlanmıştır.</span>
             <div class="bf-legal">
                 @if (!string.IsNullOrEmpty(Model.KvkkUrl))
                 {
@@ -284,6 +285,9 @@
     .bf-legal { display: flex; gap: 24px; }
     .bf-legal a { font-size: 13px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.18s; }
     .bf-legal a:hover { color: #fff; }
+    .bf-pekin { font-size: 13px; color: rgba(255,255,255,0.55); }
+    .bf-pekin a { color: #fff; font-weight: 600; text-decoration: none; transition: opacity .2s; }
+    .bf-pekin a:hover { opacity: .75; }
 
     /* Responsive */
     @@media (max-width: 960px) {

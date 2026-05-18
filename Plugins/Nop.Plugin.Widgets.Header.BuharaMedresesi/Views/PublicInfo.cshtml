@@ -2,9 +2,10 @@
 @{ Layout = ""; }
 
 @{
-    var hasSocial = !string.IsNullOrEmpty(Model.InstagramUrl) || !string.IsNullOrEmpty(Model.TwitterUrl) ||
-                    !string.IsNullOrEmpty(Model.YoutubeUrl)   || !string.IsNullOrEmpty(Model.FacebookUrl) ||
-                    !string.IsNullOrEmpty(Model.LinkedinUrl)  || !string.IsNullOrEmpty(Model.TiktokUrl);
+    var hasSocial = !string.IsNullOrEmpty(Model.InstagramUrl) || !string.IsNullOrEmpty(Model.InstagramUrl2) ||
+                    !string.IsNullOrEmpty(Model.TwitterUrl)   || !string.IsNullOrEmpty(Model.YoutubeUrl)   ||
+                    !string.IsNullOrEmpty(Model.FacebookUrl)  || !string.IsNullOrEmpty(Model.LinkedinUrl)  ||
+                    !string.IsNullOrEmpty(Model.TiktokUrl);
 }
 
 <div class="bh-topbar">
@@ -16,6 +17,13 @@
                 <a href="tel:@Model.Phone.Replace(" ", "")" class="bh-topbar__item">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     @Model.Phone
+                </a>
+            }
+            @if (!string.IsNullOrEmpty(Model.Phone2))
+            {
+                <a href="tel:@Model.Phone2.Replace(" ", "")" class="bh-topbar__item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    @Model.Phone2
                 </a>
             }
             @if (!string.IsNullOrEmpty(Model.Email))
@@ -34,6 +42,12 @@
                     @if (!string.IsNullOrEmpty(Model.InstagramUrl))
                     {
                         <a href="@Model.InstagramUrl" target="_blank" rel="noopener" aria-label="Instagram" class="bh-topbar__soc">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.InstagramUrl2))
+                    {
+                        <a href="@Model.InstagramUrl2" target="_blank" rel="noopener" aria-label="Instagram 2" class="bh-topbar__soc">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
                         </a>
                     }
@@ -192,11 +206,12 @@
     border: none;
     box-shadow: 0 2px 8px rgba(0,0,0,.18);
     transition: box-shadow .2s, transform .15s, filter .2s;
-    margin-left: auto;
     letter-spacing: .01em;
 }
 .bh-donate-btn:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,.22); }
 .bh-donate-btn svg { flex-shrink: 0; }
+.bh-donate-btn--mobile { display: none; }
+.bh-donate-btn--desktop { margin-left: 12px; }
 
 /* Sepet ikonu */
 .ico-cart .cart-label { display: none !important; }
@@ -283,12 +298,24 @@
             topbarRight.appendChild(nav);
         }
 
-        // Bağış Yap butonu — topbar sağ panelin en sonuna (en sağa)
-        var btn = document.createElement('a');
-        btn.href = '@Model.DonateUrl';
-        btn.className = 'bh-donate-btn';
-        btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>@Model.DonateText';
-        topbarRight.appendChild(btn);
+        var btnHtml = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>@Model.DonateText';
+
+        // Desktop: sepet yanına
+        var wrap = document.querySelector('.search-cart-wrapper');
+        if (wrap) {
+            var btnDesktop = document.createElement('a');
+            btnDesktop.href = '@Model.DonateUrl';
+            btnDesktop.className = 'bh-donate-btn bh-donate-btn--desktop';
+            btnDesktop.innerHTML = btnHtml;
+            wrap.appendChild(btnDesktop);
+        }
+
+        // Mobil: topbar sağda
+        var btnMobile = document.createElement('a');
+        btnMobile.href = '@Model.DonateUrl';
+        btnMobile.className = 'bh-donate-btn bh-donate-btn--mobile';
+        btnMobile.innerHTML = btnHtml;
+        topbarRight.appendChild(btnMobile);
     }
 
     if (document.readyState === 'loading') {

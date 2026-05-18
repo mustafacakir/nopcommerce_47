@@ -38,8 +38,8 @@ public class HeaderBuharaMedresesiAdminController : BasePluginController
         return View("~/Plugins/Widgets.Header.BuharaMedresesi/Views/Configure.cshtml", new ConfigurationModel
         {
             ActiveStoreScopeConfiguration = storeScope,
-            Phone = s.Phone, Email = s.Email,
-            InstagramUrl = s.InstagramUrl, TwitterUrl = s.TwitterUrl,
+            Phone = s.Phone, Phone2 = s.Phone2, Email = s.Email,
+            InstagramUrl = s.InstagramUrl, InstagramUrl2 = s.InstagramUrl2, TwitterUrl = s.TwitterUrl,
             YoutubeUrl = s.YoutubeUrl, FacebookUrl = s.FacebookUrl,
             LinkedinUrl = s.LinkedinUrl, TiktokUrl = s.TiktokUrl,
             DonateUrl = s.DonateUrl, DonateText = s.DonateText
@@ -52,8 +52,8 @@ public class HeaderBuharaMedresesiAdminController : BasePluginController
         var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
         var s = await _settingService.LoadSettingAsync<HeaderBuharaMedresesiSettings>(storeScope);
 
-        s.Phone = model.Phone; s.Email = model.Email;
-        s.InstagramUrl = model.InstagramUrl; s.TwitterUrl = model.TwitterUrl;
+        s.Phone = model.Phone; s.Phone2 = model.Phone2; s.Email = model.Email;
+        s.InstagramUrl = model.InstagramUrl; s.InstagramUrl2 = model.InstagramUrl2; s.TwitterUrl = model.TwitterUrl;
         s.YoutubeUrl = model.YoutubeUrl; s.FacebookUrl = model.FacebookUrl;
         s.LinkedinUrl = model.LinkedinUrl; s.TiktokUrl = model.TiktokUrl;
         s.DonateUrl = model.DonateUrl; s.DonateText = model.DonateText;

@@ -111,16 +111,18 @@ public class WhatsAppNotificationController : BasePluginController
         foreach (var order in orders)
         {
             var customer = await _customerService.GetCustomerByIdAsync(order.CustomerId);
+
+            var address = order.BillingAddressId > 0
+                ? await _addressService.GetAddressByIdAsync(order.BillingAddressId)
+                : null;
+
+            var telefon = address?.PhoneNumber ?? string.Empty;
+
             var musteriAd = !string.IsNullOrEmpty(customer?.FirstName)
                 ? $"{customer.FirstName} {customer.LastName}".Trim()
-                : customer?.Email ?? "Misafir";
-
-            var telefon = string.Empty;
-            if (order.BillingAddressId > 0)
-            {
-                var address = await _addressService.GetAddressByIdAsync(order.BillingAddressId);
-                telefon = address?.PhoneNumber ?? string.Empty;
-            }
+                : address != null && !string.IsNullOrEmpty(address.FirstName)
+                    ? $"{address.FirstName} {address.LastName}".Trim()
+                    : customer?.Email ?? "Misafir";
 
             model.Add(new OrderWhatsAppModel
             {

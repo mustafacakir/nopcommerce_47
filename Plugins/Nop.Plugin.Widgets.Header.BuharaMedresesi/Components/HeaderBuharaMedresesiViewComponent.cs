@@ -25,8 +25,10 @@ public class HeaderBuharaMedresesiViewComponent : NopViewComponent
         var model = new PublicInfoModel
         {
             Phone        = s.Phone,
+            Phone2       = s.Phone2,
             Email        = s.Email,
-            InstagramUrl = s.InstagramUrl,
+            InstagramUrl  = s.InstagramUrl,
+            InstagramUrl2 = s.InstagramUrl2,
             TwitterUrl   = s.TwitterUrl,
             YoutubeUrl   = s.YoutubeUrl,
             FacebookUrl  = s.FacebookUrl,

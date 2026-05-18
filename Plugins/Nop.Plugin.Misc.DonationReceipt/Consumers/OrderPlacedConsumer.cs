@@ -1,6 +1,5 @@
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.Orders;
-using Nop.Core.Events;
 using Nop.Plugin.Misc.DonationReceipt.Services;
 using Nop.Services.Catalog;
 using Nop.Services.Customers;
@@ -12,7 +11,7 @@ using Nop.Services.Stores;
 
 namespace Nop.Plugin.Misc.DonationReceipt.Consumers;
 
-public class OrderPlacedConsumer : IConsumer<OrderPlacedEvent>
+public class OrderPlacedConsumer : IConsumer<OrderPaidEvent>
 {
     private readonly IOrderService _orderService;
     private readonly IProductService _productService;
@@ -43,7 +42,7 @@ public class OrderPlacedConsumer : IConsumer<OrderPlacedEvent>
         _receiptService = receiptService;
     }
 
-    public async Task HandleEventAsync(OrderPlacedEvent eventMessage)
+    public async Task HandleEventAsync(OrderPaidEvent eventMessage)
     {
         var order = eventMessage.Order;
         if (order == null)

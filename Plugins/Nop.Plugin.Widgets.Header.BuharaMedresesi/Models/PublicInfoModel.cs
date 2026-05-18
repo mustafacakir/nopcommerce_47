@@ -3,8 +3,10 @@ namespace Nop.Plugin.Widgets.Header.BuharaMedresesi.Models;
 public class PublicInfoModel
 {
     public string Phone        { get; set; }
+    public string Phone2       { get; set; }
     public string Email        { get; set; }
     public string InstagramUrl { get; set; }
+    public string InstagramUrl2 { get; set; }
     public string TwitterUrl   { get; set; }
     public string YoutubeUrl   { get; set; }
     public string FacebookUrl  { get; set; }

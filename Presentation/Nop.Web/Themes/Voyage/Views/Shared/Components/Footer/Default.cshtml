@@ -110,6 +110,7 @@
     <div class="pf-bottom">
         <div class="pf-container pf-bottom__inner">
             <span class="pf-copy">© @DateTime.Now.Year @currentStore.Name — Tüm hakları saklıdır.</span>
+            <span class="pf-pekin">Bu site <a href="https://pekinteknoloji.com" target="_blank" rel="noopener">Pekin Teknoloji</a> tarafından hazırlanmıştır.</span>
             <div class="pf-legal">
                 @foreach (var topic in Model.Topics.Where(x => x.IncludeInFooterColumn1 || x.IncludeInFooterColumn2).Take(4))
                 {
@@ -265,6 +266,17 @@
     transition: color 0.2s;
 }
 .pf-legal a:hover { color: #e43d51; }
+.pf-pekin {
+    color: #6b7280;
+    font-size: 13px;
+}
+.pf-pekin a {
+    color: #2ABFBF;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color .2s;
+}
+.pf-pekin a:hover { color: #1FAAA0; }
 
 .footer-lower {
     padding: 0;

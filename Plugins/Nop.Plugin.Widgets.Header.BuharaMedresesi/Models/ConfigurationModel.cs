@@ -7,9 +7,11 @@ public record ConfigurationModel : BaseNopModel
 {
     public int ActiveStoreScopeConfiguration { get; set; }
 
-    [NopResourceDisplayName("Phone")]        public string Phone        { get; set; }
-    [NopResourceDisplayName("Email")]        public string Email        { get; set; }
-    [NopResourceDisplayName("InstagramUrl")] public string InstagramUrl { get; set; }
+    [NopResourceDisplayName("Phone")]         public string Phone         { get; set; }
+    [NopResourceDisplayName("Phone2")]        public string Phone2        { get; set; }
+    [NopResourceDisplayName("Email")]         public string Email         { get; set; }
+    [NopResourceDisplayName("InstagramUrl")]  public string InstagramUrl  { get; set; }
+    [NopResourceDisplayName("InstagramUrl2")] public string InstagramUrl2 { get; set; }
     [NopResourceDisplayName("TwitterUrl")]   public string TwitterUrl   { get; set; }
     [NopResourceDisplayName("YoutubeUrl")]   public string YoutubeUrl   { get; set; }
     [NopResourceDisplayName("FacebookUrl")]  public string FacebookUrl  { get; set; }
