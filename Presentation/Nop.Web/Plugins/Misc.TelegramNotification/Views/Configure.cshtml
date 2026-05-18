@@ -1,0 +1,95 @@
+@model Nop.Plugin.Misc.TelegramNotification.Models.ConfigureModel
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Telegram Sipariş Bildirimi";
+}
+
+<div class="content-header clearfix">
+    <h1 class="pull-left">Telegram Sipariş Bildirimi</h1>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+            <div class="alert alert-info">
+                <strong>Şablon değişkenleri:</strong>
+                <code>{siparis_no}</code> &nbsp;|&nbsp;
+                <code>{musteri}</code> &nbsp;|&nbsp;
+                <code>{telefon}</code> &nbsp;|&nbsp;
+                <code>{tutar}</code>
+            </div>
+
+            <form asp-controller="TelegramNotification" asp-action="Configure" method="post">
+                <input asp-for="ActiveStoreScopeConfiguration" type="hidden" />
+
+                <div class="card card-default">
+                    <div class="card-body">
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @if (Model.ActiveStoreScopeConfiguration > 0)
+                                {
+                                    <nop-override-store-checkbox asp-for="Enabled_OverrideForStore" asp-input="Enabled" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                                }
+                                <nop-label asp-for="Enabled" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Enabled" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @if (Model.ActiveStoreScopeConfiguration > 0)
+                                {
+                                    <nop-override-store-checkbox asp-for="BotToken_OverrideForStore" asp-input="BotToken" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                                }
+                                <nop-label asp-for="BotToken" />
+                            </div>
+                            <div class="col-md-9">
+                                <input asp-for="BotToken" class="form-control" />
+                                <span class="form-text text-muted">BotFather'dan alınan token</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @if (Model.ActiveStoreScopeConfiguration > 0)
+                                {
+                                    <nop-override-store-checkbox asp-for="ChatId_OverrideForStore" asp-input="ChatId" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                                }
+                                <nop-label asp-for="ChatId" />
+                            </div>
+                            <div class="col-md-9">
+                                <input asp-for="ChatId" class="form-control" />
+                                <span class="form-text text-muted">Mesajın gönderileceği chat ID</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                @if (Model.ActiveStoreScopeConfiguration > 0)
+                                {
+                                    <nop-override-store-checkbox asp-for="MessageTemplate_OverrideForStore" asp-input="MessageTemplate" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                                }
+                                <nop-label asp-for="MessageTemplate" />
+                            </div>
+                            <div class="col-md-9">
+                                <textarea asp-for="MessageTemplate" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-9 offset-md-3">
+                        <button type="submit" name="save" class="btn btn-primary">Kaydet</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

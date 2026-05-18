@@ -1,0 +1,18 @@
+﻿{
+  "Group": "Misc",
+  "FriendlyName": "Telegram Sipariş Bildirimi",
+  "SupportedVersions": [
+    "4.70"
+  ],
+  "Author": "Pekin Teknoloji",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Misc.TelegramNotification.dll",
+  "Description": "Sipariş geldiğinde Telegram botu üzerinden bildirim gönderir",
+  "LimitedToStores": [
+    40
+  ],
+  "LimitedToCustomerRoles": [],
+  "DependsOnSystemNames": [],
+  "SystemName": "Misc.TelegramNotification",
+  "Version": "1.0.0"
+}
